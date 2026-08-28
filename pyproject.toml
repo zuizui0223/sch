@@ -1,0 +1,8 @@
+[project]
+name = "shared-cue-hypothesis"
+version = "0.1.0"
+description = "Fail-closed coverage audit for one-trait floral shared-cue experiments"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

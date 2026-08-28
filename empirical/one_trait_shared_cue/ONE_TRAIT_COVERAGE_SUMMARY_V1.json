@@ -1,0 +1,16 @@
+{
+  "A_route_cluster_count": 8,
+  "bita_source_commit": "20cd517b9b482e7e3e232a5088ae9c6422286418",
+  "claim_ceiling": "coverage_existence_only_not_effect_estimation_prevalence_or_channel_identification",
+  "directional_only_pass_count": 1,
+  "dual_A_route_cluster_count": 5,
+  "high_information_strict_pass_count": 0,
+  "high_information_system_count": 16,
+  "independent_cluster_count": 25,
+  "ledger_record_count": 56,
+  "strict_coverage_pass_clusters": [
+    "Theis_Adler_2012_Cucurbita"
+  ],
+  "strict_coverage_pass_count": 1,
+  "theis_2012_present_in_high_information_matrix": false
+}
