@@ -8,7 +8,7 @@ This is a second-stage audit. It does not alter the frozen four-field coverage g
 
 ## Outcome classes
 
-The audit distinguishes four hypotheses.
+The audit distinguishes six hypotheses.
 
 | Outcome | Minimum admissible evidence |
 |---|---|
@@ -28,9 +28,25 @@ The audit distinguishes four hypotheses.
 - Component-specific consumer responses can support separability but not evolved modularization unless evolutionary change or selection on the components is measured.
 - `NOT_EVALUABLE` is retained as a result and never recoded as absence of the outcome.
 
+## Historical transition gate
+
+A direct `shared -> private` or lineage-branching claim is stricter than contemporary cue separation. It requires the same evidential chain to contain:
+
+1. an explicitly reconstructed or historically identified ancestral shared cue;
+2. a descendant receiver-specific or more partitioned cue architecture;
+3. a pollinator response or fitness channel tied to that change;
+4. an antagonist response or cost channel tied to the same change; and
+5. replicated transitions plus tests of plausible phylogenetic or abiotic alternatives.
+
+Phylogenetic pollinator-associated divergence without antagonist data is therefore a one-audience history result. Contemporary conditional gating or component partitioning without an ancestral transition is a mechanism result. Neither is promoted to lineage branching.
+
+The targeted history-oriented adjudication is kept separately in `HISTORICAL_CUE_TRANSITION_AUDIT_V1.csv` so that near-misses can be informative without changing the 12-source evolutionary-outcome count.
+
 ## Source universe
 
 Version 1 codes the eight source-adjudicated anchors in `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv` plus four targeted primary studies admitted only to the evolutionary-outcome audit. These additions do not enter or change the strict four-field coverage audit.
+
+A separate eight-candidate historical-transition audit asks whether the unresolved private-cue/lineage endpoint can be closed. It is a targeted hypothesis-recovery audit rather than a systematic prevalence search and does not alter the 12-source outcome table.
 
 ## Claim ceiling
 
