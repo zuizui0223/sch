@@ -33,7 +33,7 @@ The candidates close complementary parts of the chain:
 
 - Joffard et al. (2020) provide a 19-species *Ophrys* phylogeny and phylogenetic comparative evidence linking scent composition to pollinator interactions, but no antagonist channel.
 - Mühlemann et al. (2006) provide a plausible contemporary temporal-avoidance mechanism through postpollination scent down-regulation in *Silene*, but no reconstructed lineage transition.
-- Campbell et al. (2022) measure pollination and seed-predation selection components across *Ipomopsis* species and hybrids, but do not reconstruct an ancestral shared cue or private-cue origin.
+- Campbell et al. (2022) measure pollination and seed-predation fitness components across *Ipomopsis* species and hybrids, but do not reconstruct an ancestral shared cue or private-cue origin.
 - Opedal et al. (2019) provide a useful negative control: across 20 *Dalechampia* populations, seed predation was largely unrelated to floral advertisement, so the antagonist conflict required by the branching hypothesis is weak in that system.
 
 None of the eight candidates jointly provides an ancestral shared state, a descendant private architecture, both receiver channels, replicated transitions and alternative-history tests. The historical endpoint therefore remains `NOT_EVALUABLE`, but the missing intersection is now specified rather than left as a generic literature gap.
@@ -42,28 +42,40 @@ The detailed adjudication is in `docs/SCH_HISTORICAL_CUE_TRANSITION_PRIMARY_SOUR
 
 ## Ficus closes the composite-system gap, but not L4
 
-A targeted follow-up found a substantially stronger candidate architecture within one biological radiation. Across separate primary studies, *Ficus* now supplies phylogenetic scent divergence across 32 species, an extant pollinator-private volatile channel in *F. semicordata*, direct exploitation of receptive fig odour by a non-pollinating parasitic wasp in *F. hispida*, and developmental attraction-to-repellence switching with pollinator/non-pollinator olfactory differentiation.
+A targeted follow-up found a substantially stronger candidate architecture within one biological radiation. The Cao et al. 32-species receptive-scent comparison is now a fixed species-level matrix rather than a proposed future scaffold.
 
-This matters because the L3 history side and L0–L1 dual-audience/mechanism side are no longer merely scattered across unrelated plant systems. They coexist within the fig–fig-wasp radiation. We therefore classify *Ficus* as:
+Within that matrix:
+
+- *F. semicordata* has a directly resolved single-compound pollinator code: 4-methylanisole;
+- *F. carica* independently has a directly resolved ratio-specific four-VOC pollinator code;
+- *F. hispida* has direct pollinator plus non-pollinating-parasite response to receptive odour and newer species-specific blend evidence;
+- *F. auriculata* supplies a directly tested leaky/shared chemical-filter comparator because its pollinator also responds to an alternative host sharing semiochemicals;
+- *F. racemosa* adds direct non-pollinating-wasp response to stage-specific fig odour;
+- developmental attraction-to-repellence switching and pollinator/non-pollinator receptor differentiation are recovered within the same radiation.
+
+This matters because the L3 history side and L0–L1 dual-audience/mechanism side are no longer merely scattered across unrelated plant systems. They coexist within the fig–fig-wasp radiation, and at least two distinct pollinator recognition architectures are resolved. We therefore classify *Ficus* as:
 
 ```text
 COMPOSITE_NEAR_L4
 not DIRECT_L4
 ```
 
-The promotion stops there. No audited *Ficus* study maps shared versus private cue states, both receiver channels and repeated transitions onto the same phylogeny while testing alternative histories. Cross-study coherence identifies a high-value candidate system; it cannot manufacture the missing historical estimand. The dedicated ledger and audit are `FICUS_COMPOSITE_HISTORY_BRIDGE_V1.csv` and `docs/SCH_FICUS_COMPOSITE_HISTORY_BRIDGE_AUDIT_V1.md`.
+The promotion still stops there. The fixed matrix contains **zero species in which a resolved pollinator-attractive chemical code is paired with direct non-pollinating-wasp behaviour to that same code**. Consequently there is not yet a biologically matched shared/private state to reconstruct through history. Cross-study coherence identifies a high-value candidate radiation; it cannot manufacture the missing historical estimand.
+
+The dedicated sources are `FICUS_COMPOSITE_HISTORY_BRIDGE_V1.csv`, `FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`, `docs/SCH_FICUS_COMPOSITE_HISTORY_BRIDGE_AUDIT_V1.md`, and `docs/SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md`.
 
 ## Hypothesis recovery statement
 
 Current data recover three ways in which a one-trait conflict can be handled: stabilizing balance around an integrated phenotype, context-dependent maintenance and change of alternative phenotypes, and population-level redirection of floral evolution. They also recover component partitioning and conditional gating as plausible decoupling mechanisms.
 
-What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages. *Ficus* is now the strongest composite bridge because phylogenetic divergence, a private pollinator channel, exploiter use of receptive scent and temporal gating occur within the same radiation, but those pieces have not yet been joined in one replicated dual-audience transition analysis.
+What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages. *Ficus* is now the strongest composite bridge because phylogenetic divergence, multiple pollinator-code architectures, exploiter use of receptive scent, leaky filtering and temporal gating occur within the same radiation. The remaining gap is no longer generic: the resolved pollinator code and exploiter response have not yet been measured on the same chemical coordinate and then reconstructed as repeated historical transitions.
 
 ## Next valid gates
 
-1. Extend the unchanged four-field coverage screen beyond the BITA-derived source universe.
+1. Extend the unchanged four-field coverage screen beyond the BITA-derived source universe only for the lower evidence layers; do not use another broad search as the main L4 strategy.
 2. For retained experiments, code `selection_form`, `cue_architecture`, `evolutionary_level`, `causal_strength`, and `claim_ceiling` separately.
 3. Use “directional specialization” for supported endpoint movement; reserve “lineage branching” for replicated historical transitions from an ancestral shared cue.
 4. Test cue decoupling with a common factorial design showing preserved pollinator benefit, reduced antagonist cost, and improved net plant fitness.
-5. For the historical endpoint, prioritize *Ficus* and reject other candidate systems early unless they contain both a resolved transition/ancestral-state analysis and matched mutualist-antagonist response or selection data.
-6. In *Ficus*, build a species-level phylogenetic matrix of cue architecture, pollinator response, non-pollinating wasp/exploiter tracking, developmental gating and abiotic alternatives before attempting an L4 transition model.
+5. For the historical endpoint, prioritize the fixed *Ficus* matrix and reject other candidate systems early unless they contain both a resolved transition/ancestral-state analysis and matched mutualist-antagonist response or selection data.
+6. Close the three same-code cells first: non-pollinator response to 4-methylanisole in *F. semicordata*; non-pollinator/exploiter response to the four-VOC ratio code in *F. carica*; and a synthetically resolved pollinator code plus *Philotrypesis* response in *F. hispida*.
+7. Only after those receiver states overlap should shared/private code states be reconstructed on the 32-species phylogeny and tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives.
