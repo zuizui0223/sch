@@ -25,11 +25,26 @@ lineage branching/specialization:            0 direct sources
 
 The positive cases do not all satisfy the strict four-field SCH coverage gate, and they do not share one effect scale. They are hypothesis-recovery evidence, not a pooled estimate or prevalence result.
 
+## The historical gap is now explicitly audited
+
+A separate eight-candidate history-oriented audit asks whether the missing private-cue/lineage endpoint is merely absent from the original source spine or actually fails a stricter historical-identification gate.
+
+The candidates close complementary parts of the chain:
+
+- Joffard et al. (2020) provide a 19-species *Ophrys* phylogeny and phylogenetic comparative evidence linking scent composition to pollinator interactions, but no antagonist channel.
+- Mühlemann et al. (2006) provide a plausible contemporary temporal-avoidance mechanism through postpollination scent down-regulation in *Silene*, but no reconstructed lineage transition.
+- Campbell et al. (2022) measure pollination and seed-predation selection components across *Ipomopsis* species and hybrids, but do not reconstruct an ancestral shared cue or private-cue origin.
+- Opedal et al. (2019) provide a useful negative control: across 20 *Dalechampia* populations, seed predation was largely unrelated to floral advertisement, so the antagonist conflict required by the branching hypothesis is weak in that system.
+
+None of the eight candidates jointly provides an ancestral shared state, a descendant private architecture, both receiver channels, replicated transitions and alternative-history tests. The historical endpoint therefore remains `NOT_EVALUABLE`, but the missing intersection is now specified rather than left as a generic literature gap.
+
+The detailed adjudication is in `docs/SCH_HISTORICAL_CUE_TRANSITION_PRIMARY_SOURCE_AUDIT_V1.md` and `HISTORICAL_CUE_TRANSITION_AUDIT_V1.csv`.
+
 ## Hypothesis recovery statement
 
 Current data recover three ways in which a one-trait conflict can be handled: stabilizing balance around an integrated phenotype, context-dependent maintenance and change of alternative phenotypes, and population-level redirection of floral evolution. They also recover component partitioning and conditional gating as plausible decoupling mechanisms.
 
-What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages.
+What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages. A phylogenetic pollinator-only result and a contemporary antagonist-avoidance mechanism cannot be multiplied together into that historical claim.
 
 ## Next valid gates
 
@@ -37,3 +52,4 @@ What remains unrecovered is the stronger historical claim that dual-audience sel
 2. For retained experiments, code `selection_form`, `cue_architecture`, `evolutionary_level`, `causal_strength`, and `claim_ceiling` separately.
 3. Use “directional specialization” for supported endpoint movement; reserve “lineage branching” for replicated historical transitions from an ancestral shared cue.
 4. Test cue decoupling with a common factorial design showing preserved pollinator benefit, reduced antagonist cost, and improved net plant fitness.
+5. For the historical endpoint, reject candidate systems early unless they contain both a resolved transition/ancestral-state analysis and matched mutualist-antagonist response or selection data.
