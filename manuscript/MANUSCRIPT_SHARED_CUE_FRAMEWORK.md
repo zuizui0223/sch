@@ -45,7 +45,28 @@ When pollinators and antagonists use different cue components, the signal can ev
 
 These are framework predictions. Current source counts do not establish their prevalence or effect-size distribution.
 
-## 5. First coverage gate
+## 5. Evolutionary outcomes that must be distinguished
+
+The same dual-audience trade-off can generate different evolutionary outcomes. They are not interchangeable interpretations of a positive or negative response to one experimental contrast.
+
+Let the net one-trait fitness surface be
+
+```text
+W(A) = M(A) - G(A) - C(A).
+```
+
+Six outcome classes follow from different fitness geometry, frequency dependence, scale or architecture.
+
+1. **Integrated compromise maintenance.** A single trait is maintained near an interior optimum `A*` when the net selection gradient is zero there and local curvature is negative. Pollinator gain and antagonist cost are balanced; neither channel must be absent.
+2. **Directional specialization on the same axis.** If the net gradient remains positive over the observed range, selection is toward stronger attraction and greater pollinator gain. If it remains negative, selection is toward weaker exposure and antagonist avoidance. An endpoint shift is directional specialization, not evolutionary branching.
+3. **Polymorphism maintenance.** Alternative values of one display can persist through negative frequency dependence, spatially or temporally varying selection, or gene flow among differently selected populations. This does not require an internal continuous optimum.
+4. **Population differentiation.** Different mutualist-antagonist balances can redirect heritable phenotype frequencies or means among populations. Population change is an evolutionary result, but not yet a historical lineage split.
+5. **Lineage branching.** True branching requires evidence for replicated transitions from an ancestral shared coordinate toward distinct audience-specific optima. Opposing consumer responses, maintained morphs or extant population differences alone do not establish this outcome.
+6. **Cue modularization.** A formerly integrated display may separate into pollinator-facing and antagonist-facing components. This is an architectural escape from the one-coordinate constraint and must be distinguished from divergence toward opposite ends of one unchanged `A` axis.
+
+The current evidence spine establishes more than shared tracking. A one-system observational fitness surface supports a stabilizing compromise, field studies of a floral-display dimorphism support context-dependent polymorphism maintenance and microevolutionary frequency change, and experimental or common-garden studies show that antagonists can redirect population-level floral evolution. Component partitioning and conditional emission support partial cue decoupling at the mechanism level. None of these results reconstructs the evolution of a private cue from an ancestral shared cue or a split into audience-specialized lineages.
+
+## 6. First coverage gate
 
 ```text
 A manipulated
@@ -56,7 +77,7 @@ A manipulated
 
 `D`, two-trait interaction, selective intervention and the BITA 16-cell design are deliberately absent from this first screen. The gate asks how often the literature has measured the linked empirical object before deciding whether effect-size synthesis is feasible.
 
-## 6. Evidence spine
+## 7. Evidence spine
 
 - **Sasidharan et al. 2023:** cross-study cue-response synthesis; supports recurrent shared attraction and rarer shared repulsion under source-version and pairing limits.
 - **Theis & Adler 2012:** current directional-only coverage pass; enhanced fragrance increased florivore attraction and reduced seed production, without a detected pollinator-attraction increase.
@@ -68,10 +89,10 @@ Three additional source-adjudicated systems form a supporting ring rather than s
 
 The exact admitted and prohibited uses are frozen in `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv`.
 
-## 7. Research fork
+## 8. Research fork
 
 If a systematic expansion leaves enough linked experiments, the paper becomes an existing-study integration plus a shared-cue framework, with effect-size lanes defined only after outcome compatibility is established. If few experiments remain, the primary result is a measurement gap: floral-signal research has measured mutualists and antagonists in separate experiments. That result directly motivates a field design measuring both responses and a common reproductive outcome under one `A` manipulation.
 
-## 8. Separation from BITA
+## 9. Separation from BITA
 
 BITA explains why mechanism attribution becomes difficult for a two-trait attraction-by-defence interaction. SCH asks what the first-order attraction-antagonism balance looks like before a second trait is introduced. Evidence may be shared as provenance, but estimands and claims must not be exchanged.

@@ -43,7 +43,10 @@ The frozen BITA-derived audit currently finds one directional-only pass among 25
 - `empirical/one_trait_shared_cue/` — fail-closed coverage protocol, adjudications and generated readout
 - `data/source_exports/` — immutable source tables exported from BITA
 - `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv` — roles and claim ceilings for the current evidence spine
+- `empirical/one_trait_shared_cue/EVOLUTIONARY_OUTCOME_READOUT_V1.md` — fail-closed separation of compromise, specialization, branching and cue modularization
+- `docs/SCH_EVOLUTIONARY_OUTCOME_PRIMARY_SOURCE_AUDIT_V1.md` — primary-source verification of case-level compromise, polymorphism, population change and remaining historical gaps
 - `docs/PUBLICATION_MATERIAL_LEDGER.md` — paper sections, figures, evidence roles, missing gates and stop rules
+- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — SCH Chapter 1 to BITA Chapter 2 narrative
 - `scripts/build_one_trait_coverage_audit.py` — deterministic audit builder
 - `docs/MIGRATION_RECEIPT.md` — BITA-to-SCH ownership boundary and provenance
 
