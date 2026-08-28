@@ -66,6 +66,18 @@ Six outcome classes follow from different fitness geometry, frequency dependence
 
 The current evidence spine establishes more than shared tracking. A one-system observational fitness surface supports a stabilizing compromise, field studies of a floral-display dimorphism support context-dependent polymorphism maintenance and microevolutionary frequency change, and experimental or common-garden studies show that antagonists can redirect population-level floral evolution. Component partitioning and conditional emission support partial cue decoupling at the mechanism level. None of these results reconstructs the evolution of a private cue from an ancestral shared cue or a split into audience-specialized lineages.
 
+For that stronger historical endpoint, evidence is reported as a ladder rather than a binary branching claim:
+
+```text
+L0  contemporary dual-audience response / opposing selection
+ -> L1  component partitioning, conditional gating or temporal receiver separation
+ -> L2  population differentiation or measured microevolution
+ -> L3  phylogenetic trait divergence associated with one audience
+ -> L4  reconstructed shared-cue -> private-cue transition under both audiences
+```
+
+Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. The strict L4 endpoint remains unrecovered.
+
 ## 6. First coverage gate
 
 ```text
@@ -89,9 +101,41 @@ Three additional source-adjudicated systems form a supporting ring rather than s
 
 The exact admitted and prohibited uses are frozen in `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv`.
 
+### 7.1 Historical bridge: Ficus is near L4 but not L4
+
+A targeted history audit identifies the fig–fig-wasp radiation as the strongest composite bridge to the missing historical endpoint. A fixed 32-species receptive-scent scaffold contains two directly resolved pollinator recognition architectures and direct dual-audience evidence elsewhere in the same radiation.
+
+- **Ficus semicordata:** 4-methylanisole is sufficient for attraction of its pollinator. In the same host system, direct field observations place *Platyneura cunia* oviposition about 10 days after pollinator entry and *Sycoscapter trifemmensis* 14–32 days after pollinator entry. This is direct temporal receiver separation, but neither NPFW has been shown behaviourally to ignore, avoid or follow 4-methylanisole itself.
+- **Ficus carica:** its pollinator is attracted by a precise four-VOC ratio, and small perturbations of that ratio abolish attraction. *Philotrypesis caricae* is documented from the host, but no matched test has been recovered for NPFW response to the validated four-VOC code.
+- **Ficus hispida:** pollinator and non-pollinating *Philotrypesis* respond directly to receptive odour, but the minimal synthetic pollinator-attractive code is not yet resolved to the same standard.
+- **Ficus auriculata:** a useful leaky/shared comparator in which pollinator host preference is not chemically absolute.
+
+The matched historical bottleneck is therefore not generic lack of phylogeny or lack of pollinator specificity. It is the absence of the same chemical-coordinate receiver intersection:
+
+```text
+resolved pollinator attractive chemical codes:              2
+private-code host with direct NPFW temporal separation:      1
+resolved code + direct same-code NPFW behavioural response:  0
+DIRECT_L4 transitions:                                      0
+```
+
+This distinction is essential. Temporal separation does not prove chemical privatization, NPFW host association does not prove interception of the pollinator code, and whole-odour response does not identify response to an unresolved key code. The radiation is therefore classified `COMPOSITE_NEAR_L4`, not `DIRECT_L4`.
+
+The machine-readable and bounded records are `empirical/one_trait_shared_cue/FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_RECEIVER_GAP_V1.csv`, `docs/SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md`, and `docs/SCH_FICUS_SAME_CODE_RECEIVER_GAP_READOUT_V1.md`.
+
 ## 8. Research fork
 
-If a systematic expansion leaves enough linked experiments, the paper becomes an existing-study integration plus a shared-cue framework, with effect-size lanes defined only after outcome compatibility is established. If few experiments remain, the primary result is a measurement gap: floral-signal research has measured mutualists and antagonists in separate experiments. That result directly motivates a field design measuring both responses and a common reproductive outcome under one `A` manipulation.
+The research fork now differs by evidence layer.
+
+For the first-order coverage and lower evolutionary layers, a broader systematic expansion remains useful: if enough linked experiments survive the coverage gate, the paper can estimate compatible effect-size lanes; if few survive, the measurement gap itself becomes a result.
+
+For the historical L4 endpoint, the strategy is no longer a broad literature search. The high-value next step is to close three explicit same-code cells inside *Ficus*:
+
+1. test NPFWs in *F. semicordata* against 4-methylanisole at their natural post-pollination timing windows;
+2. test *Philotrypesis caricae* and other relevant exploiters against the validated *F. carica* four-VOC ratio and perturbed ratios;
+3. resolve the minimal *F. hispida* pollinator code and test *Philotrypesis* against that identical synthetic coordinate.
+
+Only after matched receiver states exist should shared/private code states be reconstructed on the 32-species phylogeny and tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives. If the same-code cell remains empty, repeated shared-to-private evolution remains `NOT_EVALUABLE` rather than negative evidence for the hypothesis.
 
 ## 9. Separation from BITA
 
