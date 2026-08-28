@@ -15,6 +15,14 @@ def _rows() -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def _resolved_pollinator_code(row: dict[str, str]) -> bool:
+    value = row["private_pollinator_channel"]
+    return value in {
+        "DIRECT_4_METHYLANISOLE_PRIVATE_CHANNEL",
+        "DIRECT_RATIO_SPECIFIC_4_VOC_CODE_NOT_NARROW_PRIVATE_CHANNEL",
+    }
+
+
 def test_fixed_cao_universe_is_complete() -> None:
     rows = _rows()
     assert len(rows) == 32
@@ -24,20 +32,37 @@ def test_fixed_cao_universe_is_complete() -> None:
     assert all(row["phylogenetic_scent_scaffold"] == "YES_32_SPECIES_PHYLOGENY" for row in rows)
 
 
-def test_direct_private_channel_is_currently_a_singleton() -> None:
+def test_two_pollinator_codes_are_resolved_but_narrow_private_label_is_singleton() -> None:
     rows = _rows()
-    private = [row for row in rows if row["private_pollinator_channel"].startswith("DIRECT_")]
-    assert [row["species"] for row in private] == ["Ficus_semicordata"]
-    assert private[0]["private_pollinator_channel"] == "DIRECT_4_METHYLANISOLE_PRIVATE_CHANNEL"
+    resolved = [row["species"] for row in rows if _resolved_pollinator_code(row)]
+    assert resolved == ["Ficus_carica", "Ficus_semicordata"]
+    narrow_private = [
+        row["species"]
+        for row in rows
+        if row["private_pollinator_channel"] == "DIRECT_4_METHYLANISOLE_PRIVATE_CHANNEL"
+    ]
+    assert narrow_private == ["Ficus_semicordata"]
 
 
-def test_priority_pair_separates_private_and_shared_history_sides() -> None:
+def test_priority_triangle_separates_code_and_dual_audience_sides() -> None:
     rows = _rows()
     p1 = {row["species"]: row for row in rows if row["priority"].startswith("P1_")}
-    assert set(p1) == {"Ficus_semicordata", "Ficus_hispida"}
-    assert p1["Ficus_semicordata"]["priority"] == "P1_PRIVATE_HISTORY"
-    assert p1["Ficus_hispida"]["priority"] == "P1_SHARED_HISTORY"
+    assert set(p1) == {"Ficus_carica", "Ficus_semicordata", "Ficus_hispida"}
+    assert p1["Ficus_carica"]["priority"] == "P1_RATIO_CODE_HISTORY"
+    assert p1["Ficus_semicordata"]["priority"] == "P1_SINGLE_COMPOUND_HISTORY"
+    assert p1["Ficus_hispida"]["priority"] == "P1_DUAL_AUDIENCE_HISTORY"
     assert "DIRECT_POLLINATOR_AND_PHILOTRYPESIS_RECEPTIVE_ODOR_RESPONSE" in p1["Ficus_hispida"]["nonpollinator_scent_tracking"]
+
+
+def test_no_resolved_pollinator_code_has_direct_same_code_npfw_behavior() -> None:
+    rows = _rows()
+    intersections = [
+        row["species"]
+        for row in rows
+        if _resolved_pollinator_code(row)
+        and row["nonpollinator_scent_tracking"].startswith("DIRECT_")
+    ]
+    assert intersections == []
 
 
 def test_matrix_remains_fail_closed_for_direct_l4() -> None:
@@ -45,8 +70,9 @@ def test_matrix_remains_fail_closed_for_direct_l4() -> None:
     assert all(row["history_intersection_status"] != "DIRECT_L4" for row in rows)
     readout = READOUT.read_text(encoding="utf-8")
     audit = AUDIT.read_text(encoding="utf-8")
-    assert "second independently supported private-channel tip is a necessary but not sufficient gate" in readout
-    assert "replicated shared-to-private transition test cannot yet be performed" in readout
+    assert "previous bottleneck" in readout
+    assert "same-code dual-audience intersection" in readout
+    assert "resolved pollinator code + direct same-code NPFW behaviour" in readout
     assert "COMPOSITE_NEAR_L4" in audit
     assert "not DIRECT_L4" in audit
-    assert "fixed-universe evidence expansion" in audit
+    assert "same-code dual-audience cells" in audit
