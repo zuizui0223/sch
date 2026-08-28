@@ -16,13 +16,15 @@ def _rows() -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_ficus_composite_contains_history_private_and_dual_audience_pieces() -> None:
+def test_ficus_composite_contains_history_code_and_dual_audience_pieces() -> None:
     rows = _rows()
-    assert len(rows) == 4
+    assert len(rows) == 6
     roles = {row["evidence_role"] for row in rows}
     assert "phylogenetic_scent_divergence" in roles
     assert "extant_private_pollinator_channel" in roles
+    assert "ratio_specific_pollinator_code" in roles
     assert "shared_signal_exploitation" in roles
+    assert "species_specific_pollinator_blend" in roles
     assert "developmental_signal_switch_and_receiver_molecular_specificity" in roles
 
 
@@ -34,13 +36,14 @@ def test_ficus_composite_is_not_promoted_to_direct_l4() -> None:
     assert "COMPOSITE_NEAR_L4" in text
     assert "not DIRECT_L4" in text
     assert "ancestral shared state | **UNRESOLVED**" in text
-    assert "replicated transition + alternatives | **UNRESOLVED**" in text
+    assert "replicated transition + alternatives | **UNRESOLVED / NOT YET EVALUABLE**" in text
 
 
 def test_ficus_audit_preserves_fail_closed_next_step() -> None:
     text = AUDIT.read_text(encoding="utf-8")
     assert "same phylogeny" in text
-    assert "conditioning on phylogeny and alternatives" in text
+    assert "same-code dual-audience cells" in text
+    assert "tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives" in text
     assert "NOT_EVALUABLE" in text
 
 
