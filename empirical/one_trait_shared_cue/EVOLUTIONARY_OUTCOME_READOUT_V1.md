@@ -40,11 +40,24 @@ None of the eight candidates jointly provides an ancestral shared state, a desce
 
 The detailed adjudication is in `docs/SCH_HISTORICAL_CUE_TRANSITION_PRIMARY_SOURCE_AUDIT_V1.md` and `HISTORICAL_CUE_TRANSITION_AUDIT_V1.csv`.
 
+## Ficus closes the composite-system gap, but not L4
+
+A targeted follow-up found a substantially stronger candidate architecture within one biological radiation. Across separate primary studies, *Ficus* now supplies phylogenetic scent divergence across 32 species, an extant pollinator-private volatile channel in *F. semicordata*, direct exploitation of receptive fig odour by a non-pollinating parasitic wasp in *F. hispida*, and developmental attraction-to-repellence switching with pollinator/non-pollinator olfactory differentiation.
+
+This matters because the L3 history side and L0–L1 dual-audience/mechanism side are no longer merely scattered across unrelated plant systems. They coexist within the fig–fig-wasp radiation. We therefore classify *Ficus* as:
+
+```text
+COMPOSITE_NEAR_L4
+not DIRECT_L4
+```
+
+The promotion stops there. No audited *Ficus* study maps shared versus private cue states, both receiver channels and repeated transitions onto the same phylogeny while testing alternative histories. Cross-study coherence identifies a high-value candidate system; it cannot manufacture the missing historical estimand. The dedicated ledger and audit are `FICUS_COMPOSITE_HISTORY_BRIDGE_V1.csv` and `docs/SCH_FICUS_COMPOSITE_HISTORY_BRIDGE_AUDIT_V1.md`.
+
 ## Hypothesis recovery statement
 
 Current data recover three ways in which a one-trait conflict can be handled: stabilizing balance around an integrated phenotype, context-dependent maintenance and change of alternative phenotypes, and population-level redirection of floral evolution. They also recover component partitioning and conditional gating as plausible decoupling mechanisms.
 
-What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages. A phylogenetic pollinator-only result and a contemporary antagonist-avoidance mechanism cannot be multiplied together into that historical claim.
+What remains unrecovered is the stronger historical claim that dual-audience selection caused an ancestral shared cue to evolve into pollinator-private and antagonist-avoiding modules or into distinct specialized lineages. *Ficus* is now the strongest composite bridge because phylogenetic divergence, a private pollinator channel, exploiter use of receptive scent and temporal gating occur within the same radiation, but those pieces have not yet been joined in one replicated dual-audience transition analysis.
 
 ## Next valid gates
 
@@ -52,4 +65,5 @@ What remains unrecovered is the stronger historical claim that dual-audience sel
 2. For retained experiments, code `selection_form`, `cue_architecture`, `evolutionary_level`, `causal_strength`, and `claim_ceiling` separately.
 3. Use “directional specialization” for supported endpoint movement; reserve “lineage branching” for replicated historical transitions from an ancestral shared cue.
 4. Test cue decoupling with a common factorial design showing preserved pollinator benefit, reduced antagonist cost, and improved net plant fitness.
-5. For the historical endpoint, reject candidate systems early unless they contain both a resolved transition/ancestral-state analysis and matched mutualist-antagonist response or selection data.
+5. For the historical endpoint, prioritize *Ficus* and reject other candidate systems early unless they contain both a resolved transition/ancestral-state analysis and matched mutualist-antagonist response or selection data.
+6. In *Ficus*, build a species-level phylogenetic matrix of cue architecture, pollinator response, non-pollinating wasp/exploiter tracking, developmental gating and abiotic alternatives before attempting an L4 transition model.
