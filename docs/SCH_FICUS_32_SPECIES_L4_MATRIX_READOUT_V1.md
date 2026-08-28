@@ -2,57 +2,67 @@
 
 ## Result
 
-The Cao et al. 32-species receptive-scent comparison has now been converted from a generic phylogenetic scaffold into a species-level L4 candidate matrix and overlaid with the direct behavioural and receiver-mechanism evidence recovered in the targeted *Ficus* audit.
+The Cao et al. 32-species receptive-scent comparison has been converted from a generic phylogenetic scaffold into a species-level L4 candidate matrix and overlaid with direct behavioural, electrophysiological and receiver-mechanism evidence.
+
+A fixed-universe follow-up changed the diagnosis in an important way. The pollinator side is not limited to a single resolved chemical code: within the 32 Cao species, both *Ficus semicordata* and *F. carica* have key attractive chemical codes resolved by behavioural experiments. They represent different coding architectures. *F. semicordata* uses a single unusual compound, whereas *F. carica* uses a specific ratio of four common VOCs. The narrow `private channel` label remains directly demonstrated only for *F. semicordata*.
 
 The matrix is `empirical/one_trait_shared_cue/FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`.
 
 ## Coverage
 
 ```text
-Ficus species on scent phylogenetic scaffold:       32 / 32
-sampled individuals represented in Cao et al.:     242
-monoecious species:                                 15
-functionally dioecious species:                     17
-species with direct private pollinator cue:          1
-species with direct own-host NPFW scent behaviour:   2
-species with pollinator + NPFW molecular panel:      2
-DIRECT_L4 species/transitions:                        0
+Ficus species on scent phylogenetic scaffold:                    32 / 32
+sampled individuals represented in Cao et al.:                  242
+monoecious species:                                              15
+functionally dioecious species:                                  17
+narrow single-compound private-channel species:                   1  (F. semicordata)
+resolved pollinator attractive chemical codes:                    2  (F. semicordata, F. carica)
+direct own-host NPFW scent-behaviour species:                     2  (F. hispida, F. racemosa)
+pollinator + NPFW molecular-panel species:                        2  (F. semicordata, F. hispida)
+direct leaky/shared pollinator-filter comparator:                 1  (F. auriculata)
+resolved pollinator code + direct same-code NPFW behaviour:       0
+DIRECT_L4 species/transitions:                                    0
 ```
 
-The two complementary P1 systems are:
+The three complementary P1 systems are now:
 
-- **Ficus semicordata — private-history side.** It sits on the 32-species scent phylogeny and has a directly demonstrated pollinator-private 4-methylanisole channel. The newer receiver study also contains pollinating and non-pollinating wasp odorant-binding measurements from this host system. What is missing is a demonstrated ancestral shared state and a behavioural same-cue non-pollinator contrast linked to the private transition.
-- **Ficus hispida — shared-history side.** It sits on the same scaffold and has direct behavioural evidence that pollinating and non-pollinating parasitic wasps use the receptive odour, plus a pollinator/non-pollinator molecular receiver panel. What is missing is a demonstrated descendant private channel in this lineage or a mapped transition away from the shared state.
+- **Ficus semicordata — resolved single-compound code.** 4-methylanisole is sufficient for attraction of its pollinator and is the narrowest private-channel result in the fixed matrix. Pollinating and non-pollinating wasp odorant-binding evidence also exists in the host system, but direct non-pollinator behaviour to 4-methylanisole has not been recovered.
+- **Ficus carica — resolved ratio-specific code.** A synthetic four-VOC blend in the correct proportions reproduces attraction of *Blastophaga psenes*, while small changes in the proportions abolish attraction. This closes a second, independently evolved pollinator-code architecture but does not establish an antagonist-avoiding private channel because no matched non-pollinating wasp/exploiter response to that four-VOC code is currently coded.
+- **Ficus hispida — direct dual-audience system.** Pollinator and non-pollinating *Philotrypesis* respond to receptive fig odour, and molecular receiver data cover both guilds. Recent behavioural/electrophysiological work supports species-specific host recognition through VOC blends, but the key attractive synthetic code has not been resolved to the same standard as *F. semicordata* or *F. carica*.
 
-`F. racemosa` is a P2 expansion because non-pollinating wasps have been tested against stage-specific odour, while `F. tinctoria` supplies a useful nonhost specificity control in the *F. hispida* behavioural experiment.
+Two P2 systems sharpen the contrast. *F. auriculata* is a directly tested leaky/shared-filter case: its pollinator prefers its usual host but is also attracted to a sympatric alternative host whose scent shares semiochemicals. *F. racemosa* contributes direct non-pollinating-wasp response to stage-specific fig odour.
 
 ## The new bottleneck
 
-The principal gap is no longer simply “find a phylogeny with both audiences.” The scaffold exists. The current intersection is sparse in a more specific way:
+The previous bottleneck — “find a second pollinator-specific chemical-code tip” — is now closed. The fixed-universe search recovered *F. carica* as a second resolved code. What remains is the **same-code dual-audience intersection**.
 
 ```text
-shared dual-audience tip                 -> F. hispida
-private pollinator-channel tip           -> F. semicordata
-phylogenetic receptive-scent scaffold    -> both + 30 additional species
-replicated private-channel transitions   -> 0 evaluable
+resolved single-compound pollinator code -> F. semicordata
+resolved ratio-specific pollinator code  -> F. carica
+direct shared pollinator/NPFW behaviour  -> F. hispida
+leaky shared pollinator filter           -> F. auriculata
+resolved code + direct NPFW response     -> no species yet
+historical shared -> private transition  -> no species/branch yet
 ```
 
-With only one directly demonstrated private-channel tip among the 32 coded species, a replicated shared-to-private transition test cannot yet be performed. **A second independently supported private-channel tip is a necessary but not sufficient gate** for the strict replicated-transition hypothesis. Even after that gate is crossed, the analysis still requires ancestral-state reconstruction, matched exploiter response/selection coding and alternative-history controls.
+This matters because pollinator specificity alone is not cue privatization relative to an exploiter. Conversely, showing that an exploiter tracks a receptive bouquet does not identify which pollinator-attractive code it intercepts. The strict historical hypothesis needs those two measurements on the same chemical coordinate before ancestral-state or transition reconstruction becomes biologically interpretable.
 
-This is a useful fail-closed result. It prevents a singleton extant private channel from being presented as repeated cue privatization.
+The matrix therefore does **not** infer L4 by multiplying the *F. semicordata* or *F. carica* pollinator code by the *F. hispida* antagonist result across species.
 
-## Priority search generated by the matrix
+## Priority tests generated by the matrix
 
-The next literature/data pass should keep the 32 Cao species fixed and search within that declared universe rather than broadening taxa again.
+The next pass should remain inside the fixed *Ficus* system and close three explicit cells rather than broaden the literature again.
 
-1. Screen the other 31 species for direct behavioural evidence that a particular receptive VOC or compact bouquet is sufficient/specific for its pollinator.
-2. For every private-channel candidate, require species-matched non-pollinating wasp/exploiter response to the same cue or bouquet.
-3. Promote a species to a transition candidate only when both receiver sides can be mapped to the same scent phylogeny.
-4. If a second private-channel tip is recovered, reconstruct private/shared states on the fixed phylogeny and test whether transitions coincide with reduced exploiter tracking after conditioning on phylogeny, section, reproductive system and available abiotic/geographic alternatives.
-5. If no second private-channel tip is recovered after the fixed-universe screen, retain *Ficus* as `COMPOSITE_NEAR_L4` and stop treating strict replicated L4 as empirically testable from the current literature.
+1. **F. semicordata:** test non-pollinating wasp attraction/avoidance to 4-methylanisole itself, not only to whole-fig odour or in molecular binding assays.
+2. **F. carica:** test its non-pollinating wasps or other relevant exploiters against the validated four-VOC ratio code and perturbed ratios.
+3. **F. hispida:** resolve the pollinator-attractive blend to a synthetic code and test *Philotrypesis* against that same code.
+4. Use *F. auriculata* as a shared/leaky comparator rather than forcing it into a private-state class.
+5. Only after shared/private or code-interception states are available on matched chemical coordinates should they be reconstructed on the 32-species phylogeny and tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives.
+
+If the same-code exploiter intersection remains empty, repeated L4 remains `NOT_EVALUABLE` even though multiple pollinator recognition architectures are now empirically resolved.
 
 ## Claim ceiling
 
 The current strongest statement is:
 
-> A 32-species fig scent phylogeny contains both a directly demonstrated private pollinator-channel species and species with direct shared pollinator–non-pollinator scent tracking, so the components of cue privatization occur within one radiation. However, the direct private-channel state is presently a singleton in the coded comparative matrix. Repeated shared-to-private transitions under dual-audience selection therefore remain `NOT_EVALUABLE`, not supported or rejected.
+> A fixed 32-species fig scent scaffold contains at least two directly resolved pollinator chemical-code architectures — a single-compound code in *F. semicordata* and a ratio-specific four-VOC code in *F. carica* — together with direct dual-audience scent tracking in *F. hispida* and a leaky shared-filter comparator in *F. auriculata*. The missing historical intersection is now narrower: no coded species combines a resolved pollinator-attractive chemical code with direct non-pollinating-wasp response to that same code and a reconstructed transition. Repeated shared-to-private evolution under dual-audience selection therefore remains `NOT_EVALUABLE`, not supported or rejected.
