@@ -122,6 +122,51 @@ JBI geography fields
 
 No reconstructed abstract or publisher full text is saved.
 
+## Abstract-free machine screening assistance
+
+Before human title/abstract adjudication, a separate assistance packet may be generated for a frozen screening batch. The packet refetches each OpenAlex work, reconstructs the abstract only in memory, and records only:
+
+```text
+which registered concept blocks occur in the title
+which registered concept blocks occur in the abstract
+matched registered term strings
+OpenAlex work type
+known-anchor status
+machine review priority
+```
+
+The abstract itself is not stored.
+
+Machine review priority has **no PRISMA decision meaning**. It is used only to order human review:
+
+```text
+KNOWN_ANCHOR
+HIGH_TITLE_TRIPLE
+HIGH_TITLE_PAIR
+MEDIUM_TITLE_ONE
+ABSTRACT_ONLY
+```
+
+The assistance packet contains separate blank fields for any later formal decision, but the generator is prohibited from populating them. It therefore cannot increment screened, excluded, retained or included counts.
+
+Known frozen anchors are promoted only as sensitivity controls so that a screening packet can be checked against studies already known to be biologically relevant. Their presence never auto-includes them in the systematic review.
+
+## Formal screening audit
+
+The deterministic batch workspace is audited independently of the machine-assistance packet. Only the registered formal fields in `SCH_PRISMA_V2_SCREEN_BATCH_*.csv` can change PRISMA counts.
+
+Allowed title/abstract decisions are:
+
+```text
+RETAIN_FULLTEXT
+EXCLUDE + exactly one registered TA exclusion reason
+blank = UNSCREENED
+```
+
+`UNSCREENED` is never interpreted as exclusion. Full-text fields are rejected unless the record first passed title/abstract screening as `RETAIN_FULLTEXT`. Included full texts must be available and carry at least one registered evidence lane.
+
+The screening audit regenerates title/abstract, full-text, evidence-lane and geography counts from the batch files. Completion of screening does **not** by itself authorize a pooled effect; outcome-scale compatibility and independence remain separate gates.
+
 ## Deduplication
 
 1. normalized DOI;
@@ -147,4 +192,4 @@ PRISMA_V2_RETRIEVAL_FAILED
 
 ## Next gate
 
-Only a `PRISMA_V2_IDENTIFICATION_COMPLETE` candidate ledger proceeds to human title/abstract screening under `SCH_PRISMA_SEARCH_PROTOCOL_V1.md` exclusion codes and the unchanged SCH scientific admission rules.
+Only a `PRISMA_V2_IDENTIFICATION_COMPLETE` candidate ledger proceeds to human title/abstract screening under `SCH_PRISMA_SEARCH_PROTOCOL_V1.md` exclusion codes and the unchanged SCH scientific admission rules. Machine triage may order that work but cannot replace the human decision fields.
