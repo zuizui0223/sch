@@ -31,6 +31,10 @@ jobs:
             tests/test_ficus_same_code_receiver_classifier.py \
             tests/test_ficus_same_code_trial_analysis.py \
             tests/test_ficus_same_code_experiment_protocol.py
+      - name: Smoke-test direct analysis CLI
+        run: |
+          python scripts/classify_ficus_same_code_receiver.py --help >/dev/null
+          python scripts/analyze_ficus_same_code_trials.py --help >/dev/null
       - name: Build prospective assay plan
         run: |
           mkdir -p artifacts/ficus_same_code
