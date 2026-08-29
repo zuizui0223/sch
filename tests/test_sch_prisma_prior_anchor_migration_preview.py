@@ -37,18 +37,31 @@ def test_only_theis_adler_is_flagged_as_strict_four_field_candidate() -> None:
     )
 
 
-def test_preview_dois_match_prior_registry_and_current_retain_overlay() -> None:
+def test_preview_dois_match_prior_registry_and_prior_source_overlay_subset() -> None:
     preview = _rows(PREVIEW)
     registry = _rows(REGISTRY)
     decisions = _rows(DECISIONS)
     preview_dois = {row["doi"].lower() for row in preview}
     registry_dois = {row["doi"].lower() for row in registry}
     assert preview_dois == registry_dois
-    decision_ids = {row["record_id"] for row in decisions}
+
+    prior_decisions = [
+        row for row in decisions if row["decision_source"] == "PRIOR_SOURCE_ADJUDICATION"
+    ]
+    assert len(prior_decisions) == 8
+    decision_ids = {row["record_id"] for row in prior_decisions}
     preview_ids = {row["record_id"] for row in preview}
     assert decision_ids == preview_ids
-    assert all(row["screen_title_abstract"] == "RETAIN_FULLTEXT" for row in decisions)
-    assert all(row["screen_fulltext"] == "" for row in decisions)
+    assert all(row["screen_title_abstract"] == "RETAIN_FULLTEXT" for row in prior_decisions)
+    assert all(row["screen_fulltext"] == "" for row in prior_decisions)
+
+    # Later systematic screening decisions may coexist in the overlay. They must
+    # never be mistaken for the frozen prior-source anchor set.
+    assert all(
+        row["decision_source"]
+        in {"PRIOR_SOURCE_ADJUDICATION", "ASSISTED_SOURCE_VERIFIED_PRIMARY_SCREEN_2026-08-30"}
+        for row in decisions
+    )
 
 
 def test_claim_ceiling_preserves_each_prior_blocker() -> None:
