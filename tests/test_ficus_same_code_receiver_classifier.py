@@ -46,3 +46,13 @@ def test_direct_avoidance_is_separate_from_behavioral_privacy() -> None:
         npfw_positive_control=Interval(0.61, 0.77),
     )
     assert decision.status == "SAME_CODE_AVOIDANCE"
+
+
+def test_failed_pollinator_replication_blocks_same_code_promotion() -> None:
+    decision = classify_same_code_receiver(
+        pollinator_code=Interval(0.45, 0.58),
+        npfw_code=Interval(0.62, 0.75),
+        npfw_positive_control=Interval(0.65, 0.80),
+    )
+    assert decision.status == "POLLINATOR_CODE_NOT_REPLICATED"
+    assert not decision.pollinator_code_validated
