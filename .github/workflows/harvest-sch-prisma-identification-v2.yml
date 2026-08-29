@@ -16,7 +16,9 @@ on:
       - 'tests/test_sch_prisma_screening_triage.py'
       - 'tests/test_sch_prisma_human_review_queue.py'
       - 'tests/test_sch_prisma_decision_overlay.py'
+      - 'tests/test_sch_prisma_prior_anchor_migration_preview.py'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv'
+      - 'empirical/prisma/SCH_PRISMA_V2_PRIOR_ANCHOR_FULLTEXT_MIGRATION_PREVIEW_V1.csv'
       - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
       - 'docs/SCH_PRISMA_V1_IDENTIFICATION_READOUT.md'
       - 'docs/SCH_PRISMA_V2_IDENTIFICATION_READOUT.md'
@@ -41,7 +43,8 @@ jobs:
             tests/test_sch_prisma_screening_audit.py \
             tests/test_sch_prisma_screening_triage.py \
             tests/test_sch_prisma_human_review_queue.py \
-            tests/test_sch_prisma_decision_overlay.py
+            tests/test_sch_prisma_decision_overlay.py \
+            tests/test_sch_prisma_prior_anchor_migration_preview.py
       - name: Run registered OpenAlex V2 identification
         run: |
           mkdir -p artifacts/sch_prisma_v2
