@@ -8,10 +8,13 @@ on:
       - 'scripts/build_sch_prisma_screening_batches.py'
       - 'scripts/audit_sch_prisma_screening.py'
       - 'scripts/build_sch_prisma_screening_triage.py'
+      - 'scripts/apply_sch_prisma_screening_decisions.py'
       - 'tests/test_sch_prisma_harvester_v2.py'
       - 'tests/test_sch_prisma_screening_batches.py'
       - 'tests/test_sch_prisma_screening_audit.py'
       - 'tests/test_sch_prisma_screening_triage.py'
+      - 'tests/test_sch_prisma_decision_overlay.py'
+      - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv'
       - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
       - 'docs/SCH_PRISMA_V1_IDENTIFICATION_READOUT.md'
       - 'docs/SCH_PRISMA_V2_IDENTIFICATION_READOUT.md'
@@ -34,7 +37,8 @@ jobs:
             tests/test_sch_prisma_harvester_v2.py \
             tests/test_sch_prisma_screening_batches.py \
             tests/test_sch_prisma_screening_audit.py \
-            tests/test_sch_prisma_screening_triage.py
+            tests/test_sch_prisma_screening_triage.py \
+            tests/test_sch_prisma_decision_overlay.py
       - name: Run registered OpenAlex V2 identification
         run: |
           mkdir -p artifacts/sch_prisma_v2
@@ -89,6 +93,32 @@ jobs:
           assert data['prisma_flow']['records_screened_title_abstract'] == 0, data
           assert data['prisma_flow']['records_excluded_title_abstract'] == 0, data
           assert data['prisma_flow']['studies_included'] == 0, data
+          PY
+      - name: Apply version-controlled author screening decisions
+        run: |
+          python scripts/apply_sch_prisma_screening_decisions.py \
+            artifacts/sch_prisma_v2/screening_batches \
+            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv \
+            artifacts/sch_prisma_v2/screening_active \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_RECEIPT.json \
+            --expected-denominator 868
+          python scripts/audit_sch_prisma_screening.py \
+            artifacts/sch_prisma_v2/screening_active \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json \
+            --expected-denominator 868
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          overlay = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_RECEIPT.json').read_text())
+          current = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
+          assert current['identified_records'] == 868, current
+          assert current['screening_status'] in {
+              'TITLE_ABSTRACT_NOT_STARTED',
+              'TITLE_ABSTRACT_IN_PROGRESS',
+              'FULLTEXT_IN_PROGRESS',
+              'SCREENING_COMPLETE',
+          }, current
+          assert overlay['changed_record_count'] <= overlay['overlay_rows'], overlay
           PY
       - name: Build abstract-free Batch 1 triage packet
         run: |
