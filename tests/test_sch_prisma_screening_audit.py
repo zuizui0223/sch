@@ -103,7 +103,32 @@ def test_complete_screening_generates_prisma_counts_and_geography_counts(tmp_pat
     }
     assert receipt["evidence_lane_counts"]["STRICT_LINKED_EXPERIMENT"] == 1
     assert receipt["geography"]["geographic_contrast_reported"] == 1
+    assert receipt["geography"]["geographic_contrast_positive"] == 1
     assert receipt["geography"]["receiver_assemblage_contrast_reported"] == 0
+    assert receipt["geography"]["receiver_assemblage_contrast_positive"] == 0
+
+
+def test_negative_or_non_geographic_codes_are_reported_but_not_positive(tmp_path) -> None:
+    rows = [_base_row(i) for i in range(1, 4)]
+    for row in rows:
+        row["screen_title_abstract"] = "RETAIN_FULLTEXT"
+        row["fulltext_status"] = "AVAILABLE"
+        row["screen_fulltext"] = "INCLUDE"
+        row["evidence_lanes"] = "DIRECTIONAL_OR_NEAR_PASS"
+
+    rows[0]["geographic_contrast"] = "NO_REPLICATED_GEOGRAPHIC_CONTRAST"
+    rows[0]["receiver_assemblage_contrast"] = "NO_DIRECT_SPATIAL_RECEIVER_REGIME_CONTRAST"
+    rows[1]["geographic_contrast"] = "EXPERIMENTAL_SETTING_CONTRAST_NOT_GEOGRAPHIC"
+    rows[1]["receiver_assemblage_contrast"] = "NO_DIRECT_SPATIAL_RECEIVER_REGIME_CONTRAST"
+    rows[2]["geographic_contrast"] = "LOWLAND_WITH_SPIDERS_VS_HIGHLAND_WITHOUT_SPIDERS"
+    rows[2]["receiver_assemblage_contrast"] = "CRAB_SPIDER_OCCURRENCE_REGIME_CONTRAST"
+
+    _write_batches(tmp_path, rows)
+    receipt = audit(tmp_path, expected_denominator=3)
+    assert receipt["geography"]["geographic_contrast_reported"] == 3
+    assert receipt["geography"]["geographic_contrast_positive"] == 1
+    assert receipt["geography"]["receiver_assemblage_contrast_reported"] == 3
+    assert receipt["geography"]["receiver_assemblage_contrast_positive"] == 1
 
 
 def test_nonretained_record_cannot_carry_fulltext_decision(tmp_path) -> None:
