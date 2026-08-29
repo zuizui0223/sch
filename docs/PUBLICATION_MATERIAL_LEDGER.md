@@ -102,7 +102,7 @@ This is enough to reject the earlier concern that the JBI axis rests on a single
 |---|---|---|---|
 | Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining screening |
 | Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, direct cost separate | Keeps SCH distinct from BITA `Delta_AD W` | Effect-size scale and outcome compatibility rules |
-| Evolutionary outcomes | **12-source primary audit** plus systematic V2 additions | Compromise, partial modularity, population change and geographic selection mosaics are now represented | Finish systematic outcome coding; lineage branching still absent |
+| Evolutionary outcomes | **12-source primary audit** plus systematic V2 additions | Compromise, partial modularity, population change and geographic selection mosaics are now represented | Finish systematic outcome coding; **lineage branching untested** |
 | Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator |
 | PRISMA V2 | frozen 868 cohort | Immutable systematic denominator; live OpenAlex only monitors index drift | Screen remaining 825 |
 | Formal screening | 43 TA decisions; 15 primary full-text includes | Builds systematic evidence lanes without machine inclusion | 13 retained full texts undecided; 825 TA unscreened |
