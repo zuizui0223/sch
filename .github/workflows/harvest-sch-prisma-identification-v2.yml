@@ -8,11 +8,13 @@ on:
       - 'scripts/build_sch_prisma_screening_batches.py'
       - 'scripts/audit_sch_prisma_screening.py'
       - 'scripts/build_sch_prisma_screening_triage.py'
+      - 'scripts/build_sch_prisma_human_review_queue.py'
       - 'scripts/apply_sch_prisma_screening_decisions.py'
       - 'tests/test_sch_prisma_harvester_v2.py'
       - 'tests/test_sch_prisma_screening_batches.py'
       - 'tests/test_sch_prisma_screening_audit.py'
       - 'tests/test_sch_prisma_screening_triage.py'
+      - 'tests/test_sch_prisma_human_review_queue.py'
       - 'tests/test_sch_prisma_decision_overlay.py'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv'
       - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
@@ -38,6 +40,7 @@ jobs:
             tests/test_sch_prisma_screening_batches.py \
             tests/test_sch_prisma_screening_audit.py \
             tests/test_sch_prisma_screening_triage.py \
+            tests/test_sch_prisma_human_review_queue.py \
             tests/test_sch_prisma_decision_overlay.py
       - name: Run registered OpenAlex V2 identification
         run: |
@@ -143,6 +146,29 @@ jobs:
           assert all(row['formal_title_abstract_decision'] == '' for row in rows)
           assert all(row['formal_title_abstract_reason'] == '' for row in rows)
           assert 'abstract' not in {name.lower() for name in rows[0]}, rows[0].keys()
+          PY
+      - name: Build non-anchor high-information human review queue
+        run: |
+          python scripts/build_sch_prisma_human_review_queue.py \
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE.csv \
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE_RECEIPT.json
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          csv_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE.csv')
+          receipt_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE_RECEIPT.json')
+          with csv_path.open(encoding='utf-8', newline='') as handle:
+              rows = list(csv.DictReader(handle))
+          data = json.loads(receipt_path.read_text())
+          assert len(rows) == 32, len(rows)
+          assert data['selected_record_count'] == 32, data
+          assert data['priority_counts']['HIGH_TITLE_TRIPLE'] == 3, data
+          assert data['priority_counts']['HIGH_TITLE_PAIR'] == 29, data
+          assert data['known_anchors_excluded_from_queue'] is True, data
+          assert data['stored_abstracts'] is False, data
+          assert data['formal_prisma_decisions_written'] is False, data
+          assert all(row['human_title_abstract_decision'] == '' for row in rows)
           PY
       - uses: actions/upload-artifact@v4
         with:
