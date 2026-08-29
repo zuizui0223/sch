@@ -4,7 +4,7 @@
 
 This ledger organizes the one-trait shared-cue paper without importing BITA's two-trait estimand. The current first-choice target is **Journal of Biogeography, Review & Synthesis**, conditional on the systematic-review and biogeographic gates in `docs/SCH_JBI_SUBMISSION_CONTRACT_V1.md`. The fallback remains **Ecology and Evolution** if the systematic synthesis is strong but the geography axis is not analytically consequential.
 
-The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance, while PRISMA V2 now supplies the independent systematic denominator needed for publication claims. If the retained strict linked set is sparse, the legacy **paired-channel measurement gap** remains a valid paper-level outcome rather than a reason to relax the admission gate.
+The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance, while PRISMA V2 now supplies the independent systematic denominator needed for publication claims. If the retained strict linked set is sparse, the legacy **paired-channel measurement gap** remains a valid paper-level outcome rather than a reason to relax the admission gate. **No pooled effect is authorized** until systematic screening identifies compatible linked experiments and their outcomes/scales pass an explicit commensurability gate.
 
 ## Current systematic-review state
 
