@@ -23,12 +23,14 @@ import json
 import math
 from pathlib import Path
 import random
-from typing import Iterable
 
-from scripts.classify_ficus_same_code_receiver import (
-    Interval,
-    classify_same_code_receiver,
-)
+try:  # imported as scripts.analyze_ficus_same_code_trials
+    from scripts.classify_ficus_same_code_receiver import (
+        Interval,
+        classify_same_code_receiver,
+    )
+except ModuleNotFoundError:  # direct execution: python scripts/this_file.py
+    from classify_ficus_same_code_receiver import Interval, classify_same_code_receiver
 
 
 REQUIRED_FIELDS = (
