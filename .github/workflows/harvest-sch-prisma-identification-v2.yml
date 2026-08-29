@@ -1,0 +1,50 @@
+name: Harvest SCH PRISMA identification V2
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/harvest_sch_prisma_candidates.py'
+      - 'scripts/harvest_sch_prisma_candidates_v2.py'
+      - 'tests/test_sch_prisma_harvester_v2.py'
+      - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
+      - 'docs/SCH_PRISMA_V1_IDENTIFICATION_READOUT.md'
+      - '.github/workflows/harvest-sch-prisma-identification-v2.yml'
+  workflow_dispatch:
+
+jobs:
+  identify-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test V2 identification rules
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_harvester.py tests/test_sch_prisma_harvester_v2.py
+      - name: Run registered OpenAlex V2 identification
+        run: |
+          mkdir -p artifacts/sch_prisma_v2
+          python scripts/harvest_sch_prisma_candidates_v2.py \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES.csv \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT.json \
+            --cap 2500
+      - name: Require complete registered retrieval
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT.json')
+          data = json.loads(p.read_text())
+          assert data['systematic_completion_status'] == 'PRISMA_V2_IDENTIFICATION_COMPLETE', data
+          assert data['any_truncated_query'] is False, data
+          assert data['stored_abstracts'] is False
+          assert data['crossref_discovery'] is False
+          assert data['deduplicated_unscreened_candidates'] > 0
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-prisma-identification-v2
+          path: artifacts/sch_prisma_v2/
+          if-no-files-found: error
