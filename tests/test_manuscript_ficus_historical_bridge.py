@@ -26,6 +26,16 @@ def test_manuscript_separates_temporal_from_chemical_privacy() -> None:
     assert "whole-odour response does not identify response to an unresolved key code" in text
 
 
+def test_manuscript_requires_equivalence_not_nonsignificance_for_privacy() -> None:
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    assert "206 decisive choices for 80% power" in text
+    assert "260 for 90%" in text
+    assert "412 and 520 introduced wasps" in text
+    assert "nonsignificance at a legacy attraction sample size cannot be reinterpreted as evidence for a private channel" in text
+    assert "working NPFW host/stage positive control" in text
+    assert "BEHAVIORAL_NONRESPONSE_EQUIVALENT" in text
+
+
 def test_historical_research_fork_stays_fixed_to_same_code_cells() -> None:
     text = MANUSCRIPT.read_text(encoding="utf-8")
     assert "For the historical L4 endpoint, the strategy is no longer a broad literature search" in text
