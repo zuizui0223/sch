@@ -96,6 +96,8 @@ assay day / block
 
 A source-faithful assay can be analyzed with a modern hierarchical/binomial model, but historical no-choice exclusion must be reproduced as a sensitivity lane if direct replication of the published pollinator result is being claimed. The main new same-code inference should retain no-choice information rather than make the result depend on post-choice filtering.
 
+Cross-receiver comparisons must therefore be phrased as **state classifications on a shared chemical coordinate**, not raw comparisons of choice proportions across different Y-tube geometries. Apparatus is a measurement system; the evolutionary state is the receiver response to the frozen chemical code after within-assay validation.
+
 ## Experiment A — Ficus semicordata
 
 ### Biological coordinate
