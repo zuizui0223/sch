@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 
 
@@ -8,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "empirical" / "one_trait_shared_cue" / "FICUS_SAME_CODE_RECEIVER_GAP_V1.csv"
 READOUT = ROOT / "docs" / "SCH_FICUS_SAME_CODE_RECEIVER_GAP_READOUT_V1.md"
 MATRIX_READOUT = ROOT / "docs" / "SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md"
+POWER = ROOT / "empirical" / "one_trait_shared_cue" / "FICUS_SAME_CODE_ASSAY_POWER_V1.json"
 
 
 def _rows() -> dict[str, dict[str, str]]:
@@ -56,3 +58,20 @@ def test_same_code_intersection_and_direct_l4_remain_fail_closed() -> None:
     assert "temporal separation" in matrix_text.lower()
     assert "DIRECT_L4" in text
     assert "NOT_EVALUABLE" in text
+
+
+def test_same_code_gap_has_distinct_power_for_interception_and_privacy() -> None:
+    data = json.loads(POWER.read_text(encoding="utf-8"))
+    eq = {row["target_power"]: row for row in data["equivalence_rows"]}
+    attraction = {
+        (row["true_choice_probability"], row["target_power"]): row
+        for row in data["attraction_rows"]
+    }
+    assert eq[0.8]["decisive_choices"] == 206
+    assert eq[0.9]["decisive_choices"] == 260
+    assert attraction[(0.65, 0.8)]["decisive_choices"] == 82
+    assert attraction[(0.70, 0.8)]["decisive_choices"] == 43
+    assert eq[0.8]["decisive_choices"] > attraction[(0.65, 0.8)]["decisive_choices"]
+    text = READOUT.read_text(encoding="utf-8")
+    assert "failure to detect attraction at those sample sizes does **not** support a private-channel state" in text
+    assert "prospectively powered missing intersection" in text
