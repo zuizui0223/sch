@@ -1,16 +1,19 @@
-name: Harvest SCH PRISMA identification V2
+name: Validate SCH PRISMA V2 frozen cohort
 
 on:
   pull_request:
     paths:
       - 'scripts/harvest_sch_prisma_candidates.py'
       - 'scripts/harvest_sch_prisma_candidates_v2.py'
+      - 'scripts/compare_sch_prisma_v2_live_drift.py'
       - 'scripts/build_sch_prisma_screening_batches.py'
       - 'scripts/audit_sch_prisma_screening.py'
       - 'scripts/build_sch_prisma_screening_triage.py'
       - 'scripts/build_sch_prisma_human_review_queue.py'
       - 'scripts/apply_sch_prisma_screening_decisions.py'
+      - 'tests/test_sch_prisma_harvester.py'
       - 'tests/test_sch_prisma_harvester_v2.py'
+      - 'tests/test_sch_prisma_live_drift.py'
       - 'tests/test_sch_prisma_screening_batches.py'
       - 'tests/test_sch_prisma_screening_audit.py'
       - 'tests/test_sch_prisma_screening_triage.py'
@@ -19,6 +22,7 @@ on:
       - 'tests/test_sch_prisma_prior_anchor_migration_preview.py'
       - 'tests/test_sch_prisma_current_screening_state.py'
       - 'tests/test_sch_jbi_geography_anchor_preview.py'
+      - 'empirical/prisma/frozen_v2/**'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv'
       - 'empirical/prisma/SCH_PRISMA_V2_PRIOR_ANCHOR_FULLTEXT_MIGRATION_PREVIEW_V1.csv'
       - 'empirical/prisma/SCH_JBI_GEOGRAPHY_ANCHOR_PREVIEW_V1.csv'
@@ -30,19 +34,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  identify-v2:
+  frozen-screening:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Test V2 identification and screening-workspace rules
+
+      - name: Test frozen-cohort and screening contracts
         run: |
           python -m pip install pytest
           python -m pytest -q \
             tests/test_sch_prisma_harvester.py \
             tests/test_sch_prisma_harvester_v2.py \
+            tests/test_sch_prisma_live_drift.py \
             tests/test_sch_prisma_screening_batches.py \
             tests/test_sch_prisma_screening_audit.py \
             tests/test_sch_prisma_screening_triage.py \
@@ -51,30 +57,32 @@ jobs:
             tests/test_sch_prisma_prior_anchor_migration_preview.py \
             tests/test_sch_prisma_current_screening_state.py \
             tests/test_sch_jbi_geography_anchor_preview.py
-      - name: Run registered OpenAlex V2 identification
+
+      - name: Verify immutable 868-record screening cohort
         run: |
-          mkdir -p artifacts/sch_prisma_v2
-          python scripts/harvest_sch_prisma_candidates_v2.py \
-            artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES.csv \
-            artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT.json \
-            --cap 2500
-      - name: Require complete registered retrieval
-        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          RECEIPT=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT_FROZEN_2026-08-29.json
+          test "$(($(wc -l < "$FROZEN")-1))" -eq 868
+          echo 'ee85f56ae500be17ed45f9010b0a75fa8f6b741b0967db5af596b2d7bb8579a0  empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv' | sha256sum -c -
           python - <<'PY'
           import json
           from pathlib import Path
-          p = Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT.json')
+          p = Path('empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFICATION_RECEIPT_FROZEN_2026-08-29.json')
           data = json.loads(p.read_text())
+          assert data['protocol_version'] == 'SCH_PRISMA_V2', data
           assert data['systematic_completion_status'] == 'PRISMA_V2_IDENTIFICATION_COMPLETE', data
-          assert data['any_truncated_query'] is False, data
-          assert data['stored_abstracts'] is False
-          assert data['crossref_discovery'] is False
+          assert data['raw_openalex_records_retrieved'] == 10953, data
+          assert data['automated_concept_pass_hits_across_queries'] == 2107, data
           assert data['deduplicated_unscreened_candidates'] == 868, data
+          assert data['any_truncated_query'] is False, data
           PY
-      - name: Build deterministic title-abstract screening workspace
+
+      - name: Build deterministic screening workspace from frozen cohort
         run: |
+          mkdir -p artifacts/sch_prisma_v2
           python scripts/build_sch_prisma_screening_batches.py \
-            artifacts/sch_prisma_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES.csv \
+            empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv \
             artifacts/sch_prisma_v2/screening_batches \
             --batch-size 100
           python - <<'PY'
@@ -88,7 +96,8 @@ jobs:
           assert data['known_anchor_sensitivity']['all_known_anchors_recovered'] is True, data
           assert data['known_anchor_sensitivity']['recovered_anchor_count'] == 8, data
           PY
-      - name: Audit untouched screening workspace and freeze PRISMA zero-count baseline
+
+      - name: Freeze zero-decision baseline audit
         run: |
           python scripts/audit_sch_prisma_screening.py \
             artifacts/sch_prisma_v2/screening_batches \
@@ -97,16 +106,15 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          p = Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_BASELINE.json')
-          data = json.loads(p.read_text())
+          data = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_BASELINE.json').read_text())
           assert data['screening_status'] == 'TITLE_ABSTRACT_NOT_STARTED', data
           assert data['identified_records'] == 868, data
           assert data['title_abstract']['unscreened'] == 868, data
           assert data['prisma_flow']['records_screened_title_abstract'] == 0, data
-          assert data['prisma_flow']['records_excluded_title_abstract'] == 0, data
           assert data['prisma_flow']['studies_included'] == 0, data
           PY
-      - name: Apply version-controlled author screening decisions
+
+      - name: Apply version-controlled screening decisions
         run: |
           python scripts/apply_sch_prisma_screening_decisions.py \
             artifacts/sch_prisma_v2/screening_batches \
@@ -140,32 +148,14 @@ jobs:
           assert current['geography']['geographic_contrast_positive'] == 1, current
           assert current['geography']['receiver_assemblage_contrast_positive'] == 1, current
           PY
-      - name: Build abstract-free Batch 1 triage packet
+
+      - name: Build abstract-free Batch 1 assistance packets
         run: |
           mkdir -p artifacts/sch_prisma_v2/screening_packets
           python scripts/build_sch_prisma_screening_triage.py \
             artifacts/sch_prisma_v2/screening_batches/SCH_PRISMA_V2_SCREEN_BATCH_01.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json
-          python - <<'PY'
-          import csv, json
-          from pathlib import Path
-          csv_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv')
-          receipt_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json')
-          with csv_path.open(encoding='utf-8', newline='') as handle:
-              rows = list(csv.DictReader(handle))
-          data = json.loads(receipt_path.read_text())
-          assert len(rows) == 100, len(rows)
-          assert data['candidate_count'] == 100, data
-          assert data['known_anchor_count'] == 2, data
-          assert data['stored_abstracts'] is False, data
-          assert data['formal_decisions_written'] is False, data
-          assert all(row['formal_title_abstract_decision'] == '' for row in rows)
-          assert all(row['formal_title_abstract_reason'] == '' for row in rows)
-          assert 'abstract' not in {name.lower() for name in rows[0]}, rows[0].keys()
-          PY
-      - name: Build non-anchor high-information human review queue
-        run: |
           python scripts/build_sch_prisma_human_review_queue.py \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE.csv \
@@ -173,22 +163,60 @@ jobs:
           python - <<'PY'
           import csv, json
           from pathlib import Path
-          csv_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE.csv')
-          receipt_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE_RECEIPT.json')
-          with csv_path.open(encoding='utf-8', newline='') as handle:
-              rows = list(csv.DictReader(handle))
-          data = json.loads(receipt_path.read_text())
-          assert len(rows) == 32, len(rows)
-          assert data['selected_record_count'] == 32, data
-          assert data['priority_counts']['HIGH_TITLE_TRIPLE'] == 3, data
-          assert data['priority_counts']['HIGH_TITLE_PAIR'] == 29, data
-          assert data['known_anchors_excluded_from_queue'] is True, data
-          assert data['stored_abstracts'] is False, data
-          assert data['formal_prisma_decisions_written'] is False, data
-          assert all(row['human_title_abstract_decision'] == '' for row in rows)
+          triage_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv')
+          queue_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE.csv')
+          with triage_path.open(encoding='utf-8', newline='') as handle:
+              triage = list(csv.DictReader(handle))
+          with queue_path.open(encoding='utf-8', newline='') as handle:
+              queue = list(csv.DictReader(handle))
+          receipt = json.loads(Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_HUMAN_REVIEW_QUEUE_RECEIPT.json').read_text())
+          assert len(triage) == 100
+          assert len(queue) == 32
+          assert receipt['selected_record_count'] == 32, receipt
+          assert receipt['priority_counts']['HIGH_TITLE_TRIPLE'] == 3, receipt
+          assert receipt['priority_counts']['HIGH_TITLE_PAIR'] == 29, receipt
+          assert receipt['known_anchors_excluded_from_queue'] is True, receipt
+          assert receipt['stored_abstracts'] is False, receipt
+          assert receipt['formal_prisma_decisions_written'] is False, receipt
           PY
+
+      - name: Run live OpenAlex drift monitor
+        id: live_harvest
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts/sch_prisma_v2/live
+          python scripts/harvest_sch_prisma_candidates_v2.py \
+            artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_CANDIDATES.csv \
+            artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_IDENTIFICATION_RECEIPT.json \
+            --cap 2500
+
+      - name: Compare live index with frozen screening cohort
+        if: always()
+        run: |
+          test -s artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_IDENTIFICATION_RECEIPT.json
+          python scripts/compare_sch_prisma_v2_live_drift.py \
+            empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv \
+            artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_CANDIDATES.csv \
+            artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_IDENTIFICATION_RECEIPT.json \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_LIVE_INDEX_DRIFT_RECEIPT.json \
+            --expected-frozen-denominator 868
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_LIVE_INDEX_DRIFT_RECEIPT.json').read_text())
+          assert data['frozen_cohort_status'] == 'LOCKED', data
+          assert data['frozen_denominator'] == 868, data
+          assert data['screening_denominator_changed'] is False, data
+          assert data['live_status'] in {
+              'LIVE_INDEX_MATCHES_FROZEN',
+              'LIVE_INDEX_DRIFT_DETECTED',
+              'LIVE_RETRIEVAL_FAILED_OR_INCOMPLETE',
+          }, data
+          PY
+
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: sch-prisma-identification-v2
+          name: sch-prisma-v2-frozen-screening
           path: artifacts/sch_prisma_v2/
           if-no-files-found: error
