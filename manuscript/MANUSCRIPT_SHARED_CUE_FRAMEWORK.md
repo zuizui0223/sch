@@ -121,7 +121,11 @@ DIRECT_L4 transitions:                                      0
 
 This distinction is essential. Temporal separation does not prove chemical privatization, NPFW host association does not prove interception of the pollinator code, and whole-odour response does not identify response to an unresolved key code. The radiation is therefore classified `COMPOSITE_NEAR_L4`, not `DIRECT_L4`.
 
-The machine-readable and bounded records are `empirical/one_trait_shared_cue/FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_RECEIVER_GAP_V1.csv`, `docs/SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md`, and `docs/SCH_FICUS_SAME_CODE_RECEIVER_GAP_READOUT_V1.md`.
+The remaining same-code experiment also exposes an information asymmetry that matters for interpreting both old and future bioassays. Strong attraction can be detected with tens to roughly a hundred decisive choices, whereas a positive claim of behavioural privacy requires an equivalence design rather than a failed attraction test. Under the registered default criterion — a 90% Wilson interval wholly inside `[0.40, 0.60]` when the true NPFW choice probability is 0.50 — the exact prospective planner requires 206 decisive choices for 80% power and 260 for 90%. With an explicit design-effect inflation of 1.5 and a decisive-choice fraction of 0.75, those targets become approximately 412 and 520 introduced wasps. By contrast, if true interception is strong (`p=0.65`), the corresponding 80% and 90% targets are 82 and 111 decisive choices; at `p=0.70` they are 43 and 62. Thus nonsignificance at a legacy attraction sample size cannot be reinterpreted as evidence for a private channel.
+
+The assay classifier therefore requires three gates before `BEHAVIORAL_NONRESPONSE_EQUIVALENT` can be assigned: replication of the pollinator code, a working NPFW host/stage positive control, and an NPFW same-code interval contained inside the predeclared equivalence zone. Interception, avoidance, equivalence-supported nonresponse and inconclusive response remain separate states. These rules convert the historical gap into a prospective measurement contract rather than a post hoc label.
+
+The machine-readable and bounded records are `empirical/one_trait_shared_cue/FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_RECEIVER_GAP_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_ASSAY_POWER_V1.json`, `docs/SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md`, `docs/SCH_FICUS_SAME_CODE_RECEIVER_GAP_READOUT_V1.md`, and `docs/SCH_FICUS_SAME_CODE_EXPERIMENT_PROTOCOL_V1.md`.
 
 ## 8. Research fork
 
@@ -134,6 +138,8 @@ For the historical L4 endpoint, the strategy is no longer a broad literature sea
 1. test NPFWs in *F. semicordata* against 4-methylanisole at their natural post-pollination timing windows;
 2. test *Philotrypesis caricae* and other relevant exploiters against the validated *F. carica* four-VOC ratio and perturbed ratios;
 3. resolve the minimal *F. hispida* pollinator code and test *Philotrypesis* against that identical synthetic coordinate.
+
+Those experiments should be powered to the intended claim. Interception/avoidance detection and equivalence-supported privacy are different information targets; the latter must not be inferred merely because the former is nonsignificant.
 
 Only after matched receiver states exist should shared/private code states be reconstructed on the 32-species phylogeny and tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives. If the same-code cell remains empty, repeated shared-to-private evolution remains `NOT_EVALUABLE` rather than negative evidence for the hypothesis.
 
