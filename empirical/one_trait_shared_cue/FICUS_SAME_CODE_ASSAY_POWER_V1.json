@@ -1,0 +1,84 @@
+{
+  "analysis_id": "ficus_same_code_assay_power_v1",
+  "equivalence_definition": {
+    "null_preference": 0.5,
+    "margin": 0.1,
+    "confidence_interval": "90pct_Wilson",
+    "success_rule": "interval_wholly_inside_equivalence_zone"
+  },
+  "attraction_definition": {
+    "null_preference": 0.5,
+    "confidence_interval": "95pct_Wilson",
+    "success_rule": "lower_bound_above_0.5"
+  },
+  "inflation": {
+    "design_effect": 1.5,
+    "decisive_choice_fraction": 0.75
+  },
+  "equivalence_rows": [
+    {
+      "target_power": 0.8,
+      "decisive_choices": 206,
+      "achieved_probability": 0.814561,
+      "planned_introductions": 412
+    },
+    {
+      "target_power": 0.9,
+      "decisive_choices": 260,
+      "achieved_probability": 0.906152,
+      "planned_introductions": 520
+    }
+  ],
+  "attraction_rows": [
+    {
+      "true_choice_probability": 0.6,
+      "target_power": 0.8,
+      "decisive_choices": 187,
+      "achieved_probability": 0.80293,
+      "planned_introductions": 374
+    },
+    {
+      "true_choice_probability": 0.6,
+      "target_power": 0.9,
+      "decisive_choices": 256,
+      "achieved_probability": 0.90079,
+      "planned_introductions": 512
+    },
+    {
+      "true_choice_probability": 0.65,
+      "target_power": 0.8,
+      "decisive_choices": 82,
+      "achieved_probability": 0.811209,
+      "planned_introductions": 164
+    },
+    {
+      "true_choice_probability": 0.65,
+      "target_power": 0.9,
+      "decisive_choices": 111,
+      "achieved_probability": 0.906076,
+      "planned_introductions": 222
+    },
+    {
+      "true_choice_probability": 0.7,
+      "target_power": 0.8,
+      "decisive_choices": 43,
+      "achieved_probability": 0.808087,
+      "planned_introductions": 86
+    },
+    {
+      "true_choice_probability": 0.7,
+      "target_power": 0.9,
+      "decisive_choices": 62,
+      "achieved_probability": 0.910726,
+      "planned_introductions": 124
+    }
+  ],
+  "claim_boundary": "These are prospective decisive-choice calculations. Introduced-wasp counts are explicit inflation scenarios, not guarantees under tree/day/batch clustering. A nonsignificant attraction test is not equivalence; behavioral privacy requires the dedicated equivalence rule plus a validated NPFW positive control.",
+  "provenance": {
+    "workflow": "Plan Ficus same-code assay",
+    "workflow_run_id": 33224872756,
+    "artifact_id": 9706487884,
+    "artifact_sha256": "d22df4c596974fc098874bd8cf9a73ee6610ad8637883b5820713556d39cacb8",
+    "source_head": "7c7822220d97c0151edb0fc659231bb76ded3fd6"
+  }
+}
