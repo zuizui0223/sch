@@ -31,7 +31,40 @@ Default behavioural-equivalence zone:
 
 The ±0.10 margin is a predeclared biological tolerance, not a universal constant. A different margin is allowed only if justified before seeing the focal result.
 
-A useful planning benchmark is that, under independent decisive choices and a true response of 0.50, roughly 68 decisive choices give a nominal 90% normal-approximation interval with half-width about 0.10. This is **not** the final sample size: clustering, no-choice rates, tree/batch heterogeneity and the desired power for positive controls must be added prospectively.
+### Prospective sample-size gate
+
+A simple expected-width calculation at `p=0.50` gives roughly 68 decisive choices for a nominal 90% normal-approximation interval with half-width near 0.10. **That is only an expected-width benchmark, not a powered equivalence design.** It must not be used to claim behavioural privacy.
+
+The registered exact-binomial/Wilson planner `scripts/plan_ficus_same_code_assay.py` instead asks for the probability that the entire 90% Wilson interval falls inside the predeclared `[0.40, 0.60]` equivalence zone when the true choice probability is 0.50. It gives:
+
+```text
+Equivalence-supported behavioural nonresponse
+80% power: 206 decisive choices
+90% power: 260 decisive choices
+```
+
+With a planning design effect of 1.5 and an expected decisive-choice fraction of 0.75, the corresponding introduced-wasp targets are:
+
+```text
+80% power: 412 introduced
+90% power: 520 introduced
+```
+
+This is intentionally much larger than the few-dozen individuals used in many historical attraction assays. Detecting a strong positive choice is cheaper. Under the same exact-binomial/Wilson planning rule:
+
+```text
+true p(code)=0.65
+  80% power:  82 decisive choices
+  90% power: 111 decisive choices
+
+true p(code)=0.70
+  80% power:  43 decisive choices
+  90% power:  62 decisive choices
+```
+
+Thus a source-style experiment with tens of wasps can be informative for strong attraction/interception while being inadequate to support an equivalence-based `behaviorally private` conclusion. A failed attraction test is not converted into privacy by rhetoric.
+
+The introduced-wasp inflation is a planning scenario, not a guarantee under tree/day/batch clustering. Final allocation should be updated from pilot no-choice rates and dependence while preserving the predeclared equivalence criterion.
 
 ## Required controls
 
