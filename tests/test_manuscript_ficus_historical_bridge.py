@@ -36,6 +36,17 @@ def test_manuscript_requires_equivalence_not_nonsignificance_for_privacy() -> No
     assert "BEHAVIORAL_NONRESPONSE_EQUIVALENT" in text
 
 
+def test_manuscript_separates_directional_and_equivalence_intervals_and_preserves_clusters() -> None:
+    text = MANUSCRIPT.read_text(encoding="utf-8")
+    assert "95% directional interval" in text
+    assert "90% interval against the predeclared equivalence zone" in text
+    assert "computes both intervals separately" in text
+    assert "explicit `cluster_id`" in text
+    assert "rather than treating all introduced wasps as exchangeable" in text
+    assert "SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md" in text
+    assert "scripts/analyze_ficus_same_code_trials.py" in text
+
+
 def test_historical_research_fork_stays_fixed_to_same_code_cells() -> None:
     text = MANUSCRIPT.read_text(encoding="utf-8")
     assert "For the historical L4 endpoint, the strategy is no longer a broad literature search" in text
