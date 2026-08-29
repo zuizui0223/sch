@@ -39,12 +39,12 @@ jobs:
       - name: Commit frozen cohort once
         run: |
           set -euo pipefail
-          if git diff --quiet -- empirical/prisma/frozen_v2; then
+          git add empirical/prisma/frozen_v2
+          if git diff --cached --quiet; then
             echo 'Frozen cohort already present; nothing to commit.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add empirical/prisma/frozen_v2
           git commit -m 'Freeze SCH PRISMA V2 868-record cohort'
           git push origin HEAD:${{ github.head_ref }}
