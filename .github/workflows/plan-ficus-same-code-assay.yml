@@ -9,9 +9,11 @@ on:
       - 'tests/test_ficus_same_code_assay_power.py'
       - 'tests/test_ficus_same_code_receiver_classifier.py'
       - 'tests/test_ficus_same_code_trial_analysis.py'
+      - 'tests/test_ficus_same_code_trial_contract.py'
       - 'tests/test_ficus_same_code_experiment_protocol.py'
       - 'docs/SCH_FICUS_SAME_CODE_EXPERIMENT_PROTOCOL_V1.md'
       - 'docs/SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md'
+      - 'empirical/one_trait_shared_cue/FICUS_SAME_CODE_TRIAL_TEMPLATE_V1.csv'
       - '.github/workflows/plan-ficus-same-code-assay.yml'
   workflow_dispatch:
 
@@ -30,6 +32,7 @@ jobs:
             tests/test_ficus_same_code_assay_power.py \
             tests/test_ficus_same_code_receiver_classifier.py \
             tests/test_ficus_same_code_trial_analysis.py \
+            tests/test_ficus_same_code_trial_contract.py \
             tests/test_ficus_same_code_experiment_protocol.py
       - name: Smoke-test direct analysis CLI
         run: |
