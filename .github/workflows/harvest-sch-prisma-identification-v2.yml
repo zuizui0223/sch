@@ -6,8 +6,12 @@ on:
       - 'scripts/harvest_sch_prisma_candidates.py'
       - 'scripts/harvest_sch_prisma_candidates_v2.py'
       - 'scripts/build_sch_prisma_screening_batches.py'
+      - 'scripts/audit_sch_prisma_screening.py'
+      - 'scripts/build_sch_prisma_screening_triage.py'
       - 'tests/test_sch_prisma_harvester_v2.py'
       - 'tests/test_sch_prisma_screening_batches.py'
+      - 'tests/test_sch_prisma_screening_audit.py'
+      - 'tests/test_sch_prisma_screening_triage.py'
       - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
       - 'docs/SCH_PRISMA_V1_IDENTIFICATION_READOUT.md'
       - 'docs/SCH_PRISMA_V2_IDENTIFICATION_READOUT.md'
@@ -28,7 +32,9 @@ jobs:
           python -m pytest -q \
             tests/test_sch_prisma_harvester.py \
             tests/test_sch_prisma_harvester_v2.py \
-            tests/test_sch_prisma_screening_batches.py
+            tests/test_sch_prisma_screening_batches.py \
+            tests/test_sch_prisma_screening_audit.py \
+            tests/test_sch_prisma_screening_triage.py
       - name: Run registered OpenAlex V2 identification
         run: |
           mkdir -p artifacts/sch_prisma_v2
@@ -65,6 +71,48 @@ jobs:
           assert data['screening_status'] == 'TITLE_ABSTRACT_NOT_STARTED', data
           assert data['known_anchor_sensitivity']['all_known_anchors_recovered'] is True, data
           assert data['known_anchor_sensitivity']['recovered_anchor_count'] == 8, data
+          PY
+      - name: Audit untouched screening workspace and freeze PRISMA zero-count baseline
+        run: |
+          python scripts/audit_sch_prisma_screening.py \
+            artifacts/sch_prisma_v2/screening_batches \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_BASELINE.json \
+            --expected-denominator 868
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_BASELINE.json')
+          data = json.loads(p.read_text())
+          assert data['screening_status'] == 'TITLE_ABSTRACT_NOT_STARTED', data
+          assert data['identified_records'] == 868, data
+          assert data['title_abstract']['unscreened'] == 868, data
+          assert data['prisma_flow']['records_screened_title_abstract'] == 0, data
+          assert data['prisma_flow']['records_excluded_title_abstract'] == 0, data
+          assert data['prisma_flow']['studies_included'] == 0, data
+          PY
+      - name: Build abstract-free Batch 1 triage packet
+        run: |
+          mkdir -p artifacts/sch_prisma_v2/screening_packets
+          python scripts/build_sch_prisma_screening_triage.py \
+            artifacts/sch_prisma_v2/screening_batches/SCH_PRISMA_V2_SCREEN_BATCH_01.csv \
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          csv_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv')
+          receipt_path = Path('artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json')
+          with csv_path.open(encoding='utf-8', newline='') as handle:
+              rows = list(csv.DictReader(handle))
+          data = json.loads(receipt_path.read_text())
+          assert len(rows) == 100, len(rows)
+          assert data['candidate_count'] == 100, data
+          assert data['known_anchor_count'] == 2, data
+          assert data['stored_abstracts'] is False, data
+          assert data['formal_decisions_written'] is False, data
+          assert all(row['formal_title_abstract_decision'] == '' for row in rows)
+          assert all(row['formal_title_abstract_reason'] == '' for row in rows)
+          assert 'abstract' not in {name.lower() for name in rows[0]}, rows[0].keys()
           PY
       - uses: actions/upload-artifact@v4
         with:
