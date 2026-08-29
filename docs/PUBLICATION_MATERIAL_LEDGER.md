@@ -4,7 +4,7 @@
 
 This ledger organizes the one-trait shared-cue paper without importing BITA's two-trait estimand. The current first-choice target is **Journal of Biogeography, Review & Synthesis**, conditional on the systematic-review and biogeographic gates in `docs/SCH_JBI_SUBMISSION_CONTRACT_V1.md`. The fallback remains **Ecology and Evolution** if the systematic synthesis is strong but the geography axis is not analytically consequential.
 
-The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance, while PRISMA V2 now supplies the independent systematic denominator needed for publication claims.
+The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance, while PRISMA V2 now supplies the independent systematic denominator needed for publication claims. If the retained strict linked set is sparse, the legacy **paired-channel measurement gap** remains a valid paper-level outcome rather than a reason to relax the admission gate.
 
 ## Current systematic-review state
 
@@ -39,13 +39,13 @@ JBI readiness remains fail-closed until title/abstract screening, full-text scre
 | Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, with direct cost separate | Keeps the one-trait target distinct from `Delta_AD W` | Effect-size scale and outcome compatibility rules for retained studies |
 | Mechanism predictions | four predeclared predictions in the framework manuscript | Links cue overlap to response concordance, net-fitness slope and antagonist-removal effects | Prospective coding fields and analysis plan |
 | Evolutionary outcome hypotheses | **12-source primary audit** plus fail-closed outcome ledger | Recovers compromise, polymorphism maintenance, population change and partial decoupling while keeping lineage branching untested | Systematic retained-set update and historical-transition evidence |
-| Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes | Not a prevalence denominator; superseded for systematic denominator by PRISMA V2 |
+| Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator; superseded for systematic denominator by PRISMA V2 |
 | PRISMA V2 identification | 10,953 retrieved → 2,107 concept-pass hits → 868 deduplicated candidates | Complete automated identification coordinate with 8/8 known-anchor recovery | Human title/abstract screening of all 868 |
 | Strict experimental anchor | Theis & Adler 2012 | A manipulated, both consumer responses measured, seed-production direction reported | Focal raw table and uncertainty-bearing effect unavailable |
 | Ficus historical bridge | fixed 32-species scent scaffold + same-code gap ledger | Strongest `COMPOSITE_NEAR_L4` radiation; exact same-code NPFW behavior remains 0 | Three priority same-code experiments, then state reconstruction |
 | Same-code measurement contract | source-anchored assays, power planner, trial CSV and cluster-bootstrap classifier | Makes interception/avoidance/privacy prospectively decidable | New field data |
 | JBI geography gate | protocol fields frozen | Tests whether geography/receiver turnover is analytically consequential rather than decorative | Full-text geography coding and retained-set analysis |
-| Research fork | systematic retained set + geography evidence | JBI if systematic and geographic gates pass; Ecology and Evolution if geography is weak; the legacy **existing-study integration plus shared-cue framework** route remains provenance | Finish screening before journal promotion |
+| Research fork | systematic retained set + geography evidence | JBI if systematic and geographic gates pass; Ecology and Evolution if geography is weak; the legacy **existing-study integration plus shared-cue framework** and **paired-channel measurement gap** routes remain provenance | Finish screening before journal promotion |
 
 ## Planned article structure
 
