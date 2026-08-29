@@ -4,122 +4,146 @@
 
 This ledger organizes the one-trait shared-cue paper without importing BITA's two-trait estimand. The current first-choice target is **Journal of Biogeography, Review & Synthesis**, conditional on the systematic-review and biogeographic gates in `docs/SCH_JBI_SUBMISSION_CONTRACT_V1.md`. The fallback remains **Ecology and Evolution** if the systematic synthesis is strong but the geography axis is not analytically consequential.
 
-The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance, while PRISMA V2 now supplies the independent systematic denominator needed for publication claims. If the retained strict linked set is sparse, the legacy **paired-channel measurement gap** remains a valid paper-level outcome rather than a reason to relax the admission gate. **No pooled effect is authorized** until systematic screening identifies compatible linked experiments and their outcomes/scales pass an explicit commensurability gate.
+The older frozen audit remains a source-recovery and claim-boundary result; it is not retroactively relabelled as a systematic-review denominator. Its **existing-study integration plus shared-cue framework** fork remains preserved as provenance. If the retained strict linked set is sparse, the legacy **paired-channel measurement gap** remains a valid paper-level outcome rather than a reason to relax the admission gate. **No pooled effect is authorized** until systematic screening identifies compatible linked experiments and their outcomes/scales pass an explicit commensurability gate.
 
-## Current systematic-review state
+## Frozen systematic denominator
 
-The registered discovery work separates a rejected V1 implementation from the valid V2 identification denominator.
+V1 is retained only as failed-method provenance:
 
 ```text
-V1: OpenAlex + broad Crossref discovery
+OpenAlex + broad Crossref discovery
 raw query/database hits: 5,406
 deduplicated records:    2,684
 25/28 query×database combinations hit the 200-record cap
 status: PRISMA_IDENTIFICATION_TRUNCATED
-use: method/access provenance only
+```
 
-V2: OpenAlex-only complete retrieval + predeclared title/abstract concept filter
-raw OpenAlex records retrieved: 10,953
-concept-pass query hits:        2,107
-deduplicated candidates:          868
-truncated queries:                  0
-known frozen anchors recovered:   8/8
+The first complete V2 OpenAlex run is now the immutable screening cohort:
+
+```text
+retrieved_at_utc:                  2026-08-29T06:59:57Z
+raw OpenAlex records retrieved:   10,953
+concept-pass query hits:           2,107
+deduplicated frozen cohort:          868
+truncated queries:                     0
+known frozen anchors recovered:      8/8
+candidate CSV SHA-256:
+ee85f56ae500be17ed45f9010b0a75fa8f6b741b0967db5af596b2d7bb8579a0
 status: PRISMA_V2_IDENTIFICATION_COMPLETE
 ```
 
-The valid title/abstract screening denominator is **868**. It is partitioned deterministically into nine batches (100×8 + 68).
+The permanent files are under `empirical/prisma/frozen_v2/`. Record IDs and the screening denominator are not regenerated from the live bibliographic index.
 
-Screening has now started conservatively from the eight frozen studies that were already source-adjudicated before the systematic lane was built. Those records are promoted only to `RETAIN_FULLTEXT`; they are **not** automatically included at full-text stage.
+A later identical registered OpenAlex query returned `10,969 -> 2,108 -> 869`. The one added live candidate is monitoring information only. The live index therefore has status `LIVE_INDEX_DRIFT_DETECTED`; it does **not** change the 868-record PRISMA denominator or renumber prior decisions.
 
-Current audited PRISMA state:
+## Current screening state
 
-```text
-identified after deduplication: 868
-title/abstract screened:          8
-retained for full text:           8
-title/abstract excluded:          0
-unscreened:                     860
-reports assessed full text:       0
-studies included:                 0
-status: TITLE_ABSTRACT_IN_PROGRESS
-```
+Formal decisions are cumulative sparse overlays. V1 preserves the first 40 source-verified title/abstract decisions; V2 adds source-verified full-text adjudication and three already-audited evolutionary sources that were also present inside the frozen 868-record cohort.
 
-The formal decisions live in the sparse version-controlled overlay:
-
-`empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv`
-
-Each populated formal record requires a declared `decision_source`. The generated OpenAlex candidate universe remains independent of those decisions and is regenerated before the overlay is applied and re-audited.
-
-The Batch 1 abstract-free assistance packet currently partitions its 100 records as:
+Current registered state:
 
 ```text
-KNOWN_ANCHOR:        2
-HIGH_TITLE_TRIPLE:   3
-HIGH_TITLE_PAIR:    29
-MEDIUM_TITLE_ONE:   35
-ABSTRACT_ONLY:      31
+identified frozen cohort:        868
+title/abstract screened:          43
+retained for full text:           31
+title/abstract excluded:          12
+unscreened:                      825
+
+full-text eligible:               31
+primary studies included:         15
+full-text excluded:                3
+full-text undecided:              13
+
+STRICT_LINKED_EXPERIMENT:           1
+DIRECTIONAL_OR_NEAR_PASS:          14
+EVOLUTIONARY_OUTCOME:               5
 ```
 
-The first high-information human review queue is therefore 34 records (2 anchors + 3 title-triple + 29 title-pair). The two anchors are already among the eight prior-adjudication retains; the other 32 high-priority records remain formally `UNSCREENED`. Machine priority is an ordering aid only and cannot populate PRISMA decisions.
+Full-text exclusions currently comprise two secondary syntheses (`FT_REVIEW_ONLY_NO_PRIMARY_ROLE`) and one post-floral ant/PPN study with no declared floral A coordinate (`FT_NO_DECLARED_FLORAL_COORDINATE`). Secondary evidence remains available to the source registry but is not double-counted as primary included studies.
 
-JBI readiness remains fail-closed until title/abstract screening, full-text screening, evidence-lane coding and geography/receiver-assemblage coding are complete.
+The strict linked result remains **Theis & Adler 2012 only**. None of the additional full-text decisions relaxes the gate:
+
+```text
+A manipulated
++ pollinator response measured
++ antagonist response measured
++ common reproductive outcome
+```
+
+## Geography / JBI gate
+
+The systematic lane now contains multiple direct geographic/interactor contrasts rather than one isolated anchor. Six included primary records currently pass the fail-closed positive geography and receiver/interactor-regime counters:
+
+```text
+SCHPRISMA-000008  Erysimum: eight-population selection mosaic
+SCHPRISMA-000032  Barbarea: 14-site agricultural landscape gradient
+SCHPRISMA-000066  Primula secundiflora: six-population visitor mosaic
+SCHPRISMA-000172  Biscutella: lowland/highland crab-spider regime contrast
+SCHPRISMA-000523  Primula farinosa: 69-population selection/evolution mosaic
+SCHPRISMA-000710  Gentiana lutea: 12-population color/selection gradient
+```
+
+This is enough to reject the earlier concern that the JBI axis rests on a single case. It is **not** enough to call the JBI gate closed: 825 records remain unscreened, 13 retained reports remain undecided at full text, independence/duplicate-report coding is incomplete, and no pooled geography-by-cue-overlap analysis is authorized yet.
+
+`NO_*`, `NOT_REPORTED`, single-site and explicitly non-geographic experimental-setting labels are not counted as positive geography. A map of study locations cannot rescue a failed geography gate.
+
+## High-value results already recovered
+
+- *Erysimum mediohispanicum*: pollinator assemblages, ungulate damage and floral-trait selection vary among eight populations, with divergent selection for some corolla traits.
+- *Barbarea vulgaris*: across a 14-site Finger Lakes agricultural gradient, landscape composition changes herbivory and indirectly changes floral display, pollinator contribution and seed set; resident local adaptation remains an inference.
+- *Primula farinosa*: 69 populations plus replicated pollinator/grazer experiments and an eight-year manipulation connect spatially variable selection to rapid genetic morph-frequency change.
+- *Gentiana lutea*: 12 populations show geographic flower-color variation, variation in pollinator communities and spatially variable selective pressures; phenotypic local adaptation is supported, but genetic causality of the color differentiation is not established by that study.
+- *Petunia*: component-specific transgenic perturbations directly recover host-location versus florivore-deterrence functions within a floral scent bouquet, supporting partial modularity but not a same-component pollinator-preservation test.
+- *Ficus*: remains the strongest `COMPOSITE_NEAR_L4` historical bridge; exact same-code NPFW behavior remains zero and strict L4 remains `NOT_EVALUABLE`.
 
 ## Paper spine
 
 | Paper component | Material in hand | Current use | Missing gate |
 |---|---|---|---|
-| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through systematic screening |
-| Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, with direct cost separate | Keeps the one-trait target distinct from `Delta_AD W` | Effect-size scale and outcome compatibility rules for retained studies |
-| Mechanism predictions | four predeclared predictions in the framework manuscript | Links cue overlap to response concordance, net-fitness slope and antagonist-removal effects | Prospective coding fields and analysis plan |
-| Evolutionary outcome hypotheses | **12-source primary audit** plus fail-closed outcome ledger | Recovers compromise, polymorphism maintenance, population change and partial decoupling while keeping lineage branching untested | Systematic retained-set update and historical-transition evidence |
-| Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator; superseded for systematic denominator by PRISMA V2 |
-| PRISMA V2 identification | 10,953 retrieved → 2,107 concept-pass hits → 868 deduplicated candidates | Complete automated identification coordinate with 8/8 known-anchor recovery | Finish title/abstract screening of remaining 860 |
-| Formal screening | 8 prior-adjudicated anchors retained for full text; 0 excluded; 0 included | Tests the real decision-overlay and PRISMA counting path without allowing machine triage to decide inclusion | Human adjudication of remaining 860; full-text screening of retained records |
-| Batch 1 triage | 100 records; 34 in anchor/title-triple/title-pair queue | Orders review while storing no abstract text and writing no formal decisions | Human title/abstract decisions for 32 non-anchor high-priority records |
-| Strict experimental anchor | Theis & Adler 2012 | A manipulated, both consumer responses measured, seed-production direction reported | Focal raw table and uncertainty-bearing effect unavailable |
-| Ficus historical bridge | fixed 32-species scent scaffold + same-code gap ledger | Strongest `COMPOSITE_NEAR_L4` radiation; exact same-code NPFW behavior remains 0 | Three priority same-code experiments, then state reconstruction |
-| Same-code measurement contract | source-anchored assays, power planner, trial CSV and cluster-bootstrap classifier | Makes interception/avoidance/privacy prospectively decidable | New field data |
-| JBI geography gate | protocol fields frozen | Tests whether geography/receiver turnover is analytically consequential rather than decorative | Full-text geography coding and retained-set analysis |
-| Research fork | systematic retained set + geography evidence | JBI if systematic and geographic gates pass; Ecology and Evolution if geography is weak; the legacy **existing-study integration plus shared-cue framework** and **paired-channel measurement gap** routes remain provenance | Finish screening before journal promotion |
+| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining screening |
+| Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, direct cost separate | Keeps SCH distinct from BITA `Delta_AD W` | Effect-size scale and outcome compatibility rules |
+| Evolutionary outcomes | **12-source primary audit** plus systematic V2 additions | Compromise, partial modularity, population change and geographic selection mosaics are now represented | Finish systematic outcome coding; lineage branching still absent |
+| Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator |
+| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator; live OpenAlex only monitors index drift | Screen remaining 825 |
+| Formal screening | 43 TA decisions; 15 primary full-text includes | Builds systematic evidence lanes without machine inclusion | 13 retained full texts undecided; 825 TA unscreened |
+| Strict experiment | Theis & Adler 2012 | One strict linked directional anchor | Raw uncertainty-bearing focal A effect unavailable |
+| Geography | 6 positive included geographic/interactor records | JBI axis is now empirically plausible across multiple systems | Complete screening and define analyzable cross-study geography question |
+| Ficus history | fixed 32-species scaffold + same-code gate | Bounded historical bridge | Same-code NPFW assays, then state reconstruction |
 
 ## Planned article structure
 
-1. Introduce geographic turnover in biotic audiences as a potential constraint on shared versus separable floral cues, while keeping geography conceptual until the retained evidence supports analysis.
+1. Introduce geographic turnover in biotic audiences as a potential constraint on shared versus separable floral cues.
 2. Define `M_A`, `G_A`, `S_A` and the direct-cost boundary.
 3. Derive predictions for shared and private cues.
-4. Distinguish compromise maintenance, directional endpoints, polymorphism maintenance, population differentiation, lineage branching and cue modularization.
-5. Report the PRISMA identification/screening flow and retained systematic evidence lanes.
-6. Test the geography/receiver-assemblage gate only where replicated spatial contrasts permit it.
+4. Distinguish compromise, polymorphism maintenance, population differentiation/change, partial modularization and historical branching.
+5. Report the frozen PRISMA identification/screening flow and evidence lanes.
+6. Analyze geography/receiver-regime contrasts only after independence and commensurability coding.
 7. Use *Ficus* as the bounded historical bridge, not as the whole source universe.
 8. Report the information asymmetry between detecting interception and supporting behavioral privacy.
-9. End with the minimum same-code field design and historical-state reconstruction required for L4.
+9. End with the minimum same-code experiment and historical-state reconstruction required for L4.
 
 ## Figure and table recovery plan
 
 | Item | Purpose | Source state |
 |---|---|---|
-| Figure 1 | Shared-cue versus private-cue mechanism and predicted `M_A`/`G_A` coupling | Concept fixed; artwork not yet generated |
-| Figure 2 | PRISMA identification/screening flow plus strict/near-pass evidence lanes | Identification fixed at 868; live screening counts now generated from decision overlay |
-| Figure 3 | Geographic/receiver-assemblage synthesis if JBI Gate J5 passes; otherwise measurement-gap map | Conditional on completed full-text geography coding |
-| Figure 4 | *Ficus* same-code historical bridge and missing receiver intersection | Core data/matrix fixed |
-| Table 1 | Systematic study-level screening/admission decisions and blockers | Screening active: 8 retained for full text, 860 unscreened |
-| Table 2 | Evidence-role registry with admitted and prohibited uses | Existing anchor registry + systematic update pending |
-| Table 3 | Evolutionary-outcome hypothesis ledger | Primary audit fixed; systematic update pending |
-
-A geography figure is not mandatory merely because JBI is the first-choice target. If geography is not analytically consequential after screening, the journal gate changes rather than forcing a decorative map.
+| Figure 1 | Shared-cue versus private-cue mechanism | Concept fixed |
+| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator and live screening counts available |
+| Figure 3 | Geographic receiver-regime synthesis | Six positive coded primary records already; final form waits for completed screening |
+| Figure 4 | *Ficus* same-code historical bridge | Core data/matrix fixed |
+| Table 1 | Systematic study-level decisions and blockers | 43 screened records, 15 primary includes |
+| Table 2 | Evidence-role registry and prohibited uses | Existing registry + systematic update in progress |
+| Table 3 | Evolutionary-outcome ledger | Primary audit + systematic additions in progress |
 
 ## Admission and stop rules
 
-- The strict coverage gate remains: `A manipulated + pollinator response measured + antagonist response measured + common reproductive outcome`.
-- `D`, `A x D`, selective consumer intervention and a 16-cell design remain outside the initial SCH coverage requirement.
+- The strict coverage gate remains unchanged.
 - Lower evidence layers may be retained with explicit claim ceilings but are never counted as strict linked experiments.
-- `FAIL`, `NOT_EVALUABLE`, inaccessible raw data, split outcomes and observational A are preserved as results.
-- Total plant fitness under `A` does not by itself allocate `M_A` and `G_A`.
-- The V2 868 records are **identified candidates**, not included studies.
-- `UNSCREENED` is never interpreted as exclusion.
-- Machine triage may order review but cannot populate `screen_title_abstract`, `screen_fulltext`, exclusion reasons or evidence lanes.
-- Uncertainty at title/abstract screening is resolved toward full-text retention.
-- Geography missing from the source is `NOT_REPORTED`; it is never inferred from author affiliation.
-- Broad evidence hunting stops only when the registered search/screening universe and any explicitly declared citation-chasing lane are exhausted.
+- `FAIL`, `NOT_EVALUABLE`, inaccessible raw data, split outcomes and observational A remain results.
+- Total plant fitness under `A` does not itself allocate `M_A` and `G_A`.
+- The frozen 868 records are identified candidates, not included studies.
+- `UNSCREENED` is never exclusion.
+- Machine triage may order review but cannot populate formal decisions.
+- Live bibliographic drift cannot change the frozen denominator during screening.
+- Geography missing from a source is `NOT_REPORTED`; it is never inferred from author affiliation.
 - **No pooled effect is authorized** by screening completion alone; outcome scale, independence and commensurability must pass separately.
-- JBI is promoted only if systematic-review completion and the nontrivial geography/receiver-assemblage gate both pass.
+- JBI is promoted only after systematic completion and an analytically consequential geography/receiver-regime result; otherwise Ecology and Evolution remains the fallback.
