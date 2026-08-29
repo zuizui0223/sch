@@ -133,15 +133,52 @@ def _validate_fulltext(row: dict[str, str]) -> None:
         raise ValueError(f"{row['record_id']}: unavailable full text must use FT_FULLTEXT_UNAVAILABLE")
 
 
+def _reported(value: str) -> bool:
+    return value not in {"", "NOT_REPORTED"}
+
+
+def _positive_geographic_contrast(value: str) -> bool:
+    """Fail-closed positive geography gate.
+
+    A populated negative/no-contrast code is useful reporting metadata but must
+    not be counted as evidence for a JBI biogeographic contrast. Experimental
+    setting contrasts explicitly labelled non-geographic are also negative.
+    """
+    if not _reported(value):
+        return False
+    upper = value.upper()
+    if upper.startswith("NO_"):
+        return False
+    if "NOT_GEOGRAPHIC" in upper:
+        return False
+    return True
+
+
+def _positive_receiver_contrast(value: str) -> bool:
+    if not _reported(value):
+        return False
+    return not value.upper().startswith("NO_")
+
+
 def _geography_counts(rows: list[dict[str, str]]) -> dict[str, int]:
     included = [row for row in rows if row.get("screen_fulltext") == "INCLUDE"]
+
     def reported(field: str) -> int:
-        return sum(row.get(field, "") not in {"", "NOT_REPORTED"} for row in included)
+        return sum(_reported(row.get(field, "")) for row in included)
+
     return {
         "included_fulltexts": len(included),
         "study_region_reported": reported("study_region"),
         "geographic_contrast_reported": reported("geographic_contrast"),
+        "geographic_contrast_positive": sum(
+            _positive_geographic_contrast(row.get("geographic_contrast", ""))
+            for row in included
+        ),
         "receiver_assemblage_contrast_reported": reported("receiver_assemblage_contrast"),
+        "receiver_assemblage_contrast_positive": sum(
+            _positive_receiver_contrast(row.get("receiver_assemblage_contrast", ""))
+            for row in included
+        ),
         "biogeographic_context_reported": reported("biogeographic_context"),
         "historical_or_phylogenetic_context_reported": reported("historical_or_phylogenetic_context"),
     }
@@ -209,7 +246,9 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
         },
         "claim_boundary": (
             "Counts are valid only for protocol-coded decisions present in the batch files. "
-            "UNSCREENED is not an exclusion. Screening completion does not itself authorize pooling; outcome-scale and independence gates remain separate."
+            "UNSCREENED is not an exclusion. Reported geography is not positive geography: "
+            "NO_* and NOT_GEOGRAPHIC states are explicitly excluded from the positive JBI contrast count. "
+            "Screening completion does not itself authorize pooling; outcome-scale and independence gates remain separate."
         ),
     }
 
