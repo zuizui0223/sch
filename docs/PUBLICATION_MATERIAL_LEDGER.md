@@ -18,7 +18,7 @@ deduplicated records:    2,684
 status: PRISMA_IDENTIFICATION_TRUNCATED
 ```
 
-The first complete V2 OpenAlex run is now the immutable screening cohort:
+The first complete V2 OpenAlex run is the immutable screening cohort:
 
 ```text
 retrieved_at_utc:                  2026-08-29T06:59:57Z
@@ -34,11 +34,11 @@ status: PRISMA_V2_IDENTIFICATION_COMPLETE
 
 The permanent files are under `empirical/prisma/frozen_v2/`. Record IDs and the screening denominator are not regenerated from the live bibliographic index.
 
-A later identical registered OpenAlex query returned `10,969 -> 2,108 -> 869`. The one added live candidate is monitoring information only. The live index therefore has status `LIVE_INDEX_DRIFT_DETECTED`; it does **not** change the 868-record PRISMA denominator or renumber prior decisions.
+A later identical registered OpenAlex query returned `10,969 -> 2,108 -> 869`. The live index therefore has status `LIVE_INDEX_DRIFT_DETECTED`; it does **not** change the 868-record PRISMA denominator or renumber prior decisions. Live retrieval failure likewise cannot invalidate the frozen cohort.
 
 ## Current screening state
 
-Formal decisions are cumulative sparse overlays. V1 preserves the first 40 source-verified title/abstract decisions; V2 adds source-verified full-text adjudication and three already-audited evolutionary sources that were also present inside the frozen 868-record cohort.
+Formal decisions are cumulative sparse overlays. V1 preserves the first 40 source-verified title/abstract decisions, V2 adds priority full-text/evolutionary adjudications, and V3 closes every full-text report currently retained from those title/abstract decisions.
 
 Current registered state:
 
@@ -50,18 +50,24 @@ title/abstract excluded:          12
 unscreened:                      825
 
 full-text eligible:               31
-primary studies included:         15
-full-text excluded:                3
-full-text undecided:              13
+primary studies included:         22
+full-text excluded:                9
+full-text undecided:               0
 
 STRICT_LINKED_EXPERIMENT:           1
-DIRECTIONAL_OR_NEAR_PASS:          14
-EVOLUTIONARY_OUTCOME:               5
+DIRECTIONAL_OR_NEAR_PASS:          20
+EVOLUTIONARY_OUTCOME:               6
 ```
 
-Full-text exclusions currently comprise two secondary syntheses (`FT_REVIEW_ONLY_NO_PRIMARY_ROLE`) and one post-floral ant/PPN study with no declared floral A coordinate (`FT_NO_DECLARED_FLORAL_COORDINATE`). Secondary evidence remains available to the source registry but is not double-counted as primary included studies.
+Current full-text exclusions comprise:
 
-The strict linked result remains **Theis & Adler 2012 only**. None of the additional full-text decisions relaxes the gate:
+```text
+secondary review/meta-analysis, no independent primary role: 5
+duplicate preprint / published report:                        2
+no declared floral attraction/display coordinate A:          2
+```
+
+The strict linked result remains **Theis & Adler 2012 only**. None of the additions relaxes the gate:
 
 ```text
 A manipulated
@@ -70,9 +76,11 @@ A manipulated
 + common reproductive outcome
 ```
 
+A particularly informative near-pass is Reisenman et al. 2010 (*Datura*–*Manduca*): synthetic floral scent/linalool is directly manipulated and both adult feeding and female oviposition are measured on the same chemical coordinate, but no plant reproductive outcome is supplied. It therefore remains `DIRECTIONAL_OR_NEAR_PASS`, not a second strict experiment.
+
 ## Geography / JBI gate
 
-The systematic lane now contains multiple direct geographic/interactor contrasts rather than one isolated anchor. Six included primary records currently pass the fail-closed positive geography and receiver/interactor-regime counters:
+Six included primary records currently pass the fail-closed positive geography and receiver/interactor-regime counters:
 
 ```text
 SCHPRISMA-000008  Erysimum: eight-population selection mosaic
@@ -83,7 +91,7 @@ SCHPRISMA-000523  Primula farinosa: 69-population selection/evolution mosaic
 SCHPRISMA-000710  Gentiana lutea: 12-population color/selection gradient
 ```
 
-This is enough to reject the earlier concern that the JBI axis rests on a single case. It is **not** enough to call the JBI gate closed: 825 records remain unscreened, 13 retained reports remain undecided at full text, independence/duplicate-report coding is incomplete, and no pooled geography-by-cue-overlap analysis is authorized yet.
+This is enough to reject the earlier concern that the JBI axis rests on a single case. It is **not** enough to call the JBI gate closed: 825 records remain title/abstract unscreened, independence across reports/systems needs a final systematic pass, cross-study outcome scales remain heterogeneous, and no pooled geography-by-cue-overlap effect is authorized.
 
 `NO_*`, `NOT_REPORTED`, single-site and explicitly non-geographic experimental-setting labels are not counted as positive geography. A map of study locations cannot rescue a failed geography gate.
 
@@ -94,6 +102,8 @@ This is enough to reject the earlier concern that the JBI axis rests on a single
 - *Primula farinosa*: 69 populations plus replicated pollinator/grazer experiments and an eight-year manipulation connect spatially variable selection to rapid genetic morph-frequency change.
 - *Gentiana lutea*: 12 populations show geographic flower-color variation, variation in pollinator communities and spatially variable selective pressures; phenotypic local adaptation is supported, but genetic causality of the color differentiation is not established by that study.
 - *Petunia*: component-specific transgenic perturbations directly recover host-location versus florivore-deterrence functions within a floral scent bouquet, supporting partial modularity but not a same-component pollinator-preservation test.
+- *Datura*: direct synthetic same-code behavioral conflict is recovered for floral scent/linalool, but without a plant reproductive endpoint.
+- *Nicotiana attenuata*: linked terpene-synthase alleles generate correlated floral and herbivory-induced volatile variation, supporting genetic constraint/covariation without consumer-response or fitness identification.
 - *Ficus*: remains the strongest `COMPOSITE_NEAR_L4` historical bridge; exact same-code NPFW behavior remains zero and strict L4 remains `NOT_EVALUABLE`.
 
 ## Paper spine
@@ -102,12 +112,13 @@ This is enough to reject the earlier concern that the JBI axis rests on a single
 |---|---|---|---|
 | Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining screening |
 | Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, direct cost separate | Keeps SCH distinct from BITA `Delta_AD W` | Effect-size scale and outcome compatibility rules |
-| Evolutionary outcomes | **12-source primary audit** plus systematic V2 additions | Compromise, partial modularity, population change and geographic selection mosaics are now represented | Finish systematic outcome coding; **lineage branching untested** |
+| Evolutionary outcomes | **12-source primary audit** plus systematic V2 additions | Compromise, partial modularity, population change and geographic selection mosaics represented | Finish systematic outcome coding; **lineage branching untested** |
 | Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Establishes existence and exposes near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator |
 | PRISMA V2 | frozen 868 cohort | Immutable systematic denominator; live OpenAlex only monitors index drift | Screen remaining 825 |
-| Formal screening | 43 TA decisions; 15 primary full-text includes | Builds systematic evidence lanes without machine inclusion | 13 retained full texts undecided; 825 TA unscreened |
+| Formal screening | 43 TA decisions; all 31 retained full texts adjudicated; 22 primary includes | Builds systematic lanes without machine inclusion | Title/abstract screening of remaining 825 |
 | Strict experiment | Theis & Adler 2012 | One strict linked directional anchor | Raw uncertainty-bearing focal A effect unavailable |
-| Geography | 6 positive included geographic/interactor records | JBI axis is now empirically plausible across multiple systems | Complete screening and define analyzable cross-study geography question |
+| Same-code near-pass | Reisenman et al. 2010 | Direct identical chemical-coordinate feeding/oviposition contrast | Common plant reproductive outcome |
+| Geography | 6 positive included geographic/interactor records | JBI axis empirically plausible across multiple systems | Complete screening and define analyzable cross-study geography question |
 | Ficus history | fixed 32-species scaffold + same-code gate | Bounded historical bridge | Same-code NPFW assays, then state reconstruction |
 
 ## Planned article structure
@@ -127,10 +138,10 @@ This is enough to reject the earlier concern that the JBI axis rests on a single
 | Item | Purpose | Source state |
 |---|---|---|
 | Figure 1 | Shared-cue versus private-cue mechanism | Concept fixed |
-| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator and live screening counts available |
-| Figure 3 | Geographic receiver-regime synthesis | Six positive coded primary records already; final form waits for completed screening |
+| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 43 TA screened; current full-text backlog closed |
+| Figure 3 | Geographic receiver-regime synthesis | Six positive coded primary records already; final form waits for complete TA screening |
 | Figure 4 | *Ficus* same-code historical bridge | Core data/matrix fixed |
-| Table 1 | Systematic study-level decisions and blockers | 43 screened records, 15 primary includes |
+| Table 1 | Systematic study-level decisions and blockers | 43 screened records; 22 primary full-text includes |
 | Table 2 | Evidence-role registry and prohibited uses | Existing registry + systematic update in progress |
 | Table 3 | Evolutionary-outcome ledger | Primary audit + systematic additions in progress |
 
