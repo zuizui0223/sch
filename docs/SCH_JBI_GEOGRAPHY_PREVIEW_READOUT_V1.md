@@ -4,7 +4,7 @@
 
 Does the source-adjudicated evidence contain a nontrivial geographic or receiver-regime axis capable of supporting the first-choice **Journal of Biogeography** route?
 
-This document now preserves two stages separately:
+This document preserves two stages separately:
 
 1. the original eight-anchor preview, before systematic full-text expansion;
 2. the current frozen-PRISMA systematic coding state.
@@ -38,14 +38,18 @@ Current cumulative screening/full-text state:
 frozen candidates:                    868
 title/abstract screened:               43
 retained for full text:                31
-primary full-text inclusions:          15
-full-text exclusions:                   3
-full-text undecided among retained:    13
+primary full-text inclusions:          22
+full-text exclusions:                   9
+full-text undecided among retained:     0
 
 positive geographic contrast:           6
 positive receiver/interactor contrast:   6
 STRICT_LINKED_EXPERIMENT:                1
+DIRECTIONAL_OR_NEAR_PASS:               20
+EVOLUTIONARY_OUTCOME:                    6
 ```
+
+Thus all reports retained so far have already received a protocol-valid full-text decision. The active screening bottleneck is now the remaining **825 title/abstract records**, not a backlog of retained reports.
 
 The six currently included positive geographic/interactor records are:
 
@@ -84,6 +88,8 @@ Important boundaries remain:
 - none of these additions changes the strict linked-experiment count, which remains Theis & Adler 2012 only;
 - **lineage branching remains untested** in the current systematic state.
 
+The full-text expansion also recovered a high-information non-geographic boundary case: Reisenman et al. 2010 directly manipulates a synthetic *Datura* floral-scent coordinate and measures both *Manduca* feeding and oviposition. The missing common plant reproductive outcome keeps it a near-pass rather than a second strict linked experiment.
+
 ## Current JBI decision
 
 ```text
@@ -91,8 +97,8 @@ JBI conceptual fit:                    YES
 frozen systematic denominator:         CLOSED at 868
 multiple geographic systems recovered: YES (6 currently coded)
 title/abstract screening complete:     NO
-full-text screening complete:          NO
-independence / duplicate coding:        INCOMPLETE
+current retained full-text backlog:    CLOSED (0 undecided)
+independence / duplicate coding:        ACTIVE; known preprint pairs resolved
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
 ```
@@ -103,17 +109,17 @@ A map of study locations cannot rescue a failed geography gate. The required obj
 
 ## Next systematic priority
 
-The next high-value step is not more broad discovery. It is to finish full-text adjudication of the remaining retained reports and then complete title/abstract screening within the frozen 868 cohort.
+The next high-value step is now **title/abstract screening of the frozen cohort**, because every report retained so far has a full-text decision.
 
-At full text, prioritize:
+Prioritize the remaining Batch-1 records first, then subsequent batches using the same fail-closed rules. At title/abstract stage:
 
-1. duplicate preprint/published pairs so independence is not inflated;
-2. studies that may add another strict four-field linked experiment;
-3. replicated populations/sites with explicit pollinator-versus-antagonist turnover;
-4. evolutionary outcomes tied to those spatial contrasts;
-5. explicit historical/phylogeographic cases capable of moving L3/L4 rather than merely adding locations.
+1. uncertainty resolves toward full-text retention;
+2. machine triage orders review but never writes the decision;
+3. explicit review/meta-analysis and duplicate objects remain visible until their protocol stage is decided;
+4. geography is a prioritization/coding feature, not an inclusion requirement;
+5. candidate historical/phylogeographic records are retained when they could move L3/L4 even if they do not satisfy the strict contemporary experiment gate.
 
-Only after these are coded should a geography-by-cue-overlap synthesis be defined. **No pooled effect is authorized** before outcome scale, independence, and commensurability pass their separate gates.
+Only after systematic title/abstract screening is substantially advanced should a geography-by-cue-overlap synthesis be defined. **No pooled effect is authorized** before outcome scale, independence, and commensurability pass their separate gates.
 
 ## Fallback remains live
 
