@@ -37,7 +37,7 @@ def test_only_theis_adler_is_flagged_as_strict_four_field_candidate() -> None:
     )
 
 
-def test_preview_dois_match_prior_registry_and_prior_source_overlay_subset() -> None:
+def test_preview_dois_match_prior_registry_and_prior_source_overlay_lineage() -> None:
     preview = _rows(PREVIEW)
     registry = _rows(REGISTRY)
     decisions = _rows(DECISIONS)
@@ -45,21 +45,33 @@ def test_preview_dois_match_prior_registry_and_prior_source_overlay_subset() -> 
     registry_dois = {row["doi"].lower() for row in registry}
     assert preview_dois == registry_dois
 
+    # The source token advances when the same frozen anchors move from the
+    # title/abstract retain stage to formal full-text adjudication. Track the
+    # provenance lineage rather than requiring the old exact token forever.
     prior_decisions = [
-        row for row in decisions if row["decision_source"] == "PRIOR_SOURCE_ADJUDICATION"
+        row
+        for row in decisions
+        if row["decision_source"].startswith("PRIOR_SOURCE_ADJUDICATION")
     ]
     assert len(prior_decisions) == 8
     decision_ids = {row["record_id"] for row in prior_decisions}
     preview_ids = {row["record_id"] for row in preview}
     assert decision_ids == preview_ids
     assert all(row["screen_title_abstract"] == "RETAIN_FULLTEXT" for row in prior_decisions)
-    assert all(row["screen_fulltext"] == "" for row in prior_decisions)
+    assert all(row["fulltext_status"] == "AVAILABLE" for row in prior_decisions)
+    assert sum(row["screen_fulltext"] == "INCLUDE" for row in prior_decisions) == 6
+    assert sum(row["screen_fulltext"] == "EXCLUDE" for row in prior_decisions) == 2
+    assert all(
+        row["screen_fulltext_reason"] == "FT_REVIEW_ONLY_NO_PRIMARY_ROLE"
+        for row in prior_decisions
+        if row["screen_fulltext"] == "EXCLUDE"
+    )
 
     # Later systematic screening decisions may coexist in the overlay. They must
     # never be mistaken for the frozen prior-source anchor set.
     assert all(
-        row["decision_source"]
-        in {"PRIOR_SOURCE_ADJUDICATION", "ASSISTED_SOURCE_VERIFIED_PRIMARY_SCREEN_2026-08-30"}
+        row["decision_source"].startswith("PRIOR_SOURCE_ADJUDICATION")
+        or row["decision_source"] == "ASSISTED_SOURCE_VERIFIED_PRIMARY_SCREEN_2026-08-30"
         for row in decisions
     )
 
