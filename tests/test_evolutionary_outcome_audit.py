@@ -73,9 +73,13 @@ def test_chapter_sequence_keeps_estimands_and_positive_recovery_separate() -> No
     text = CHAPTERS.read_text(encoding="utf-8")
     assert "Chapter 1 — SCH" in text
     assert "Chapter 2 — BITA" in text
-    assert "Delta_AD W = rho_delta - iota_delta - kappa_delta" in text
+    assert "Delta_AD W = W11 - W10 - W01 + W00" in text
+    assert "= rho_delta - iota_delta - kappa_delta" in text
     assert "share biological motivation but not estimands" in text
-    assert "report positively how far current data recover" in text
+    assert "report separately how far current data recover" in text
+    assert "positive interaction relief" in text
+    assert "constraint release" in text
+    assert "strict sign reversal" in text
 
 
 def test_publication_ledger_admits_outcomes_without_changing_coverage_gate() -> None:
