@@ -58,7 +58,8 @@ def test_current_evidence_ceiling_preserves_kessler_hierarchy_uncertainty_and_sc
     assert "Level 3: unresolved" in text
     assert "exact source/design-based intervals have not been recovered" in text
     assert "nicotine suppression is systemic" in text
-    assert "does not automatically equal release of a previously negative attraction effect" in text
+    assert "not evidence that `Delta_AD W > 0` automatically equals release" in text
+    assert "previously negative attraction effect" in text
 
 
 def test_nicotiana_is_a_program_composite_not_a_merged_experiment() -> None:
@@ -76,5 +77,5 @@ def test_nicotiana_is_a_program_composite_not_a_merged_experiment() -> None:
         assert doi in bridge
     assert "cannot be combined as though they were one experimental table" in bridge
     assert "infer constraint release from `Delta_AD W > 0` alone" in bridge
-    assert "same hawkmoth can contribute both pollination and oviposition" in bridge
+    assert "a hawkmoth can contribute both pollination and oviposition" in bridge
     assert "forcing a separable BITA decomposition" in bridge
