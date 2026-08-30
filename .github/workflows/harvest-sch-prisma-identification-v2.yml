@@ -82,8 +82,8 @@ jobs:
             find empirical/prisma -maxdepth 1 -type f \
               -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V
           )
-          test "${#overlays[@]}" -eq 9
-          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V9_BATCH2_HIGH_INFORMATION.csv'
+          test "${#overlays[@]}" -eq 10
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V10_BATCH2_HIGH_INFORMATION_EXCLUSIONS.csv'
           i=0
           for overlay in "${overlays[@]}"; do
             i=$((i+1))
@@ -114,8 +114,8 @@ jobs:
           assert current['title_abstract']['unscreened'] == 730, current
           assert current['fulltext']['eligible_after_title_abstract'] == 95, current
           assert current['fulltext']['included'] == 35, current
-          assert current['fulltext']['excluded'] == 34, current
-          assert current['fulltext']['unscreened'] == 26, current
+          assert current['fulltext']['excluded'] == 44, current
+          assert current['fulltext']['unscreened'] == 16, current
           assert current['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT'] == 1, current
           assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 30, current
           assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 11, current
