@@ -16,6 +16,7 @@ DECISION_FILES = (
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V7_BATCH1_ABSTRACT_ONLY.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V9_BATCH2_HIGH_INFORMATION.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V10_BATCH2_HIGH_INFORMATION_EXCLUSIONS.csv",
 )
 DENOMINATOR = 868
 
@@ -77,7 +78,7 @@ def test_batch1_and_batch2_high_information_are_screened() -> None:
     assert batch2_high_information <= decided_ids
 
 
-def test_batch2_high_information_creates_a_bounded_fulltext_backlog() -> None:
+def test_batch2_high_information_fulltext_backlog_is_reduced_by_v10() -> None:
     rows = _rows()
     ft = Counter(
         row["screen_fulltext"] or "UNSCREENED"
@@ -85,8 +86,27 @@ def test_batch2_high_information_creates_a_bounded_fulltext_backlog() -> None:
         if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
     )
     assert ft["INCLUDE"] == 35
-    assert ft["EXCLUDE"] == 34
-    assert ft["UNSCREENED"] == 26
+    assert ft["EXCLUDE"] == 44
+    assert ft["UNSCREENED"] == 16
+
+    v10_excluded = {
+        row["record_id"]
+        for row in rows
+        if row["decision_source"] == "SOURCE_VERIFIED_BATCH2_FULLTEXT_2026-08-30"
+        and row["screen_fulltext"] == "EXCLUDE"
+    }
+    assert v10_excluded == {
+        "SCHPRISMA-000121",
+        "SCHPRISMA-000127",
+        "SCHPRISMA-000131",
+        "SCHPRISMA-000141",
+        "SCHPRISMA-000147",
+        "SCHPRISMA-000152",
+        "SCHPRISMA-000153",
+        "SCHPRISMA-000171",
+        "SCHPRISMA-000173",
+        "SCHPRISMA-000176",
+    }
 
     obvious_nonreports = {
         row["record_id"]
@@ -101,7 +121,7 @@ def test_batch2_high_information_creates_a_bounded_fulltext_backlog() -> None:
     }
 
 
-def test_current_evidence_lanes_keep_one_strict_anchor_until_batch2_fulltext() -> None:
+def test_current_evidence_lanes_keep_one_strict_anchor_after_v10_fulltext() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
     lanes: Counter[str] = Counter()
     for row in rows:
@@ -154,7 +174,7 @@ def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
 
-def test_decision_provenance_remains_explicit_after_batch2_high_information() -> None:
+def test_decision_provenance_remains_explicit_after_v10_fulltext() -> None:
     rows = _rows()
     sources = Counter(row["decision_source"] for row in rows)
     assert sources["PRIOR_SOURCE_ADJUDICATION_FULLTEXT_2026-08-30"] == 8
@@ -165,4 +185,5 @@ def test_decision_provenance_remains_explicit_after_batch2_high_information() ->
     assert sources["SOURCE_VERIFIED_MEDIUM_FULLTEXT_2026-08-30"] == 25
     assert sources["ASSISTED_METADATA_AND_ABSTRACT_SCREEN_2026-08-30"] == 18
     assert sources["SOURCE_VERIFIED_ABSTRACT_ONLY_FULLTEXT_2026-08-30"] == 13
-    assert sources["ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"] == 29
+    assert sources["ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"] == 19
+    assert sources["SOURCE_VERIFIED_BATCH2_FULLTEXT_2026-08-30"] == 10
