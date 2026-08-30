@@ -1,9 +1,13 @@
 """Build a compact human-review queue from the SCH machine-triage packet.
 
-This selects non-anchor HIGH_TITLE_TRIPLE and HIGH_TITLE_PAIR candidates only.
-The queue contains bibliographic identifiers, title, registered concept-hit
-summaries and blank human decision fields. It contains no abstract text and no
-machine-generated PRISMA decision.
+This selects non-anchor live-concept-drift, HIGH_TITLE_TRIPLE and
+HIGH_TITLE_PAIR candidates. The queue contains bibliographic identifiers,
+title, registered concept-hit summaries and blank human decision fields. It
+contains no abstract text and no machine-generated PRISMA decision.
+
+Live concept-filter drift is reviewed first because it represents a mismatch
+between the immutable frozen cohort and current OpenAlex metadata. It is not an
+exclusion decision.
 """
 from __future__ import annotations
 
@@ -13,7 +17,11 @@ import json
 from pathlib import Path
 
 
-SELECTED_PRIORITIES = {"HIGH_TITLE_TRIPLE", "HIGH_TITLE_PAIR"}
+SELECTED_PRIORITIES = {
+    "LIVE_CONCEPT_FILTER_DRIFT",
+    "HIGH_TITLE_TRIPLE",
+    "HIGH_TITLE_PAIR",
+}
 OUTPUT_FIELDS = (
     "review_order",
     "record_id",
@@ -24,6 +32,8 @@ OUTPUT_FIELDS = (
     "query_ids",
     "openalex_work_type",
     "machine_priority",
+    "live_concept_filter_drift",
+    "missing_live_concepts",
     "title_floral_matches",
     "title_pollinator_matches",
     "title_antagonist_matches",
@@ -44,7 +54,11 @@ def build_queue(triage_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
         for row in rows
         if row.get("known_anchor") != "YES" and row.get("machine_priority") in SELECTED_PRIORITIES
     ]
-    rank = {"HIGH_TITLE_TRIPLE": 0, "HIGH_TITLE_PAIR": 1}
+    rank = {
+        "LIVE_CONCEPT_FILTER_DRIFT": 0,
+        "HIGH_TITLE_TRIPLE": 1,
+        "HIGH_TITLE_PAIR": 2,
+    }
     selected.sort(key=lambda row: (rank[row["machine_priority"]], row["record_id"]))
 
     queue: list[dict[str, str]] = []
@@ -60,6 +74,8 @@ def build_queue(triage_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
                 "query_ids": row["query_ids"],
                 "openalex_work_type": row["openalex_work_type"],
                 "machine_priority": row["machine_priority"],
+                "live_concept_filter_drift": row.get("live_concept_filter_drift", "NO"),
+                "missing_live_concepts": row.get("missing_live_concepts", ""),
                 "title_floral_matches": row["title_floral_matches"],
                 "title_pollinator_matches": row["title_pollinator_matches"],
                 "title_antagonist_matches": row["title_antagonist_matches"],
@@ -77,14 +93,16 @@ def build_queue(triage_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
         for priority in sorted(SELECTED_PRIORITIES)
     }
     receipt: dict[str, object] = {
-        "analysis_id": "sch_prisma_v2_batch1_human_review_queue_v1",
+        "analysis_id": "sch_prisma_v2_human_review_queue_v2",
         "selected_record_count": len(queue),
         "priority_counts": counts,
         "known_anchors_excluded_from_queue": True,
+        "live_concept_filter_drift_prioritized": True,
         "stored_abstracts": False,
         "formal_prisma_decisions_written": False,
         "claim_boundary": (
-            "This is a review-order worksheet only. Blank human decision fields must be adjudicated before any record is added to the formal decision overlay."
+            "This is a review-order worksheet only. Blank human decision fields must be adjudicated before any record is added to the formal decision overlay. "
+            "A live-concept-drift priority preserves the frozen record for review and is not a scientific exclusion."
         ),
     }
     return queue, receipt
