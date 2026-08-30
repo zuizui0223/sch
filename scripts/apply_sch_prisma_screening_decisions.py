@@ -1,10 +1,14 @@
 """Overlay version-controlled SCH PRISMA screening decisions onto generated batches.
 
-Identification batches remain reproducible outputs from OpenAlex. Human/author
-adjudications live in a separate sparse CSV keyed by record_id. This script
-applies only nonblank overlay fields, requires a declared decision_source for
-any changed record, preserves bibliographic fields, and writes a fresh audited
-batch directory plus an application receipt.
+Identification batches remain reproducible outputs from the frozen candidate
+cohort. Human/author adjudications live in separate sparse CSVs keyed by
+record_id. This script applies only nonblank overlay fields, requires a declared
+decision_source for any changed record, preserves bibliographic fields, and
+writes a fresh audited batch directory plus an application receipt.
+
+Malformed CSV rows fail closed: extra columns, missing trailing columns, or
+blank/misaligned provenance are never silently coerced into an apparently valid
+scientific decision.
 """
 from __future__ import annotations
 
@@ -12,7 +16,6 @@ import argparse
 import csv
 import json
 from pathlib import Path
-import shutil
 
 try:
     import audit_sch_prisma_screening as audit_mod
@@ -57,7 +60,23 @@ def _load_overlay(path: Path) -> dict[str, dict[str, str]]:
         reader = csv.DictReader(handle)
         if reader.fieldnames is None or "record_id" not in reader.fieldnames:
             raise ValueError("decision overlay must contain record_id")
-        rows = [{k: (v or "").strip() for k, v in row.items()} for row in reader]
+        raw_rows = list(reader)
+
+    rows: list[dict[str, str]] = []
+    for line_number, raw in enumerate(raw_rows, start=2):
+        if None in raw:
+            raise ValueError(
+                f"{path.name}:{line_number}: overlay row has extra CSV columns; "
+                "do not infer shifted provenance"
+            )
+        missing_cells = [field for field in reader.fieldnames if raw.get(field) is None]
+        if missing_cells:
+            raise ValueError(
+                f"{path.name}:{line_number}: overlay row is shorter than the header; "
+                f"missing cells for {missing_cells}"
+            )
+        rows.append({k: (v or "").strip() for k, v in raw.items()})
+
     overlay: dict[str, dict[str, str]] = {}
     for row in rows:
         record_id = row.get("record_id", "")
@@ -71,6 +90,8 @@ def _load_overlay(path: Path) -> dict[str, dict[str, str]]:
         changed = any(row.get(field, "") for field in FORMAL_FIELDS)
         if changed and not row.get("decision_source", ""):
             raise ValueError(f"{record_id}: decision_source required when formal fields are populated")
+        if row.get("decision_note", "") and not row.get("decision_source", ""):
+            raise ValueError(f"{record_id}: decision_note requires decision_source")
         overlay[record_id] = row
     return overlay
 
@@ -124,7 +145,8 @@ def apply(base_dir: Path, overlay_csv: Path, out_dir: Path, *, expected_denomina
         "prisma_flow": receipt["prisma_flow"],
         "claim_boundary": (
             "Only sparse version-controlled adjudications with decision_source are overlaid. "
-            "The overlay never changes bibliographic identity or creates decisions from machine triage."
+            "Malformed CSV rows fail closed. The overlay never changes bibliographic identity "
+            "or creates decisions from machine triage."
         ),
     }
 
