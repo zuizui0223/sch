@@ -166,19 +166,27 @@ def _geography_counts(rows: list[dict[str, str]]) -> dict[str, int]:
     def reported(field: str) -> int:
         return sum(_reported(row.get(field, "")) for row in included)
 
+    geographic_positive = [
+        row for row in included if _positive_geographic_contrast(row.get("geographic_contrast", ""))
+    ]
+    receiver_positive = [
+        row for row in included if _positive_receiver_contrast(row.get("receiver_assemblage_contrast", ""))
+    ]
+    joint_positive = [
+        row
+        for row in included
+        if _positive_geographic_contrast(row.get("geographic_contrast", ""))
+        and _positive_receiver_contrast(row.get("receiver_assemblage_contrast", ""))
+    ]
+
     return {
         "included_fulltexts": len(included),
         "study_region_reported": reported("study_region"),
         "geographic_contrast_reported": reported("geographic_contrast"),
-        "geographic_contrast_positive": sum(
-            _positive_geographic_contrast(row.get("geographic_contrast", ""))
-            for row in included
-        ),
+        "geographic_contrast_positive": len(geographic_positive),
         "receiver_assemblage_contrast_reported": reported("receiver_assemblage_contrast"),
-        "receiver_assemblage_contrast_positive": sum(
-            _positive_receiver_contrast(row.get("receiver_assemblage_contrast", ""))
-            for row in included
-        ),
+        "receiver_assemblage_contrast_positive": len(receiver_positive),
+        "joint_geographic_receiver_positive": len(joint_positive),
         "biogeographic_context_reported": reported("biogeographic_context"),
         "historical_or_phylogenetic_context_reported": reported("historical_or_phylogenetic_context"),
     }
@@ -248,6 +256,7 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
             "Counts are valid only for protocol-coded decisions present in the batch files. "
             "UNSCREENED is not an exclusion. Reported geography is not positive geography: "
             "NO_* and NOT_GEOGRAPHIC states are explicitly excluded from the positive JBI contrast count. "
+            "The joint geography-receiver counter requires both a positive geographic contrast and a positive receiver/interactor contrast in the same included record. "
             "Screening completion does not itself authorize pooling; outcome-scale and independence gates remain separate."
         ),
     }
