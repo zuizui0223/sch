@@ -24,7 +24,7 @@ JBI geography gate:                                UNRESOLVED / EMPIRICALLY_SPAR
 
 The one clear case was **Knauer, Bakhtiari & Schiestl 2018** (`10.1038/s41467-018-03792-x`). The source compares populations where crab spiders are present versus absent and reports stronger induced beta-ocimene emission in spider-associated populations, consistent with local adaptation.
 
-Do **not** infer from historical `1/8` that biogeographic evidence is rare. Those eight records were an inherited high-information anchor set, not a systematic geography sample.
+Do **not** conclude from `1/8` that relevant biogeographic evidence is rare in the literature. Those eight records were an inherited high-information anchor set, not a systematic geography sample.
 
 ## Frozen systematic denominator
 
