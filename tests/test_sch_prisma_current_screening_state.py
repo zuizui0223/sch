@@ -21,11 +21,19 @@ def _read(path: Path) -> list[dict[str, str]]:
 
 
 def _rows() -> list[dict[str, str]]:
+    """Merge cumulative sparse overlays without losing absent schema fields."""
+    loaded = [_read(path) for path in DECISION_FILES]
+    all_fields = {
+        key
+        for rows in loaded
+        for update in rows
+        for key in update
+    }
     merged: dict[str, dict[str, str]] = {}
-    for path in DECISION_FILES:
-        for update in _read(path):
+    for rows in loaded:
+        for update in rows:
             record_id = update["record_id"]
-            row = merged.setdefault(record_id, {key: "" for key in update})
+            row = merged.setdefault(record_id, {key: "" for key in all_fields})
             for key, value in update.items():
                 if value:
                     row[key] = value
