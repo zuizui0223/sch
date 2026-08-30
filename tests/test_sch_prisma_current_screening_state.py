@@ -15,6 +15,7 @@ DECISION_FILES = (
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V7_BATCH1_ABSTRACT_ONLY.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V9_BATCH2_HIGH_INFORMATION.csv",
 )
 DENOMINATOR = 868
 
@@ -49,27 +50,58 @@ def _positive_receiver(value: str) -> bool:
     return bool(value) and value != "NOT_REPORTED" and not upper.startswith("NO_")
 
 
-def test_batch1_is_complete_and_total_title_abstract_state_is_109_screened() -> None:
+def test_batch1_and_batch2_high_information_are_screened() -> None:
     rows = _rows()
-    assert len(rows) == 109
+    assert len(rows) == 138
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert ta["RETAIN_FULLTEXT"] == 69
-    assert ta["EXCLUDE"] == 40
-    assert DENOMINATOR - len(rows) == 759
+    assert ta["RETAIN_FULLTEXT"] == 95
+    assert ta["EXCLUDE"] == 43
+    assert DENOMINATOR - len(rows) == 730
+
     batch1_ids = {f"SCHPRISMA-{i:06d}" for i in range(1, 101)}
     decided_ids = {row["record_id"] for row in rows}
     assert batch1_ids <= decided_ids
 
+    batch2_high_information = {
+        "SCHPRISMA-000192", "SCHPRISMA-000108", "SCHPRISMA-000110",
+        "SCHPRISMA-000121", "SCHPRISMA-000127", "SCHPRISMA-000128",
+        "SCHPRISMA-000141", "SCHPRISMA-000153", "SCHPRISMA-000166",
+        "SCHPRISMA-000188", "SCHPRISMA-000105", "SCHPRISMA-000116",
+        "SCHPRISMA-000131", "SCHPRISMA-000132", "SCHPRISMA-000146",
+        "SCHPRISMA-000147", "SCHPRISMA-000152", "SCHPRISMA-000155",
+        "SCHPRISMA-000161", "SCHPRISMA-000164", "SCHPRISMA-000165",
+        "SCHPRISMA-000168", "SCHPRISMA-000170", "SCHPRISMA-000171",
+        "SCHPRISMA-000173", "SCHPRISMA-000176", "SCHPRISMA-000181",
+        "SCHPRISMA-000191", "SCHPRISMA-000199",
+    }
+    assert batch2_high_information <= decided_ids
 
-def test_all_currently_retained_fulltexts_are_adjudicated() -> None:
+
+def test_batch2_high_information_creates_a_bounded_fulltext_backlog() -> None:
     rows = _rows()
-    ft = Counter(row["screen_fulltext"] or "UNSCREENED" for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT")
+    ft = Counter(
+        row["screen_fulltext"] or "UNSCREENED"
+        for row in rows
+        if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
+    )
     assert ft["INCLUDE"] == 35
     assert ft["EXCLUDE"] == 34
-    assert ft["UNSCREENED"] == 0
+    assert ft["UNSCREENED"] == 26
+
+    obvious_nonreports = {
+        row["record_id"]
+        for row in rows
+        if row["screen_title_abstract"] == "EXCLUDE"
+        and row["decision_source"] == "ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"
+    }
+    assert obvious_nonreports == {
+        "SCHPRISMA-000181",
+        "SCHPRISMA-000191",
+        "SCHPRISMA-000192",
+    }
 
 
-def test_current_evidence_lanes_keep_one_strict_anchor() -> None:
+def test_current_evidence_lanes_keep_one_strict_anchor_until_batch2_fulltext() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
     lanes: Counter[str] = Counter()
     for row in rows:
@@ -122,7 +154,7 @@ def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
 
-def test_decision_provenance_remains_explicit_after_batch1_completion() -> None:
+def test_decision_provenance_remains_explicit_after_batch2_high_information() -> None:
     rows = _rows()
     sources = Counter(row["decision_source"] for row in rows)
     assert sources["PRIOR_SOURCE_ADJUDICATION_FULLTEXT_2026-08-30"] == 8
@@ -133,3 +165,4 @@ def test_decision_provenance_remains_explicit_after_batch1_completion() -> None:
     assert sources["SOURCE_VERIFIED_MEDIUM_FULLTEXT_2026-08-30"] == 25
     assert sources["ASSISTED_METADATA_AND_ABSTRACT_SCREEN_2026-08-30"] == 18
     assert sources["SOURCE_VERIFIED_ABSTRACT_ONLY_FULLTEXT_2026-08-30"] == 13
+    assert sources["ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"] == 29
