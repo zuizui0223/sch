@@ -84,11 +84,14 @@ def test_packet_never_writes_abstract_or_formal_decision(monkeypatch, tmp_path) 
     )
     packet, receipt = triage.build_packet(batch)
     assert packet[0]["machine_priority"] == "HIGH_TITLE_PAIR"
+    assert packet[0]["live_concept_filter_drift"] == "NO"
+    assert packet[0]["missing_live_concepts"] == ""
     assert packet[0]["formal_title_abstract_decision"] == ""
     assert packet[0]["formal_title_abstract_reason"] == ""
     assert "abstract" not in {key.lower() for key in packet[0]}
     assert receipt["stored_abstracts"] is False
     assert receipt["formal_decisions_written"] is False
+    assert receipt["live_concept_filter_drift_count"] == 0
 
 
 def test_known_anchor_is_promoted_only_as_priority_control(monkeypatch, tmp_path) -> None:
@@ -118,7 +121,7 @@ def test_known_anchor_is_promoted_only_as_priority_control(monkeypatch, tmp_path
     assert receipt["known_anchor_count"] == 1
 
 
-def test_concept_filter_drift_fails_closed(monkeypatch, tmp_path) -> None:
+def test_live_concept_filter_drift_preserves_frozen_record_for_review(monkeypatch, tmp_path) -> None:
     batch = tmp_path / "SCH_PRISMA_V2_SCREEN_BATCH_01.csv"
     rows = [
         _batch_row(
@@ -138,12 +141,15 @@ def test_concept_filter_drift_fails_closed(monkeypatch, tmp_path) -> None:
             "abstract_inverted_index": {},
         },
     )
-    try:
-        triage.build_packet(batch)
-    except ValueError as exc:
-        assert "concept-filter drift" in str(exc)
-    else:
-        raise AssertionError("concept-filter drift must fail closed")
+    packet, receipt = triage.build_packet(batch)
+    row = packet[0]
+    assert row["record_id"] == "SCHPRISMA-000001"
+    assert row["machine_priority"] == "LIVE_CONCEPT_FILTER_DRIFT"
+    assert row["live_concept_filter_drift"] == "YES"
+    assert row["missing_live_concepts"] == "pollinator;antagonist"
+    assert row["formal_title_abstract_decision"] == ""
+    assert receipt["live_concept_filter_drift_count"] == 1
+    assert receipt["live_concept_filter_drift_record_ids"] == ["SCHPRISMA-000001"]
 
 
 def test_openalex_url_accepts_canonical_work_id() -> None:
