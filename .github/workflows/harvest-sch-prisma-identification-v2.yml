@@ -78,16 +78,12 @@ jobs:
         run: |
           set -euo pipefail
           SRC=artifacts/sch_prisma_v2/screening_batches
-          overlays=(
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V1.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V2_FULLTEXT_ADDITIONS.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V3_REMAINING_FULLTEXT.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V4_BATCH1_MEDIUM.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V5_BATCH1_MEDIUM_FULLTEXT.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V7_BATCH1_ABSTRACT_ONLY.csv
-            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv
+          mapfile -t overlays < <(
+            find empirical/prisma -maxdepth 1 -type f \
+              -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V
           )
+          test "${#overlays[@]}" -eq 9
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V9_BATCH2_HIGH_INFORMATION.csv'
           i=0
           for overlay in "${overlays[@]}"; do
             i=$((i+1))
@@ -105,7 +101,7 @@ jobs:
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json \
             --expected-denominator 868
 
-      - name: Require completed Batch 1 current state
+      - name: Require Batch 1 plus Batch 2 high-information state
         run: |
           python - <<'PY'
           import json
@@ -113,34 +109,30 @@ jobs:
           current = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
           assert current['identified_records'] == 868, current
           assert current['screening_status'] == 'TITLE_ABSTRACT_IN_PROGRESS', current
-          assert current['title_abstract']['retained_for_fulltext'] == 69, current
-          assert current['title_abstract']['excluded'] == 40, current
-          assert current['title_abstract']['unscreened'] == 759, current
-          assert current['fulltext']['eligible_after_title_abstract'] == 69, current
+          assert current['title_abstract']['retained_for_fulltext'] == 95, current
+          assert current['title_abstract']['excluded'] == 43, current
+          assert current['title_abstract']['unscreened'] == 730, current
+          assert current['fulltext']['eligible_after_title_abstract'] == 95, current
           assert current['fulltext']['included'] == 35, current
           assert current['fulltext']['excluded'] == 34, current
-          assert current['fulltext']['unscreened'] == 0, current
+          assert current['fulltext']['unscreened'] == 26, current
           assert current['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT'] == 1, current
           assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 30, current
           assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 11, current
           assert current['geography']['geographic_contrast_positive'] == 8, current
           assert current['geography']['receiver_assemblage_contrast_positive'] == 9, current
           assert current['geography']['joint_geographic_receiver_positive'] == 8, current
-          assert current['prisma_flow']['records_screened_title_abstract'] == 109, current
+          assert current['prisma_flow']['records_screened_title_abstract'] == 138, current
           assert current['prisma_flow']['studies_included'] == 35, current
           PY
 
-      - name: Preserve abstract-free Batch 1 provenance packets
+      - name: Preserve abstract-free Batch 1 provenance packet
         run: |
           mkdir -p artifacts/sch_prisma_v2/screening_packets
           python scripts/build_sch_prisma_screening_triage.py \
             artifacts/sch_prisma_v2/screening_batches/SCH_PRISMA_V2_SCREEN_BATCH_01.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json
-          python scripts/build_sch_prisma_human_review_queue.py \
-            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
-            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_INITIAL_HIGH_INFORMATION_QUEUE.csv \
-            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_INITIAL_HIGH_INFORMATION_QUEUE_RECEIPT.json
           python - <<'PY'
           import csv
           from pathlib import Path
