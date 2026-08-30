@@ -13,6 +13,8 @@ DECISION_FILES = (
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V4_BATCH1_MEDIUM.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V5_BATCH1_MEDIUM_FULLTEXT.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V7_BATCH1_ABSTRACT_ONLY.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv",
 )
 DENOMINATOR = 868
 
@@ -47,20 +49,23 @@ def _positive_receiver(value: str) -> bool:
     return bool(value) and value != "NOT_REPORTED" and not upper.startswith("NO_")
 
 
-def test_current_title_abstract_state_is_78_screened() -> None:
+def test_batch1_is_complete_and_total_title_abstract_state_is_109_screened() -> None:
     rows = _rows()
-    assert len(rows) == 78
+    assert len(rows) == 109
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert ta["RETAIN_FULLTEXT"] == 56
-    assert ta["EXCLUDE"] == 22
-    assert DENOMINATOR - len(rows) == 790
+    assert ta["RETAIN_FULLTEXT"] == 69
+    assert ta["EXCLUDE"] == 40
+    assert DENOMINATOR - len(rows) == 759
+    batch1_ids = {f"SCHPRISMA-{i:06d}" for i in range(1, 101)}
+    decided_ids = {row["record_id"] for row in rows}
+    assert batch1_ids <= decided_ids
 
 
-def test_all_currently_retained_fulltexts_are_adjudicated_again() -> None:
+def test_all_currently_retained_fulltexts_are_adjudicated() -> None:
     rows = _rows()
     ft = Counter(row["screen_fulltext"] or "UNSCREENED" for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT")
-    assert ft["INCLUDE"] == 34
-    assert ft["EXCLUDE"] == 22
+    assert ft["INCLUDE"] == 35
+    assert ft["EXCLUDE"] == 34
     assert ft["UNSCREENED"] == 0
 
 
@@ -70,7 +75,7 @@ def test_current_evidence_lanes_keep_one_strict_anchor() -> None:
     for row in rows:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 1
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 29
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 30
     assert lanes["EVOLUTIONARY_OUTCOME"] == 11
     strict = [row for row in rows if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
     assert [row["record_id"] for row in strict] == ["SCHPRISMA-000031"]
@@ -78,7 +83,7 @@ def test_current_evidence_lanes_keep_one_strict_anchor() -> None:
 
 def test_jbi_geography_and_receiver_counts_are_not_conflated() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(rows) == 34
+    assert len(rows) == 35
     geo = [row["record_id"] for row in rows if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in rows if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
@@ -98,6 +103,7 @@ def test_jbi_geography_and_receiver_counts_are_not_conflated() -> None:
     assert "SCHPRISMA-000075" in receiver
     assert "SCHPRISMA-000075" not in geo
     assert "SCHPRISMA-000050" not in geo
+    assert "SCHPRISMA-000061" not in geo
 
 
 def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
@@ -116,7 +122,7 @@ def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
 
-def test_decision_provenance_remains_explicit_after_medium_fulltext_closure() -> None:
+def test_decision_provenance_remains_explicit_after_batch1_completion() -> None:
     rows = _rows()
     sources = Counter(row["decision_source"] for row in rows)
     assert sources["PRIOR_SOURCE_ADJUDICATION_FULLTEXT_2026-08-30"] == 8
@@ -125,3 +131,5 @@ def test_decision_provenance_remains_explicit_after_medium_fulltext_closure() ->
     assert sources["PRIOR_EVOLUTIONARY_SOURCE_ADJUDICATION_2026-08-30"] == 3
     assert sources["ASSISTED_SOURCE_VERIFIED_MEDIUM_SCREEN_2026-08-30"] == 10
     assert sources["SOURCE_VERIFIED_MEDIUM_FULLTEXT_2026-08-30"] == 25
+    assert sources["ASSISTED_METADATA_AND_ABSTRACT_SCREEN_2026-08-30"] == 18
+    assert sources["SOURCE_VERIFIED_ABSTRACT_ONLY_FULLTEXT_2026-08-30"] == 13
