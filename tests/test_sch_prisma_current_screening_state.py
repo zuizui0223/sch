@@ -11,6 +11,8 @@ DECISION_FILES = (
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V2_FULLTEXT_ADDITIONS.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V3_REMAINING_FULLTEXT.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V4_BATCH1_MEDIUM.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V5_BATCH1_MEDIUM_FULLTEXT.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv",
 )
 DENOMINATOR = 868
 
@@ -23,12 +25,7 @@ def _read(path: Path) -> list[dict[str, str]]:
 def _rows() -> list[dict[str, str]]:
     """Merge cumulative sparse overlays without losing absent schema fields."""
     loaded = [_read(path) for path in DECISION_FILES]
-    all_fields = {
-        key
-        for rows in loaded
-        for update in rows
-        for key in update
-    }
+    all_fields = {key for rows in loaded for update in rows for key in update}
     merged: dict[str, dict[str, str]] = {}
     for rows in loaded:
         for update in rows:
@@ -59,16 +56,12 @@ def test_current_title_abstract_state_is_78_screened() -> None:
     assert DENOMINATOR - len(rows) == 790
 
 
-def test_medium_batch_creates_next_fulltext_queue_without_reopening_old_decisions() -> None:
+def test_all_currently_retained_fulltexts_are_adjudicated_again() -> None:
     rows = _rows()
     ft = Counter(row["screen_fulltext"] or "UNSCREENED" for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT")
-    assert ft["INCLUDE"] == 22
-    assert ft["EXCLUDE"] == 9
-    assert ft["UNSCREENED"] == 25
-    reasons = Counter(row["screen_fulltext_reason"] for row in rows if row["screen_fulltext"] == "EXCLUDE")
-    assert reasons["FT_REVIEW_ONLY_NO_PRIMARY_ROLE"] == 5
-    assert reasons["FT_DUPLICATE_DATASET_OR_REPORT"] == 2
-    assert reasons["FT_NO_DECLARED_FLORAL_COORDINATE"] == 2
+    assert ft["INCLUDE"] == 34
+    assert ft["EXCLUDE"] == 22
+    assert ft["UNSCREENED"] == 0
 
 
 def test_current_evidence_lanes_keep_one_strict_anchor() -> None:
@@ -77,30 +70,37 @@ def test_current_evidence_lanes_keep_one_strict_anchor() -> None:
     for row in rows:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 1
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 20
-    assert lanes["EVOLUTIONARY_OUTCOME"] == 6
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 29
+    assert lanes["EVOLUTIONARY_OUTCOME"] == 11
     strict = [row for row in rows if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
     assert [row["record_id"] for row in strict] == ["SCHPRISMA-000031"]
 
 
-def test_current_jbi_positive_geography_stays_at_six_until_medium_fulltexts_are_coded() -> None:
+def test_jbi_geography_and_receiver_counts_are_not_conflated() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(rows) == 22
+    assert len(rows) == 34
     geo = [row["record_id"] for row in rows if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in rows if _positive_receiver(row["receiver_assemblage_contrast"])]
-    expected = [
+    joint = [record_id for record_id in geo if record_id in set(receiver)]
+    expected_joint = [
         "SCHPRISMA-000008",
         "SCHPRISMA-000032",
         "SCHPRISMA-000066",
+        "SCHPRISMA-000067",
+        "SCHPRISMA-000074",
         "SCHPRISMA-000172",
         "SCHPRISMA-000523",
         "SCHPRISMA-000710",
     ]
-    assert geo == expected
-    assert receiver == expected
+    assert geo == expected_joint
+    assert joint == expected_joint
+    assert len(receiver) == 9
+    assert "SCHPRISMA-000075" in receiver
+    assert "SCHPRISMA-000075" not in geo
+    assert "SCHPRISMA-000050" not in geo
 
 
-def test_same_code_near_pass_does_not_inflate_strict_count() -> None:
+def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     rows = {row["record_id"]: row for row in _rows()}
     datura = rows["SCHPRISMA-000046"]
     assert datura["A_manipulated"] == "YES_SYNTHETIC_SCENT_AND_ENANTIOMER_MANIPULATION"
@@ -109,12 +109,19 @@ def test_same_code_near_pass_does_not_inflate_strict_count() -> None:
     assert datura["common_reproductive_outcome"] == "NO_PLANT_REPRODUCTIVE_OUTCOME"
     assert datura["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
+    disa = rows["SCHPRISMA-000048"]
+    assert disa["A_manipulated"] == "YES_PAINT_AND_EXCISION_COLOR_MANIPULATION"
+    assert disa["common_reproductive_outcome"] == "YES_FRUIT_SET_FOR_COLOR_MANIPULATION"
+    assert "NOT_RESPONSE_TO_DO_A" in disa["antagonist_response_measured"]
+    assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
-def test_decision_provenance_remains_explicit_after_medium_screen() -> None:
+
+def test_decision_provenance_remains_explicit_after_medium_fulltext_closure() -> None:
     rows = _rows()
     sources = Counter(row["decision_source"] for row in rows)
     assert sources["PRIOR_SOURCE_ADJUDICATION_FULLTEXT_2026-08-30"] == 8
     assert sources["ASSISTED_SOURCE_VERIFIED_PRIMARY_SCREEN_2026-08-30"] == 12
     assert sources["SOURCE_VERIFIED_FULLTEXT_2026-08-30"] == 20
     assert sources["PRIOR_EVOLUTIONARY_SOURCE_ADJUDICATION_2026-08-30"] == 3
-    assert sources["ASSISTED_SOURCE_VERIFIED_MEDIUM_SCREEN_2026-08-30"] == 35
+    assert sources["ASSISTED_SOURCE_VERIFIED_MEDIUM_SCREEN_2026-08-30"] == 10
+    assert sources["SOURCE_VERIFIED_MEDIUM_FULLTEXT_2026-08-30"] == 25
