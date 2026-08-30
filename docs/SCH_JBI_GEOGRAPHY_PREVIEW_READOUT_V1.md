@@ -7,7 +7,7 @@ Does the source-adjudicated evidence contain a nontrivial geographic or receiver
 This document preserves two stages separately:
 
 1. the original eight-anchor preview, before systematic full-text expansion;
-2. the current frozen-PRISMA systematic coding state after completing Batch 1 and the Batch-2 high-information title/abstract screen.
+2. the current frozen-PRISMA systematic coding state after completing Batch 1 and advancing the Batch-2 high-information records through title/abstract and partial full-text adjudication.
 
 Neither stage alone closes JBI Gate J5.
 
@@ -43,7 +43,7 @@ A later live run returned 869 candidates. Batch-2 triage also found one record w
 
 ## Current systematic state
 
-Batch 1 (`SCHPRISMA-000001`–`000100`) is completely title/abstract screened and its retained reports are fully adjudicated. The 29 highest-information Batch-2 records now also have formal title/abstract decisions.
+Batch 1 (`SCHPRISMA-000001`–`000100`) is completely title/abstract screened and its retained reports are fully adjudicated. The 29 highest-information Batch-2 records also have formal title/abstract decisions. Of the 26 retained at that stage, ten now have source-verified full-text exclusions and 16 remain undecided.
 
 Cumulative state:
 
@@ -55,15 +55,15 @@ title/abstract excluded:                43
 unscreened:                            730
 
 primary full-text inclusions:           35
-full-text exclusions:                   34
-full-text undecided among retained:     26
+full-text exclusions:                   44
+full-text undecided among retained:     16
 
 STRICT_LINKED_EXPERIMENT:                1
 DIRECTIONAL_OR_NEAR_PASS:               30
 EVOLUTIONARY_OUTCOME:                   11
 ```
 
-The Batch-2 high-information screen excluded two peer-review/decision-letter objects and one dataset record. Twenty-six reports were retained conservatively; they are not yet included studies.
+The Batch-2 high-information title/abstract screen excluded two peer-review/decision-letter objects and one dataset record. Ten additional retained reports were excluded at full text because they were duplicate reports, review-only records, lacked a declared floral coordinate, or lacked one focal consumer channel. These exclusions leave the included-study, evidence-lane and geography counts unchanged.
 
 ## Geography counters
 
@@ -131,9 +131,9 @@ Important boundaries remain:
 - **lineage branching remains untested**;
 - the strict linked-experiment count remains Theis & Adler 2012 only.
 
-## New Batch-2 geography candidates remain provisional
+## Remaining Batch-2 geography candidates remain provisional
 
-The Batch-2 full-text queue contains several potentially useful spatial systems—Afrotropical nectar-robbing variation, resource-concentration effects on pollinators and seed predators, comparative population genetics, and mutualistic/antagonistic bird–flower subnetworks. None is counted in the eight joint-positive total before full-text geography, receiver and independence fields are coded.
+The 16-report Batch-2 full-text queue still contains potentially useful spatial systems—Afrotropical nectar-robbing variation, resource-concentration effects on pollinators and seed predators, comparative population genetics, and mutualistic/antagonistic bird–flower subnetworks. None is counted in the eight joint-positive total before full-text geography, receiver and independence fields are coded.
 
 This prevents title wording, multisite sampling or a network label from being mistaken for demonstrated geographic receiver turnover.
 
@@ -144,7 +144,7 @@ Two cases make the strict gate especially clear:
 - **Reisenman et al. 2010, *Datura*–*Manduca*** directly manipulates synthetic floral scent/linalool and measures both adult feeding and female oviposition on the same chemical coordinate. No plant reproductive outcome is supplied, so it remains near-pass.
 - **Disa similis 2025** manipulates the yellow anther-mimic visual signal and measures pollination/fruit set. The same pollen-feeding beetle also florivores the signal-bearing petal apices, but florivory is not independently measured as a response to `do(A)`. It therefore remains near-pass rather than a second strict experiment.
 
-The Batch-2 queue may add linked systems, but the strict count is intentionally frozen at one until full-text four-field coding is complete.
+The remaining Batch-2 queue may add linked systems, but the strict count is intentionally held at one until full-text four-field coding is complete.
 
 ## Current JBI decision
 
@@ -152,8 +152,9 @@ The Batch-2 queue may add linked systems, but the strict count is intentionally 
 JBI conceptual fit:                    YES
 frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
-Batch 2 high-information screen:        COMPLETE (29/29)
-current retained full-text backlog:     26
+Batch 2 high-information TA screen:     COMPLETE (29/29)
+Batch 2 high-information FT exclusions: 10/26 retained reports
+current retained full-text backlog:     16
 multiple joint geographic systems:     YES (8 currently coded)
 full title/abstract screening:          NO (730 remaining)
 independence / duplicate coding:        ACTIVE
@@ -167,7 +168,7 @@ A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-The next work object is the **26-report Batch-2 high-information full-text queue**, followed by the remaining 71 Batch-2 title/abstract records.
+The next work object is the **remaining 16-report Batch-2 high-information full-text queue**, followed by the remaining 71 Batch-2 title/abstract records.
 
 The same rules continue:
 
