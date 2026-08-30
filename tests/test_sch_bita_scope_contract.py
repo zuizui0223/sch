@@ -18,7 +18,8 @@ def test_sch_keeps_the_one_trait_conflict_as_its_own_estimand() -> None:
     assert "G_A =" in manuscript
     assert "S_A = M_A - G_A" in manuscript
     assert "This is not the BITA two-trait estimand" in readme
-    assert "Delta_AD W" not in manuscript.split("## 9. Separation from BITA", 1)[0]
+    assert "requires neither a second trait `D` nor `Delta_AD W`" in manuscript
+    assert "Delta_AD W =" not in manuscript.split("## 9. Separation from BITA", 1)[0]
 
 
 def test_positioning_separates_informational_from_functional_escape() -> None:
