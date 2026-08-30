@@ -18,6 +18,8 @@ def _row(record_id: str, priority: str, anchor: str = "NO") -> dict[str, str]:
             "query_ids": "Q01",
             "openalex_work_type": "article",
             "known_anchor": anchor,
+            "live_concept_filter_drift": "YES" if priority == "LIVE_CONCEPT_FILTER_DRIFT" else "NO",
+            "missing_live_concepts": "antagonist" if priority == "LIVE_CONCEPT_FILTER_DRIFT" else "",
             "machine_priority": priority,
         }
     )
@@ -31,22 +33,30 @@ def _write(path, rows):
         writer.writerows(rows)
 
 
-def test_queue_selects_nonanchor_title_triple_and_pair_only(tmp_path) -> None:
+def test_queue_selects_drift_and_nonanchor_title_triple_pair_only(tmp_path) -> None:
     src = tmp_path / "triage.csv"
     _write(
         src,
         [
             _row("SCHPRISMA-000001", "KNOWN_ANCHOR", "YES"),
-            _row("SCHPRISMA-000002", "HIGH_TITLE_TRIPLE"),
-            _row("SCHPRISMA-000003", "HIGH_TITLE_PAIR"),
-            _row("SCHPRISMA-000004", "MEDIUM_TITLE_ONE"),
-            _row("SCHPRISMA-000005", "ABSTRACT_ONLY"),
+            _row("SCHPRISMA-000002", "LIVE_CONCEPT_FILTER_DRIFT"),
+            _row("SCHPRISMA-000003", "HIGH_TITLE_TRIPLE"),
+            _row("SCHPRISMA-000004", "HIGH_TITLE_PAIR"),
+            _row("SCHPRISMA-000005", "MEDIUM_TITLE_ONE"),
+            _row("SCHPRISMA-000006", "ABSTRACT_ONLY"),
         ],
     )
     queue, receipt = queue_mod.build_queue(src)
-    assert [row["record_id"] for row in queue] == ["SCHPRISMA-000002", "SCHPRISMA-000003"]
-    assert receipt["selected_record_count"] == 2
+    assert [row["record_id"] for row in queue] == [
+        "SCHPRISMA-000002",
+        "SCHPRISMA-000003",
+        "SCHPRISMA-000004",
+    ]
+    assert receipt["selected_record_count"] == 3
     assert receipt["known_anchors_excluded_from_queue"] is True
+    assert receipt["live_concept_filter_drift_prioritized"] is True
+    assert queue[0]["live_concept_filter_drift"] == "YES"
+    assert queue[0]["missing_live_concepts"] == "antagonist"
 
 
 def test_queue_never_contains_abstract_text_or_prefilled_decision(tmp_path) -> None:
@@ -65,16 +75,20 @@ def test_queue_never_contains_abstract_text_or_prefilled_decision(tmp_path) -> N
     assert receipt["formal_prisma_decisions_written"] is False
 
 
-def test_title_triples_sort_before_pairs(tmp_path) -> None:
+def test_drift_sorts_before_title_triples_and_pairs(tmp_path) -> None:
     src = tmp_path / "triage.csv"
     _write(
         src,
         [
             _row("SCHPRISMA-000010", "HIGH_TITLE_PAIR"),
             _row("SCHPRISMA-000011", "HIGH_TITLE_TRIPLE"),
+            _row("SCHPRISMA-000012", "LIVE_CONCEPT_FILTER_DRIFT"),
         ],
     )
     queue, _ = queue_mod.build_queue(src)
-    assert queue[0]["machine_priority"] == "HIGH_TITLE_TRIPLE"
-    assert queue[0]["review_order"] == "1"
-    assert queue[1]["machine_priority"] == "HIGH_TITLE_PAIR"
+    assert [row["machine_priority"] for row in queue] == [
+        "LIVE_CONCEPT_FILTER_DRIFT",
+        "HIGH_TITLE_TRIPLE",
+        "HIGH_TITLE_PAIR",
+    ]
+    assert [row["review_order"] for row in queue] == ["1", "2", "3"]
