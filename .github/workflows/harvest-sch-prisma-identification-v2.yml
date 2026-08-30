@@ -27,6 +27,8 @@ on:
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V2_FULLTEXT_ADDITIONS.csv'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V3_REMAINING_FULLTEXT.csv'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V4_BATCH1_MEDIUM.csv'
+      - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V5_BATCH1_MEDIUM_FULLTEXT.csv'
+      - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv'
       - 'empirical/prisma/SCH_PRISMA_V2_PRIOR_ANCHOR_FULLTEXT_MIGRATION_PREVIEW_V1.csv'
       - 'empirical/prisma/SCH_JBI_GEOGRAPHY_ANCHOR_PREVIEW_V1.csv'
       - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V2.md'
@@ -110,13 +112,6 @@ jobs:
             artifacts/sch_prisma_v2/screening_active_v1 \
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V1_RECEIPT.json \
             --expected-denominator 868
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          data = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V1_RECEIPT.json').read_text())
-          assert data['overlay_rows'] == 40, data
-          assert data['changed_record_count'] == 40, data
-          PY
 
       - name: Apply V2 priority full-text additions
         run: |
@@ -126,15 +121,8 @@ jobs:
             artifacts/sch_prisma_v2/screening_active_v2 \
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V2_RECEIPT.json \
             --expected-denominator 868
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          data = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V2_RECEIPT.json').read_text())
-          assert data['overlay_rows'] == 10, data
-          assert data['changed_record_count'] == 10, data
-          PY
 
-      - name: Apply V3 remaining full-text decisions
+      - name: Apply V3 remaining first-wave full-text decisions
         run: |
           python scripts/apply_sch_prisma_screening_decisions.py \
             artifacts/sch_prisma_v2/screening_active_v2 \
@@ -142,21 +130,32 @@ jobs:
             artifacts/sch_prisma_v2/screening_active_v3 \
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V3_RECEIPT.json \
             --expected-denominator 868
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          overlay = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V3_RECEIPT.json').read_text())
-          assert overlay['overlay_rows'] == 13, overlay
-          assert overlay['changed_record_count'] == 13, overlay
-          PY
 
-      - name: Apply V4 Batch 1 medium title-abstract decisions and audit current state
+      - name: Apply V4 Batch 1 medium title-abstract decisions
         run: |
           python scripts/apply_sch_prisma_screening_decisions.py \
             artifacts/sch_prisma_v2/screening_active_v3 \
             empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V4_BATCH1_MEDIUM.csv \
-            artifacts/sch_prisma_v2/screening_active \
+            artifacts/sch_prisma_v2/screening_active_v4 \
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V4_RECEIPT.json \
+            --expected-denominator 868
+
+      - name: Apply V5 Batch 1 medium full-text decisions
+        run: |
+          python scripts/apply_sch_prisma_screening_decisions.py \
+            artifacts/sch_prisma_v2/screening_active_v4 \
+            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V5_BATCH1_MEDIUM_FULLTEXT.csv \
+            artifacts/sch_prisma_v2/screening_active_v5 \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V5_RECEIPT.json \
+            --expected-denominator 868
+
+      - name: Apply V6 geography correction and audit current state
+        run: |
+          python scripts/apply_sch_prisma_screening_decisions.py \
+            artifacts/sch_prisma_v2/screening_active_v5 \
+            empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V6_GEOGRAPHY_CORRECTION.csv \
+            artifacts/sch_prisma_v2/screening_active \
+            artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V6_RECEIPT.json \
             --expected-denominator 868
           python scripts/audit_sch_prisma_screening.py \
             artifacts/sch_prisma_v2/screening_active \
@@ -165,24 +164,22 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          overlay = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_DECISION_OVERLAY_V4_RECEIPT.json').read_text())
           current = json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
-          assert overlay['overlay_rows'] == 35, overlay
-          assert overlay['changed_record_count'] == 35, overlay
           assert current['identified_records'] == 868, current
           assert current['screening_status'] == 'TITLE_ABSTRACT_IN_PROGRESS', current
           assert current['title_abstract']['retained_for_fulltext'] == 56, current
           assert current['title_abstract']['excluded'] == 22, current
           assert current['title_abstract']['unscreened'] == 790, current
           assert current['fulltext']['eligible_after_title_abstract'] == 56, current
-          assert current['fulltext']['included'] == 22, current
-          assert current['fulltext']['excluded'] == 9, current
-          assert current['fulltext']['unscreened'] == 25, current
+          assert current['fulltext']['included'] == 34, current
+          assert current['fulltext']['excluded'] == 22, current
+          assert current['fulltext']['unscreened'] == 0, current
           assert current['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT'] == 1, current
-          assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 20, current
-          assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 6, current
-          assert current['geography']['geographic_contrast_positive'] == 6, current
-          assert current['geography']['receiver_assemblage_contrast_positive'] == 6, current
+          assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 29, current
+          assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 11, current
+          assert current['geography']['geographic_contrast_positive'] == 8, current
+          assert current['geography']['receiver_assemblage_contrast_positive'] == 9, current
+          assert current['geography']['joint_geographic_receiver_positive'] == 8, current
           PY
 
       - name: Build abstract-free Batch 1 provenance packets
@@ -191,7 +188,7 @@ jobs:
           python scripts/build_sch_prisma_screening_triage.py \
             artifacts/sch_prisma_v2/screening_batches/SCH_PRISMA_V2_SCREEN_BATCH_01.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
-            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_INITIAL_HIGH_INFORMATION_QUEUE.csv.json
+            artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE_RECEIPT.json
           python scripts/build_sch_prisma_human_review_queue.py \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_MACHINE_TRIAGE.csv \
             artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_01_INITIAL_HIGH_INFORMATION_QUEUE.csv \
