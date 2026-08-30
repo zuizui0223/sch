@@ -2,7 +2,7 @@
 
 ## Dissertation-level question
 
-How do plants evolve floral signals when the same phenotype affects both mutualists and antagonists, and when can an additional defensive trait release the resulting fitness constraint?
+How do plants evolve floral signals when the same phenotype affects both mutualists and antagonists, and when can an additional defensive trait improve, release or reverse the resulting fitness constraint?
 
 ## Chapter 1 — SCH: why attraction becomes conflicted
 
@@ -29,41 +29,126 @@ The historical endpoint is a separate fail-closed ladder. A targeted eight-candi
 
 ## Chapter 2 — BITA: adding a defence coordinate
 
-BITA asks whether adding a distinct antagonist-reducing trait `D` provides an escape route from the one-trait fitness constraint. On a common outcome, the two-trait interaction is
+BITA asks what a distinct antagonist-reducing trait `D` changes on the same declared reproductive scale. For the four trait states, define
 
 ```text
-Delta_AD W = rho_delta - iota_delta - kappa_delta.
+A0 = W10 - W00
+     attraction effect when defence is low
+
+A1 = W11 - W01
+     attraction effect when defence is high
+
+Delta_AD W = W11 - W10 - W01 + W00
+           = A1 - A0
+           = rho_delta - iota_delta - kappa_delta
 ```
 
-`D` is an effective functional escape route when antagonist relief at high attraction exceeds pollinator interference and the remaining joint cost:
+The four-cell surface supports three nested outcome claims.
 
 ```text
-rho_delta > iota_delta + kappa_delta  <=>  Delta_AD W > 0.
+Level 1 — positive interaction relief
+Delta_AD W > 0
+D shifts the effect of attraction in a positive direction.
+
+Level 2 — constraint release
+A0 <= 0 and A1 > 0
+Attraction is non-beneficial without D but beneficial with D.
+
+Level 3 — strict sign reversal
+A0 < 0 and A1 > 0
+D changes attraction from detrimental to beneficial.
 ```
 
-This equivalence separates two questions that must not be collapsed.
+Therefore
 
-1. **Did functional escape occur?** A valid same-scale total `A x D` reproductive interaction whose uncertainty lies wholly above zero is sufficient to decide the strict escape inequality on that declared outcome scale.
-2. **Why did it occur?** Allocating the total sign to antagonist relief, pollinator interference and remaining joint cost requires selective crossed interventions, baseline handling, a separability diagnostic and an independent cost assay.
+```text
+strict reversal
+    => constraint release
+    => positive interaction relief
+```
 
-Full channel point identification is therefore not required for the outcome-level sign decision. Conversely, a positive total interaction does not identify a realized `rho_delta`, `iota_delta` or `kappa_delta`.
+but the reverse implications do not hold. A positive `Delta_AD W` can occur while `A0` and `A1` are both negative.
 
-## Two different forms of escape
+## Outcome and explanation are separate ladders
 
-The chapters distinguish two biologically different releases from the original conflict.
+Within the BITA bookkeeping model,
+
+```text
+rho_delta > iota_delta + kappa_delta
+    <=> Delta_AD W > 0
+```
+
+This equivalence decides the Level-1 total-interaction inequality on the declared outcome scale. It does not decide whether attraction crossed zero. Levels 2 and 3 require the conditional attraction contrasts `A0` and `A1`.
+
+Mechanism allocation is a further question. Allocating the total surface to antagonist relief, pollinator interference and a remaining joint channel requires selective crossed interventions, pollinator-absent baseline handling, a separability diagnostic and an independent cost assay.
+
+Thus four questions must not be collapsed:
+
+1. **Did `D` improve the attraction effect?** Use `Delta_AD W`.
+2. **Did that improvement release a non-beneficial state?** Use `A0 <= 0 < A1`.
+3. **Did it strictly reverse a negative state?** Use `A0 < 0 < A1`.
+4. **Why did the outcome occur?** Allocate `rho_delta`, `iota_delta` and the independently validated joint channel.
+
+Full channel point identification is not required for a valid outcome-level decision. Conversely, neither a positive interaction nor a zero crossing identifies a realized mechanism allocation.
+
+## Informational versus functional outcomes
+
+The chapters distinguish changes to receiver overlap from changes to reproductive consequences.
 
 | Form | What changes | What it establishes | What it does not establish |
 |---|---|---|---|
-| **Informational / architectural escape** | the pollinator-facing and antagonist-facing cue coordinates become separable or private | reduced receiver overlap on the signal itself | a positive `A x D` fitness interaction |
-| **Functional escape** | a distinct defence coordinate reduces the fitness loss associated with high attraction | positive `Delta_AD W` on the declared outcome scale | cue privacy, loss of antagonist detection, or a historical shared-to-private transition |
+| **Informational / architectural escape** | pollinator-facing and antagonist-facing cue coordinates become separable or private | reduced receiver overlap on the signal itself | any particular `A × D` reproductive interaction |
+| **Functional interaction relief** | a distinct defence coordinate makes the attraction effect less negative or more positive | `Delta_AD W > 0` on the declared scale | zero crossing, cue privacy or mechanism allocation |
+| **Functional constraint release** | attraction changes from non-beneficial to beneficial across defence states | `A0 <= 0 < A1` | cue privacy, historical shared-to-private evolution or channel allocation |
+| **Strict functional reversal** | attraction changes from detrimental to beneficial | `A0 < 0 < A1` | disappearance of antagonist detection or a historical signal transition |
 
-BITA can therefore relax the reproductive cost of cue sharing while the SCH conflict remains informationally present. Antagonists may still detect `A`; `D` can act later through access, ingestion, oviposition, damage or another antagonist-reducing route.
+BITA can therefore improve or even reverse the reproductive consequence of cue sharing while the SCH conflict remains informationally present. Antagonists may still detect `A`; `D` can act later through access, ingestion, oviposition, damage or another antagonist-reducing route.
 
 ## Current BITA evidence ceiling
 
-Kessler et al. 2008 supplies a manipulated `A x D`-like field factorial and published aggregate constraints preserve a positive total interaction sign. It is the strongest historical outcome-level anchor, but the exact source/design-based interaction interval has not been recovered and nicotine suppression is systemic rather than cleanly flower-restricted. Formal positive functional escape is therefore not yet uncertainty-identified in current complete-system evidence.
+Kessler et al. 2008 supplies a manipulated `A × D`-like field factorial. Published rounded capsule proportions preserve a positive total interaction range and a positive attraction effect under the defended state, but the attraction effect without defence remains compatible with either side of zero. The exact source/design-based intervals have not been recovered, and nicotine suppression is systemic rather than cleanly flower-restricted.
 
-Mechanism allocation remains a separate, harder gap. Current screened studies do not point-identify both biotic channels on one complete surface, and no strict independent assay identifies the joint-cost term. These missing measurements explain why the sign arose; they are not prerequisites for deciding the sign once a valid total interval is available.
+The current bounded interpretation is therefore:
+
+```text
+Level 1: strong positive aggregate-sign anchor;
+         formal source/design uncertainty unresolved
+Level 2: unresolved
+Level 3: unresolved
+mechanism allocation: unresolved
+flower-specific D scope: unresolved for the historical manipulation
+```
+
+Kessler is not evidence that `Delta_AD W > 0` automatically equals release of a previously negative attraction effect.
+
+## Nicotiana as a programme-level composite bridge
+
+The broader *Nicotiana attenuata* programme is the highest-information current candidate for closing the SCH–BITA sequence, but the evidence is distributed across papers.
+
+```text
+Kessler 2015
+A affects pollinator-mediated outcrossing and hawkmoth oviposition
+
+Kessler 2008
+an A × D-like reproductive factorial with a positive aggregate sign
+
+Li 2017
+flower-specific jasmonate-regulated defence biology
+
+Li 2018
+an upstream-pleiotropy warning because JA perturbation also changes attraction/reward outputs
+```
+
+This programme is classified
+
+```text
+PROGRAM_COMPOSITE_NEAR_COMPLETE
+DIRECT_COMPLETE_CHAIN_NOT_ESTABLISHED
+```
+
+Results from these papers cannot be pooled as cells of one experiment. The direct closure requires one invariant attraction manipulation, one independently validated flower-specific defence manipulation, both receiver channels, one common reproductive outcome, `A0`, `A1` and `Delta_AD W` with compatible uncertainty, followed separately by selective channel and independent-cost measurements.
+
+The detailed contract is `docs/NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md` in SCH and `docs/NICOTIANA_SCH_BITA_CHAIN_CLOSURE_V1.md` in BITA.
 
 ## The two chapters answer one sequence
 
@@ -71,16 +156,24 @@ Mechanism allocation remains a separate, harder gap. Current screened studies do
 Chapter 1: Why does one shared attraction coordinate create conflict,
            and which one-axis or architectural responses follow?
         ↓
-Chapter 2a: Does a second defensive coordinate produce positive
-            functional escape on a declared reproductive scale?
+Chapter 2a: Does a second defensive coordinate improve the
+            attraction effect?  [Delta_AD W]
         ↓
-Chapter 2b: Which relief / interference / cost mechanism produces that sign?
+Chapter 2b: Does that improvement cross from non-beneficial or
+            negative to positive?  [A0 and A1]
+        ↓
+Chapter 2c: Which relief / interference / joint-channel mechanism
+            produces the outcome?
 ```
 
-The chapters therefore share biological motivation but not estimands. SCH must not claim that BITA tested the one-trait hypothesis. BITA may use SCH to state the constraint that motivates `D`, then report positively how far current data recover relief, pollinator preservation, route separation, total interaction, escape-sign identification and channel allocation.
+The chapters therefore share biological motivation but not estimands. SCH must not claim that BITA tested the one-trait hypothesis. BITA may use SCH to state the constraint that motivates `D`, then report separately how far current data recover receiver overlap, interaction relief, constraint release, strict reversal and mechanism allocation.
 
 ## Joint claim ceiling
 
-Together the current repositories support a staged result: dual-audience signal conflict has multiple documented evolutionary responses; selective defence architectures recur; and two distinct high-level questions remain open. SCH has not yet reconstructed a replicated historical shared-cue-to-private-cue transition. BITA has not yet identified a source/design-based positive total `A x D` interval with clean trait scope, although Kessler provides a manipulated positive aggregate-sign anchor and the switching mechanisms that could generate functional escape recur. Full `rho/iota/kappa` allocation is a further explanatory gate rather than a prerequisite for the outcome sign.
+Together the current repositories support a staged result: dual-audience signal conflict has multiple documented evolutionary responses; selective defence architectures recur; and a second trait can produce positive interaction-level improvement in a close historical factorial. Three stronger intersections remain open.
 
-The missing intersections now define specific analyses and experiments rather than an undefined call for more data.
+1. SCH has not reconstructed a replicated historical shared-cue-to-private-cue transition.
+2. BITA has not recovered source/design-based intervals that establish Level 1, Level 2 or Level 3 with clean flower-specific intervention scope in one complete system.
+3. No screened system allocates the complete outcome among the two biotic channels and an independently validated joint channel.
+
+These missing intersections now define specific analyses and experiments rather than an undefined call for more data.
