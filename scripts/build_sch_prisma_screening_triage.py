@@ -1,10 +1,15 @@
 """Build an abstract-free machine-assistance packet for SCH PRISMA screening.
 
-The packet is *not* a screening decision. For each identified candidate it
-refetches the OpenAlex work, reconstructs the abstract only in memory, records
-where the three registered concepts were matched, and assigns a review
+The packet is *not* a screening decision. For each frozen candidate it refetches
+the current OpenAlex work, reconstructs the abstract only in memory, records
+where the three registered concepts are currently matched, and assigns a review
 priority. Abstract text is never written. Formal title/abstract decision and
 reason fields remain blank for human adjudication.
+
+The frozen 868-record cohort is authoritative. If current OpenAlex metadata no
+longer reproduces the concept pass used at freeze time, the record is retained
+and marked ``LIVE_CONCEPT_FILTER_DRIFT`` rather than removed or allowed to abort
+the batch. This separates bibliographic-index drift from scientific exclusion.
 """
 from __future__ import annotations
 
@@ -36,6 +41,8 @@ KNOWN_ANCHOR_DOIS = {
     "10.3732/ajb.1400171",
 }
 
+CONCEPT_ORDER = ("floral", "pollinator", "antagonist")
+
 OUTPUT_FIELDS = (
     "record_id",
     "doi",
@@ -45,6 +52,8 @@ OUTPUT_FIELDS = (
     "query_ids",
     "openalex_work_type",
     "known_anchor",
+    "live_concept_filter_drift",
+    "missing_live_concepts",
     "title_floral",
     "title_pollinator",
     "title_antagonist",
@@ -77,9 +86,19 @@ def _flags(text: str) -> dict[str, bool]:
     }
 
 
-def _priority(*, doi: str, title_flags: dict[str, bool]) -> tuple[str, str]:
+def _priority(
+    *,
+    doi: str,
+    title_flags: dict[str, bool],
+    concept_filter_drift: bool,
+) -> tuple[str, str]:
     if doi in KNOWN_ANCHOR_DOIS:
         return "KNOWN_ANCHOR", "Frozen source-adjudicated anchor; use as a screening sensitivity control."
+    if concept_filter_drift:
+        return (
+            "LIVE_CONCEPT_FILTER_DRIFT",
+            "Current OpenAlex metadata no longer reproduces the frozen concept pass; retain and inspect manually.",
+        )
     n = sum(title_flags.values())
     if n == 3:
         return "HIGH_TITLE_TRIPLE", "All three registered concepts occur in the title."
@@ -107,6 +126,7 @@ def build_packet(batch_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
     priority_counts: Counter[str] = Counter()
     type_counts: Counter[str] = Counter()
     anchor_ids: list[str] = []
+    drift_ids: list[str] = []
 
     for source in rows:
         openalex_id = (source.get("openalex_id") or "").strip()
@@ -117,16 +137,22 @@ def build_packet(batch_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
         abstract = v2.reconstruct_abstract(item.get("abstract_inverted_index"))
         title_flags = _flags(title)
         abstract_flags = _flags(abstract)
-        combined = {key: title_flags[key] or abstract_flags[key] for key in title_flags}
-        if not all(combined.values()):
-            raise ValueError(f"{source['record_id']}: V2 concept-filter drift detected")
+        combined = {key: title_flags[key] or abstract_flags[key] for key in CONCEPT_ORDER}
+        missing_live_concepts = [key for key in CONCEPT_ORDER if not combined[key]]
+        concept_filter_drift = bool(missing_live_concepts)
 
         doi = v1.normalize_doi(source.get("doi"))
-        priority, note = _priority(doi=doi, title_flags=title_flags)
+        priority, note = _priority(
+            doi=doi,
+            title_flags=title_flags,
+            concept_filter_drift=concept_filter_drift,
+        )
         work_type = str(item.get("type") or "UNKNOWN")
         known_anchor = doi in KNOWN_ANCHOR_DOIS
         if known_anchor:
             anchor_ids.append(source["record_id"])
+        if concept_filter_drift:
+            drift_ids.append(source["record_id"])
         priority_counts[priority] += 1
         type_counts[work_type] += 1
 
@@ -140,6 +166,8 @@ def build_packet(batch_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
                 "query_ids": source.get("query_ids", ""),
                 "openalex_work_type": work_type,
                 "known_anchor": "YES" if known_anchor else "NO",
+                "live_concept_filter_drift": "YES" if concept_filter_drift else "NO",
+                "missing_live_concepts": ";".join(missing_live_concepts),
                 "title_floral": "YES" if title_flags["floral"] else "NO",
                 "title_pollinator": "YES" if title_flags["pollinator"] else "NO",
                 "title_antagonist": "YES" if title_flags["antagonist"] else "NO",
@@ -161,7 +189,7 @@ def build_packet(batch_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
         time.sleep(0.03)
 
     receipt: dict[str, object] = {
-        "analysis_id": "sch_prisma_v2_abstract_free_triage_v1",
+        "analysis_id": "sch_prisma_v2_abstract_free_triage_v2",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "batch_file": batch_csv.name,
         "candidate_count": len(output),
@@ -169,11 +197,14 @@ def build_packet(batch_csv: Path) -> tuple[list[dict[str, str]], dict[str, objec
         "openalex_work_type_counts": dict(sorted(type_counts.items())),
         "known_anchor_count": len(anchor_ids),
         "known_anchor_record_ids": sorted(anchor_ids),
+        "live_concept_filter_drift_count": len(drift_ids),
+        "live_concept_filter_drift_record_ids": sorted(drift_ids),
         "stored_abstracts": False,
         "formal_decisions_written": False,
         "claim_boundary": (
             "Machine priority and concept-location fields are screening assistance only. "
-            "They are not PRISMA inclusion/exclusion decisions and never populate the formal screening fields."
+            "They are not PRISMA inclusion/exclusion decisions and never populate formal screening fields. "
+            "Live metadata drift never removes a record from the frozen screening cohort; drifted records require human review."
         ),
     }
     return output, receipt
@@ -197,7 +228,15 @@ def main(argv: list[str] | None = None) -> int:
     write_packet(args.out_csv, rows)
     args.out_receipt_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_receipt_json.write_text(json.dumps(receipt, indent=2), encoding="utf-8")
-    print(json.dumps({"rows": len(rows), "anchors": receipt["known_anchor_count"]}))
+    print(
+        json.dumps(
+            {
+                "rows": len(rows),
+                "anchors": receipt["known_anchor_count"],
+                "live_concept_filter_drift": receipt["live_concept_filter_drift_count"],
+            }
+        )
+    )
     return 0
 
 
