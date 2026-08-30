@@ -1,0 +1,65 @@
+name: Normalize SCH PRISMA V8 overlay
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/normalize-sch-prisma-v8-overlay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Normalize V8 CSV column counts
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+
+          path = Path('empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv')
+          with path.open(encoding='utf-8', newline='') as handle:
+              rows = list(csv.reader(handle))
+          header, data = rows[0], rows[1:]
+          assert header[-2:] == ['decision_source', 'decision_note']
+          fixed = []
+          changed = 0
+          for row in data:
+              if len(row) == len(header):
+                  fixed.append(row)
+                  continue
+              if len(row) == len(header) + 1:
+                  assert row[-3] == '', row
+                  assert row[-2].startswith('SOURCE_VERIFIED_ABSTRACT_ONLY_FULLTEXT_'), row
+                  del row[-3]
+                  changed += 1
+                  fixed.append(row)
+                  continue
+              raise AssertionError((len(header), len(row), row[0]))
+          assert changed == 12, changed
+          assert all(len(row) == len(header) for row in fixed)
+          with path.open('w', encoding='utf-8', newline='') as handle:
+              writer = csv.writer(handle, lineterminator='\n')
+              writer.writerow(header)
+              writer.writerows(fixed)
+          print({'normalized_rows': changed, 'total_rows': len(fixed)})
+          PY
+      - name: Commit normalized overlay
+        run: |
+          set -euo pipefail
+          git add empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv
+          if git diff --cached --quiet; then
+            echo 'V8 overlay already normalized.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Normalize SCH PRISMA V8 overlay columns'
+          git push origin HEAD:${{ github.head_ref }}
