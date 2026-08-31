@@ -15,6 +15,8 @@ on:
       - 'tests/test_sch_jbi_geography_anchor_preview.py'
       - 'empirical/prisma/frozen_v2/**'
       - 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_*.csv'
+      - 'empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_*.csv'
+      - 'empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_*.json'
       - 'empirical/prisma/SCH_PRISMA_V2_PRIOR_ANCHOR_FULLTEXT_MIGRATION_PREVIEW_V1.csv'
       - 'empirical/prisma/SCH_JBI_GEOGRAPHY_ANCHOR_PREVIEW_V1.csv'
       - 'docs/SCH_PRISMA_*.md'
@@ -96,7 +98,7 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py artifacts/sch_prisma_v2/screening_active artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require Batch 2 full-text closure under V13
+      - name: Require Batch 3 high-information title-abstract state under V14
         run: |
           python - <<'PY'
           import json
@@ -105,30 +107,30 @@ jobs:
           assert d['analysis_id']=='sch_prisma_v2_screening_audit_v2',d
           assert d['identified_records']==868,d
           assert d['screening_status']=='TITLE_ABSTRACT_IN_PROGRESS',d
-          assert d['title_abstract']['retained_for_fulltext']==130,d
-          assert d['title_abstract']['excluded']==78,d
-          assert d['title_abstract']['unscreened']==660,d
-          assert d['fulltext']['eligible_after_title_abstract']==130,d
+          assert d['title_abstract']['retained_for_fulltext']==158,d
+          assert d['title_abstract']['excluded']==83,d
+          assert d['title_abstract']['unscreened']==627,d
+          assert d['fulltext']['eligible_after_title_abstract']==158,d
           assert d['fulltext']['included']==53,d
           assert d['fulltext']['decision_excluded']==77,d
           assert d['fulltext']['assessed_excluded']==76,d
           assert d['fulltext']['unavailable']==1,d
-          assert d['fulltext']['unscreened']==0,d
+          assert d['fulltext']['unscreened']==28,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
           assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==46,d
           assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==15,d
           assert d['geography']['geographic_contrast_positive']==11,d
           assert d['geography']['receiver_assemblage_contrast_positive']==11,d
           assert d['geography']['joint_geographic_receiver_positive']==10,d
-          assert d['prisma_flow']['records_screened_title_abstract']==208,d
-          assert d['prisma_flow']['reports_sought_for_retrieval']==130,d
+          assert d['prisma_flow']['records_screened_title_abstract']==241,d
+          assert d['prisma_flow']['reports_sought_for_retrieval']==158,d
           assert d['prisma_flow']['reports_not_retrieved']==1,d
           assert d['prisma_flow']['reports_assessed_for_eligibility']==129,d
           assert d['prisma_flow']['reports_excluded_fulltext']==76,d
           assert d['prisma_flow']['studies_included']==53,d
           PY
 
-      - name: Verify frozen Batch 1/2 decision provenance without live refetch
+      - name: Verify frozen screening and Batch 3 triage provenance without live refetch
         run: |
           python - <<'PY'
           import csv, json
@@ -141,15 +143,23 @@ jobs:
           assert all(active[f'SCHPRISMA-{i:06d}']['screen_title_abstract'] in {'RETAIN_FULLTEXT','EXCLUDE'} for i in range(1,201))
           assert all(active[f'SCHPRISMA-{i:06d}']['screen_fulltext'] in {'INCLUDE','EXCLUDE'} for i in range(101,201) if active[f'SCHPRISMA-{i:06d}']['screen_title_abstract']=='RETAIN_FULLTEXT')
 
-          packet=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_02_MACHINE_TRIAGE.csv')
-          receipt=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_02_MACHINE_TRIAGE_RECEIPT.json')
-          assert packet.exists() and receipt.exists()
-          with packet.open(encoding='utf-8',newline='') as handle:
-              rows=list(csv.DictReader(handle))
-          meta=json.loads(receipt.read_text())
-          assert len(rows)==100
-          assert meta['candidate_count']==100
-          assert meta['formal_decisions_written'] is False
+          batch3_packet=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_MACHINE_TRIAGE.csv')
+          batch3_receipt=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_MACHINE_TRIAGE_RECEIPT.json')
+          queue=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_HIGH_INFORMATION_QUEUE.csv')
+          queue_receipt=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_HIGH_INFORMATION_QUEUE_RECEIPT.json')
+          assert all(path.exists() for path in [batch3_packet,batch3_receipt,queue,queue_receipt])
+          with batch3_packet.open(encoding='utf-8',newline='') as handle: triage=list(csv.DictReader(handle))
+          with queue.open(encoding='utf-8',newline='') as handle: queued=list(csv.DictReader(handle))
+          triage_meta=json.loads(batch3_receipt.read_text())
+          queue_meta=json.loads(queue_receipt.read_text())
+          assert len(triage)==100
+          assert triage_meta['candidate_count']==100
+          assert triage_meta['formal_decisions_written'] is False
+          assert len(queued)==33
+          assert queue_meta['new_title_abstract_target_count']==99
+          assert queue_meta['high_information_queue_count_after_prior_decision_filter']==33
+          assert queue_meta['formal_prisma_decisions_written'] is False
+          assert 'SCHPRISMA-000219' not in {row['record_id'] for row in queued}
           PY
 
       - name: Run live OpenAlex drift monitor
