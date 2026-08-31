@@ -1,0 +1,86 @@
+name: promote-sch-prisma-v12-nonworkflow-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch2-title-abstract-closure-v1
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch2-title-abstract-closure-v1
+          fetch-depth: 0
+      - name: Synchronize V12 documentation state
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new, count=1):
+              p=Path(path); text=p.read_text(encoding='utf-8')
+              n=text.count(old)
+              if n != count:
+                  raise RuntimeError(f'{path}: expected {count}, found {n}: {old[:100]!r}')
+              p.write_text(text.replace(old,new,count),encoding='utf-8')
+
+          led='docs/PUBLICATION_MATERIAL_LEDGER.md'
+          pairs=[
+            ('## Current screening state — Batch 1 complete, Batch 2 high-information full text closed','## Current screening state — Batch 1 and Batch 2 title/abstract complete'),
+            ('Batch 2 has a frozen 100-record machine-assistance packet; its 29 highest-information records—nine title triples, nineteen title pairs and one live-concept-drift record—have formal title/abstract decisions. All 26 reports retained from this high-information screen now have source-verified full-text decisions: nine are included and seventeen are excluded. Batch-2 high-information full-text adjudication is therefore closed.','Batch 2 has a frozen 100-record machine-assistance packet. The 29 high-information records were adjudicated first and their retained full texts were closed in V11. V12 then adjudicates the remaining 70 previously undecided Batch-2 records; `SCHPRISMA-000172` was already source-adjudicated in V1 and is therefore not screened twice. Batch 2 is now 100/100 complete at title/abstract stage.'),
+            ('title/abstract screened:         138','title/abstract screened:         208'),
+            ('retained for full text:           95','retained for full text:          130'),
+            ('title/abstract excluded:          43','title/abstract excluded:          78'),
+            ('unscreened:                      730','unscreened:                      660'),
+            ('full-text eligible:               95','full-text eligible:              130'),
+            ('full-text undecided:               0','full-text undecided:              35'),
+            ('The three Batch-2 high-information title/abstract exclusions are non-study objects: two eLife decision letters and one Dryad dataset record. Of the 26 reports retained conservatively for full text, nine are now included and seventeen excluded. The resulting cumulative state is 44 primary inclusions and 51 full-text exclusions. The geography counters remain 8/9/8 because V11 closes evidence eligibility without retroactively inferring geography from titles or author affiliations.','V12 adds 70 title/abstract decisions: 35 retain for full text and 35 exclude. The cumulative state is therefore 208 title/abstract decisions, 130 retained reports and 78 title/abstract exclusions. The 35 newly retained reports have not yet been full-text adjudicated, so the current full-text backlog is 35. Included-study, evidence-lane and geography counts remain at their V11 values until those full texts are coded.'),
+            ('### Batch-2 high-information full-text closure\n\nAll 26 retained high-information reports have now been adjudicated. V11 contributes nine inclusions and seven exclusions after the ten V10 exclusions. The next systematic work object is the remaining 71 Batch-2 title/abstract records, followed by later batches. Full-text closure of the currently retained set does not authorize pooled effects and does not mean the 868-record screen is complete.','### Batch-2 title/abstract closure\n\nBatch 2 is now 100/100 complete at title/abstract stage. V12 resolves the true remaining set as 70 rather than 71 because `SCHPRISMA-000172` had already been source-adjudicated before the high-information Batch-2 pass. V12 retains 35 reports for full text and excludes 35. The next systematic work object is full-text adjudication of those 35 reports; after that, screening proceeds to Batch 3. This does not authorize pooled effects and does not mean the 868-record screen is complete.'),
+            ('It remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 730 records remain title/abstract unscreened, and no common geography-by-cue-overlap estimand has passed independence/scale checks.','It remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 660 records remain title/abstract unscreened, 35 newly retained reports await full-text adjudication, and no common geography-by-cue-overlap estimand has passed independence/scale checks.'),
+            ('| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 730 records |','| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 660 records |'),
+            ('| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | Screen remaining 730 |','| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | Screen remaining 660 after current Batch-2 full-text closure |'),
+            ('| Batch 2 high-information | 29/29 TA decisions; 26 retained; 26/26 FT decided | Prioritized second-batch gate | Closed; next screen remaining 71 Batch-2 records |','| Batch 2 | 100/100 TA decisions; V12 adds 35 retained / 35 excluded | Second systematic batch | Full-text adjudicate the 35 newly retained reports |'),
+            ('| Formal screening cumulative | 138 TA decisions; 44 primary includes; current FT backlog 0 | Evidence lanes and blockers | Continue title/abstract screening: 730 remain |','| Formal screening cumulative | 208 TA decisions; 44 primary includes; current FT backlog 35 | Evidence lanes and blockers | Close 35 Batch-2 full texts, then continue with 660 unscreened records |'),
+            ('| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 138 TA decisions; 51 FT exclusions; 0 FT undecided |','| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 208 TA decisions; 51 FT exclusions; 35 FT undecided |'),
+            ('| Table 1 | Systematic study decisions/blockers | 138 TA screened; 44 primary includes; current FT queue closed |','| Table 1 | Systematic study decisions/blockers | 208 TA screened; 44 primary includes; 35 FT pending |'),
+          ]
+          for old,new in pairs: replace(led,old,new)
+
+          jbi='docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md'
+          pairs=[
+            ('Batch 1 (`SCHPRISMA-000001`–`000100`) is completely title/abstract screened and its retained reports are fully adjudicated. The 29 highest-information Batch-2 records also have formal title/abstract decisions. All 26 retained at that stage now have source-verified full-text decisions: nine are included and seventeen are excluded.','Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. V12 adjudicates the 70 Batch-2 records that were genuinely undecided after accounting for the prior V1 decision on `SCHPRISMA-000172`: 35 are retained for full text and 35 excluded.'),
+            ('title/abstract screened:               138','title/abstract screened:               208'),
+            ('retained for full text:                 95','retained for full text:                130'),
+            ('title/abstract excluded:                43','title/abstract excluded:                78'),
+            ('unscreened:                            730','unscreened:                            660'),
+            ('full-text undecided among retained:      0','full-text undecided among retained:     35'),
+            ('The Batch-2 high-information title/abstract screen excluded two peer-review/decision-letter objects and one dataset record. Full-text adjudication of all 26 retained reports is now complete. The cumulative included-study and evidence-lane counts increase, while the geography counters remain unchanged at 8/9/8 because V11 does not infer spatial contrasts from unreported metadata.','The Batch-2 high-information full-text queue remains closed, and V12 completes the remainder of Batch-2 title/abstract screening. Because the 35 newly retained reports have not yet been full-text coded, included-study and evidence-lane counts remain at 44 / 2 strict / 38 near / 12 evolutionary, and geography counters remain 8/9/8.'),
+            ('Batch 2 high-information TA screen:     COMPLETE (29/29)','Batch 2 title/abstract screening:       COMPLETE (100/100)'),
+            ('current retained full-text backlog:      0','current retained full-text backlog:     35'),
+            ('full title/abstract screening:          NO (730 remaining)','full title/abstract screening:          NO (660 remaining)'),
+            ('The next work object is the **remaining 71 Batch-2 title/abstract records**, followed by later screening batches.','The next work object is **full-text adjudication of the 35 newly retained Batch-2 reports**. Once that queue closes, title/abstract screening advances to Batch 3.'),
+          ]
+          for old,new in pairs: replace(jbi,old,new)
+
+          Path('docs/SCH_PRISMA_V12_BATCH2_TITLE_ABSTRACT_CLOSURE_READOUT.md').write_text('''# SCH PRISMA V12 — Batch-2 title/abstract closure\n\n## Machine-audited state\n\n```text\nfrozen denominator:                    868\ntitle/abstract screened:               208\nretained for full text:                130\ntitle/abstract excluded:                78\nTA unscreened:                         660\n\nreports assessed at full text:          95\nprimary studies included:               44\nfull-text excluded:                     51\ncurrent full-text undecided:            35\n\nSTRICT_LINKED_EXPERIMENT:                2\nDIRECTIONAL_OR_NEAR_PASS:               38\nEVOLUTIONARY_OUTCOME:                   12\n\npositive geographic contrasts:          8\npositive receiver contrasts:             9\njoint geography + receiver:              8\n```\n\nBatch 2 is 100/100 complete at title/abstract stage. The previously stated “71 remaining” was a bookkeeping overcount: `SCHPRISMA-000172` already had a source-adjudicated V1 decision, so V12 correctly contains 70 new decisions. These split evenly into 35 full-text retentions and 35 exclusions.\n\nThe 35 newly retained reports reopen the full-text queue. This is expected and does not reverse V11: V11 closed all full texts among the reports retained *at that time*. V12 adds new retained reports by completing Batch-2 title/abstract screening. Evidence-lane and geography counts cannot change until those 35 full texts are adjudicated.\n\nNo pooled effect is authorized by this screening progress alone.\n''',encoding='utf-8')
+          PY
+      - name: Validate synchronized prose contracts
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_current_screening_state.py tests/test_sch_bita_scope_contract.py
+          grep -q '208 TA decisions' docs/PUBLICATION_MATERIAL_LEDGER.md
+          grep -q 'COMPLETE (100/100)' docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md
+          grep -q 'bookkeeping overcount' docs/SCH_PRISMA_V12_BATCH2_TITLE_ABSTRACT_CLOSURE_READOUT.md
+      - name: Commit non-workflow V12 synchronization
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/PUBLICATION_MATERIAL_LEDGER.md docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md docs/SCH_PRISMA_V12_BATCH2_TITLE_ABSTRACT_CLOSURE_READOUT.md
+          git commit -m 'Synchronize Batch 2 title-abstract closure state'
+          git push origin HEAD:analysis/prisma-batch2-title-abstract-closure-v1
