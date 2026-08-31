@@ -25,9 +25,7 @@ def _base_row(i: int) -> dict[str, str]:
 
 def _write_batches(directory: Path, rows: list[dict[str, str]]) -> None:
     directory.mkdir(parents=True, exist_ok=True)
-    with (directory / "SCH_PRISMA_V2_SCREEN_BATCH_01.csv").open(
-        "w", encoding="utf-8", newline=""
-    ) as handle:
+    with (directory / "SCH_PRISMA_V2_SCREEN_BATCH_01.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=OUTPUT_FIELDS)
         writer.writeheader()
         writer.writerows(rows)
@@ -69,7 +67,7 @@ def test_included_fulltext_requires_available_status_and_evidence_lane(tmp_path)
         raise AssertionError("included full text without lane must fail")
 
 
-def test_complete_screening_generates_prisma_counts_and_geography_counts(tmp_path) -> None:
+def test_complete_screening_separates_not_retrieved_from_assessed_reports(tmp_path) -> None:
     rows = [_base_row(i) for i in range(1, 5)]
     rows[0]["screen_title_abstract"] = "RETAIN_FULLTEXT"
     rows[0]["fulltext_status"] = "AVAILABLE"
@@ -92,13 +90,17 @@ def test_complete_screening_generates_prisma_counts_and_geography_counts(tmp_pat
     _write_batches(tmp_path, rows)
     receipt = audit(tmp_path, expected_denominator=4)
     assert receipt["screening_status"] == "SCREENING_COMPLETE"
+    assert receipt["fulltext"]["decision_excluded"] == 1
+    assert receipt["fulltext"]["assessed_excluded"] == 0
+    assert receipt["fulltext"]["unavailable"] == 1
     assert receipt["prisma_flow"] == {
         "records_identified_after_deduplication": 4,
         "records_screened_title_abstract": 4,
         "records_excluded_title_abstract": 2,
         "reports_sought_for_retrieval": 2,
-        "reports_assessed_for_eligibility": 2,
-        "reports_excluded_fulltext": 1,
+        "reports_not_retrieved": 1,
+        "reports_assessed_for_eligibility": 1,
+        "reports_excluded_fulltext": 0,
         "studies_included": 1,
     }
     assert receipt["evidence_lane_counts"]["STRICT_LINKED_EXPERIMENT"] == 1
@@ -106,6 +108,21 @@ def test_complete_screening_generates_prisma_counts_and_geography_counts(tmp_pat
     assert receipt["geography"]["geographic_contrast_positive"] == 1
     assert receipt["geography"]["receiver_assemblage_contrast_reported"] == 0
     assert receipt["geography"]["receiver_assemblage_contrast_positive"] == 0
+
+
+def test_available_report_cannot_use_fulltext_unavailable_reason(tmp_path) -> None:
+    rows = [_base_row(1)]
+    rows[0]["screen_title_abstract"] = "RETAIN_FULLTEXT"
+    rows[0]["fulltext_status"] = "AVAILABLE"
+    rows[0]["screen_fulltext"] = "EXCLUDE"
+    rows[0]["screen_fulltext_reason"] = "FT_FULLTEXT_UNAVAILABLE"
+    _write_batches(tmp_path, rows)
+    try:
+        audit(tmp_path, expected_denominator=1)
+    except ValueError as exc:
+        assert "requires status=UNAVAILABLE" in str(exc)
+    else:
+        raise AssertionError("available report using unavailable reason must fail")
 
 
 def test_negative_or_non_geographic_codes_are_reported_but_not_positive(tmp_path) -> None:
