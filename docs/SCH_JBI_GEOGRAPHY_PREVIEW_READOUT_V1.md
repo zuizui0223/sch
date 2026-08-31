@@ -54,30 +54,31 @@ retained for full text:                158
 title/abstract excluded:                83
 unscreened:                            627
 
-primary full-text inclusions:           53
-formal full-text exclusions:            77
-full-text undecided among retained:     28
+primary full-text inclusions:           73
+formal full-text exclusions:            85
+full-text undecided among retained:      0
 
 STRICT_LINKED_EXPERIMENT:                2
-DIRECTIONAL_OR_NEAR_PASS:               46
-EVOLUTIONARY_OUTCOME:                   15
+DIRECTIONAL_OR_NEAR_PASS:               64
+EVOLUTIONARY_OUTCOME:                   22
+HISTORICAL_TRANSITION:                    1
 ```
 
-Batch 2 is now closed at both title/abstract and current full-text stages. V13 contributes nine inclusions, twenty-five assessed exclusions and one not-retrieved report. Strict remains 2, while near-pass and evolutionary lanes rise to 46 and 15.
+Batch 2 remains closed. V15 now also closes the 28 high-information Batch-3 full texts retained by V14: 20 are included and eight excluded. Strict remains 2, while near-pass and evolutionary lanes rise to 64 and 22; one role-transition study enters the historical-transition lane without satisfying L4.
 
 ## Geography counters
 
 The current audit explicitly separates spatial and receiver-regime evidence:
 
 ```text
-positive geographic contrast:            11
-positive receiver/interactor contrast:    11
-joint geographic + receiver records:      10
+positive geographic contrast:            13
+positive receiver/interactor contrast:    12
+joint geographic + receiver records:      11
 ```
 
 The joint counter is the JBI-relevant object: both a real geographic contrast and a real receiver/interactor-regime contrast must occur in the same included record.
 
-The ten current joint-positive records are:
+The eleven current joint-positive records are:
 
 ```text
 SCHPRISMA-000008  Erysimum mediohispanicum
@@ -97,6 +98,9 @@ SCHPRISMA-000074  coffee agroecosystem dissertation
 
 SCHPRISMA-000151  Lithophragma bolanderi
                    two-population pollinator-community and local-efficacy divergence
+
+SCHPRISMA-000217  Lithophragma heterophyllum / L. parviflorum
+                   Hopland-versus-Hastings floral-visitor assemblage and Greya pollinating-parasite contrast
 
 SCHPRISMA-000167  Primula farinosa
                    overlapping thesis/manuscript selection mosaic; same program as SCHPRISMA-000523
@@ -160,21 +164,21 @@ frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
 Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:     28
-multiple joint geographic records:      YES (10 records; at most 9 obvious independent systems)
+current retained full-text backlog:      0
+multiple joint geographic records:      YES (11 records; independence count not frozen)
 full title/abstract screening:          NO (627 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
 ```
 
-The change from historical `1/8` to ten joint-positive records across at most nine obvious independent biological systems means the geography axis is worth developing. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
+The change from historical `1/8` to eleven joint-positive records means the geography axis is worth developing, but overlapping *Primula* and *Lithophragma* research programs must be clustered before any independent-system count is frozen. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
 
 A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-The Batch-3 abstract-free triage packet identifies 33 high-information records after excluding the already-adjudicated `SCHPRISMA-000219`. V14 retains 28 and excludes five. The next work object is **full-text adjudication of those 28 high-information reports**, followed by the remaining 66 genuinely new Batch-3 title/abstract records. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
+The Batch-3 high-information queue is now closed through full text under V15. The next work object is the **remaining 66 genuinely new Batch-3 title/abstract records**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
 
 The same rules continue:
 

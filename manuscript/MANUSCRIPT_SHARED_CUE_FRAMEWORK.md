@@ -76,7 +76,7 @@ L0  contemporary dual-audience response / opposing selection
  -> L4  reconstructed shared-cue -> private-cue transition under both audiences
 ```
 
-Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. The strict L4 endpoint remains unrecovered.
+Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. V15 also recovers a bounded receiver-role transition from florivory to pollination, but that transition does not reconstruct shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
 
 ## 6. First coverage gate
 
@@ -98,6 +98,9 @@ A manipulated
 - **Junker & Blüthgen 2010:** a same-synthetic-scent near-pass in which bumblebees are attracted while ants are repelled; the opposite receiver responses are on the same chemical coordinate, but no common plant reproductive outcome is measured.
 - **Knauer, Bakhtiari & Schiestl 2018:** antagonist removal by crab spiders changes the ecological context of floral-signal evolution; a mechanism/context anchor rather than a current strict coverage pass.
 - **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya*:** population differences in floral morphology and pollinator assemblage are matched by local-versus-nonlocal differences in pollination efficacy and oviposition, supporting a geographic coevolutionary mosaic without a randomized floral `A`.
+- **Chen & Pannell 2022:** pollination and seed predation generate a disruptive selection surface on flowering height across alpine populations; the focal floral axis is observational, so this strengthens the compromise/branching precursor layer rather than the strict causal gate.
+- **Ramos & Schiestl 2020:** four generations of experimental evolution under reduced herbivore load shift floral fragrance, directly showing antagonist-mediated evolutionary redirection without a same-generation paired pollinator/antagonist fitness surface.
+- **Syngonium plant-bug transition:** comparative and behavioural evidence links recruitment of ancestrally florivorous plant bugs as specialized pollinators to a novel attractive floral volatile. This is a receiver-role transition and floral-trait divergence, not a reconstructed shared-cue → private-cue transition.
 
 The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
 
