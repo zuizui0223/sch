@@ -1,0 +1,51 @@
+name: audit-sch-prisma-v13-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch2-fulltext-closure-v2
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply V1-V13 and audit
+        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          mkdir -p artifacts/v13
+          python scripts/build_sch_prisma_screening_batches.py "$FROZEN" artifacts/v13/base --batch-size 100
+          SRC=artifacts/v13/base
+          mapfile -t overlays < <(find empirical/prisma -maxdepth 1 -type f -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V)
+          test "${#overlays[@]}" -eq 13
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V13_BATCH2_FULLTEXT_CLOSURE.csv'
+          for i in "${!overlays[@]}"; do
+            n=$((i+1)); OUT="artifacts/v13/active_${n}"
+            python scripts/apply_sch_prisma_screening_decisions.py "$SRC" "${overlays[$i]}" "$OUT" "artifacts/v13/overlay_${n}.json" --expected-denominator 868
+            SRC="$OUT"
+          done
+          python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/v13/audit.json --expected-denominator 868
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('artifacts/v13/audit.json').read_text())
+          assert d['title_abstract']['retained_for_fulltext']==130,d
+          assert d['title_abstract']['excluded']==78,d
+          assert d['title_abstract']['unscreened']==660,d
+          assert d['fulltext']['eligible_after_title_abstract']==130,d
+          assert d['fulltext']['included']==53,d
+          assert d['fulltext']['excluded']==77,d
+          assert d['fulltext']['unscreened']==0,d
+          assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
+          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==46,d
+          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==15,d
+          assert d['geography']['geographic_contrast_positive']==11,d
+          assert d['geography']['receiver_assemblage_contrast_positive']==11,d
+          assert d['geography']['joint_geographic_receiver_positive']==10,d
+          assert d['prisma_flow']['records_screened_title_abstract']==208,d
+          print(json.dumps(d, indent=2))
+          PY
