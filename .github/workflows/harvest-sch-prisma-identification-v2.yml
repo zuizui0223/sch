@@ -71,8 +71,9 @@ jobs:
           python - <<'PY'
           import re
           from pathlib import Path
-          paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'), key=lambda p:int(re.search(r'_V(\d+)',p.name).group(1)))
-          versions=[int(re.search(r'_V(\d+)',p.name).group(1)) for p in paths]
+          version_re=re.compile(r'SCREENING_DECISIONS_V(\d+)')
+          paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'), key=lambda p:int(version_re.search(p.name).group(1)))
+          versions=[int(version_re.search(p.name).group(1)) for p in paths]
           assert versions==list(range(1,max(versions)+1)),versions
           assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V16_BATCH3_REMAINDER_TITLE_ABSTRACT.csv',paths[-1]
           PY
@@ -129,7 +130,11 @@ jobs:
               with path.open(encoding='utf-8',newline='') as h:
                   for row in csv.DictReader(h): active[row['record_id']]=row
           assert all(active[f'SCHPRISMA-{i:06d}']['screen_title_abstract'] in {'RETAIN_FULLTEXT','EXCLUDE'} for i in range(201,301))
-          assert all(active[r]['screen_fulltext'] in {'INCLUDE','EXCLUDE'} for r in [f'SCHPRISMA-{i:06d}' for i in range(201,301)] if active[r]['screen_title_abstract']=='RETAIN_FULLTEXT' and r not in {row['record_id'] for row in csv.DictReader(open('empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V16_BATCH3_REMAINDER_TITLE_ABSTRACT.csv',encoding='utf-8')) if row['screen_title_abstract']=='RETAIN_FULLTEXT'})
+          with open('empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V16_BATCH3_REMAINDER_TITLE_ABSTRACT.csv',encoding='utf-8',newline='') as handle:
+              new_retained={row['record_id'] for row in csv.DictReader(handle) if row['screen_title_abstract']=='RETAIN_FULLTEXT'}
+          assert len(new_retained)==44
+          prior_retained=[f'SCHPRISMA-{i:06d}' for i in range(201,301) if active[f'SCHPRISMA-{i:06d}']['screen_title_abstract']=='RETAIN_FULLTEXT' and f'SCHPRISMA-{i:06d}' not in new_retained]
+          assert all(active[r]['screen_fulltext'] in {'INCLUDE','EXCLUDE'} for r in prior_retained)
           q=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_REMAINDER_QUEUE.csv')
           m=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_03_REMAINDER_QUEUE_RECEIPT.json')
           with q.open(encoding='utf-8',newline='') as h: rows=list(csv.DictReader(h))
