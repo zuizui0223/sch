@@ -168,8 +168,24 @@ def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
 
-def test_v13_decision_provenance_is_explicit() -> None:
-    rows = _rows()
-    sources = Counter(row["decision_source"] for row in rows)
-    assert sources["ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"] == 70
-    assert sources["SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"] == 35
+def test_v12_and_v13_provenance_remain_stage_specific_in_raw_overlays() -> None:
+    files = _decision_files()
+    v12 = _read(files[-2])
+    v13 = _read(files[-1])
+
+    assert len(v12) == 70
+    assert {row["decision_source"] for row in v12} == {
+        "ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"
+    }
+    assert len(v13) == 35
+    assert {row["decision_source"] for row in v13} == {
+        "SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"
+    }
+
+    # decision_source is overlay-level provenance, not a cumulative-history field.
+    # In the merged latest-state view, V13 legitimately replaces the latest source
+    # for the 35 records that received a full-text adjudication while the 35 V12
+    # title/abstract exclusions retain their V12 source.
+    merged_sources = Counter(row["decision_source"] for row in _rows())
+    assert merged_sources["ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"] == 35
+    assert merged_sources["SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"] == 35
