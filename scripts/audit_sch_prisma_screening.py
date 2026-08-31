@@ -4,7 +4,8 @@ The input is a directory of deterministic screening-batch CSVs. This script
 validates allowed title/abstract and full-text decision codes, detects duplicate
 or missing record IDs, checks reason/decision consistency, and emits a single
 progress/PRISMA-flow receipt. It never infers a scientific decision from blank
-fields.
+fields. Reports marked UNAVAILABLE are resolved retrieval outcomes, not reports
+assessed for eligibility, and are kept separate in the PRISMA flow.
 """
 from __future__ import annotations
 
@@ -131,6 +132,8 @@ def _validate_fulltext(row: dict[str, str]) -> None:
         raise ValueError(f"{row['record_id']}: unavailable full text cannot be included")
     if status == "UNAVAILABLE" and decision == "EXCLUDE" and reason != "FT_FULLTEXT_UNAVAILABLE":
         raise ValueError(f"{row['record_id']}: unavailable full text must use FT_FULLTEXT_UNAVAILABLE")
+    if status == "AVAILABLE" and reason == "FT_FULLTEXT_UNAVAILABLE":
+        raise ValueError(f"{row['record_id']}: FT_FULLTEXT_UNAVAILABLE requires status=UNAVAILABLE")
 
 
 def _reported(value: str) -> bool:
@@ -138,12 +141,6 @@ def _reported(value: str) -> bool:
 
 
 def _positive_geographic_contrast(value: str) -> bool:
-    """Fail-closed positive geography gate.
-
-    A populated negative/no-contrast code is useful reporting metadata but must
-    not be counted as evidence for a JBI biogeographic contrast. Experimental
-    setting contrasts explicitly labelled non-geographic are also negative.
-    """
     if not _reported(value):
         return False
     upper = value.upper()
@@ -202,6 +199,10 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
     ta_counts = Counter(row.get("screen_title_abstract", "") or "UNSCREENED" for row in rows)
     ft_eligible = [row for row in rows if row.get("screen_title_abstract") == "RETAIN_FULLTEXT"]
     ft_counts = Counter(row.get("screen_fulltext", "") or "UNSCREENED" for row in ft_eligible)
+    unavailable = [row for row in ft_eligible if row.get("fulltext_status") == "UNAVAILABLE"]
+    assessed = [row for row in ft_eligible if row.get("fulltext_status") == "AVAILABLE" and row.get("screen_fulltext") in {"INCLUDE", "EXCLUDE"}]
+    assessed_excluded = [row for row in assessed if row.get("screen_fulltext") == "EXCLUDE"]
+
     ta_reason_counts = Counter(
         row["screen_title_abstract_reason"] for row in rows if row.get("screen_title_abstract") == "EXCLUDE"
     )
@@ -214,18 +215,18 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
             lane_counts.update(value for value in row.get("evidence_lanes", "").split(";") if value)
 
     ta_decided = ta_counts["RETAIN_FULLTEXT"] + ta_counts["EXCLUDE"]
-    ft_decided = ft_counts["INCLUDE"] + ft_counts["EXCLUDE"]
+    ft_resolved = ft_counts["INCLUDE"] + ft_counts["EXCLUDE"]
     if ta_decided == 0:
         status = "TITLE_ABSTRACT_NOT_STARTED"
     elif ta_decided < len(rows):
         status = "TITLE_ABSTRACT_IN_PROGRESS"
-    elif ft_decided < len(ft_eligible):
+    elif ft_resolved < len(ft_eligible):
         status = "FULLTEXT_IN_PROGRESS"
     else:
         status = "SCREENING_COMPLETE"
 
     return {
-        "analysis_id": "sch_prisma_v2_screening_audit_v1",
+        "analysis_id": "sch_prisma_v2_screening_audit_v2",
         "identified_records": len(rows),
         "title_abstract": {
             "retained_for_fulltext": ta_counts["RETAIN_FULLTEXT"],
@@ -236,7 +237,9 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
         "fulltext": {
             "eligible_after_title_abstract": len(ft_eligible),
             "included": ft_counts["INCLUDE"],
-            "excluded": ft_counts["EXCLUDE"],
+            "decision_excluded": ft_counts["EXCLUDE"],
+            "assessed_excluded": len(assessed_excluded),
+            "unavailable": len(unavailable),
             "unscreened": ft_counts["UNSCREENED"],
             "reason_counts": dict(sorted(ft_reason_counts.items())),
         },
@@ -248,14 +251,15 @@ def audit(batch_dir: Path, *, expected_denominator: int | None = 868) -> dict[st
             "records_screened_title_abstract": ta_decided,
             "records_excluded_title_abstract": ta_counts["EXCLUDE"],
             "reports_sought_for_retrieval": ta_counts["RETAIN_FULLTEXT"],
-            "reports_assessed_for_eligibility": ft_decided,
-            "reports_excluded_fulltext": ft_counts["EXCLUDE"],
+            "reports_not_retrieved": len(unavailable),
+            "reports_assessed_for_eligibility": len(assessed),
+            "reports_excluded_fulltext": len(assessed_excluded),
             "studies_included": ft_counts["INCLUDE"],
         },
         "claim_boundary": (
             "Counts are valid only for protocol-coded decisions present in the batch files. "
-            "UNSCREENED is not an exclusion. Reported geography is not positive geography: "
-            "NO_* and NOT_GEOGRAPHIC states are explicitly excluded from the positive JBI contrast count. "
+            "UNSCREENED is not an exclusion. UNAVAILABLE is a retrieval outcome and is not counted as a report assessed for eligibility. "
+            "Reported geography is not positive geography: NO_* and NOT_GEOGRAPHIC states are explicitly excluded from the positive JBI contrast count. "
             "The joint geography-receiver counter requires both a positive geographic contrast and a positive receiver/interactor contrast in the same included record. "
             "Screening completion does not itself authorize pooling; outcome-scale and independence gates remain separate."
         ),
