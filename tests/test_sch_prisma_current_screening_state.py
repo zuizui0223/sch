@@ -17,6 +17,7 @@ DECISION_FILES = (
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V8_BATCH1_ABSTRACT_ONLY_FULLTEXT.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V9_BATCH2_HIGH_INFORMATION.csv",
     ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V10_BATCH2_HIGH_INFORMATION_EXCLUSIONS.csv",
+    ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V11_BATCH2_FULLTEXT_CLOSURE.csv",
 )
 DENOMINATOR = 868
 
@@ -78,16 +79,16 @@ def test_batch1_and_batch2_high_information_are_screened() -> None:
     assert batch2_high_information <= decided_ids
 
 
-def test_batch2_high_information_fulltext_backlog_is_reduced_by_v10() -> None:
+def test_batch2_high_information_fulltext_queue_is_closed_by_v11() -> None:
     rows = _rows()
     ft = Counter(
         row["screen_fulltext"] or "UNSCREENED"
         for row in rows
         if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
     )
-    assert ft["INCLUDE"] == 35
-    assert ft["EXCLUDE"] == 44
-    assert ft["UNSCREENED"] == 16
+    assert ft["INCLUDE"] == 44
+    assert ft["EXCLUDE"] == 51
+    assert ft["UNSCREENED"] == 0
 
     v10_excluded = {
         row["record_id"]
@@ -121,21 +122,21 @@ def test_batch2_high_information_fulltext_backlog_is_reduced_by_v10() -> None:
     }
 
 
-def test_current_evidence_lanes_keep_one_strict_anchor_after_v10_fulltext() -> None:
+def test_current_evidence_lanes_keep_two_strict_measurement_architectures_after_v11() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
     lanes: Counter[str] = Counter()
     for row in rows:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
-    assert lanes["STRICT_LINKED_EXPERIMENT"] == 1
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 30
-    assert lanes["EVOLUTIONARY_OUTCOME"] == 11
+    assert lanes["STRICT_LINKED_EXPERIMENT"] == 2
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 38
+    assert lanes["EVOLUTIONARY_OUTCOME"] == 12
     strict = [row for row in rows if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
-    assert [row["record_id"] for row in strict] == ["SCHPRISMA-000031"]
+    assert [row["record_id"] for row in strict] == ["SCHPRISMA-000031", "SCHPRISMA-000166"]
 
 
 def test_jbi_geography_and_receiver_counts_are_not_conflated() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(rows) == 35
+    assert len(rows) == 44
     geo = [row["record_id"] for row in rows if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in rows if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
@@ -174,7 +175,7 @@ def test_same_code_and_disa_near_passes_do_not_inflate_strict_count() -> None:
     assert disa["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
 
 
-def test_decision_provenance_remains_explicit_after_v10_fulltext() -> None:
+def test_decision_provenance_remains_explicit_after_v11_fulltext() -> None:
     rows = _rows()
     sources = Counter(row["decision_source"] for row in rows)
     assert sources["PRIOR_SOURCE_ADJUDICATION_FULLTEXT_2026-08-30"] == 8
@@ -185,5 +186,6 @@ def test_decision_provenance_remains_explicit_after_v10_fulltext() -> None:
     assert sources["SOURCE_VERIFIED_MEDIUM_FULLTEXT_2026-08-30"] == 25
     assert sources["ASSISTED_METADATA_AND_ABSTRACT_SCREEN_2026-08-30"] == 18
     assert sources["SOURCE_VERIFIED_ABSTRACT_ONLY_FULLTEXT_2026-08-30"] == 13
-    assert sources["ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"] == 19
+    assert sources["ASSISTED_OPENALEX_ABSTRACT_SCREEN_2026-08-30"] == 3
     assert sources["SOURCE_VERIFIED_BATCH2_FULLTEXT_2026-08-30"] == 10
+    assert sources["SOURCE_VERIFIED_BATCH2_FULLTEXT_2026-08-31"] == 16

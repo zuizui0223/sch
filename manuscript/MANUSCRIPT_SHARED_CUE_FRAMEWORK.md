@@ -92,10 +92,13 @@ A manipulated
 ## 7. Evidence spine
 
 - **Sasidharan et al. 2023:** cross-study cue-response synthesis; supports recurrent shared attraction and rarer shared repulsion under source-version and pairing limits.
-- **Theis & Adler 2012:** current directional-only coverage pass; enhanced fragrance increased florivore attraction and reduced seed production, without a detected pollinator-attraction increase.
+- **Theis & Adler 2012:** one of two current strict linked measurement-architecture passes; enhanced fragrance increased florivore attraction and reduced seed production, without a detected pollinator-attraction increase.
+- **Sánchez-Lafuente 2007, *Linaria lilacina*:** the second strict linked measurement-architecture pass; experimental corolla damage changed pollinator response and reproduction while fruit-predator visitation showed no treatment response.
 - **Page et al. 2014:** floral colour and scent predict seed-eating pollinator host choice; supports antagonist use of floral cues but supplies no same-study pollination coefficient for the same axes.
 - **Junker & Blüthgen 2010:** independent evidence that floral scent responses depend on consumer resource dependence; categories do not map exactly onto pollinator versus antagonist roles.
 - **Knauer, Bakhtiari & Schiestl 2018:** antagonist removal by crab spiders changes the ecological context of floral-signal evolution; a mechanism/context anchor rather than a current strict coverage pass.
+
+The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
 
 Three additional source-adjudicated systems form a supporting ring rather than strict passes. Kessler et al. (2015) manipulates a shared scent coordinate but separates pollinator-mediated seed production from antagonist oviposition across assay structures. Pérez-Barrales et al. (2013) links both visitor roles and reproductive components to the same bract axis, but `A` is observational. Theis et al. (2014) provides comparative shared tracking of floral sesquiterpenoids without an `A` manipulation or common reproductive outcome. These near passes locate the measurement gap more precisely: manipulation, paired consumer responses and a commensurable plant outcome are usually distributed across different designs.
 

@@ -82,8 +82,8 @@ jobs:
             find empirical/prisma -maxdepth 1 -type f \
               -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V
           )
-          test "${#overlays[@]}" -eq 10
-          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V10_BATCH2_HIGH_INFORMATION_EXCLUSIONS.csv'
+          test "${#overlays[@]}" -eq 11
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V11_BATCH2_FULLTEXT_CLOSURE.csv'
           i=0
           for overlay in "${overlays[@]}"; do
             i=$((i+1))
@@ -101,7 +101,7 @@ jobs:
             artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json \
             --expected-denominator 868
 
-      - name: Require Batch 1 plus Batch 2 high-information state
+      - name: Require Batch 1 plus Batch 2 high-information full-text closure
         run: |
           python - <<'PY'
           import json
@@ -113,17 +113,19 @@ jobs:
           assert current['title_abstract']['excluded'] == 43, current
           assert current['title_abstract']['unscreened'] == 730, current
           assert current['fulltext']['eligible_after_title_abstract'] == 95, current
-          assert current['fulltext']['included'] == 35, current
-          assert current['fulltext']['excluded'] == 44, current
-          assert current['fulltext']['unscreened'] == 16, current
-          assert current['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT'] == 1, current
-          assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 30, current
-          assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 11, current
+          assert current['fulltext']['included'] == 44, current
+          assert current['fulltext']['excluded'] == 51, current
+          assert current['fulltext']['unscreened'] == 0, current
+          assert current['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT'] == 2, current
+          assert current['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS'] == 38, current
+          assert current['evidence_lane_counts']['EVOLUTIONARY_OUTCOME'] == 12, current
           assert current['geography']['geographic_contrast_positive'] == 8, current
           assert current['geography']['receiver_assemblage_contrast_positive'] == 9, current
           assert current['geography']['joint_geographic_receiver_positive'] == 8, current
           assert current['prisma_flow']['records_screened_title_abstract'] == 138, current
-          assert current['prisma_flow']['studies_included'] == 35, current
+          assert current['prisma_flow']['reports_assessed_for_eligibility'] == 95, current
+          assert current['prisma_flow']['reports_excluded_fulltext'] == 51, current
+          assert current['prisma_flow']['studies_included'] == 44, current
           PY
 
       - name: Preserve abstract-free Batch 1 provenance packet
