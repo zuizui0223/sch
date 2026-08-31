@@ -1,0 +1,15 @@
+{
+  "source_repository": "https://github.com/zuizui0223/bita",
+  "source_commit": "20cd517b9b482e7e3e232a5088ae9c6422286418",
+  "normalization": "utf8_lf",
+  "artifacts": {
+    "data/source_exports/BITA_TABLE_S3_MECHANISM_PATTERN_LEDGER.csv": {
+      "source_path": "manuscript/supplementary/tables/TABLE_S3_MECHANISM_PATTERN_LEDGER.csv",
+      "sha256": "d3454f2caeab4f7cb5714647c3bffadb67ccd132983ab406b03f394913e989c6"
+    },
+    "data/source_exports/BITA_HIGH_INFORMATION_IDENTIFICATION_COVERAGE_V1.csv": {
+      "source_path": "empirical/identification_design/HIGH_INFORMATION_IDENTIFICATION_COVERAGE_V1.csv",
+      "sha256": "9e98105c0d7aa124926d2b63a3e669ae1c135fd374710e2e9398dc25d85720d7"
+    }
+  }
+}

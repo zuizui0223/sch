@@ -1,0 +1,48 @@
+name: Plan Ficus same-code assay
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/plan_ficus_same_code_assay.py'
+      - 'scripts/classify_ficus_same_code_receiver.py'
+      - 'scripts/analyze_ficus_same_code_trials.py'
+      - 'tests/test_ficus_same_code_assay_power.py'
+      - 'tests/test_ficus_same_code_receiver_classifier.py'
+      - 'tests/test_ficus_same_code_trial_analysis.py'
+      - 'tests/test_ficus_same_code_trial_contract.py'
+      - 'tests/test_ficus_same_code_experiment_protocol.py'
+      - 'docs/SCH_FICUS_SAME_CODE_EXPERIMENT_PROTOCOL_V1.md'
+      - 'docs/SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md'
+      - 'empirical/one_trait_shared_cue/FICUS_SAME_CODE_TRIAL_TEMPLATE_V1.csv'
+      - '.github/workflows/plan-ficus-same-code-assay.yml'
+  workflow_dispatch:
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test same-code planning and trial-analysis rules
+        run: |
+          python -m pip install pytest
+          python -m pytest -q \
+            tests/test_ficus_same_code_assay_power.py \
+            tests/test_ficus_same_code_receiver_classifier.py \
+            tests/test_ficus_same_code_trial_analysis.py \
+            tests/test_ficus_same_code_trial_contract.py \
+            tests/test_ficus_same_code_experiment_protocol.py
+      - name: Smoke-test direct analysis CLI
+        run: |
+          python scripts/classify_ficus_same_code_receiver.py --help >/dev/null
+          python scripts/analyze_ficus_same_code_trials.py --help >/dev/null
+      - name: Build prospective assay plan
+        run: |
+          mkdir -p artifacts/ficus_same_code
+          python scripts/plan_ficus_same_code_assay.py artifacts/ficus_same_code/FICUS_SAME_CODE_ASSAY_POWER_V1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ficus-same-code-assay-power
+          path: artifacts/ficus_same_code/

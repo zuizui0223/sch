@@ -1,0 +1,159 @@
+{
+  "protocol_version": "SCH_PRISMA_V2",
+  "retrieved_at_utc": "2026-08-29T06:59:57.002009+00:00",
+  "discovery_database": "OPENALEX",
+  "registered_cap_per_query": 2500,
+  "query_count": 14,
+  "raw_openalex_records_retrieved": 10953,
+  "automated_concept_pass_hits_across_queries": 2107,
+  "automated_concept_filter_fail_hits_across_queries": 8846,
+  "deduplicated_unscreened_candidates": 868,
+  "duplicate_concept_pass_query_hits_removed": 1239,
+  "any_truncated_query": false,
+  "systematic_completion_status": "PRISMA_V2_IDENTIFICATION_COMPLETE",
+  "query_results": [
+    {
+      "query_id": "Q01",
+      "query_text": "\"floral scent\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 2050,
+      "retrieved_records": 2050,
+      "concept_pass_hits": 288,
+      "concept_filter_fail_hits": 1762,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "\"floral scent\" pollinator florivore",
+      "registered_cap": 2500,
+      "reported_total_results": 263,
+      "retrieved_records": 263,
+      "concept_pass_hits": 97,
+      "concept_filter_fail_hits": 166,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "\"floral scent\" pollinator \"seed predator\"",
+      "registered_cap": 2500,
+      "reported_total_results": 236,
+      "retrieved_records": 236,
+      "concept_pass_hits": 66,
+      "concept_filter_fail_hits": 170,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "\"floral scent\" pollinator \"nectar robber\"",
+      "registered_cap": 2500,
+      "reported_total_results": 193,
+      "retrieved_records": 193,
+      "concept_pass_hits": 60,
+      "concept_filter_fail_hits": 133,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "\"floral volatile\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 1385,
+      "retrieved_records": 1385,
+      "concept_pass_hits": 230,
+      "concept_filter_fail_hits": 1155,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "\"floral color\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 375,
+      "retrieved_records": 375,
+      "concept_pass_hits": 63,
+      "concept_filter_fail_hits": 312,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "\"floral colour\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 298,
+      "retrieved_records": 298,
+      "concept_pass_hits": 51,
+      "concept_filter_fail_hits": 247,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "\"floral display\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 1078,
+      "retrieved_records": 1078,
+      "concept_pass_hits": 231,
+      "concept_filter_fail_hits": 847,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "\"flower size\" pollinator herbivore",
+      "registered_cap": 2500,
+      "reported_total_results": 1023,
+      "retrieved_records": 1023,
+      "concept_pass_hits": 186,
+      "concept_filter_fail_hits": 837,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "\"floral trait\" pollinator antagonist",
+      "registered_cap": 2500,
+      "reported_total_results": 1297,
+      "retrieved_records": 1297,
+      "concept_pass_hits": 315,
+      "concept_filter_fail_hits": 982,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "\"floral signal\" pollinator antagonist",
+      "registered_cap": 2500,
+      "reported_total_results": 346,
+      "retrieved_records": 346,
+      "concept_pass_hits": 91,
+      "concept_filter_fail_hits": 255,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "flower pollinator \"seed predator\" trait",
+      "registered_cap": 2500,
+      "reported_total_results": 1677,
+      "retrieved_records": 1677,
+      "concept_pass_hits": 219,
+      "concept_filter_fail_hits": 1458,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q13",
+      "query_text": "flower pollinator \"nectar robber\" trait",
+      "registered_cap": 2500,
+      "reported_total_results": 719,
+      "retrieved_records": 719,
+      "concept_pass_hits": 208,
+      "concept_filter_fail_hits": 511,
+      "truncated_at_registered_cap": false
+    },
+    {
+      "query_id": "Q14",
+      "query_text": "fig scent pollinator \"non-pollinating wasp\"",
+      "registered_cap": 2500,
+      "reported_total_results": 13,
+      "retrieved_records": 13,
+      "concept_pass_hits": 2,
+      "concept_filter_fail_hits": 11,
+      "truncated_at_registered_cap": false
+    }
+  ],
+  "stored_abstracts": false,
+  "crossref_discovery": false,
+  "claim_boundary": "V2 COMPLETE means the registered OpenAlex identification/search coordinate was fully retrieved and filtered. It does not mean title/abstract screening, full-text screening, scientific inclusion, prevalence estimation, or JBI geographic-fit coding is complete."
+}

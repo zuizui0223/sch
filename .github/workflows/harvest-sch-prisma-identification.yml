@@ -1,0 +1,35 @@
+name: Harvest SCH PRISMA identification
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/harvest_sch_prisma_candidates.py'
+      - 'tests/test_sch_prisma_harvester.py'
+      - 'docs/SCH_PRISMA_SEARCH_PROTOCOL_V1.md'
+      - 'docs/SCH_JBI_SUBMISSION_CONTRACT_V1.md'
+      - '.github/workflows/harvest-sch-prisma-identification.yml'
+  workflow_dispatch:
+
+jobs:
+  identify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test registered harvester
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_harvester.py
+      - name: Run registered identification pass
+        run: |
+          mkdir -p artifacts/sch_prisma
+          python scripts/harvest_sch_prisma_candidates.py \
+            artifacts/sch_prisma/SCH_PRISMA_IDENTIFIED_CANDIDATES_V1.csv \
+            artifacts/sch_prisma/SCH_PRISMA_IDENTIFICATION_RECEIPT_V1.json \
+            --cap 200
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-prisma-identification-v1
+          path: artifacts/sch_prisma/

@@ -1,0 +1,14 @@
+{
+  "analysis_id": "sch_prisma_v2_human_review_queue_v2",
+  "selected_record_count": 29,
+  "priority_counts": {
+    "HIGH_TITLE_PAIR": 19,
+    "HIGH_TITLE_TRIPLE": 9,
+    "LIVE_CONCEPT_FILTER_DRIFT": 1
+  },
+  "known_anchors_excluded_from_queue": true,
+  "live_concept_filter_drift_prioritized": true,
+  "stored_abstracts": false,
+  "formal_prisma_decisions_written": false,
+  "claim_boundary": "This is a review-order worksheet only. Blank human decision fields must be adjudicated before any record is added to the formal decision overlay. A live-concept-drift priority preserves the frozen record for review and is not a scientific exclusion."
+}
