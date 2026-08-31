@@ -43,20 +43,20 @@ A later live run returned 869 candidates. Batch-2 triage also found one record w
 
 ## Current systematic state
 
-Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. V12 adjudicated the 70 genuinely undecided Batch-2 title/abstract records, and V13 now resolves all 35 reports retained by V12. Nine are included, twenty-five are assessed exclusions and one is not retrieved.
+Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. Batch 3 (`SCHPRISMA-000201`–`000300`) is in progress: one record (`000219`) was already adjudicated in V1, 33 high-information records are decided in V14, and 66 genuinely new Batch-3 records remain undecided. V12 adjudicated the 70 genuinely undecided Batch-2 title/abstract records, and V13 now resolves all 35 reports retained by V12. Nine are included, twenty-five are assessed exclusions and one is not retrieved.
 
 Cumulative state:
 
 ```text
 frozen candidates:                     868
-title/abstract screened:               208
-retained for full text:                130
-title/abstract excluded:                78
-unscreened:                            660
+title/abstract screened:               241
+retained for full text:                158
+title/abstract excluded:                83
+unscreened:                            627
 
 primary full-text inclusions:           53
 formal full-text exclusions:            77
-full-text undecided among retained:      0
+full-text undecided among retained:     28
 
 STRICT_LINKED_EXPERIMENT:                2
 DIRECTIONAL_OR_NEAR_PASS:               46
@@ -160,9 +160,9 @@ frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
 Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:      0
+current retained full-text backlog:     28
 multiple joint geographic records:      YES (10 records; at most 9 obvious independent systems)
-full title/abstract screening:          NO (660 remaining)
+full title/abstract screening:          NO (627 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
@@ -174,7 +174,7 @@ A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-The next work object is **Batch-3 title/abstract screening**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
+The Batch-3 abstract-free triage packet identifies 33 high-information records after excluding the already-adjudicated `SCHPRISMA-000219`. V14 retains 28 and excludes five. The next work object is **full-text adjudication of those 28 high-information reports**, followed by the remaining 66 genuinely new Batch-3 title/abstract records. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
 
 The same rules continue:
 
