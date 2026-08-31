@@ -1,0 +1,129 @@
+name: promote-sch-prisma-v15-docs-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch3-fulltext-v15
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch3-fulltext-v15
+          fetch-depth: 0
+      - name: Synchronize V15 documentation and manuscript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          def sub1(text, pattern, repl, label):
+              new, n = re.subn(pattern, repl, text, count=1, flags=re.M|re.S)
+              if n != 1:
+                  raise RuntimeError(f'{label}: expected 1 replacement, got {n}')
+              return new
+
+          # Publication ledger
+          p=Path('docs/PUBLICATION_MATERIAL_LEDGER.md'); text=p.read_text(encoding='utf-8')
+          text=text.replace('## Current screening state — Batch 3 high-information title/abstract screening active under V14','## Current screening state — Batch 3 high-information full-text closure complete under V15',1)
+          replacements={
+              'primary studies included:         53':'primary studies included:         73',
+              'formal full-text exclusions:      77':'formal full-text exclusions:      85',
+              'full-text undecided:              28':'full-text undecided:               0',
+              'DIRECTIONAL_OR_NEAR_PASS:          46':'DIRECTIONAL_OR_NEAR_PASS:          64',
+              'EVOLUTIONARY_OUTCOME:              15':'EVOLUTIONARY_OUTCOME:              22',
+          }
+          for old,new in replacements.items():
+              if old not in text: raise RuntimeError(f'ledger missing {old!r}')
+              text=text.replace(old,new,1)
+          if 'HISTORICAL_TRANSITION:               1' not in text:
+              text=text.replace('EVOLUTIONARY_OUTCOME:              22\n','EVOLUTIONARY_OUTCOME:              22\nHISTORICAL_TRANSITION:               1\n',1)
+          text=text.replace('### Batch-3 high-information title/abstract screen under V14','### Batch-3 high-information full-text closure under V15',1)
+          text=sub1(text,
+              r'Batch 2 remains closed\. Batch 3 contains 100 frozen records, but `SCHPRISMA-000219` was already source-adjudicated in V1, leaving 99 genuinely new title/abstract targets\. The abstract-free triage packet prioritizes 33 high-information records; V14 retains 28 and excludes five\. The next work object is full-text adjudication of those 28 reports, followed by the remaining 66 genuinely undecided Batch-3 records\. This does not authorize pooled effects and does not mean the 868-record screen is complete\.',
+              'Batch 2 remains closed. In Batch 3, V14 retained 28 high-information reports and V15 now resolves all 28 at full text: 20 are included and eight excluded. The high-information Batch-3 full-text backlog is therefore zero. The next work object is the remaining 66 genuinely new Batch-3 title/abstract records. This does not authorize pooled effects and does not mean the 868-record screen is complete.',
+              'ledger Batch3 paragraph')
+          text=text.replace('The current formal exclusion ledger contains 77 decisions: 76 assessed full-text exclusions plus one `FT_FULLTEXT_UNAVAILABLE` retrieval outcome.','The current formal exclusion ledger contains 85 decisions: 84 assessed full-text exclusions plus one `FT_FULLTEXT_UNAVAILABLE` retrieval outcome.',1)
+          text=text.replace('positive geographic contrasts:         11\npositive receiver/interactor contrasts:11\njoint geography + receiver records:    10','positive geographic contrasts:         13\npositive receiver/interactor contrasts:12\njoint geography + receiver records:    11',1)
+          text=text.replace('The ten joint-positive records are:','The eleven joint-positive records are:',1)
+          anchor='SCHPRISMA-000151  Lithophragma bolanderi\n                   two-population floral morphology / pollinator-community / local-efficacy divergence\n'
+          addition='SCHPRISMA-000217  Lithophragma heterophyllum / L. parviflorum\n                   Hopland-versus-Hastings floral-visitor assemblage and Greya pollinating-parasite contrast\n'
+          if addition not in text:
+              if anchor not in text: raise RuntimeError('ledger geography insertion anchor missing')
+              text=text.replace(anchor,anchor+addition,1)
+          text=sub1(text,
+              r'Thus the JBI axis is no longer resting on one isolated anchor\..*?A map of study locations cannot rescue a failed geography gate\.',
+              'Thus the JBI axis is no longer resting on one isolated anchor. V15 yields 11 joint-positive records, but record count is not an independence count: the two *Primula farinosa* records are one research program, and the two *Lithophragma* records also require explicit program/system clustering before quantitative synthesis. JBI remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 627 records remain title/abstract unscreened and no common geography-by-cue-overlap estimand has passed independence/scale checks.\n\nA map of study locations cannot rescue a failed geography gate.',
+              'ledger JBI paragraph')
+          text=text.replace('| Batch 3 high-information | 33/33 prioritized TA decisions; 28 retained / 5 excluded; 219 previously decided | Third systematic batch | Full-text adjudicate 28 retained reports, then screen remaining 66 new Batch-3 records |','| Batch 3 high-information | 33/33 prioritized TA decisions; V15 closes all 28 retained full texts (20 include / 8 exclude) | Third systematic batch | Closed; screen remaining 66 new Batch-3 records |',1)
+          text=text.replace('| Formal screening cumulative | 241 TA decisions; 53 primary includes; 76 assessed FT exclusions; 1 not retrieved; FT backlog 28 | Evidence lanes and blockers | Close 28 high-information Batch-3 full texts, then screen remaining Batch-3 records |','| Formal screening cumulative | 241 TA decisions; 73 primary includes; 84 assessed FT exclusions; 1 not retrieved; FT backlog 0 | Evidence lanes and blockers | Screen remaining 66 new Batch-3 records |',1)
+          text=text.replace('| Geography | 10 joint-positive records; at most 9 obvious independent systems after Primula clustering | JBI axis empirically plausible | Complete screen, finish independence audit, define common analytic question |','| Geography | 11 joint-positive records; independence count not frozen | JBI axis empirically plausible | Complete screen, cluster overlapping programs, define common analytic question |',1)
+          p.write_text(text,encoding='utf-8')
+
+          # JBI readout
+          p=Path('docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md'); text=p.read_text(encoding='utf-8')
+          text=text.replace('primary full-text inclusions:           53','primary full-text inclusions:           73',1)
+          text=text.replace('formal full-text exclusions:            77','formal full-text exclusions:            85',1)
+          text=text.replace('full-text undecided among retained:     28','full-text undecided among retained:      0',1)
+          text=text.replace('DIRECTIONAL_OR_NEAR_PASS:               46','DIRECTIONAL_OR_NEAR_PASS:               64',1)
+          text=text.replace('EVOLUTIONARY_OUTCOME:                   15','EVOLUTIONARY_OUTCOME:                   22',1)
+          if 'HISTORICAL_TRANSITION:                    1' not in text:
+              text=text.replace('EVOLUTIONARY_OUTCOME:                   22\n','EVOLUTIONARY_OUTCOME:                   22\nHISTORICAL_TRANSITION:                    1\n',1)
+          text=sub1(text,
+              r'Batch 2 is now closed at both title/abstract and current full-text stages\. V13 contributes nine inclusions, twenty-five assessed exclusions and one not-retrieved report\. Strict remains 2, while near-pass and evolutionary lanes rise to 46 and 15\.',
+              'Batch 2 remains closed. V15 now also closes the 28 high-information Batch-3 full texts retained by V14: 20 are included and eight excluded. Strict remains 2, while near-pass and evolutionary lanes rise to 64 and 22; one role-transition study enters the historical-transition lane without satisfying L4.',
+              'JBI Batch3 closure')
+          text=text.replace('positive geographic contrast:            11\npositive receiver/interactor contrast:    11\njoint geographic + receiver records:      10','positive geographic contrast:            13\npositive receiver/interactor contrast:    12\njoint geographic + receiver records:      11',1)
+          text=text.replace('The ten current joint-positive records are:','The eleven current joint-positive records are:',1)
+          anchor='SCHPRISMA-000151  Lithophragma bolanderi\n                   two-population pollinator-community and local-efficacy divergence\n\n'
+          addition='SCHPRISMA-000217  Lithophragma heterophyllum / L. parviflorum\n                   Hopland-versus-Hastings floral-visitor assemblage and Greya pollinating-parasite contrast\n\n'
+          if addition not in text:
+              if anchor not in text: raise RuntimeError('JBI geography insertion anchor missing')
+              text=text.replace(anchor,anchor+addition,1)
+          text=text.replace('current retained full-text backlog:     28','current retained full-text backlog:      0',1)
+          text=sub1(text,
+              r'multiple joint geographic records:\s+YES \(10 records; at most 9 obvious independent systems\)',
+              'multiple joint geographic records:      YES (11 records; independence count not frozen)',
+              'JBI status independence')
+          text=sub1(text,
+              r'The change from historical `1/8` to ten joint-positive records across at most nine obvious independent biological systems means the geography axis is worth developing\.',
+              'The change from historical `1/8` to eleven joint-positive records means the geography axis is worth developing, but overlapping *Primula* and *Lithophragma* research programs must be clustered before any independent-system count is frozen.',
+              'JBI decision paragraph')
+          text=sub1(text,
+              r'The Batch-3 abstract-free triage packet identifies 33 high-information records after excluding the already-adjudicated `SCHPRISMA-000219`\. V14 retains 28 and excludes five\. The next work object is \*\*full-text adjudication of those 28 high-information reports\*\*, followed by the remaining 66 genuinely new Batch-3 title/abstract records\.',
+              'The Batch-3 high-information queue is now closed through full text under V15. The next work object is the **remaining 66 genuinely new Batch-3 title/abstract records**.',
+              'JBI next priority')
+          p.write_text(text,encoding='utf-8')
+
+          # Manuscript evidence spine: add bounded evolutionary/historical cases.
+          p=Path('manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md'); text=p.read_text(encoding='utf-8')
+          anchor='- **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya*:** population differences in floral morphology and pollinator assemblage are matched by local-versus-nonlocal differences in pollination efficacy and oviposition, supporting a geographic coevolutionary mosaic without a randomized floral `A`.\n'
+          addition=('- **Chen & Pannell 2022:** pollination and seed predation generate a disruptive selection surface on flowering height across alpine populations; the focal floral axis is observational, so this strengthens the compromise/branching precursor layer rather than the strict causal gate.\n'
+                    '- **Ramos & Schiestl 2020:** four generations of experimental evolution under reduced herbivore load shift floral fragrance, directly showing antagonist-mediated evolutionary redirection without a same-generation paired pollinator/antagonist fitness surface.\n'
+                    '- **Syngonium plant-bug transition:** comparative and behavioural evidence links recruitment of ancestrally florivorous plant bugs as specialized pollinators to a novel attractive floral volatile. This is a receiver-role transition and floral-trait divergence, not a reconstructed shared-cue → private-cue transition.\n')
+          if addition not in text:
+              if anchor not in text: raise RuntimeError('manuscript evidence insertion anchor missing')
+              text=text.replace(anchor,anchor+addition,1)
+          text=text.replace('Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. The strict L4 endpoint remains unrecovered.','Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. V15 also recovers a bounded receiver-role transition from florivory to pollination, but that transition does not reconstruct shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.',1)
+          p.write_text(text,encoding='utf-8')
+
+          Path('docs/SCH_PRISMA_V15_BATCH3_HIGH_INFORMATION_FULLTEXT_READOUT.md').write_text('''# SCH PRISMA V15 — Batch-3 high-information full-text closure\n\n## Machine-audited state\n\n```text\nfrozen denominator:                    868\ntitle/abstract screened:               241\nretained for full text:                158\ntitle/abstract excluded:                83\nTA unscreened:                         627\n\nreports sought for retrieval:          158\nreports not retrieved:                   1\nreports assessed for eligibility:      157\nprimary studies included:               73\nassessed full-text exclusions:          84\nformal full-text EXCLUDE decisions:     85\ncurrent full-text undecided:             0\n\nSTRICT_LINKED_EXPERIMENT:                2\nDIRECTIONAL_OR_NEAR_PASS:               64\nEVOLUTIONARY_OUTCOME:                   22\nHISTORICAL_TRANSITION:                    1\n\npositive geographic records:           13\npositive receiver records:              12\njoint geography + receiver records:     11\n```\n\nV15 adjudicates all 28 high-information reports retained by V14: 20 are included and eight excluded. No new strict linked experiment is admitted. The positive dual-audience same-`A` chain therefore remains unrecovered.\n\nThe main scientific additions are lower in the evidence ladder: disruptive pollinator/seed-predator selection on flowering height, multigeneration antagonist-mediated evolution of floral fragrance, and a florivore-to-pollinator receiver-role transition associated with a novel floral volatile. The role transition is coded `HISTORICAL_TRANSITION` but explicitly does **not** satisfy shared-cue → private-cue L4.\n\nThe 11 joint geography-receiver records are record-level evidence, not an independence-corrected system count. Overlapping *Primula* and *Lithophragma* programs require clustering before quantitative synthesis.\n\nThe next screening object is the remaining 66 genuinely new Batch-3 title/abstract records. Screening progress alone does not authorize pooling.\n''',encoding='utf-8')
+          PY
+      - name: Validate and commit V15 prose
+        run: |
+          set -euo pipefail
+          grep -q 'primary studies included:         73' docs/PUBLICATION_MATERIAL_LEDGER.md
+          grep -q 'current retained full-text backlog:      0' docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md
+          grep -q 'Syngonium plant-bug transition' manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+          grep -q 'HISTORICAL_TRANSITION:                    1' docs/SCH_PRISMA_V15_BATCH3_HIGH_INFORMATION_FULLTEXT_READOUT.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/PUBLICATION_MATERIAL_LEDGER.md docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md docs/SCH_PRISMA_V15_BATCH3_HIGH_INFORMATION_FULLTEXT_READOUT.md manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Synchronize V15 Batch 3 full-text closure'
+          git push origin HEAD:analysis/prisma-batch3-fulltext-v15
