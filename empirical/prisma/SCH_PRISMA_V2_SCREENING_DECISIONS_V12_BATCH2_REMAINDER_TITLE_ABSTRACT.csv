@@ -1,0 +1,71 @@
+record_id,screen_title_abstract,screen_title_abstract_reason,decision_source,decision_note
+SCHPRISMA-000101,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,western flower thrips is an insect name; focal monoterpene-resistance study does not establish a floral attraction/display signal
+SCHPRISMA-000102,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,local adaptation to soil/biotic interactions; floral signal coordinate is not the focal object
+SCHPRISMA-000103,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,preprint of soil-local-adaptation study; floral signal coordinate is not the focal object
+SCHPRISMA-000104,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,nectar robber in a pollination-adapted bellflower; retain for floral access/dual-role adjudication
+SCHPRISMA-000106,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,masting/seed-predator system with pollination context may bear on reproductive display/phenology trade-offs
+SCHPRISMA-000107,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,flower-visitor/herbivore interaction-network dissertation; uncertainty resolves to full-text retention
+SCHPRISMA-000109,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"book review, not an independent primary study or focused synthesis"
+SCHPRISMA-000111,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,parasites are bee parasites rather than plant antagonists/exploiters acting through the focal floral signal
+SCHPRISMA-000112,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,herbivory/water stress alters bumblebee attraction to flowers; retain for induced-floral-state adjudication
+SCHPRISMA-000113,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,predators reduce pollinator density; focal antagonist acts on pollinators rather than the plant/floral signal
+SCHPRISMA-000114,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,nectar toxin experiment concerns bumblebee response; no focal plant antagonist response is evident
+SCHPRISMA-000115,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,floral scent-pattern learning study is pollinator-focused; no focal plant antagonist response is evident
+SCHPRISMA-000117,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,mating-system/sexual-selection divergence study; antagonist wording is not a focal plant antagonist channel
+SCHPRISMA-000118,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,preprint of mating-system/sexual-selection study; no focal plant antagonist channel
+SCHPRISMA-000119,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,nectar robbery is linked to fruit quality and pollination context; retain
+SCHPRISMA-000120,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,nectar-robbing bumblebees on Fuchsia with pollination context; retain
+SCHPRISMA-000122,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Ficus phenology links pollinators and seed predators; retain for temporal shared/private-cue adjudication
+SCHPRISMA-000123,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"duplicate-index form of Ficus phenology paper; duplicate status is adjudicated at full text, not silently at TA"
+SCHPRISMA-000124,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,boreal-forest BVOC chamber study is not a floral attraction/display signal study
+SCHPRISMA-000125,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Silene stellata mating system with pollination and seed-predation context; retain conservatively
+SCHPRISMA-000126,EXCLUDE,TA_NO_POLLINATOR_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,hemp volatile-profile characterization does not establish a focal pollinator-response channel
+SCHPRISMA-000129,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,chemical-communication synthesis spans floral pollination and antagonists; retain for focused synthesis/source role
+SCHPRISMA-000130,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,private-channel Breynia–Epicephala study directly bears on pollinating seed-predator cue architecture
+SCHPRISMA-000133,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Arabidopsis flower-opening clock study lacks a focal antagonist response
+SCHPRISMA-000134,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Silene circadian floral timing links nocturnal pollination and seed-predator/parasitism context
+SCHPRISMA-000135,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Kadsura nursery-pollination coevolution with oviposition; retain for dual-role/historical architecture
+SCHPRISMA-000136,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Epicephala–Phyllanthus coevolutionary diversification includes pollination and seed predation; retain for historical lane
+SCHPRISMA-000137,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,morphology and biotic-interaction study includes pollination and herbivory; retain conservatively
+SCHPRISMA-000138,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,flower longevity adaptive value with pollination and antagonist context; retain
+SCHPRISMA-000139,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,flower-colour evolution synthesis includes pollination and herbivory; retain for evolutionary/source-role adjudication
+SCHPRISMA-000140,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,insect community-web dissertation is organized around plant-diversity/community structure rather than a floral signal coordinate
+SCHPRISMA-000142,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,bee flower-perception article is pollinator-focused; no focal plant antagonist response is evident
+SCHPRISMA-000143,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Silene flower-scent phylogenetic comparison contains pollinator/antagonist context and may inform historical divergence
+SCHPRISMA-000144,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,avocado floral-volatile comparison does not establish a focal antagonist-response channel
+SCHPRISMA-000145,EXCLUDE,TA_NO_POLLINATOR_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,cucurbit pest-density study does not establish a focal pollinator-response channel
+SCHPRISMA-000148,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"land-use gradient links aphid infestation, natural enemies and pollination services; retain for indirect interaction/geography adjudication"
+SCHPRISMA-000149,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,ant-plant defence/pollination/fitness study may expose floral or extrafloral boundary; retain for full-text boundary coding
+SCHPRISMA-000150,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"jasmonate/salicylate defence experiment spans flowers, pollinator and herbivore/seed-predator outcomes; retain"
+SCHPRISMA-000151,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,coevolving pollination interaction with oviposition and local adaptation; retain for dual-role/historical adjudication
+SCHPRISMA-000154,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"multiple flower-insect interactions include pollinators, antagonists and reproduction; retain"
+SCHPRISMA-000156,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,secondary nectar robbing linked to male reproductive components; retain
+SCHPRISMA-000157,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,wild-bee conservation/intercropping dissertation is management-focused rather than a floral signal trade-off study
+SCHPRISMA-000158,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,signals/rewards to multiple mutualists with antagonistic context; retain as potentially relevant conceptual/source synthesis
+SCHPRISMA-000159,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,mycorrhizal context includes floral/pollination and herbivory channels; retain conservatively
+SCHPRISMA-000160,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,anabasine study concerns bee infection/parasites rather than plant antagonists acting through floral signals
+SCHPRISMA-000162,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,floral microbial-community study is not centered on an attraction/display signal coordinate
+SCHPRISMA-000163,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,alien-bumblebee policy/invasion article is not a floral signal study
+SCHPRISMA-000167,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,correlated selection on floral traits with pollinator and herbivore/seed-predator signals is directly relevant
+SCHPRISMA-000169,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,induced defence alters reproductive/floral traits with pollinator and herbivore context; retain
+SCHPRISMA-000174,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,cross-infectivity study concerns bee-associated parasites rather than plant antagonists
+SCHPRISMA-000175,EXCLUDE,TA_NO_POLLINATOR_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,floral metabolomic comparison does not establish a focal pollinator-response channel
+SCHPRISMA-000177,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,leaf damage and floral visitors study links herbivory to flower visitation; retain
+SCHPRISMA-000178,EXCLUDE,TA_NOT_FLORAL_SIGNAL,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,naturalization/enemy-release dissertation is not centered on a floral attraction/display coordinate
+SCHPRISMA-000179,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,broad plant-adaptation review is not a focused shared-cue synthesis
+SCHPRISMA-000180,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,Dryad dataset object for a separately indexed primary study
+SCHPRISMA-000182,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,dataset object rather than an independent primary report
+SCHPRISMA-000183,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,software/data object rather than an independent primary report
+SCHPRISMA-000184,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,data/other object rather than an independent primary report
+SCHPRISMA-000185,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,data/other object rather than an independent primary report
+SCHPRISMA-000186,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,software/data object rather than an independent primary report
+SCHPRISMA-000187,EXCLUDE,TA_NO_POLLINATOR_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,VOC data paper characterizes emissions but does not establish a focal pollinator-response channel
+SCHPRISMA-000189,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,deceptive-pollination/niche study lacks a focal plant-antagonist channel
+SCHPRISMA-000190,EXCLUDE,TA_NO_ANTAGONIST_COMPONENT,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,phylogenetic deceptive-pollination study lacks a focal plant-antagonist channel
+SCHPRISMA-000193,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,flower-defence dissertation explicitly spans florivores and pollinator context; retain
+SCHPRISMA-000194,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,"defensive floral-scent dissertation spans pollinators, antagonists and exploitation; retain"
+SCHPRISMA-000195,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,floral stickiness study explicitly frames defence and ecological conflict with pollinators/florivores; retain
+SCHPRISMA-000196,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,tree reproductive density study includes pollinators and seed predators; retain for display/density adjudication
+SCHPRISMA-000197,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,focused floral-scent response synthesis contrasts resource-dependent animals including antagonists/exploiters; retain
+SCHPRISMA-000198,EXCLUDE,TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,methods/book chapter on scent detection is not an independent shared-cue primary study or focused evidence synthesis
+SCHPRISMA-000200,RETAIN_FULLTEXT,,ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31,flower-colour-factor synthesis includes pollination and herbivory and may inform evolutionary outcome coding
