@@ -33,12 +33,15 @@ jobs:
           import json
           from pathlib import Path
           d=json.loads(Path('artifacts/v13/audit.json').read_text())
+          assert d['analysis_id']=='sch_prisma_v2_screening_audit_v2',d
           assert d['title_abstract']['retained_for_fulltext']==130,d
           assert d['title_abstract']['excluded']==78,d
           assert d['title_abstract']['unscreened']==660,d
           assert d['fulltext']['eligible_after_title_abstract']==130,d
           assert d['fulltext']['included']==53,d
-          assert d['fulltext']['excluded']==77,d
+          assert d['fulltext']['decision_excluded']==77,d
+          assert d['fulltext']['assessed_excluded']==76,d
+          assert d['fulltext']['unavailable']==1,d
           assert d['fulltext']['unscreened']==0,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
           assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==46,d
@@ -47,5 +50,10 @@ jobs:
           assert d['geography']['receiver_assemblage_contrast_positive']==11,d
           assert d['geography']['joint_geographic_receiver_positive']==10,d
           assert d['prisma_flow']['records_screened_title_abstract']==208,d
+          assert d['prisma_flow']['reports_sought_for_retrieval']==130,d
+          assert d['prisma_flow']['reports_not_retrieved']==1,d
+          assert d['prisma_flow']['reports_assessed_for_eligibility']==129,d
+          assert d['prisma_flow']['reports_excluded_fulltext']==76,d
+          assert d['prisma_flow']['studies_included']==53,d
           print(json.dumps(d, indent=2))
           PY
