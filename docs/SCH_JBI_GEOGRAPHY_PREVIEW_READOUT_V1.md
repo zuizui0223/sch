@@ -43,27 +43,27 @@ A later live run returned 869 candidates. Batch-2 triage also found one record w
 
 ## Current systematic state
 
-Batch 1 (`SCHPRISMA-000001`–`000100`) is completely title/abstract screened and its retained reports are fully adjudicated. The 29 highest-information Batch-2 records also have formal title/abstract decisions. All 26 retained at that stage now have source-verified full-text decisions: nine are included and seventeen are excluded.
+Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. V12 adjudicates the 70 Batch-2 records that were genuinely undecided after accounting for the prior V1 decision on `SCHPRISMA-000172`: 35 are retained for full text and 35 excluded.
 
 Cumulative state:
 
 ```text
 frozen candidates:                     868
-title/abstract screened:               138
-retained for full text:                 95
-title/abstract excluded:                43
-unscreened:                            730
+title/abstract screened:               208
+retained for full text:                130
+title/abstract excluded:                78
+unscreened:                            660
 
 primary full-text inclusions:           44
 full-text exclusions:                   51
-full-text undecided among retained:      0
+full-text undecided among retained:     35
 
 STRICT_LINKED_EXPERIMENT:                2
 DIRECTIONAL_OR_NEAR_PASS:               38
 EVOLUTIONARY_OUTCOME:                   12
 ```
 
-The Batch-2 high-information title/abstract screen excluded two peer-review/decision-letter objects and one dataset record. Full-text adjudication of all 26 retained reports is now complete. The cumulative included-study and evidence-lane counts increase, while the geography counters remain unchanged at 8/9/8 because V11 does not infer spatial contrasts from unreported metadata.
+The Batch-2 high-information full-text queue remains closed, and V12 completes the remainder of Batch-2 title/abstract screening. Because the 35 newly retained reports have not yet been full-text coded, included-study and evidence-lane counts remain at 44 / 2 strict / 38 near / 12 evolutionary, and geography counters remain 8/9/8.
 
 ## Geography counters
 
@@ -150,11 +150,11 @@ The Batch-2 high-information full-text queue is now closed. The strict count is 
 JBI conceptual fit:                    YES
 frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
-Batch 2 high-information TA screen:     COMPLETE (29/29)
+Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:      0
+current retained full-text backlog:     35
 multiple joint geographic systems:     YES (8 currently coded)
-full title/abstract screening:          NO (730 remaining)
+full title/abstract screening:          NO (660 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
@@ -166,7 +166,7 @@ A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-The next work object is the **remaining 71 Batch-2 title/abstract records**, followed by later screening batches.
+The next work object is **full-text adjudication of the 35 newly retained Batch-2 reports**. Once that queue closes, title/abstract screening advances to Batch 3.
 
 The same rules continue:
 
