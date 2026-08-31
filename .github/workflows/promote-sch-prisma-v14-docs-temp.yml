@@ -1,0 +1,95 @@
+name: promote-sch-prisma-v14-docs-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch3-triage-v1
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch3-triage-v1
+          fetch-depth: 0
+      - name: Synchronize V14 state
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def one(text, old, new):
+              n=text.count(old)
+              if n != 1:
+                  raise RuntimeError(f'expected one anchor, found {n}: {old[:100]!r}')
+              return text.replace(old,new,1)
+
+          p=Path('docs/PUBLICATION_MATERIAL_LEDGER.md')
+          t=p.read_text(encoding='utf-8')
+          for old,new in [
+              ('## Current screening state — Batch 1 and Batch 2 full-text closure complete under V13','## Current screening state — Batch 3 high-information title/abstract screening active under V14'),
+              ('title/abstract screened:         208','title/abstract screened:         241'),
+              ('retained for full text:          130','retained for full text:          158'),
+              ('title/abstract excluded:          78','title/abstract excluded:          83'),
+              ('unscreened:                      660','unscreened:                      627'),
+              ('full-text eligible:              130','full-text eligible:              158'),
+              ('full-text undecided:               0','full-text undecided:              28'),
+              ('JBI remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 660 records remain title/abstract unscreened and no common geography-by-cue-overlap estimand has passed independence/scale checks.','JBI remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 627 records remain title/abstract unscreened, 28 newly retained Batch-3 reports await full-text adjudication, and no common geography-by-cue-overlap estimand has passed independence/scale checks.'),
+              ('| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 660 records |','| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 627 records |'),
+              ('| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | Screen remaining 660 records beginning with Batch 3 |','| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | 627 records remain title/abstract unscreened |'),
+              ('| Formal screening cumulative | 208 TA decisions; 53 primary includes; 76 assessed FT exclusions; 1 not retrieved; FT backlog 0 | Evidence lanes and blockers | Continue title/abstract screening of 660 remaining records |','| Formal screening cumulative | 241 TA decisions; 53 primary includes; 76 assessed FT exclusions; 1 not retrieved; FT backlog 28 | Evidence lanes and blockers | Close 28 high-information Batch-3 full texts, then screen remaining Batch-3 records |'),
+              ('| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 208 TA decisions; 53 includes; 76 assessed FT exclusions; 1 not retrieved |','| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 241 TA decisions; 53 includes; 76 assessed FT exclusions; 1 not retrieved; 28 FT pending |'),
+              ('| Table 1 | Systematic study decisions/blockers | 208 TA screened; 53 primary includes; current FT backlog 0 |','| Table 1 | Systematic study decisions/blockers | 241 TA screened; 53 primary includes; 28 FT pending |'),
+          ]:
+              t=one(t,old,new)
+          start='### Batch-2 full-text closure under V13\n\n'
+          end='## Full-text exclusion and independence boundary\n'
+          if start not in t or end not in t: raise RuntimeError('ledger section anchors missing')
+          a=t.index(start); b=t.index(end,a)
+          t=t[:a]+'''### Batch-3 high-information title/abstract screen under V14\n\nBatch 2 remains closed. Batch 3 contains 100 frozen records, but `SCHPRISMA-000219` was already source-adjudicated in V1, leaving 99 genuinely new title/abstract targets. The abstract-free triage packet prioritizes 33 high-information records; V14 retains 28 and excludes five. The next work object is full-text adjudication of those 28 reports, followed by the remaining 66 genuinely undecided Batch-3 records. This does not authorize pooled effects and does not mean the 868-record screen is complete.\n\n'''+t[b:]
+          marker='| Batch 2 | 100/100 TA decisions; all currently retained reports resolved at full text under V13 | Second systematic batch | Closed; proceed to Batch 3 TA screening |\n'
+          add='| Batch 3 high-information | 33/33 prioritized TA decisions; 28 retained / 5 excluded; 219 previously decided | Third systematic batch | Full-text adjudicate 28 retained reports, then screen remaining 66 new Batch-3 records |\n'
+          if add not in t:
+              if marker not in t: raise RuntimeError('ledger table anchor missing')
+              t=t.replace(marker,marker+add,1)
+          p.write_text(t,encoding='utf-8')
+
+          p=Path('docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md')
+          t=p.read_text(encoding='utf-8')
+          for old,new in [
+              ('title/abstract screened:               208','title/abstract screened:               241'),
+              ('retained for full text:                130','retained for full text:                158'),
+              ('title/abstract excluded:                78','title/abstract excluded:                83'),
+              ('unscreened:                            660','unscreened:                            627'),
+              ('full-text undecided among retained:      0','full-text undecided among retained:     28'),
+              ('current retained full-text backlog:      0','current retained full-text backlog:     28'),
+              ('full title/abstract screening:          NO (660 remaining)','full title/abstract screening:          NO (627 remaining)'),
+          ]:
+              t=one(t,old,new)
+          old='The next work object is **Batch-3 title/abstract screening**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.'
+          new='The Batch-3 abstract-free triage packet identifies 33 high-information records after excluding the already-adjudicated `SCHPRISMA-000219`. V14 retains 28 and excludes five. The next work object is **full-text adjudication of those 28 high-information reports**, followed by the remaining 66 genuinely new Batch-3 title/abstract records. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.'
+          t=one(t,old,new)
+          anchor='Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened.'
+          add=' Batch 3 (`SCHPRISMA-000201`–`000300`) is in progress: one record (`000219`) was already adjudicated in V1, 33 high-information records are decided in V14, and 66 genuinely new Batch-3 records remain undecided.'
+          if add.strip() not in t:
+              if anchor not in t: raise RuntimeError('JBI batch-state anchor missing')
+              t=t.replace(anchor,anchor+add,1)
+          p.write_text(t,encoding='utf-8')
+
+          Path('docs/SCH_PRISMA_V14_BATCH3_HIGH_INFORMATION_TA_READOUT.md').write_text('''# SCH PRISMA V14 — Batch-3 high-information title/abstract screen\n\n## Frozen Batch-3 accounting\n\n```text\nBatch-3 frozen records:                 100\nprior source-adjudicated record:          1  (SCHPRISMA-000219)\nnew Batch-3 TA target:                   99\nhigh-information queue:                 33\nV14 retain for full text:               28\nV14 TA exclude:                          5\nremaining genuinely new Batch-3 TA:     66\n```\n\nThe high-information queue is built from the abstract-free machine triage packet and is review order only. Machine priority does not write screening decisions. The five V14 exclusions are restricted to clear boundary failures: one non-floral-signal study, three records without a focal plant-antagonist channel, and one data/archive object. Ambiguous induced-state, duplicate-report and dual-role systems are retained for full text.\n\n## Machine-audited cumulative state\n\n```text\nfrozen denominator:                    868\ntitle/abstract screened:               241\nretained for full text:                158\ntitle/abstract excluded:                83\nTA unscreened:                         627\n\nprimary studies included:               53\nformal full-text EXCLUDE decisions:     77\nassessed full-text exclusions:          76\nreports not retrieved:                   1\ncurrent full-text undecided:            28\n\nSTRICT_LINKED_EXPERIMENT:                2\nDIRECTIONAL_OR_NEAR_PASS:               46\nEVOLUTIONARY_OUTCOME:                   15\n```\n\nV14 is screening progress only. It does not alter the current strict, near-pass, evolutionary, geography or historical-L4 evidence counts until the 28 retained full texts are adjudicated. No pooled effect is authorized.\n''',encoding='utf-8')
+          PY
+      - name: Validate and commit
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_current_screening_state.py tests/test_sch_bita_scope_contract.py
+          grep -q 'title/abstract screened:         241' docs/PUBLICATION_MATERIAL_LEDGER.md
+          grep -q 'full title/abstract screening:          NO (627 remaining)' docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md
+          grep -q 'high-information queue:                 33' docs/SCH_PRISMA_V14_BATCH3_HIGH_INFORMATION_TA_READOUT.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/PUBLICATION_MATERIAL_LEDGER.md docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md docs/SCH_PRISMA_V14_BATCH3_HIGH_INFORMATION_TA_READOUT.md
+          git commit -m 'Synchronize Batch 3 high-information screening state in V14'
+          git push origin HEAD:analysis/prisma-batch3-triage-v1
