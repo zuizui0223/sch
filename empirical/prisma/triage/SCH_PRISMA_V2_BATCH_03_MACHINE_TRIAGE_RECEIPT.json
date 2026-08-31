@@ -1,0 +1,30 @@
+{
+  "analysis_id": "sch_prisma_v2_abstract_free_triage_v2",
+  "generated_at_utc": "2026-08-31T08:20:05.980331+00:00",
+  "batch_file": "SCH_PRISMA_V2_SCREEN_BATCH_03.csv",
+  "candidate_count": 100,
+  "priority_counts": {
+    "ABSTRACT_ONLY": 20,
+    "HIGH_TITLE_PAIR": 22,
+    "HIGH_TITLE_TRIPLE": 11,
+    "KNOWN_ANCHOR": 1,
+    "MEDIUM_TITLE_ONE": 46
+  },
+  "openalex_work_type_counts": {
+    "article": 83,
+    "book-review": 1,
+    "dissertation": 9,
+    "editorial": 2,
+    "other": 1,
+    "preprint": 4
+  },
+  "known_anchor_count": 1,
+  "known_anchor_record_ids": [
+    "SCHPRISMA-000219"
+  ],
+  "live_concept_filter_drift_count": 0,
+  "live_concept_filter_drift_record_ids": [],
+  "stored_abstracts": false,
+  "formal_decisions_written": false,
+  "claim_boundary": "Machine priority and concept-location fields are screening assistance only. They are not PRISMA inclusion/exclusion decisions and never populate formal screening fields. Live metadata drift never removes a record from the frozen screening cohort; drifted records require human review."
+}

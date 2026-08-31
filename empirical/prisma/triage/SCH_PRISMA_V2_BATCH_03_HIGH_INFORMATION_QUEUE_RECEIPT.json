@@ -1,0 +1,12 @@
+{
+  "analysis_id": "sch_prisma_v2_batch3_high_information_queue_v1",
+  "batch3_record_count": 100,
+  "already_decided_record_ids": [
+    "SCHPRISMA-000219"
+  ],
+  "new_title_abstract_target_count": 99,
+  "raw_high_information_count": 33,
+  "high_information_queue_count_after_prior_decision_filter": 33,
+  "formal_prisma_decisions_written": false,
+  "claim_boundary": "Machine triage and review ordering are not formal screening decisions. SCHPRISMA-000219 is excluded from new review because it already carries a V1 source-adjudicated decision."
+}
