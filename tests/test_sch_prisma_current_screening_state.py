@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V15_BATCH3_HIGH_INFORMATION_FULLTEXT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V16_BATCH3_REMAINDER_TITLE_ABSTRACT.csv"
 
 
 def _version(path: Path) -> int:
@@ -62,11 +62,10 @@ def _positive_receiver(value: str) -> bool:
 
 def test_batch2_title_abstract_remains_closed_without_double_screening_prior_anchor() -> None:
     files = _decision_files()
-    v12 = _read(files[-4])
+    v12 = _read(files[-5])
     v12_ids = {row["record_id"] for row in v12}
-    before_v12_ids = {row["record_id"] for row in _merge(files[:-4])}
+    before_v12_ids = {row["record_id"] for row in _merge(files[:-5])}
     batch2 = {f"SCHPRISMA-{i:06d}" for i in range(101, 201)}
-
     assert len(v12) == 70
     assert "SCHPRISMA-000172" in before_v12_ids
     assert "SCHPRISMA-000172" not in v12_ids
@@ -75,10 +74,9 @@ def test_batch2_title_abstract_remains_closed_without_double_screening_prior_anc
 
 def test_v13_closes_all_currently_retained_batch2_fulltexts() -> None:
     files = _decision_files()
-    v13 = _read(files[-3])
+    v13 = _read(files[-4])
     assert len(v13) == 35
     assert Counter(row["screen_fulltext"] for row in v13) == {"EXCLUDE": 26, "INCLUDE": 9}
-
     unavailable = [row for row in _rows() if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
     assert unavailable[0]["screen_fulltext_reason"] == "FT_FULLTEXT_UNAVAILABLE"
@@ -86,16 +84,12 @@ def test_v13_closes_all_currently_retained_batch2_fulltexts() -> None:
 
 def test_v14_adjudicates_batch3_high_information_without_rescreening_prior_219() -> None:
     files = _decision_files()
-    v14 = _read(files[-2])
+    v14 = _read(files[-3])
     ids = {row["record_id"] for row in v14}
     assert len(v14) == 33
     assert "SCHPRISMA-000219" not in ids
-    assert Counter(row["screen_title_abstract"] for row in v14) == {
-        "RETAIN_FULLTEXT": 28,
-        "EXCLUDE": 5,
-    }
-
-    rows = _rows()
+    assert Counter(row["screen_title_abstract"] for row in v14) == {"RETAIN_FULLTEXT": 28, "EXCLUDE": 5}
+    rows = _merge(files[:-2])
     assert len(rows) == 241
     ta = Counter(row["screen_title_abstract"] for row in rows)
     assert ta["RETAIN_FULLTEXT"] == 158
@@ -105,14 +99,10 @@ def test_v14_adjudicates_batch3_high_information_without_rescreening_prior_219()
 
 def test_v15_closes_batch3_high_information_fulltexts_without_strict_inflation() -> None:
     files = _decision_files()
-    v15 = _read(files[-1])
+    v15 = _read(files[-2])
     assert len(v15) == 28
-    assert Counter(row["screen_fulltext"] for row in v15) == {
-        "INCLUDE": 20,
-        "EXCLUDE": 8,
-    }
-
-    rows = _rows()
+    assert Counter(row["screen_fulltext"] for row in v15) == {"INCLUDE": 20, "EXCLUDE": 8}
+    rows = _merge(files[:-1])
     ft = Counter(
         row["screen_fulltext"] or "UNSCREENED"
         for row in rows
@@ -122,19 +112,45 @@ def test_v15_closes_batch3_high_information_fulltexts_without_strict_inflation()
     assert ft["EXCLUDE"] == 85
     assert ft["UNSCREENED"] == 0
 
+
+def test_v16_closes_batch3_title_abstract_screening_and_opens_44_fulltexts() -> None:
+    files = _decision_files()
+    v16 = _read(files[-1])
+    assert len(v16) == 66
+    assert Counter(row["screen_title_abstract"] for row in v16) == {
+        "RETAIN_FULLTEXT": 44,
+        "EXCLUDE": 22,
+    }
+    rows = _rows()
+    assert len(rows) == 307
+    ta = Counter(row["screen_title_abstract"] for row in rows)
+    assert ta["RETAIN_FULLTEXT"] == 202
+    assert ta["EXCLUDE"] == 105
+    assert DENOMINATOR - len(rows) == 561
+    ft = Counter(
+        row["screen_fulltext"] or "UNSCREENED"
+        for row in rows
+        if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
+    )
+    assert ft["INCLUDE"] == 73
+    assert ft["EXCLUDE"] == 85
+    assert ft["UNSCREENED"] == 44
+
+
+def test_v16_preserves_v15_evidence_ceiling_until_fulltexts_are_adjudicated() -> None:
+    rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
+    assert len(rows) == 73
     lanes: Counter[str] = Counter()
     for row in rows:
-        if row["screen_fulltext"] == "INCLUDE":
-            lanes.update(part for part in row["evidence_lanes"].split(";") if part)
+        lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 2
     assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 64
     assert lanes["EVOLUTIONARY_OUTCOME"] == 22
     assert lanes["HISTORICAL_TRANSITION"] == 1
-
     strict = [
         row["record_id"]
         for row in rows
-        if row["screen_fulltext"] == "INCLUDE" and "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]
+        if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]
     ]
     assert strict == ["SCHPRISMA-000031", "SCHPRISMA-000166"]
 
@@ -148,21 +164,17 @@ def test_v15_role_transition_is_historical_evidence_but_not_shared_to_private_l4
     assert "not a reconstructed shared-cue to private-cue transition" in role["claim_ceiling"]
 
 
-def test_v15_geography_counts_do_not_become_independence_counts() -> None:
+def test_v16_geography_counts_do_not_become_independence_counts() -> None:
     rows = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(rows) == 73
     geo = [row["record_id"] for row in rows if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in rows if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
-
     assert len(geo) == 13
     assert len(receiver) == 12
     assert len(joint) == 11
     assert "SCHPRISMA-000217" in joint
     assert "SCHPRISMA-000277" in geo
     assert "SCHPRISMA-000277" not in receiver
-
-    # Record-level geography counts remain distinct from independent biological systems.
     assert "SCHPRISMA-000167" in joint and "SCHPRISMA-000523" in joint
 
 
@@ -173,7 +185,6 @@ def test_v13_same_code_and_other_near_passes_do_not_inflate_strict_count() -> No
     assert junker["pollinator_response_measured"] == "YES_BUMBLEBEE_ATTRACTION"
     assert junker["antagonist_response_measured"] == "YES_ANT_REPELLENCE_AS_FACULTATIVE_FLOWER_VISITOR"
     assert junker["common_reproductive_outcome"] == "NO_COMMON_PLANT_REPRODUCTIVE_OUTCOME"
-
     datura = rows["SCHPRISMA-000046"]
     assert datura["A_manipulated"] == "YES_SYNTHETIC_SCENT_AND_ENANTIOMER_MANIPULATION"
     assert datura["pollinator_response_measured"] == "YES_MANDUCA_FEEDING_RESPONSE"
@@ -181,20 +192,20 @@ def test_v13_same_code_and_other_near_passes_do_not_inflate_strict_count() -> No
     assert datura["common_reproductive_outcome"] == "NO_PLANT_REPRODUCTIVE_OUTCOME"
 
 
-def test_v12_to_v15_provenance_remains_stage_specific_in_raw_overlays() -> None:
+def test_v12_to_v16_provenance_remains_stage_specific_in_raw_overlays() -> None:
     files = _decision_files()
     expected = [
-        (-4, 70, "ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"),
-        (-3, 35, "SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"),
-        (-2, 33, "SOURCE_VERIFIED_BATCH3_HIGH_INFORMATION_TA_2026-08-31"),
-        (-1, 28, "SOURCE_VERIFIED_BATCH3_FULLTEXT_V15_2026-08-31"),
+        (-5, 70, "ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"),
+        (-4, 35, "SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"),
+        (-3, 33, "SOURCE_VERIFIED_BATCH3_HIGH_INFORMATION_TA_2026-08-31"),
+        (-2, 28, "SOURCE_VERIFIED_BATCH3_FULLTEXT_V15_2026-08-31"),
+        (-1, 66, "ASSISTED_BATCH3_REMAINDER_TA_SCREEN_2026-08-31"),
     ]
     for index, count, source in expected:
         rows = _read(files[index])
         assert len(rows) == count
         assert {row["decision_source"] for row in rows} == {source}
-
-    # decision_source is latest-overlay provenance, not a cumulative history column.
     merged_sources = Counter(row["decision_source"] for row in _rows())
     assert merged_sources["SOURCE_VERIFIED_BATCH3_HIGH_INFORMATION_TA_2026-08-31"] == 5
     assert merged_sources["SOURCE_VERIFIED_BATCH3_FULLTEXT_V15_2026-08-31"] == 28
+    assert merged_sources["ASSISTED_BATCH3_REMAINDER_TA_SCREEN_2026-08-31"] == 66

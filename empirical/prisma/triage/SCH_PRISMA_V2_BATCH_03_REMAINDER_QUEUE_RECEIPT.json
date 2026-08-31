@@ -1,0 +1,6 @@
+{
+  "analysis_id": "sch_prisma_v2_batch3_remainder_queue_v1",
+  "remaining_count": 66,
+  "formal_prisma_decisions_written": false,
+  "claim_boundary": "Queue only; machine fields do not determine title/abstract decisions."
+}
