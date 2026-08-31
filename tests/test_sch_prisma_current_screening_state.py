@@ -13,7 +13,7 @@ LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V12_BATCH2_REMAINDER_TITLE_ABSTRACT.
 
 
 def _version(path: Path) -> int:
-    match = re.search(r"_V(\d+)", path.name)
+    match = re.search(r"SCREENING_DECISIONS_V(\d+)", path.name)
     if not match:
         raise AssertionError(f"unversioned screening decision file: {path.name}")
     return int(match.group(1))
@@ -21,7 +21,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [ _version(path) for path in files ] == list(range(1, 13))
+    assert [_version(path) for path in files] == list(range(1, 13))
     assert files[-1].name == LATEST
     return files
 
