@@ -1,0 +1,39 @@
+name: audit-sch-prisma-v11-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch2-fulltext-closure-v1
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch2-fulltext-closure-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build and apply V1-V11 overlays
+        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          mkdir -p artifacts/v11
+          python scripts/build_sch_prisma_screening_batches.py "$FROZEN" artifacts/v11/base --batch-size 100
+          SRC=artifacts/v11/base
+          mapfile -t overlays < <(find empirical/prisma -maxdepth 1 -type f -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V)
+          test "${#overlays[@]}" -eq 11
+          for i in "${!overlays[@]}"; do
+            n=$((i+1))
+            OUT="artifacts/v11/active_${n}"
+            python scripts/apply_sch_prisma_screening_decisions.py "$SRC" "${overlays[$i]}" "$OUT" "artifacts/v11/overlay_${n}.json" --expected-denominator 868
+            SRC="$OUT"
+          done
+          python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/v11/SCH_PRISMA_V11_AUDIT.json --expected-denominator 868
+          cat artifacts/v11/SCH_PRISMA_V11_AUDIT.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-prisma-v11-audit
+          path: artifacts/v11/SCH_PRISMA_V11_AUDIT.json
