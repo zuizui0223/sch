@@ -43,7 +43,7 @@ A later live run returned 869 candidates. Batch-2 triage also found one record w
 
 ## Current systematic state
 
-Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. V12 adjudicates the 70 Batch-2 records that were genuinely undecided after accounting for the prior V1 decision on `SCHPRISMA-000172`: 35 are retained for full text and 35 excluded.
+Batch 1 (`SCHPRISMA-000001`–`000100`) and Batch 2 (`SCHPRISMA-000101`–`000200`) are now completely title/abstract screened. V12 adjudicated the 70 genuinely undecided Batch-2 title/abstract records, and V13 now resolves all 35 reports retained by V12. Nine are included, twenty-five are assessed exclusions and one is not retrieved.
 
 Cumulative state:
 
@@ -54,30 +54,30 @@ retained for full text:                130
 title/abstract excluded:                78
 unscreened:                            660
 
-primary full-text inclusions:           44
-full-text exclusions:                   51
-full-text undecided among retained:     35
+primary full-text inclusions:           53
+formal full-text exclusions:            77
+full-text undecided among retained:      0
 
 STRICT_LINKED_EXPERIMENT:                2
-DIRECTIONAL_OR_NEAR_PASS:               38
-EVOLUTIONARY_OUTCOME:                   12
+DIRECTIONAL_OR_NEAR_PASS:               46
+EVOLUTIONARY_OUTCOME:                   15
 ```
 
-The Batch-2 high-information full-text queue remains closed, and V12 completes the remainder of Batch-2 title/abstract screening. Because the 35 newly retained reports have not yet been full-text coded, included-study and evidence-lane counts remain at 44 / 2 strict / 38 near / 12 evolutionary, and geography counters remain 8/9/8.
+Batch 2 is now closed at both title/abstract and current full-text stages. V13 contributes nine inclusions, twenty-five assessed exclusions and one not-retrieved report. Strict remains 2, while near-pass and evolutionary lanes rise to 46 and 15.
 
 ## Geography counters
 
 The current audit explicitly separates spatial and receiver-regime evidence:
 
 ```text
-positive geographic contrast:             8
-positive receiver/interactor contrast:     9
-joint geographic + receiver contrast:      8
+positive geographic contrast:            11
+positive receiver/interactor contrast:    11
+joint geographic + receiver records:      10
 ```
 
 The joint counter is the JBI-relevant object: both a real geographic contrast and a real receiver/interactor-regime contrast must occur in the same included record.
 
-The eight current joint-positive systems are:
+The ten current joint-positive records are:
 
 ```text
 SCHPRISMA-000008  Erysimum mediohispanicum
@@ -94,6 +94,12 @@ SCHPRISMA-000067  Trollius europaeus
 
 SCHPRISMA-000074  coffee agroecosystem dissertation
                    coffee-field versus forest-fragment nectar-robbing context
+
+SCHPRISMA-000151  Lithophragma bolanderi
+                   two-population pollinator-community and local-efficacy divergence
+
+SCHPRISMA-000167  Primula farinosa
+                   overlapping thesis/manuscript selection mosaic; same program as SCHPRISMA-000523
 
 SCHPRISMA-000172  Biscutella laevigata
                    lowland/highland crab-spider regime and beta-ocimene inducibility
@@ -128,12 +134,14 @@ Important boundaries remain:
 - the coffee dissertation overlaps a published chapter and must be clustered before quantitative synthesis;
 - *Primula farinosa* supplies strong microevolutionary evidence on existing morph frequencies, not origin of a private cue;
 - *Biscutella* supports conditional gating and population differentiation, not ancestral shared-to-private reconstruction;
+- *Lithophragma bolanderi* adds a two-population pollinator-community and local-pollination-efficacy mosaic in a pollinating seed-parasite interaction, but floral traits remain observational;
+- the V13 *Primula farinosa* thesis record overlaps the existing PNAS research program and cannot be counted as an independent system;
 - **lineage branching remains untested**;
 - strict linked measurement architecture is now replicated in Theis & Adler 2012 and Sánchez-Lafuente 2007, but neither study demonstrates simultaneous positive pollinator and antagonist responses to the same manipulated `A`.
 
-## Batch-2 high-information geography closure
+## Batch-2 geography update after V13
 
-The previously provisional 16-report full-text queue has been adjudicated. Several records add useful receiver-overlap or multisite context, but none is promoted into the joint-positive geography counter without explicit source-coded geographic and receiver-regime fields. The positive geography / receiver / joint counts therefore remain 8 / 9 / 8. This prevents multisite sampling or a network label from being mistaken for demonstrated geographic receiver turnover.
+All currently retained Batch-2 reports are adjudicated. V13 adds explicit geographic/receiver evidence from *Lithophragma bolanderi* and an overlapping *Primula farinosa* thesis/manuscript record. The raw record counters rise to 11 geographic-positive, 11 receiver-positive and 10 joint-positive records. Because the two *Primula farinosa* records belong to one research program, 10 joint records correspond to at most nine obvious independent biological systems before the final independence audit.
 
 ## High-information non-geographic boundary cases
 
@@ -152,21 +160,21 @@ frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
 Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:     35
-multiple joint geographic systems:     YES (8 currently coded)
+current retained full-text backlog:      0
+multiple joint geographic records:      YES (10 records; at most 9 obvious independent systems)
 full title/abstract screening:          NO (660 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
 ```
 
-The change from historical `1/8` to eight joint-positive systematic records means the geography axis is worth developing. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
+The change from historical `1/8` to ten joint-positive records across at most nine obvious independent biological systems means the geography axis is worth developing. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
 
 A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-The next work object is **full-text adjudication of the 35 newly retained Batch-2 reports**. Once that queue closes, title/abstract screening advances to Batch 3.
+The next work object is **Batch-3 title/abstract screening**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
 
 The same rules continue:
 

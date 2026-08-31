@@ -71,10 +71,21 @@ jobs:
       - name: Apply ordered version-controlled decision overlays
         run: |
           set -euo pipefail
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          paths=list(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'))
+          versions=[]
+          for path in paths:
+              m=re.search(r'SCREENING_DECISIONS_V(\d+)',path.name)
+              assert m,path
+              versions.append(int(m.group(1)))
+          assert versions,'no screening overlays'
+          versions=sorted(versions)
+          assert versions==list(range(1,max(versions)+1)),versions
+          PY
           SRC=artifacts/sch_prisma_v2/screening_batches
           mapfile -t overlays < <(find empirical/prisma -maxdepth 1 -type f -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V)
-          test "${#overlays[@]}" -eq 12
-          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V12_BATCH2_REMAINDER_TITLE_ABSTRACT.csv'
           for i in "${!overlays[@]}"; do
             n=$((i+1))
             OUT="artifacts/sch_prisma_v2/screening_active_${n}"
@@ -85,55 +96,66 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py artifacts/sch_prisma_v2/screening_active artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require Batch 1 and Batch 2 title-abstract closure
+      - name: Require Batch 2 full-text closure under V13
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           d=json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
+          assert d['analysis_id']=='sch_prisma_v2_screening_audit_v2',d
           assert d['identified_records']==868,d
           assert d['screening_status']=='TITLE_ABSTRACT_IN_PROGRESS',d
           assert d['title_abstract']['retained_for_fulltext']==130,d
           assert d['title_abstract']['excluded']==78,d
           assert d['title_abstract']['unscreened']==660,d
           assert d['fulltext']['eligible_after_title_abstract']==130,d
-          assert d['fulltext']['included']==44,d
-          assert d['fulltext']['excluded']==51,d
-          assert d['fulltext']['unscreened']==35,d
+          assert d['fulltext']['included']==53,d
+          assert d['fulltext']['decision_excluded']==77,d
+          assert d['fulltext']['assessed_excluded']==76,d
+          assert d['fulltext']['unavailable']==1,d
+          assert d['fulltext']['unscreened']==0,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
-          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==38,d
-          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==12,d
-          assert d['geography']['geographic_contrast_positive']==8,d
-          assert d['geography']['receiver_assemblage_contrast_positive']==9,d
-          assert d['geography']['joint_geographic_receiver_positive']==8,d
+          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==46,d
+          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==15,d
+          assert d['geography']['geographic_contrast_positive']==11,d
+          assert d['geography']['receiver_assemblage_contrast_positive']==11,d
+          assert d['geography']['joint_geographic_receiver_positive']==10,d
           assert d['prisma_flow']['records_screened_title_abstract']==208,d
           assert d['prisma_flow']['reports_sought_for_retrieval']==130,d
-          assert d['prisma_flow']['reports_assessed_for_eligibility']==95,d
-          assert d['prisma_flow']['studies_included']==44,d
+          assert d['prisma_flow']['reports_not_retrieved']==1,d
+          assert d['prisma_flow']['reports_assessed_for_eligibility']==129,d
+          assert d['prisma_flow']['reports_excluded_fulltext']==76,d
+          assert d['prisma_flow']['studies_included']==53,d
           PY
 
-      - name: Preserve Batch 1 and Batch 2 machine-triage provenance
+      - name: Verify frozen Batch 1/2 decision provenance without live refetch
         run: |
-          mkdir -p artifacts/sch_prisma_v2/screening_packets
-          for batch in 01 02; do
-            python scripts/build_sch_prisma_screening_triage.py \
-              "artifacts/sch_prisma_v2/screening_batches/SCH_PRISMA_V2_SCREEN_BATCH_${batch}.csv" \
-              "artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_${batch}_MACHINE_TRIAGE.csv" \
-              "artifacts/sch_prisma_v2/screening_packets/SCH_PRISMA_V2_BATCH_${batch}_MACHINE_TRIAGE_RECEIPT.json"
-          done
           python - <<'PY'
-          import csv
+          import csv, json
           from pathlib import Path
+
           active={}
           for path in Path('artifacts/sch_prisma_v2/screening_active').glob('SCH_PRISMA_V2_SCREEN_BATCH_*.csv'):
               with path.open(encoding='utf-8',newline='') as handle:
                   for row in csv.DictReader(handle): active[row['record_id']]=row
           assert all(active[f'SCHPRISMA-{i:06d}']['screen_title_abstract'] in {'RETAIN_FULLTEXT','EXCLUDE'} for i in range(1,201))
+          assert all(active[f'SCHPRISMA-{i:06d}']['screen_fulltext'] in {'INCLUDE','EXCLUDE'} for i in range(101,201) if active[f'SCHPRISMA-{i:06d}']['screen_title_abstract']=='RETAIN_FULLTEXT')
+
+          packet=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_02_MACHINE_TRIAGE.csv')
+          receipt=Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_02_MACHINE_TRIAGE_RECEIPT.json')
+          assert packet.exists() and receipt.exists()
+          with packet.open(encoding='utf-8',newline='') as handle:
+              rows=list(csv.DictReader(handle))
+          meta=json.loads(receipt.read_text())
+          assert len(rows)==100
+          assert meta['candidate_count']==100
+          assert meta['formal_decisions_written'] is False
           PY
 
       - name: Run live OpenAlex drift monitor
         id: live_harvest
         continue-on-error: true
+        timeout-minutes: 5
         run: |
           mkdir -p artifacts/sch_prisma_v2/live
           python scripts/harvest_sch_prisma_candidates_v2.py artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_CANDIDATES.csv artifacts/sch_prisma_v2/live/SCH_PRISMA_V2_LIVE_IDENTIFICATION_RECEIPT.json --cap 2500

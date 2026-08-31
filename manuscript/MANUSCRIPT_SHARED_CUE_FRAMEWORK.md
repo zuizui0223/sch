@@ -95,8 +95,9 @@ A manipulated
 - **Theis & Adler 2012:** one of two current strict linked measurement-architecture passes; enhanced fragrance increased florivore attraction and reduced seed production, without a detected pollinator-attraction increase.
 - **Sánchez-Lafuente 2007, *Linaria lilacina*:** the second strict linked measurement-architecture pass; experimental corolla damage changed pollinator response and reproduction while fruit-predator visitation showed no treatment response.
 - **Page et al. 2014:** floral colour and scent predict seed-eating pollinator host choice; supports antagonist use of floral cues but supplies no same-study pollination coefficient for the same axes.
-- **Junker & Blüthgen 2010:** independent evidence that floral scent responses depend on consumer resource dependence; categories do not map exactly onto pollinator versus antagonist roles.
+- **Junker & Blüthgen 2010:** a same-synthetic-scent near-pass in which bumblebees are attracted while ants are repelled; the opposite receiver responses are on the same chemical coordinate, but no common plant reproductive outcome is measured.
 - **Knauer, Bakhtiari & Schiestl 2018:** antagonist removal by crab spiders changes the ecological context of floral-signal evolution; a mechanism/context anchor rather than a current strict coverage pass.
+- **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya*:** population differences in floral morphology and pollinator assemblage are matched by local-versus-nonlocal differences in pollination efficacy and oviposition, supporting a geographic coevolutionary mosaic without a randomized floral `A`.
 
 The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
 
