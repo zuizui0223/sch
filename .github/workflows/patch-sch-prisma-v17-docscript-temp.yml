@@ -1,0 +1,36 @@
+name: patch-sch-prisma-v17-docscript-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch3-fulltext-v17
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch3-fulltext-v17
+          fetch-depth: 0
+      - name: Patch V17 JBI next-priority anchor
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/promote_sch_prisma_v17_docs_temp.py')
+          text=p.read_text(encoding='utf-8')
+          old="r'The Batch-3 high-information queue is now closed through full text under V15\\. The next work object is the \\\*\\\*remaining 66 genuinely new Batch-3 title/abstract records\\\*\\\*\\.'"
+          new="r'Batch 3 is now complete at title/abstract stage under V16\\. The next work object is \\\*\\\*full-text adjudication of the 44 reports newly retained by V16\\\*\\\*\\.'"
+          assert text.count(old)==1, text.count(old)
+          p.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/promote_sch_prisma_v17_docs_temp.py
+          git commit -m 'Fix V17 JBI documentation anchor'
+          git push origin HEAD:analysis/prisma-batch3-fulltext-v17
