@@ -1,0 +1,34 @@
+name: audit-sch-prisma-v18-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch4-triage-v18
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch4-triage-v18
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply V1-V18 and audit
+        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          mkdir -p artifacts/v18
+          python scripts/build_sch_prisma_screening_batches.py "$FROZEN" artifacts/v18/base --batch-size 100
+          SRC=artifacts/v18/base
+          mapfile -t overlays < <(find empirical/prisma -maxdepth 1 -type f -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V)
+          test "${#overlays[@]}" -eq 18
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V18_BATCH4_HIGH_INFORMATION.csv'
+          for i in "${!overlays[@]}"; do
+            n=$((i+1)); OUT="artifacts/v18/active_${n}"
+            python scripts/apply_sch_prisma_screening_decisions.py "$SRC" "${overlays[$i]}" "$OUT" "artifacts/v18/overlay_${n}.json" --expected-denominator 868
+            SRC="$OUT"
+          done
+          python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/v18/audit.json --expected-denominator 868
+          cat artifacts/v18/audit.json
