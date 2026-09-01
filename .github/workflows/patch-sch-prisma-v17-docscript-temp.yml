@@ -21,11 +21,11 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           p=Path('scripts/promote_sch_prisma_v17_docs_temp.py')
-          text=p.read_text(encoding='utf-8')
-          old="r'The Batch-3 high-information queue is now closed through full text under V15\\. The next work object is the \\\*\\\*remaining 66 genuinely new Batch-3 title/abstract records\\\*\\\*\\.'"
-          new="r'Batch 3 is now complete at title/abstract stage under V16\\. The next work object is \\\*\\\*full-text adjudication of the 44 reports newly retained by V16\\\*\\\*\\.'"
-          assert text.count(old)==1, text.count(old)
-          p.write_text(text.replace(old,new,1),encoding='utf-8')
+          lines=p.read_text(encoding='utf-8').splitlines()
+          hits=[i for i,line in enumerate(lines) if 'The Batch-3 high-information queue is now closed through full text under V15' in line]
+          assert len(hits)==1, hits
+          lines[hits[0]]="    r'Batch 3 is now complete at title/abstract stage under V16\\. The next work object is \\*\\*full-text adjudication of the 44 reports newly retained by V16\\*\\*\\.',"
+          p.write_text('\n'.join(lines)+'\n',encoding='utf-8')
           PY
       - name: Commit patch
         run: |
