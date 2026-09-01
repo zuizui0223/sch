@@ -1,0 +1,39 @@
+name: promote-sch-prisma-v17-docs-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch3-fulltext-v17
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch3-fulltext-v17
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synchronize V17 documentation and manuscript
+        run: python scripts/promote_sch_prisma_v17_docs_temp.py
+      - name: Validate synchronized state
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_current_screening_state.py tests/test_sch_bita_scope_contract.py
+          grep -q 'primary studies included:         89' docs/PUBLICATION_MATERIAL_LEDGER.md
+          grep -q 'joint geographic + receiver records:     17' docs/SCH_PRISMA_V17_BATCH3_REMAINDER_FULLTEXT_READOUT.md
+          grep -q 'Systematic expansion through V17 yields four bounded' manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+      - name: Commit V17 synchronization
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/PUBLICATION_MATERIAL_LEDGER.md docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md docs/SCH_PRISMA_V17_BATCH3_REMAINDER_FULLTEXT_READOUT.md manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Synchronize V17 Batch 3 full-text closure'
+          git push origin HEAD:analysis/prisma-batch3-fulltext-v17
