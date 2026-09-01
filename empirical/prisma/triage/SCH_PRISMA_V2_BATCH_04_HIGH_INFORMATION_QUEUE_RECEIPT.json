@@ -1,0 +1,19 @@
+{
+  "analysis_id": "sch_prisma_v2_batch4_high_information_queue_v1",
+  "batch4_frozen_count": 100,
+  "prior_title_abstract_decision_count": 2,
+  "prior_title_abstract_record_ids": [
+    "SCHPRISMA-000329",
+    "SCHPRISMA-000339"
+  ],
+  "new_title_abstract_target_count": 98,
+  "raw_high_information_count": 57,
+  "high_information_queue_count_after_prior_decision_filter": 57,
+  "priority_counts": {
+    "HIGH_TITLE_PAIR": 42,
+    "HIGH_TITLE_TRIPLE": 15
+  },
+  "live_concept_filter_drift_count": 0,
+  "formal_prisma_decisions_written": false,
+  "claim_boundary": "Machine triage and queue order are review assistance only; no V18 screening decision is written here."
+}
