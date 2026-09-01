@@ -1,0 +1,88 @@
+name: build-sch-prisma-batch4-triage-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch4-triage-v18
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch4-triage-v18
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build frozen Batch 4 triage and review queue
+        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          mkdir -p artifacts/batch4 empirical/prisma/triage
+          python scripts/build_sch_prisma_screening_batches.py "$FROZEN" artifacts/batch4/batches --batch-size 100
+          BATCH=artifacts/batch4/batches/SCH_PRISMA_V2_SCREEN_BATCH_04.csv
+          test "$(($(wc -l < "$BATCH")-1))" -eq 100
+          python scripts/build_sch_prisma_screening_triage.py \
+            "$BATCH" \
+            empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE.csv \
+            empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE_RECEIPT.json
+          python scripts/build_sch_prisma_human_review_queue.py \
+            empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE.csv \
+            artifacts/batch4/high_raw.csv \
+            artifacts/batch4/high_raw_receipt.json
+          python - <<'PY'
+          import csv, json, re
+          from pathlib import Path
+          prisma=Path('empirical/prisma')
+          decided=set()
+          paths=sorted(prisma.glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'), key=lambda p:int(re.search(r'SCREENING_DECISIONS_V(\d+)',p.name).group(1)))
+          assert [int(re.search(r'SCREENING_DECISIONS_V(\d+)',p.name).group(1)) for p in paths]==list(range(1,18))
+          for path in paths:
+              with path.open(encoding='utf-8',newline='') as h:
+                  for row in csv.DictReader(h):
+                      if (row.get('screen_title_abstract') or '').strip():
+                          decided.add((row.get('record_id') or '').strip())
+          batch4={f'SCHPRISMA-{i:06d}' for i in range(301,401)}
+          prior=sorted(batch4 & decided)
+          with open('artifacts/batch4/high_raw.csv',encoding='utf-8',newline='') as h:
+              reader=csv.DictReader(h); fields=reader.fieldnames; rows=list(reader)
+          filtered=[row for row in rows if row['record_id'] not in decided]
+          for i,row in enumerate(filtered,start=1): row['review_order']=str(i)
+          out=prisma/'triage/SCH_PRISMA_V2_BATCH_04_HIGH_INFORMATION_QUEUE.csv'
+          with out.open('w',encoding='utf-8',newline='') as h:
+              w=csv.DictWriter(h,fieldnames=fields); w.writeheader(); w.writerows(filtered)
+          triage_meta=json.loads((prisma/'triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE_RECEIPT.json').read_text())
+          counts={}
+          for row in filtered: counts[row['machine_priority']]=counts.get(row['machine_priority'],0)+1
+          meta={
+              'analysis_id':'sch_prisma_v2_batch4_high_information_queue_v1',
+              'batch4_frozen_count':100,
+              'prior_title_abstract_decision_count':len(prior),
+              'prior_title_abstract_record_ids':prior,
+              'new_title_abstract_target_count':100-len(prior),
+              'raw_high_information_count':len(rows),
+              'high_information_queue_count_after_prior_decision_filter':len(filtered),
+              'priority_counts':dict(sorted(counts.items())),
+              'live_concept_filter_drift_count':triage_meta['live_concept_filter_drift_count'],
+              'formal_prisma_decisions_written':False,
+              'claim_boundary':'Machine triage and queue order are review assistance only; no V18 screening decision is written here.'
+          }
+          (prisma/'triage/SCH_PRISMA_V2_BATCH_04_HIGH_INFORMATION_QUEUE_RECEIPT.json').write_text(json.dumps(meta,indent=2),encoding='utf-8')
+          print(json.dumps(meta))
+          PY
+      - name: Commit Batch 4 triage packet
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE.csv \
+                  empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_MACHINE_TRIAGE_RECEIPT.json \
+                  empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_HIGH_INFORMATION_QUEUE.csv \
+                  empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_HIGH_INFORMATION_QUEUE_RECEIPT.json
+          git commit -m 'Build Batch 4 abstract-free triage packet'
+          git push origin HEAD:analysis/prisma-batch4-triage-v18
