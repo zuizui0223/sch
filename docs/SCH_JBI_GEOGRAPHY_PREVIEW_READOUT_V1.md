@@ -54,65 +54,50 @@ retained for full text:                202
 title/abstract excluded:               105
 unscreened:                            561
 
-primary full-text inclusions:           73
-formal full-text exclusions:            85
-full-text undecided among retained:     44
+primary full-text inclusions:           89
+formal full-text exclusions:           113
+full-text undecided among retained:      0
 
 STRICT_LINKED_EXPERIMENT:                2
-DIRECTIONAL_OR_NEAR_PASS:               64
-EVOLUTIONARY_OUTCOME:                   22
-HISTORICAL_TRANSITION:                    1
+DIRECTIONAL_OR_NEAR_PASS:               77
+EVOLUTIONARY_OUTCOME:                   29
+HISTORICAL_TRANSITION:                    4
 ```
 
-Batch 2 remains closed. V15 now also closes the 28 high-information Batch-3 full texts retained by V14: 20 are included and eight excluded. Strict remains 2, while near-pass and evolutionary lanes rise to 64 and 22; one role-transition study enters the historical-transition lane without satisfying L4.
+Batch 2 remains closed. V16 completes Batch-3 title/abstract screening and V17 closes all 44 newly retained Batch-3 reports at full text: 16 are included and 28 excluded. Strict remains 2, while near-pass and evolutionary lanes rise to 77 and 29; the historical-transition lane reaches four records without satisfying shared-cue → private-cue L4.
 
 ## Geography counters
 
 The current audit explicitly separates spatial and receiver-regime evidence:
 
 ```text
-positive geographic contrast:            13
-positive receiver/interactor contrast:    12
-joint geographic + receiver records:      11
+positive geographic contrast:            20
+positive receiver/interactor contrast:    19
+joint geographic + receiver records:      17
 ```
 
 The joint counter is the JBI-relevant object: both a real geographic contrast and a real receiver/interactor-regime contrast must occur in the same included record.
 
-The eleven current joint-positive records are:
+The seventeen current joint-positive records are:
 
 ```text
-SCHPRISMA-000008  Erysimum mediohispanicum
-                   eight-population pollinator / ungulate / selection mosaic
-
-SCHPRISMA-000032  Barbarea vulgaris
-                   14-site agricultural-landscape herbivory -> floral display -> pollination pathway
-
-SCHPRISMA-000066  Primula secundiflora
-                   six-population nectar-robber / syrphid visitor mosaic
-
-SCHPRISMA-000067  Trollius europaeus
-                   Chiastocheta-present versus absent/extinct nursery-pollination populations
-
-SCHPRISMA-000074  coffee agroecosystem dissertation
-                   coffee-field versus forest-fragment nectar-robbing context
-
-SCHPRISMA-000151  Lithophragma bolanderi
-                   two-population pollinator-community and local-efficacy divergence
-
-SCHPRISMA-000217  Lithophragma heterophyllum / L. parviflorum
-                   Hopland-versus-Hastings floral-visitor assemblage and Greya pollinating-parasite contrast
-
-SCHPRISMA-000167  Primula farinosa
-                   overlapping thesis/manuscript selection mosaic; same program as SCHPRISMA-000523
-
-SCHPRISMA-000172  Biscutella laevigata
-                   lowland/highland crab-spider regime and beta-ocimene inducibility
-
-SCHPRISMA-000523  Primula farinosa
-                   69-population pollinator/grazer selection mosaic plus microevolutionary change
-
-SCHPRISMA-000710  Gentiana lutea
-                   12-population flower-colour / pollinator-community / selection gradient
+SCHPRISMA-000008  A geographic selection mosaic in a generalized plant–pollinator–herbivore system
+SCHPRISMA-000032  Agricultural landscape simplification affects wild plant reproduction indirectly through herbivore-mediated changes in floral display
+SCHPRISMA-000066  Asymmetrical disassortative pollination in a distylous primrose: the complementary roles of bumblebee nectar robbers and syrphid flies
+SCHPRISMA-000067  Asymmetrical nature of the T rollius– C hiastocheta interaction: insights into the evolution of nursery pollination systems
+SCHPRISMA-000074  Bee-Plant Interactions in Coffee Agroecosystems: Management and Matrix Effects on Mutualistic and Antagonistic Relationships
+SCHPRISMA-000151  Components of local adaptation and divergence in pollination efficacy in a coevolving species interaction
+SCHPRISMA-000167  Correlated selection on floral traits in a polymorphic plant
+SCHPRISMA-000172  Crab spiders impact floral-signal evolution indirectly through removal of florivores
+SCHPRISMA-000202  Differential effects of anthropogenic edges and gaps on the reproduction of a forest‐dwelling plant: The role of plant reproductive effort and nectar robbing by bumblebees
+SCHPRISMA-000214  Disturbance, Pollinator Predictability, and Pollination Success Among Costa Rican Cloud Forest Plants
+SCHPRISMA-000217  Diversity of floral visitors to sympatric Lithophragma species differing in floral morphology
+SCHPRISMA-000233  Ecological convergence in phytochemistry and flower–insect visitor interactions along an Andean elevation gradient
+SCHPRISMA-000271  Enhanced frugivory on invasive Silene latifolia in its native range due to increased oviposition
+SCHPRISMA-000287  Evolution of floral and mating system variation in Camissoniopsis cheiranthifolia (Onagraceae): An evaluation of patterns and processes
+SCHPRISMA-000299  Extreme diversification of floral volatiles within and among species of Lithophragma (Saxifragaceae)
+SCHPRISMA-000523  Mutualists and antagonists drive among-population variation in selection and evolution of floral display in a perennial herb
+SCHPRISMA-000710  Selective Pressures Explain Differences in Flower Color among Gentiana lutea Populations
 ```
 
 `SCHPRISMA-000075` supplies a real bee-versus-aphid selection-regime contrast in an eight-generation experiment but is deliberately **not geographic**. Likewise, sampling many locations does not itself satisfy JBI: the 25-orchard ant study is coded negative because its focal comparison is flower architecture and ant visitor role, not geographic turnover in receiver assemblages.
@@ -164,21 +149,21 @@ frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
 Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:     44
-multiple joint geographic records:      YES (11 records; independence count not frozen)
+current retained full-text backlog:      0
+multiple joint geographic records:      YES (17 records; independence count not frozen)
 full title/abstract screening:          NO (561 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
 ```
 
-The change from historical `1/8` to eleven joint-positive records means the geography axis is worth developing, but overlapping *Primula* and *Lithophragma* research programs must be clustered before any independent-system count is frozen. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
+The change from historical `1/8` to seventeen joint-positive records means the geography axis is worth developing, but overlapping research programs must be clustered before any independent-system count is frozen. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.
 
 A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-Batch 3 is now complete at title/abstract stage under V16. The next work object is **full-text adjudication of the 44 reports newly retained by V16**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
+Batch 3 is now closed at title/abstract and current full-text stages under V17. The next work object is **Batch-4 title/abstract screening**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
 
 The same rules continue:
 
