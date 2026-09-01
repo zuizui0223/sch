@@ -150,7 +150,7 @@ text = sub_once(
 )
 text = sub_once(
     text,
-    r'The Batch-3 high-information queue is now closed through full text under V15\. The next work object is the \*\*remaining 66 genuinely new Batch-3 title/abstract records\*\*\.',
+    r'Batch 3 is now complete at title/abstract stage under V16\. The next work object is \*\*full-text adjudication of the 44 reports newly retained by V16\*\*\.',
     'Batch 3 is now closed at title/abstract and current full-text stages under V17. The next work object is **Batch-4 title/abstract screening**.',
     'JBI next priority',
 )
