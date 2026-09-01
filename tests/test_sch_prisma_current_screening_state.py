@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V17_BATCH3_REMAINDER_FULLTEXT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V18_BATCH4_HIGH_INFORMATION.csv"
 
 
 def _version(path: Path) -> int:
@@ -22,7 +22,7 @@ def _version(path: Path) -> int:
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
     versions = [_version(path) for path in files]
-    assert versions == list(range(1, 18))
+    assert versions == list(range(1, 19))
     assert files[-1].name == LATEST
     return files
 
@@ -65,7 +65,7 @@ def _positive_receiver(value: str) -> bool:
     return bool(value) and value != "NOT_REPORTED" and not upper.startswith("NO_")
 
 
-def test_stage_overlays_v12_to_v17_remain_distinct_and_complete() -> None:
+def test_stage_overlays_v12_to_v18_remain_distinct_and_complete() -> None:
     expected = {
         12: (70, "ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"),
         13: (35, "SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"),
@@ -73,6 +73,7 @@ def test_stage_overlays_v12_to_v17_remain_distinct_and_complete() -> None:
         15: (28, "SOURCE_VERIFIED_BATCH3_FULLTEXT_V15_2026-08-31"),
         16: (66, "ASSISTED_BATCH3_REMAINDER_TA_SCREEN_2026-08-31"),
         17: (44, "SOURCE_VERIFIED_BATCH3_REMAINDER_FULLTEXT_V17_2026-08-31"),
+        18: (57, "SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"),
     }
     for version, (count, source) in expected.items():
         rows = _v(version)
@@ -98,18 +99,29 @@ def test_batch2_and_batch3_title_abstract_are_closed_without_double_screening() 
     assert "SCHPRISMA-000219" not in {row["record_id"] for row in v14 + v16}
 
     rows = _rows()
-    ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 307
-    assert ta["RETAIN_FULLTEXT"] == 202
-    assert ta["EXCLUDE"] == 105
-    assert DENOMINATOR - len(rows) == 561
     assert all(
         next(row for row in rows if row["record_id"] == f"SCHPRISMA-{i:06d}")["screen_title_abstract"] in {"RETAIN_FULLTEXT", "EXCLUDE"}
-        for i in range(201, 301)
+        for i in range(101, 301)
     )
 
 
-def test_v13_v15_and_v17_close_their_retained_fulltext_queues() -> None:
+def test_v18_adjudicates_batch4_high_information_without_rescreening_prior_records() -> None:
+    v18 = _v(18)
+    ids = {row["record_id"] for row in v18}
+    assert len(v18) == 57
+    assert Counter(row["screen_title_abstract"] for row in v18) == {"RETAIN_FULLTEXT": 46, "EXCLUDE": 11}
+    assert "SCHPRISMA-000329" not in ids
+    assert "SCHPRISMA-000339" not in ids
+
+    rows = _rows()
+    ta = Counter(row["screen_title_abstract"] for row in rows)
+    assert len(rows) == 364
+    assert ta["RETAIN_FULLTEXT"] == 248
+    assert ta["EXCLUDE"] == 116
+    assert DENOMINATOR - len(rows) == 504
+
+
+def test_batch3_fulltext_is_closed_while_v18_opens_batch4_backlog() -> None:
     assert Counter(row["screen_fulltext"] for row in _v(13)) == {"EXCLUDE": 26, "INCLUDE": 9}
     assert Counter(row["screen_fulltext"] for row in _v(15)) == {"INCLUDE": 20, "EXCLUDE": 8}
     assert Counter(row["screen_fulltext"] for row in _v(17)) == {"INCLUDE": 16, "EXCLUDE": 28}
@@ -122,13 +134,15 @@ def test_v13_v15_and_v17_close_their_retained_fulltext_queues() -> None:
     )
     assert ft["INCLUDE"] == 89
     assert ft["EXCLUDE"] == 113
-    assert ft["UNSCREENED"] == 0
+    assert ft["UNSCREENED"] == 46
+    unresolved = [row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]]
+    assert set(unresolved) == {row["record_id"] for row in _v(18) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
     assert unavailable[0]["screen_fulltext_reason"] == "FT_FULLTEXT_UNAVAILABLE"
 
 
-def test_current_evidence_lanes_keep_strict_at_two_while_lower_layers_expand() -> None:
+def test_current_evidence_lanes_keep_strict_at_two_while_v18_is_ta_only() -> None:
     included = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
     assert len(included) == 89
     lanes: Counter[str] = Counter()
@@ -192,3 +206,4 @@ def test_latest_overlay_provenance_is_not_mistaken_for_cumulative_history() -> N
     assert merged_sources["SOURCE_VERIFIED_BATCH3_FULLTEXT_V15_2026-08-31"] == 28
     assert merged_sources["ASSISTED_BATCH3_REMAINDER_TA_SCREEN_2026-08-31"] == 22
     assert merged_sources["SOURCE_VERIFIED_BATCH3_REMAINDER_FULLTEXT_V17_2026-08-31"] == 44
+    assert merged_sources["SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"] == 57
