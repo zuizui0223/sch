@@ -76,7 +76,7 @@ L0  contemporary dual-audience response / opposing selection
  -> L4  reconstructed shared-cue -> private-cue transition under both audiences
 ```
 
-Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. V15 also recovers a bounded receiver-role transition from florivory to pollination, but that transition does not reconstruct shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
+Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. Systematic expansion through V17 yields four bounded `HISTORICAL_TRANSITION` records spanning receiver-role, mating-system and trait-history transitions, but none reconstructs shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
 
 ## 6. First coverage gate
 
@@ -101,6 +101,8 @@ A manipulated
 - **Chen & Pannell 2022:** pollination and seed predation generate a disruptive selection surface on flowering height across alpine populations; the focal floral axis is observational, so this strengthens the compromise/branching precursor layer rather than the strict causal gate.
 - **Ramos & Schiestl 2020:** four generations of experimental evolution under reduced herbivore load shift floral fragrance, directly showing antagonist-mediated evolutionary redirection without a same-generation paired pollinator/antagonist fitness surface.
 - **Syngonium plant-bug transition:** comparative and behavioural evidence links recruitment of ancestrally florivorous plant bugs as specialized pollinators to a novel attractive floral volatile. This is a receiver-role transition and floral-trait divergence, not a reconstructed shared-cue → private-cue transition.
+- **Abronia mating-system transition:** field and common-garden comparisons associate the transition toward selfing with near-complete floral-fragrance vestigialization. This is a historical attraction-syndrome transition, not evidence that an ancestral shared cue became private.
+- **Haplopappus elevation mosaic:** floral volatile blends, insect olfactory preference, fertilized seeds and predated seeds covary across an Andean elevation gradient; because floral `A` is comparative rather than randomized, this strengthens the geographic/evolutionary layer rather than the strict gate.
 
 The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
 
