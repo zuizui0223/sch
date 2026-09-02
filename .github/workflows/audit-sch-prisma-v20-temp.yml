@@ -1,0 +1,43 @@
+name: audit-sch-prisma-v20-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch4-remainder-v20
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch4-remainder-v20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply V1-V20 and audit
+        run: |
+          set -euo pipefail
+          FROZEN=empirical/prisma/frozen_v2/SCH_PRISMA_V2_IDENTIFIED_CANDIDATES_FROZEN_2026-08-29.csv
+          mkdir -p artifacts/v20
+          python scripts/build_sch_prisma_screening_batches.py "$FROZEN" artifacts/v20/base --batch-size 100
+          SRC=artifacts/v20/base
+          mapfile -t overlays < <(find empirical/prisma -maxdepth 1 -type f -name 'SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv' -print | sort -V)
+          test "${#overlays[@]}" -eq 20
+          test "${overlays[-1]}" = 'empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V20_BATCH4_REMAINDER_TITLE_ABSTRACT.csv'
+          for i in "${!overlays[@]}"; do
+            n=$((i+1)); OUT="artifacts/v20/active_${n}"
+            python scripts/apply_sch_prisma_screening_decisions.py "$SRC" "${overlays[$i]}" "$OUT" "artifacts/v20/overlay_${n}.json" --expected-denominator 868
+            SRC="$OUT"
+          done
+          python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/v20/audit.json --expected-denominator 868
+          cat artifacts/v20/audit.json
+          python - <<'PY'
+          import csv
+          from collections import Counter
+          p='empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V20_BATCH4_REMAINDER_TITLE_ABSTRACT.csv'
+          with open(p,encoding='utf-8',newline='') as h: rows=list(csv.DictReader(h))
+          assert len(rows)==41
+          assert Counter(r['screen_title_abstract'] for r in rows)=={'RETAIN_FULLTEXT':29,'EXCLUDE':12}
+          assert {r['decision_source'] for r in rows}=={'ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02'}
+          PY
