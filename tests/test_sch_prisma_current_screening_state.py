@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V20_BATCH4_REMAINDER_TITLE_ABSTRACT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V21_BATCH4_REMAINDER_FULLTEXT.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 21))
+    assert [_version(path) for path in files] == list(range(1, 22))
     assert files[-1].name == LATEST
     return files
 
@@ -61,7 +61,7 @@ def _positive_receiver(value: str) -> bool:
     return bool(value) and value != "NOT_REPORTED" and not upper.startswith("NO_")
 
 
-def test_stage_overlays_v12_to_v20_remain_distinct_and_complete() -> None:
+def test_stage_overlays_v12_to_v21_remain_distinct_and_complete() -> None:
     expected = {
         12: (70, "ASSISTED_BATCH2_REMAINDER_TITLE_ABSTRACT_SCREEN_2026-08-31"),
         13: (35, "SOURCE_VERIFIED_BATCH2_FULLTEXT_V13_2026-08-31"),
@@ -72,6 +72,7 @@ def test_stage_overlays_v12_to_v20_remain_distinct_and_complete() -> None:
         18: (57, "SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"),
         19: (46, "SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_FULLTEXT_V19_2026-09-02"),
         20: (41, "ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02"),
+        21: (29, "SOURCE_VERIFIED_BATCH4_REMAINDER_FULLTEXT_V21_2026-09-02"),
     }
     for version, (count, source) in expected.items():
         rows = _v(version)
@@ -102,10 +103,14 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert DENOMINATOR - len(rows) == 463
 
 
-def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
+def test_v19_and_v21_close_all_batch4_retained_fulltexts() -> None:
     assert Counter(row["screen_fulltext"] for row in _v(19)) == {"INCLUDE": 28, "EXCLUDE": 18}
+    assert Counter(row["screen_fulltext"] for row in _v(21)) == {"EXCLUDE": 24, "INCLUDE": 5}
+
     v18_retained = {row["record_id"] for row in _v(18) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+    v20_retained = {row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
     assert {row["record_id"] for row in _v(19)} == v18_retained
+    assert {row["record_id"] for row in _v(21)} == v20_retained
 
     rows = _rows()
     ft = Counter(
@@ -113,39 +118,43 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
         for row in rows
         if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
     )
-    assert ft["INCLUDE"] == 117
-    assert ft["EXCLUDE"] == 131
-    assert ft["UNSCREENED"] == 29
-    pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == {row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+    assert ft["INCLUDE"] == 122
+    assert ft["EXCLUDE"] == 155
+    assert ft["UNSCREENED"] == 0
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
 
-def test_current_evidence_lanes_keep_strict_at_two_under_v20_ta_only_progress() -> None:
+def test_current_evidence_lanes_keep_strict_at_two_after_v21_fulltext_closure() -> None:
     included = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(included) == 117
+    assert len(included) == 122
     lanes: Counter[str] = Counter()
     for row in included:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 2
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 104
-    assert lanes["EVOLUTIONARY_OUTCOME"] == 39
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 108
+    assert lanes["EVOLUTIONARY_OUTCOME"] == 41
     assert lanes["HISTORICAL_TRANSITION"] == 4
     strict = [row["record_id"] for row in included if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
     assert strict == ["SCHPRISMA-000031", "SCHPRISMA-000166"]
 
 
-def test_v19_same_code_candidates_do_not_inflate_strict_count() -> None:
+def test_same_code_and_induced_state_near_passes_do_not_inflate_strict_count() -> None:
     rows = {row["record_id"]: row for row in _rows()}
     thistle = rows["SCHPRISMA-000365"]
     assert thistle["A_manipulated"] == "YES_SYNTHETIC_SCENT_BAITS"
-    assert thistle["pollinator_response_measured"] == "YES_MULTIPLE_POLLINATOR_SPECIES_ATTRACTED"
-    assert thistle["antagonist_response_measured"] == "YES_MULTIPLE_FLORAL_HERBIVORE_SPECIES_ATTRACTED"
     assert thistle["common_reproductive_outcome"] == "NO_PLANT_REPRODUCTIVE_OUTCOME"
-    guide = rows["SCHPRISMA-000319"]
-    assert guide["A_manipulated"] == "YES_ARTIFICIAL_FLOWER_GUIDE_MANIPULATION"
-    assert guide["common_reproductive_outcome"] == "NO_PLANT_REPRODUCTIVE_OUTCOME"
+
+    ant_voc = rows["SCHPRISMA-000338"]
+    assert ant_voc["A_manipulated"] == "YES_SYNTHETIC_OR_ISOLATED_FLORAL_VOC_ASSAYS"
+    assert ant_voc["antagonist_response_measured"] == "YES_ANT_REPELLENCE_AND_FLOWER_FILTERING"
+    assert ant_voc["common_reproductive_outcome"] == "NO_COMMON_PLANT_REPRODUCTIVE_OUTCOME"
+    assert ant_voc["geographic_contrast"] == "NO_REPLICATED_GEOGRAPHIC_CONTRAST"
+
+    induced = rows["SCHPRISMA-000399"]
+    assert induced["pollinator_response_measured"] == "YES_POLLINATOR_VISITATION"
+    assert induced["antagonist_response_measured"] == "YES_LATER_ABOVEGROUND_AND_ROOT_HERBIVORE_RESPONSES"
+    assert "STRICT_LINKED_EXPERIMENT" not in induced["evidence_lanes"]
 
 
 def test_historical_transitions_remain_below_shared_to_private_l4() -> None:
@@ -156,23 +165,35 @@ def test_historical_transitions_remain_below_shared_to_private_l4() -> None:
     assert "NOT_SHARED_TO_PRIVATE_CUE" in rows["SCHPRISMA-000282"]["historical_or_phylogenetic_context"]
 
 
-def test_geography_counts_are_record_level_and_not_independence_counts() -> None:
+def test_geography_counts_are_record_level_and_v21_non_geographic_voc_is_not_inflated() -> None:
     included = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
     geo = [row["record_id"] for row in included if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in included if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
-    assert len(geo) == 25
-    assert len(receiver) == 24
-    assert len(joint) == 22
-    for record_id in ["SCHPRISMA-000323", "SCHPRISMA-000334", "SCHPRISMA-000376", "SCHPRISMA-000379", "SCHPRISMA-000380"]:
-        assert record_id in joint
+    assert len(geo) == 27
+    assert len(receiver) == 28
+    assert len(joint) == 24
+    assert "SCHPRISMA-000338" not in geo
+    assert "SCHPRISMA-000338" in receiver
+    assert "SCHPRISMA-000378" in joint
+    assert "SCHPRISMA-000385" in joint
+
+
+def test_v21_evolutionary_scent_evolvability_is_not_a_receiver_assay() -> None:
+    row = {r["record_id"]: r for r in _rows()}["SCHPRISMA-000400"]
+    assert row["evidence_lanes"] == "EVOLUTIONARY_OUTCOME"
+    assert row["A_manipulated"] == "YES_BIDIRECTIONAL_ARTIFICIAL_SELECTION_ON_FLORAL_VOCS"
+    assert row["pollinator_response_measured"] == "NO_DIRECT_RECEIVER_ASSAY_CURRENT_EXPERIMENT"
+    assert row["antagonist_response_measured"] == "NO_DIRECT_RECEIVER_ASSAY_CURRENT_EXPERIMENT"
 
 
 def test_stage_provenance_uses_raw_overlays_not_latest_state_as_history() -> None:
     assert len(_v(18)) == 57
     assert len(_v(19)) == 46
     assert len(_v(20)) == 41
+    assert len(_v(21)) == 29
     merged_sources = Counter(row["decision_source"] for row in _rows())
     assert merged_sources["SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"] == 11
     assert merged_sources["SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_FULLTEXT_V19_2026-09-02"] == 46
-    assert merged_sources["ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02"] == 41
+    assert merged_sources["ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02"] == 12
+    assert merged_sources["SOURCE_VERIFIED_BATCH4_REMAINDER_FULLTEXT_V21_2026-09-02"] == 29
