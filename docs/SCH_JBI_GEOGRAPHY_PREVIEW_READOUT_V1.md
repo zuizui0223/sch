@@ -49,14 +49,14 @@ Cumulative state:
 
 ```text
 frozen candidates:                     868
-title/abstract screened:               364
-retained for full text:                248
-title/abstract excluded:               116
-unscreened:                            504
+title/abstract screened:               405
+retained for full text:                277
+title/abstract excluded:               128
+unscreened:                            463
 
 primary full-text inclusions:          117
 formal full-text exclusions:           131
-full-text undecided among retained:      0
+full-text undecided among retained:     29
 
 STRICT_LINKED_EXPERIMENT:                2
 DIRECTIONAL_OR_NEAR_PASS:              104
@@ -66,7 +66,7 @@ HISTORICAL_TRANSITION:                    4
 
 Batch 2 remains closed. V16 completes Batch-3 title/abstract screening and V17 closes all 44 newly retained Batch-3 reports at full text: 16 are included and 28 excluded. Strict remains 2, while near-pass and evolutionary lanes rise to 77 and 29; the historical-transition lane reaches four records without satisfying shared-cue → private-cue L4.
 
-V18 then retains 46 of 57 high-information Batch-4 records, and V19 resolves all 46 at full text: 28 include and 18 exclude. Strict remains 2; near-pass and evolutionary lanes rise to 104 and 39, while historical transition remains 4 and direct L4 remains unrecovered.
+V18 then retains 46 of 57 high-information Batch-4 records, and V19 resolves all 46 at full text: 28 include and 18 exclude. V20 adjudicates the remaining 41 new Batch-4 title/abstract records, retaining 29 and excluding 12. Batch 4 is now 100/100 complete at title/abstract stage. Strict remains 2; near-pass and evolutionary lanes remain 104 and 39, historical transition remains 4, and direct L4 remains unrecovered.
 
 ## Geography counters
 
@@ -156,9 +156,9 @@ frozen systematic denominator:         CLOSED at 868
 Batch 1 title/abstract screening:       COMPLETE
 Batch 2 title/abstract screening:       COMPLETE (100/100)
 Batch 2 high-information FT decisions:  26/26 retained reports
-current retained full-text backlog:      0
+current retained full-text backlog:     29
 multiple joint geographic records:      YES (22 records; independence count not frozen)
-full title/abstract screening:          NO (504 remaining)
+full title/abstract screening:          NO (463 remaining)
 independence / duplicate coding:        ACTIVE
 cross-study scale compatibility:        NOT_EVALUATED
 JBI Gate J5:                            UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE
@@ -170,7 +170,7 @@ A map of study locations cannot rescue a failed geography gate.
 
 ## Next systematic priority
 
-V18 and V19 close the Batch-4 high-information path through full text. The next work object is **title/abstract adjudication of the remaining 41 genuinely new Batch-4 records**. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
+V20 closes Batch 4 at title/abstract stage. The next work object is **full-text adjudication of the 29 reports newly retained by V20**; after that, advance to Batch 5 title/abstract screening. Independence and outcome-scale coding continue in parallel; screening progress alone does not authorize pooling.
 
 The same rules continue:
 
