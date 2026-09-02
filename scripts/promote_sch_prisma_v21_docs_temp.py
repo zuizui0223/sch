@@ -104,7 +104,7 @@ t=sub(t,r'V18 then retains 46 of 57 high-information Batch-4 records, and V19 re
 t=sub(t,r'The .*? current joint-positive records are:\n\n```text\n.*?\n```','The twenty-four current joint-positive records are:\n\n```text\n'+joint_block+'\n```','JBI joint list')
 t=sub(t,r'The change from historical `1/8` to .*? joint-positive records means the geography axis is worth developing,.*?It is \*\*not\*\* permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks\.',
       'The change from historical `1/8` to twenty-four joint-positive records means the geography axis is worth developing, but overlapping research programs must be clustered before any independent-system count is frozen. It is **not** permission to declare JBI ready before the frozen cohort is screened and an analyzable cross-study geography question passes independence and scale checks.', 'JBI decision')
-t=sub(t,r'Batch 4 is now complete at title/abstract stage under V20\. The next work object is \*\*full-text adjudication of the 29 reports newly retained by V20\*\*\.',
+t=sub(t,r'V20 closes Batch 4 at title/abstract stage\. The next work object is \*\*full-text adjudication of the 29 reports newly retained by V20\*\*; after that, advance to Batch 5 title/abstract screening\.',
       'Batch 4 is now closed at title/abstract and current full-text stages under V21. The next work object is **Batch-5 title/abstract screening**.', 'JBI next priority')
 p.write_text(t,encoding='utf-8')
 
