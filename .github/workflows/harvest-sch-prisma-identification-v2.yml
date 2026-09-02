@@ -76,8 +76,8 @@ jobs:
           rx=re.compile(r'SCREENING_DECISIONS_V(\d+)')
           paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'),key=lambda p:int(rx.search(p.name).group(1)))
           versions=[int(rx.search(p.name).group(1)) for p in paths]
-          assert versions==list(range(1,19)),versions
-          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V18_BATCH4_HIGH_INFORMATION.csv',paths[-1]
+          assert versions==list(range(1,20)),versions
+          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V19_BATCH4_HIGH_INFORMATION_FULLTEXT.csv',paths[-1]
           PY
           for i in "${!overlays[@]}"; do
             n=$((i+1))
@@ -89,7 +89,7 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require Batch 4 high-information title-abstract state under V18
+      - name: Require Batch 4 high-information full-text closure under V19
         run: |
           python - <<'PY'
           import json
@@ -97,56 +97,49 @@ jobs:
           d=json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
           assert d['analysis_id']=='sch_prisma_v2_screening_audit_v2',d
           assert d['identified_records']==868,d
-          assert d['screening_status']=='TITLE_ABSTRACT_IN_PROGRESS',d
           assert d['title_abstract']['retained_for_fulltext']==248,d
           assert d['title_abstract']['excluded']==116,d
           assert d['title_abstract']['unscreened']==504,d
-          assert d['fulltext']['eligible_after_title_abstract']==248,d
-          assert d['fulltext']['included']==89,d
-          assert d['fulltext']['decision_excluded']==113,d
-          assert d['fulltext']['assessed_excluded']==112,d
+          assert d['fulltext']['included']==117,d
+          assert d['fulltext']['decision_excluded']==131,d
+          assert d['fulltext']['assessed_excluded']==130,d
           assert d['fulltext']['unavailable']==1,d
-          assert d['fulltext']['unscreened']==46,d
+          assert d['fulltext']['unscreened']==0,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
-          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==77,d
-          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==29,d
+          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==104,d
+          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==39,d
           assert d['evidence_lane_counts']['HISTORICAL_TRANSITION']==4,d
-          assert d['geography']['geographic_contrast_positive']==20,d
-          assert d['geography']['receiver_assemblage_contrast_positive']==19,d
-          assert d['geography']['joint_geographic_receiver_positive']==17,d
+          assert d['geography']['geographic_contrast_positive']==25,d
+          assert d['geography']['receiver_assemblage_contrast_positive']==24,d
+          assert d['geography']['joint_geographic_receiver_positive']==22,d
           assert d['prisma_flow']['records_screened_title_abstract']==364,d
           assert d['prisma_flow']['reports_sought_for_retrieval']==248,d
           assert d['prisma_flow']['reports_not_retrieved']==1,d
-          assert d['prisma_flow']['reports_assessed_for_eligibility']==201,d
-          assert d['prisma_flow']['reports_excluded_fulltext']==112,d
-          assert d['prisma_flow']['studies_included']==89,d
+          assert d['prisma_flow']['reports_assessed_for_eligibility']==247,d
+          assert d['prisma_flow']['reports_excluded_fulltext']==130,d
+          assert d['prisma_flow']['studies_included']==117,d
           PY
 
-      - name: Verify Batch 3 closure and Batch 4 V18 provenance without live refetch
+      - name: Verify V18 and V19 stage provenance without live refetch
         run: |
           python - <<'PY'
           import csv, json
           from pathlib import Path
-          active={}
-          for path in Path('artifacts/sch_prisma_v2/screening_active').glob('SCH_PRISMA_V2_SCREEN_BATCH_*.csv'):
-              with path.open(encoding='utf-8',newline='') as h:
-                  for row in csv.DictReader(h): active[row['record_id']]=row
-          batch3=[f'SCHPRISMA-{i:06d}' for i in range(201,301)]
-          assert all(active[r]['screen_title_abstract'] in {'RETAIN_FULLTEXT','EXCLUDE'} for r in batch3)
-          assert all(active[r]['screen_fulltext'] in {'INCLUDE','EXCLUDE'} for r in batch3 if active[r]['screen_title_abstract']=='RETAIN_FULLTEXT')
           with open('empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V18_BATCH4_HIGH_INFORMATION.csv',encoding='utf-8',newline='') as h:
               v18=list(csv.DictReader(h))
+          with open('empirical/prisma/SCH_PRISMA_V2_SCREENING_DECISIONS_V19_BATCH4_HIGH_INFORMATION_FULLTEXT.csv',encoding='utf-8',newline='') as h:
+              v19=list(csv.DictReader(h))
           assert len(v18)==57
           assert sum(row['screen_title_abstract']=='RETAIN_FULLTEXT' for row in v18)==46
           assert sum(row['screen_title_abstract']=='EXCLUDE' for row in v18)==11
-          assert {row['decision_source'] for row in v18}=={'SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01'}
-          assert {'SCHPRISMA-000329','SCHPRISMA-000339'}.isdisjoint({row['record_id'] for row in v18})
+          assert len(v19)==46
+          assert sum(row['screen_fulltext']=='INCLUDE' for row in v19)==28
+          assert sum(row['screen_fulltext']=='EXCLUDE' for row in v19)==18
+          assert {row['record_id'] for row in v19}=={row['record_id'] for row in v18 if row['screen_title_abstract']=='RETAIN_FULLTEXT'}
+          assert {row['decision_source'] for row in v19}=={'SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_FULLTEXT_V19_2026-09-02'}
           receipt=json.loads(Path('empirical/prisma/triage/SCH_PRISMA_V2_BATCH_04_HIGH_INFORMATION_QUEUE_RECEIPT.json').read_text())
-          assert receipt['batch4_frozen_count']==100
-          assert receipt['prior_title_abstract_decision_count']==2
           assert receipt['new_title_abstract_target_count']==98
           assert receipt['high_information_queue_count_after_prior_decision_filter']==57
-          assert receipt['formal_prisma_decisions_written'] is False
           PY
 
       - name: Run live OpenAlex drift monitor

@@ -36,7 +36,7 @@ Permanent files are under `empirical/prisma/frozen_v2/`. Record IDs and the deno
 
 A later identical OpenAlex query returned `10,969 -> 2,108 -> 869`; this is `LIVE_INDEX_DRIFT_DETECTED`, not a denominator update. The Batch-2 triage also detected one record whose live abstract no longer reproduces the frozen concept hit. That record remains in the frozen cohort and is adjudicated normally; live metadata drift never deletes or renumbers a frozen record.
 
-## Current screening state — Batch 3 full-text closure complete under V17
+## Current screening state — Batch 4 high-information full-text closure under V19
 
 Formal decisions are cumulative sparse overlays. Batch 1 (`SCHPRISMA-000001`–`000100`) is completely screened at title/abstract stage and every retained Batch-1 report has a full-text decision. Batch 2 has a frozen 100-record machine-assistance packet. The 29 high-information records were adjudicated first and their retained full texts were closed in V11. V12 then adjudicates the remaining 70 previously undecided Batch-2 records; `SCHPRISMA-000172` was already source-adjudicated in V1 and is therefore not screened twice. Batch 2 is now 100/100 complete at title/abstract stage.
 
@@ -44,19 +44,19 @@ Because nine previously source-adjudicated/evolutionary records lie outside Batc
 
 ```text
 identified frozen cohort:        868
-title/abstract screened:         307
-retained for full text:          202
-title/abstract excluded:         105
-unscreened:                      561
+title/abstract screened:         364
+retained for full text:          248
+title/abstract excluded:         116
+unscreened:                      504
 
-full-text eligible:              202
-primary studies included:         89
-formal full-text exclusions:     113
+full-text eligible:              248
+primary studies included:        117
+formal full-text exclusions:     131
 full-text undecided:               0
 
 STRICT_LINKED_EXPERIMENT:           2
-DIRECTIONAL_OR_NEAR_PASS:          77
-EVOLUTIONARY_OUTCOME:              29
+DIRECTIONAL_OR_NEAR_PASS:         104
+EVOLUTIONARY_OUTCOME:              39
 HISTORICAL_TRANSITION:               4
 ```
 
@@ -80,15 +80,18 @@ A manipulated
 - **Delphinium caeruleum 2022**: nectar-robbing context changes the staminode visitor-screening mechanism, pollinator visitation and pollen transfer; the focal floral coordinate is not itself randomized.
 - **Cassia fistula 2021**: stamen exclusion and pollen functionality recover pollinating-versus-feeding division of labour, supporting partial modularity without a common net-fitness test.
 - **Junker & Blüthgen 2010**: the same synthetic floral-scent coordinate attracts bumblebees while repelling ants; this is a clean opposite-receiver same-code near-pass, but it lacks a common plant reproductive outcome.
+- **Theis 2006, Canada thistle**: synthetic benzaldehyde and phenylacetaldehyde baits attract both pollinators and floral herbivores on the same chemical coordinate. This strengthens shared-code recurrence but lacks a common plant reproductive outcome.
 - **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya***: floral morphology, pollinator community, pollination efficacy and oviposition differ between populations, supporting a geographic coevolutionary mosaic without randomized `do(A)`.
 
 ### Batch-3 full-text closure under V17
 
 Batch 2 remains closed. V16 completed Batch-3 title/abstract screening, and V17 now resolves all 44 reports retained by V16 at full text: 16 are included and 28 excluded. Batch 3 is therefore closed at both title/abstract and current full-text stages. The next work object is Batch-4 title/abstract screening. This does not authorize pooled effects and does not mean the 868-record screen is complete.
 
+V18 adjudicates the 57 high-information Batch-4 title/abstract records (46 retain, 11 exclude), and V19 closes all 46 retained reports at full text (28 include, 18 exclude). The remaining Batch-4 work object is 41 title/abstract records outside the high-information queue. No V19 study is promoted to the strict linked gate.
+
 ## Full-text exclusion and independence boundary
 
-The current formal exclusion ledger contains 113 decisions: 112 assessed full-text exclusions plus one `FT_FULLTEXT_UNAVAILABLE` retrieval outcome. The assessed exclusions include review/meta-analysis/species-synthesis records, duplicate reports, records lacking a declared floral `A`, or records lacking one required biological channel. The unavailable report is not counted as assessed for eligibility. Reviews remain useful source-registry material but are not double-counted as primary included studies.
+The current formal exclusion ledger contains 131 decisions: 130 assessed full-text exclusions plus one `FT_FULLTEXT_UNAVAILABLE` retrieval outcome. The assessed exclusions include review/meta-analysis/species-synthesis records, duplicate reports, records lacking a declared floral `A`, or records lacking one required biological channel. The unavailable report is not counted as assessed for eligibility. Reviews remain useful source-registry material but are not double-counted as primary included studies.
 
 Preprint/published duplicates are clustered rather than counted twice. Dissertation chapters that overlap published articles are flagged for independence coding before any cross-study synthesis. Dataset and peer-review objects are excluded as reports without removing the corresponding primary publication or data provenance from the source registry.
 
@@ -103,12 +106,12 @@ The audit distinguishes:
 Current full-text-coded counts remain:
 
 ```text
-positive geographic contrasts:         20
-positive receiver/interactor contrasts:19
-joint geography + receiver records:    17
+positive geographic contrasts:         25
+positive receiver/interactor contrasts:24
+joint geography + receiver records:    22
 ```
 
-The seventeen joint-positive records are:
+The twenty-two joint-positive records are:
 
 ```text
 SCHPRISMA-000008  A geographic selection mosaic in a generalized plant–pollinator–herbivore system
@@ -126,13 +129,18 @@ SCHPRISMA-000233  Ecological convergence in phytochemistry and flower–insect v
 SCHPRISMA-000271  Enhanced frugivory on invasive Silene latifolia in its native range due to increased oviposition
 SCHPRISMA-000287  Evolution of floral and mating system variation in Camissoniopsis cheiranthifolia (Onagraceae): An evaluation of patterns and processes
 SCHPRISMA-000299  Extreme diversification of floral volatiles within and among species of Lithophragma (Saxifragaceae)
+SCHPRISMA-000323  Floral polymorphism and the fitness implications of attracting pollinating and florivorous insects
+SCHPRISMA-000334  Floral traits variation, legitimate pollination, and nectar robbing in Polygala vayredae (Polygalaceae)
+SCHPRISMA-000376  Geographic consistency and variation in conflicting selection generated by pollinators and seed predators
+SCHPRISMA-000379  Geographic Variation in Flower Size and Flower-Visitor Composition of Two Bumblebee-Pollinated, Spring-Flowering Herbs, Lamium album L. var. barbatum (Lamiaceae) and Meehania urticifolia (Lamiaceae)
+SCHPRISMA-000380  Geographic variation in resistance to nectar robbing and consequences for pollination
 SCHPRISMA-000523  Mutualists and antagonists drive among-population variation in selection and evolution of floral display in a perennial herb
 SCHPRISMA-000710  Selective Pressures Explain Differences in Flower Color among Gentiana lutea Populations
 ```
 
 `SCHPRISMA-000075` (eight-generation bee × aphid experimental evolution) has a real receiver-regime contrast but is deliberately **not** geographic. Likewise, multisite sampling alone is not positive geography: the 25-orchard ant study is coded `NO_REPLICATED_GEOGRAPHIC_RECEIVER_REGIME_CONTRAST` because its focal comparison is floral architecture/visitor role rather than spatial turnover in receiver regimes.
 
-Thus the JBI axis is no longer resting on one isolated anchor. V17 yields 17 joint-positive records, but record count is not an independence count: overlapping *Primula*, *Lithophragma*, dissertation/published, and other research-program representations must be clustered before quantitative synthesis. JBI remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 561 records remain title/abstract unscreened and no common geography-by-cue-overlap estimand has passed independence/scale checks.
+Thus the JBI axis is no longer resting on one isolated anchor. V19 yields 22 joint-positive records, but record count is not an independence count: overlapping *Collaea*, *Gelsemium*, *Primula*, *Lithophragma*, dissertation/published, and other research-program representations must be clustered before quantitative synthesis. JBI remains **UNRESOLVED, NOW EMPIRICALLY PLAUSIBLE**, not submission-ready: 504 records remain title/abstract unscreened and no common geography-by-cue-overlap estimand has passed independence/scale checks.
 
 A map of study locations cannot rescue a failed geography gate.
 
@@ -152,18 +160,19 @@ V17 expands the `HISTORICAL_TRANSITION` lane to four records, but these are role
 
 | Paper component | Material in hand | Current use | Missing gate |
 |---|---|---|---|
-| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 561 records |
+| Framing question | shared versus private cues | Cue overlap determines whether pollinator gain can be separated from antagonist exposure | Preserve operational cue-overlap coding through remaining 504 records |
 | Estimands | `M_A`, `G_A`, `S_A = M_A - G_A`, direct cost separate | Keeps SCH distinct from BITA `Delta_AD W` | Effect-size scale and outcome compatibility rules |
 | Evolutionary outcomes | **12-source primary audit** + systematic additions | Compromise, modularity, population change, experimental evolution | Historical branching/L4 still absent |
 | Frozen coverage audit | BITA-derived route candidates and source-adjudicated anchors | Existence and near-pass classes. **Do not insert them into the frozen four-field coverage count** without a separate admission pass. | Not a prevalence denominator |
-| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | 561 records remain title/abstract unscreened |
+| PRISMA V2 | frozen 868 cohort | Immutable systematic denominator | 504 records remain title/abstract unscreened |
 | Batch 1 | 100/100 TA decisions; retained reports fully closed | First complete systematic batch | Closed |
 | Batch 2 | 100/100 TA decisions; all currently retained reports resolved at full text under V13 | Second systematic batch | Closed; proceed to Batch 3 TA screening |
 | Batch 3 | 100/100 TA decisions; V17 resolves every retained Batch-3 report at full text | Third systematic batch | Closed; advance to Batch 4 title/abstract screening |
-| Formal screening cumulative | 307 TA decisions; 89 primary includes; 112 assessed FT exclusions; 1 not retrieved; FT backlog 0 | Evidence lanes and blockers | Advance to Batch 4 title/abstract screening |
+| Batch 4 | high-information 57 TA decisions under V18; all 46 retained reports closed at full text under V19 | Fourth systematic batch in progress | Screen remaining 41 title/abstract records |
+| Formal screening cumulative | 364 TA decisions; 117 primary includes; 130 assessed FT exclusions; 1 not retrieved; FT backlog 0 | Evidence lanes and blockers | Close the remaining 41 Batch-4 title/abstract records |
 | Strict experiments | Theis & Adler 2012; Sánchez-Lafuente 2007 | Two strict linked measurement architectures | Neither closes simultaneous positive pollinator and antagonist response to the same manipulated A |
 | Same-code near-pass | Reisenman 2010 | Identical chemical-coordinate feeding/oviposition contrast | Common plant reproductive outcome |
-| Geography | 17 joint-positive records; independence count not frozen | JBI axis empirically plausible | Complete screen, cluster overlapping programs, define common analytic question |
+| Geography | 22 joint-positive records; independence count not frozen | JBI axis empirically plausible | Complete screen, cluster overlapping programs, define common analytic question |
 | Ficus history | fixed 32-species scaffold + same-code gate | `COMPOSITE_NEAR_L4` | Same-code NPFW assays, then historical state reconstruction |
 
 ## Planned article structure
@@ -183,10 +192,10 @@ V17 expands the `HISTORICAL_TRANSITION` lane to four records, but these are role
 | Item | Purpose | Source state |
 |---|---|---|
 | Figure 1 | Shared-cue versus private-cue mechanism | Concept fixed |
-| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 307 TA decisions; 89 includes; 112 assessed FT exclusions; 1 not retrieved; FT backlog 0 |
-| Figure 3 | Geographic receiver-regime synthesis | 17 joint-positive records; independence clustering and full screen remain pending |
+| Figure 2 | PRISMA flow + strict/near-pass/evolutionary lanes | Frozen denominator; 364 TA decisions; 117 includes; 130 assessed FT exclusions; 1 not retrieved; FT backlog 0 |
+| Figure 3 | Geographic receiver-regime synthesis | 22 joint-positive records; independence clustering and full screen remain pending |
 | Figure 4 | *Ficus* same-code historical bridge | Core data/matrix fixed |
-| Table 1 | Systematic study decisions/blockers | 307 TA screened; 89 primary includes; FT backlog 0 |
+| Table 1 | Systematic study decisions/blockers | 364 TA screened; 117 primary includes; FT backlog 0 |
 | Table 2 | Evidence-role registry and prohibited uses | Systematic update in progress |
 | Table 3 | Evolutionary-outcome ledger | Primary audit + systematic additions |
 

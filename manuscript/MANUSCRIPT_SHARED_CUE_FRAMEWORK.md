@@ -76,7 +76,7 @@ L0  contemporary dual-audience response / opposing selection
  -> L4  reconstructed shared-cue -> private-cue transition under both audiences
 ```
 
-Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. Systematic expansion through V17 yields four bounded `HISTORICAL_TRANSITION` records spanning receiver-role, mating-system and trait-history transitions, but none reconstructs shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
+Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. Systematic expansion through V19 retains four bounded `HISTORICAL_TRANSITION` records spanning receiver-role, mating-system and trait-history transitions, but none reconstructs shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
 
 ## 6. First coverage gate
 
@@ -96,6 +96,7 @@ A manipulated
 - **Sánchez-Lafuente 2007, *Linaria lilacina*:** the second strict linked measurement-architecture pass; experimental corolla damage changed pollinator response and reproduction while fruit-predator visitation showed no treatment response.
 - **Page et al. 2014:** floral colour and scent predict seed-eating pollinator host choice; supports antagonist use of floral cues but supplies no same-study pollination coefficient for the same axes.
 - **Junker & Blüthgen 2010:** a same-synthetic-scent near-pass in which bumblebees are attracted while ants are repelled; the opposite receiver responses are on the same chemical coordinate, but no common plant reproductive outcome is measured.
+- **Theis 2006, Canada thistle:** synthetic floral-scent baits show that benzaldehyde and phenylacetaldehyde attract both pollinators and floral herbivores. This is direct shared-code recurrence on a manipulated chemical coordinate, but no common plant reproductive outcome is measured.
 - **Knauer, Bakhtiari & Schiestl 2018:** antagonist removal by crab spiders changes the ecological context of floral-signal evolution; a mechanism/context anchor rather than a current strict coverage pass.
 - **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya*:** population differences in floral morphology and pollinator assemblage are matched by local-versus-nonlocal differences in pollination efficacy and oviposition, supporting a geographic coevolutionary mosaic without a randomized floral `A`.
 - **Chen & Pannell 2022:** pollination and seed predation generate a disruptive selection surface on flowering height across alpine populations; the focal floral axis is observational, so this strengthens the compromise/branching precursor layer rather than the strict causal gate.
@@ -103,6 +104,8 @@ A manipulated
 - **Syngonium plant-bug transition:** comparative and behavioural evidence links recruitment of ancestrally florivorous plant bugs as specialized pollinators to a novel attractive floral volatile. This is a receiver-role transition and floral-trait divergence, not a reconstructed shared-cue → private-cue transition.
 - **Abronia mating-system transition:** field and common-garden comparisons associate the transition toward selfing with near-complete floral-fragrance vestigialization. This is a historical attraction-syndrome transition, not evidence that an ancestral shared cue became private.
 - **Haplopappus elevation mosaic:** floral volatile blends, insect olfactory preference, fertilized seeds and predated seeds covary across an Andean elevation gradient; because floral `A` is comparative rather than randomized, this strengthens the geographic/evolutionary layer rather than the strict gate.
+- **Collaea cipoensis:** pollinators favor larger and more numerous flowers while nectar robbers/florivores impose opposing selection on the same attractiveness traits and female fitness; the shared display axis is observational rather than randomized.
+- **Pedicularis rex and Gelsemium sempervirens geographic mosaics:** replicated populations/common gardens show that pollinator benefit, seed predation or nectar robbing, floral traits and reproduction vary geographically. These systems strengthen the biogeographic/evolutionary layer without satisfying `do(A)`.
 
 The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
 
