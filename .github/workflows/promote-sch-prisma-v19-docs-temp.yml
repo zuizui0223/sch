@@ -1,0 +1,36 @@
+name: promote-sch-prisma-v19-docs-temp
+on:
+  push:
+    branches:
+      - analysis/prisma-batch4-fulltext-v19
+permissions:
+  contents: write
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch4-fulltext-v19
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Synchronize V19 documentation and manuscript
+        run: python scripts/promote_sch_prisma_v19_docs_temp.py
+      - name: Validate synchronized V19 state
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/test_sch_prisma_current_screening_state.py tests/test_sch_bita_scope_contract.py
+          grep -q 'primary studies included:        117' docs/PUBLICATION_MATERIAL_LEDGER.md
+          grep -q 'joint geography + receiver records:     22' docs/SCH_PRISMA_V19_BATCH4_HIGH_INFORMATION_FULLTEXT_READOUT.md
+          grep -q 'Theis 2006, Canada thistle' manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+      - name: Commit V19 synchronization
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/PUBLICATION_MATERIAL_LEDGER.md docs/SCH_JBI_GEOGRAPHY_PREVIEW_READOUT_V1.md docs/SCH_PRISMA_V19_BATCH4_HIGH_INFORMATION_FULLTEXT_READOUT.md manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Synchronize V19 Batch 4 full-text closure'
+          git push origin HEAD:analysis/prisma-batch4-fulltext-v19
