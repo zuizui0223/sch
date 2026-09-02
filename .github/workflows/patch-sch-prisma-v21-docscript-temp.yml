@@ -1,0 +1,36 @@
+name: patch-sch-prisma-v21-docscript-temp
+
+on:
+  push:
+    branches:
+      - analysis/prisma-batch4-fulltext-v21
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/prisma-batch4-fulltext-v21
+          fetch-depth: 0
+      - name: Patch V21 JBI next-priority anchor
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/promote_sch_prisma_v21_docs_temp.py')
+          t=p.read_text(encoding='utf-8')
+          old="r'Batch 4 is now complete at title/abstract stage under V20\\. The next work object is \\*\\*full-text adjudication of the 29 reports newly retained by V20\\*\\*\\.'"
+          new="r'V20 closes Batch 4 at title/abstract stage\\. The next work object is \\*\\*full-text adjudication of the 29 reports newly retained by V20\\*\\*; after that, advance to Batch 5 title/abstract screening\\.'"
+          if old not in t: raise SystemExit('old V21 anchor not found')
+          p.write_text(t.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/promote_sch_prisma_v21_docs_temp.py
+          git commit -m 'Fix V21 JBI documentation anchor'
+          git push origin HEAD:analysis/prisma-batch4-fulltext-v21
