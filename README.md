@@ -103,6 +103,19 @@ COMPLETE_SCH_CHANNEL_IDENTIFICATION_NOT_YET_EXECUTED
 HISTORICAL_SHARED_TO_PRIVATE_TRANSITION_NOT_YET_IDENTIFIED
 ```
 
+## First-choice execution system
+
+The current first-choice system for direct SCH mechanism closure is *Nicotiana attenuata*.
+
+Why it ranks first:
+
+- floral benzylacetone supplies a manipulable candidate `A` coordinate;
+- the same research programme contains pollinator-mediated reproduction and antagonist/oviposition responses to attraction/reward manipulations;
+- the programme already connects directly to BITA's attraction-by-defence problem;
+- the critical uncertainty is experimentally explicit: hawkmoth pollination and antagonist roles must be selectively separated before channel claims are allowed.
+
+The execution contract is `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md`. *Nicotiana* is promoted to the 8-cell pilot only after stable `A`, paired receiver response, workable selective `P/G` interventions and one common reproductive endpoint are validated. Failure of that selectivity gate triggers a move to the next biological system rather than forcing a decomposition.
+
 ## SCH -> BITA
 
 SCH and BITA now form an explicit experimental ladder.
@@ -125,6 +138,8 @@ SCH therefore establishes **why attraction is constrained**. BITA asks **whether
 ## Repository map
 
 - `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — canonical 8-cell mechanism-identification contract
+- `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md` — first-choice biological-system and Stage 0/1 execution contract
+- `docs/NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md` — real-world programme evidence supporting the first-choice system
 - `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — mechanism-first paper concept and evidence grounding
 - `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — SCH Chapter 1 -> BITA Chapter 2 research programme
 - `empirical/one_trait_shared_cue/` — source adjudications, evolutionary outcomes and historical extensions
@@ -137,7 +152,8 @@ SCH therefore establishes **why attraction is constrained**. BITA asks **whether
 ## Immediate empirical programme
 
 ```text
-Stage 0  validate one A coordinate and paired receiver access
+Stage 0  Nicotiana: validate benzylacetone A and paired receiver access
+         then validate selective pollinator and antagonist interventions
 Stage 1  pilot A x antagonist x pollinator and estimate channel-scale variance
 Stage 2  re-power and execute the confirmatory 8-cell experiment
 Stage 3  independently assay the consumer-free remainder / direct cost
