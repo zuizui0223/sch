@@ -24,7 +24,7 @@ def test_ficus_module_separates_temporal_from_chemical_privacy() -> None:
     assert "Sycoscapter trifemmensis" in text
     assert "temporal separation is not chemical privatization" in text
     assert "host association does not show that it intercepts" in text
-    assert "whole-odour response" in text
+    assert "tracks a receptive bouquet does not identify which pollinator-attractive code it intercepts" in text
 
 
 def test_ficus_protocol_requires_equivalence_not_nonsignificance_for_privacy() -> None:
