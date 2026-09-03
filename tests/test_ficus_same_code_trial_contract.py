@@ -9,7 +9,7 @@ from scripts.analyze_ficus_same_code_trials import REQUIRED_FIELDS
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "empirical" / "one_trait_shared_cue" / "FICUS_SAME_CODE_TRIAL_TEMPLATE_V1.csv"
 CONTRACT = ROOT / "docs" / "SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md"
-MANUSCRIPT = ROOT / "manuscript" / "MANUSCRIPT_SHARED_CUE_FRAMEWORK.md"
+PROTOCOL = ROOT / "docs" / "SCH_FICUS_SAME_CODE_EXPERIMENT_PROTOCOL_V1.md"
 
 
 def test_trial_csv_template_exactly_matches_analyzer_contract() -> None:
@@ -28,13 +28,15 @@ def test_data_contract_separates_directional_and_equivalence_inference() -> None
     assert "NO_CHOICE" in text
     assert "code_id" in text
     assert "cluster_id" in text
-    assert "one contemporary same-code state is not L4" not in text or "DIRECT_L4" in text
+    assert "None of those states alone is `DIRECT_L4`" in text
 
 
-def test_manuscript_points_from_historical_gap_to_executable_trial_contract() -> None:
-    text = MANUSCRIPT.read_text(encoding="utf-8")
-    assert "95% directional interval" in text
-    assert "90% interval against the predeclared equivalence zone" in text
-    assert "explicit `cluster_id`" in text
-    assert "SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md" in text
-    assert "scripts/analyze_ficus_same_code_trials.py" in text
+def test_historical_gap_points_to_executable_trial_contract() -> None:
+    contract = CONTRACT.read_text(encoding="utf-8")
+    protocol = PROTOCOL.read_text(encoding="utf-8")
+    assert "95% cluster-bootstrap interval" in contract
+    assert "90% cluster-bootstrap interval" in contract
+    assert "cluster_id" in contract
+    assert "scripts/analyze_ficus_same_code_trials.py" in contract
+    assert "a nonsignificant NPFW response is not called a private channel" in protocol
+    assert "BEHAVIORAL_NONRESPONSE_EQUIVALENT" in protocol
