@@ -1,33 +1,124 @@
-# Shared Cue Hypothesis (SCH)
+# Shared Trait Compromise / SCH
 
-SCH is the one-trait mechanism chapter paired with [BITA](https://github.com/zuizui0223/bita). The programme asks one sequence:
+SCH is Chapter 1 of a trait-architecture programme paired with [BITA](https://github.com/zuizui0223/bita).
 
 ```text
-SCH:  why does one floral attraction/display coordinate become conflicted?
-BITA: can a distinct defence coordinate release that conflict?
+Chapter 1 / SCH
+function 1 ---\
+               >--- shared trait z ---> compromise / balance
+function 2 ---/
+
+Chapter 2 / BITA
+shared compromise
+      ↓
+function 1 ---> trait x
+function 2 ---> trait y
+      ↓
+functional differentiation / modularization
 ```
 
-The central SCH contribution is now **mechanism identification**, not a literature review. Existing literature is retained as real-world evidence that the proposed routes, conflicts and evolutionary consequences actually occur in nature, and as a map of which identifying measurements are usually missing.
+The general SCH question is:
+
+> **What happens when two fitness-relevant functions are forced to use the same phenotypic coordinate?**
+
+The pollinator-antagonist shared-cue problem remains the primary floral implementation, but it is now treated as one realization of a more general multifunctionality problem rather than the definition of the chapter.
 
 ## Scientific target
 
-For one predeclared attraction/display manipulation `A`, SCH asks whether pollinators increase the reproductive value of `A` while antagonists decrease the reproductive value of that **same coordinate**.
+Let one trait `z` contribute to two functional components:
 
-The core experiment is a crossed
+```text
+F1(z)
+F2(z)
+```
+
+with total fitness
+
+```text
+W_shared(z) = w1 F1(z) + w2 F2(z) - C(z).
+```
+
+If the function-specific optima differ,
+
+```text
+z1* != z2*,
+```
+
+a single phenotype cannot optimize both functions independently. The shared-trait optimum
+
+```text
+zc* = argmax W_shared(z)
+```
+
+can therefore represent an integrated compromise.
+
+The strongest balance claim is about **opposing marginal gradients**, not equal raw benefits. Near an interior compromise,
+
+```text
+w1 dF1/dz + w2 dF2/dz - dC/dz = 0
+```
+
+while the function-specific gradients can remain non-zero and oppose one another. Net selection near zero can therefore mask strong functional conflict.
+
+The generalized framework is frozen in `docs/SHARED_TRAIT_COMPROMISE_FRAMEWORK_V1.md`.
+
+## Identification programme
+
+SCH now separates local conflict identification from compromise-surface identification.
+
+```text
+L0  multifunctionality
+    the same z affects both functions
+
+L1  functional conflict
+    selective interventions recover opposing functional contributions
+    on the same z contrast
+
+L2  compromise geometry
+    >=3 z levels recover distinct functional response curves / optima
+    and the total shared-trait optimum
+
+L3  mechanism-resolved balance
+    crossed functional interventions identify how the gradients combine
+
+L4  evolutionary maintenance
+    heritable variation / repeated selection / experimental evolution
+
+L5  historical architecture
+    ancestral integration -> decoupling / specialization reconstructed
+```
+
+The current two-level crossed design remains valuable for L1 and part of L3. It does **not** by itself prove an interior compromise; that requires a multi-level or continuous `z` experiment.
+
+## Pollinator-antagonist realization
+
+The current floral implementation maps the general architecture as
+
+```text
+function 1 = pollinator-mediated reproductive gain
+function 2 = antagonist avoidance / reduced antagonist-mediated loss
+shared z   = one floral attraction/display coordinate
+```
+
+so that
+
+```text
+W(z) = M(z) - G(z) - C(z).
+```
+
+For one binary attraction/display contrast, the registered experiment crosses
 
 ```text
 A x antagonist x pollinator
 ```
 
-**8-cell selective-intervention design** on one common plant reproductive outcome.
-
-Write the attraction effect in each consumer state as
+in an 8-cell selective-intervention design on one common reproductive outcome. Write
 
 ```text
 d[g,p] = W[1,g,p] - W[0,g,p].
 ```
 
-Then identify:
+Then identify
 
 ```text
 M_A(g) = d[g,1] - d[g,0]
@@ -40,146 +131,93 @@ B_A    = d[0,0]
          consumer-independent remainder
 
 J_A    = d[1,1] - d[1,0] - d[0,1] + d[0,0]
-         channel-dependence diagnostic
+         channel-dependence diagnostic.
 ```
 
-A positive `M_A` means pollinator access makes attraction more reproductively beneficial. A positive `G_A` means antagonist access erodes that benefit. `B_A` is not automatically a physiological/construction cost; it remains unallocated unless an independent assay identifies it.
+A positive `M_A` and positive `G_A` on the same `A` contrast establish local functional conflict. To establish **compromise / balance**, the next extension is to repeat the crossed functional design over at least three informative `A`/`z` levels and recover the pollinator, antagonist and total-fitness response curves.
 
-The strongest contemporary shared-cue result therefore requires both:
+## What the literature evidence does
 
-1. **informational overlap** — the same sensory/display coordinate of `A` is used by both receiver classes; and
-2. **functional conflict** — selective intervention shows pollinator-mediated gain and antagonist-mediated loss on that same `A` contrast.
-
-The mechanism and inference contract is frozen in `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md`.
-
-## Constraint result to be tested
-
-Under natural pollinator access,
-
-```text
-G_A(1) = d[0,1] - d[1,1].
-```
-
-If `G_A(1) > 0`, antagonist presence flattens the attraction-fitness effect relative to an antagonist-free state. Stronger outcomes are predeclared separately:
-
-```text
-constraint attenuation:                  0 < d[1,1] < d[0,1]
-constraint release by antagonist removal: d[1,1] <= 0 < d[0,1]
-strict sign reversal:                     d[1,1] < 0 < d[0,1]
-```
-
-These are reproductive mechanism claims. They do not by themselves establish historical evolution of a private cue.
-
-## Role of the literature evidence
-
-The PRISMA programme, targeted primary-source audits and evolutionary-outcome audit remain in SCH, but their role is now explicitly secondary to the identification framework.
+The PRISMA programme, targeted primary-source audits and evolutionary-outcome audit remain in SCH as a **real-world evidence spine**. Their role is secondary to the identifying experiment.
 
 They provide four kinds of grounding:
 
-- **route reality:** attraction/display traits affect pollinators and antagonists in real systems;
-- **outcome reality:** compromise, polymorphism, population change and partial cue decoupling are documented evolutionary outcomes;
-- **design-gap evidence:** manipulation, both consumer channels and a common reproductive outcome are rarely measured together;
-- **historical extension:** systems such as *Ficus* locate candidate shared/private transitions that can be tested only after matched receiver states are measured on the same cue coordinate.
+- **mechanism reality:** shared floral traits affect multiple functions / receiver classes in nature;
+- **compromise reality:** opposing selection, stabilizing compromise, polymorphism and population shifts are documented;
+- **design-gap evidence:** both functions and a common fitness outcome are rarely manipulated on the same trait coordinate;
+- **historical extension:** systems such as *Ficus* identify candidate routes from integrated to more separable architectures.
 
-The frozen systematic cohort currently contains 868 records. Through V20, 405 have title/abstract decisions, 117 primary studies are included, and two studies satisfy the strict linked measurement architecture. Those counts are **not the main SCH estimand and are not prevalence estimates**. They show that the mechanism components are biologically real while complete identification remains rare.
+The frozen systematic cohort contains 868 records. Through V20, 405 have title/abstract decisions, 117 primary studies are included, and two studies satisfy the strict linked measurement architecture. Those counts are not the SCH estimand and are not prevalence estimates.
 
-## Current positive evidence
-
-The source spine already supports several bounded ecological conclusions:
-
-- floral attraction/display coordinates can influence both mutualist and antagonist routes;
-- opposing biotic effects can produce an integrated compromise;
-- context-dependent selection can maintain alternative phenotypes;
-- antagonists can redirect population-level floral evolution;
-- bouquet partitioning, conditional emission and temporal separation can partially decouple receiver effects.
-
-What remains unproven is the stronger historical claim that dual-audience selection repeatedly transformed an ancestral shared cue into a pollinator-private cue or distinct audience-specialized lineages. *Ficus* remains `COMPOSITE_NEAR_L4`, not `DIRECT_L4`.
-
-Thus the current status is:
+Current bounded status:
 
 ```text
-REAL_WORLD_MECHANISM_COMPONENTS_RECOVERED
-COMPLETE_SCH_CHANNEL_IDENTIFICATION_NOT_YET_EXECUTED
-HISTORICAL_SHARED_TO_PRIVATE_TRANSITION_NOT_YET_IDENTIFIED
+REAL_WORLD_MULTIFUNCTIONALITY_RECOVERED
+REAL_WORLD_COMPROMISE_AND_DECOUPLING_OUTCOMES_RECOVERED
+LOCAL_SCH_CHANNEL_IDENTIFICATION_NOT_YET_EXECUTED
+MULTI_LEVEL_COMPROMISE_SURFACE_NOT_YET_EXECUTED
+HISTORICAL_INTEGRATION_TO_MODULARIZATION_NOT_YET_IDENTIFIED
 ```
 
-## First-choice execution system
+## Current execution systems
 
-The current first-choice system for direct SCH mechanism closure is *Nicotiana attenuata*.
+*Nicotiana attenuata* remains the strongest same-coordinate floral system for the pollinator-antagonist realization because benzylacetone (BA) affects pollinator-mediated reproduction and hawkmoth oviposition on the same programme-level axis. Existing pollen-loading and egg-removal methods also provide intervention components.
 
-Primary-source recovery now establishes more than candidate plausibility:
+Its current gate is **combined pathway selectivity**: the pollination and antagonist pathways must be perturbed without moving the BA coordinate or contaminating the other functional channel. The relevant contracts are:
 
-- benzylacetone (BA) manipulation strongly changes *M. sexta*-mediated seed production;
-- the same BA manipulation changes *M. sexta* oviposition in the native field experiment;
-- standardized pollen loading of moth proboscides, antherectomy and mature-seed scoring are established methods;
-- post-oviposition egg removal while moth visitation continues is already feasible in this system.
+- `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md`
+- `docs/SCH_NICOTIANA_STAGE0_PRIMARY_SOURCE_RECOVERY_V1.md`
+- `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md`
 
-Accordingly, the current Nicotiana state is:
-
-```text
-L0 shared-coordinate reality:        SUPPORTED at programme level
-S0.1 BA coordinate stability:        STRONG PARTIAL
-S0.2 pollinator response:             RECOVERED
-S0.3 antagonist response:             RECOVERED in field
-S0.4 P intervention component:        FEASIBILITY RECOVERED
-S0.5 G intervention component:        FEASIBILITY RECOVERED
-S0.6 combined P/G selectivity:        OPEN / CRITICAL
-S0.7 common W feasibility:            STRONG PARTIAL
-```
-
-The execution contract is `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md`; source-level recovery is frozen in `docs/SCH_NICOTIANA_STAGE0_PRIMARY_SOURCE_RECOVERY_V1.md`; and the immediate go/no-go test is `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md`.
-
-The remaining high-information question is no longer whether BA can affect both audiences. It is whether the already demonstrated pollination and egg-removal tools can be combined without cross-channel contamination. Failure of that selectivity gate triggers a move to the next biological system rather than forcing a decomposition.
+A parallel short-path search is retained because the best system for L0 same-coordinate reality need not be the easiest system for L2 compromise geometry. Systems with distinct pollinator and seed-predator guilds and a short antagonist-to-seed-loss path may be superior for the full compromise experiment.
 
 ## SCH -> BITA
 
-SCH and BITA now form an explicit experimental ladder.
+The sister projects now answer one general evolutionary sequence.
 
 ```text
 Chapter 1 — SCH
-A x antagonist x pollinator
-8 cells
--> identify the one-trait dual-audience conflict
+one trait dimension z
+multiple functional demands
+-> identify conflict and integrated compromise
 
 Chapter 2 — BITA
-A x D x antagonist x pollinator
-16 cells
--> test whether a distinct defence coordinate releases the conflict
-   and allocate antagonist relief, pollinator interference and joint cost
+increase trait dimensionality to x and y
+-> test whether functions become more independently tunable
+-> identify functional differentiation / modularization
 ```
 
-SCH therefore establishes **why attraction is constrained**. BITA asks **whether and why defence provides an escape route**.
+In the current floral special case:
+
+```text
+SCH:   shared attraction/display coordinate under pollination and antagonism
+BITA:  attraction trait A + antagonist-reducing trait D
+```
+
+BITA therefore no longer means merely “add defence.” It is the operational two-trait test of whether a second coordinate can release a compromise identified in Chapter 1.
 
 ## Repository map
 
-- `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — canonical 8-cell mechanism-identification contract
-- `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md` — first-choice biological-system and Stage 0/1 execution contract
+- `docs/SHARED_TRAIT_COMPROMISE_FRAMEWORK_V1.md` — generalized Chapter-1 theory and evidence ladder
+- `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — two-level crossed mechanism-identification contract
+- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — dissertation-level bridge to functional differentiation
+- `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md` — first-choice floral execution contract
 - `docs/SCH_NICOTIANA_STAGE0_PRIMARY_SOURCE_RECOVERY_V1.md` — primary-source recovery of Nicotiana Stage-0 gates
-- `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md` — combined P/G go/no-go pilot and contamination tests
-- `docs/NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md` — real-world programme evidence supporting the first-choice system
-- `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — mechanism-first paper concept and evidence grounding
-- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — SCH Chapter 1 -> BITA Chapter 2 research programme
+- `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md` — combined pathway go/no-go pilot
+- `docs/SCH_SHORT_PATH_CANDIDATE_RANKING_V1.md` — alternative-system search for short function-to-fitness paths
 - `empirical/one_trait_shared_cue/` — source adjudications, evolutionary outcomes and historical extensions
-- `empirical/prisma/frozen_v2/` — immutable 868-record systematic denominator
+- `empirical/prisma/frozen_v2/` — immutable systematic denominator
 - `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv` — evidence roles and claim ceilings
-- `docs/PUBLICATION_MATERIAL_LEDGER.md` — mechanism-first publication material and remaining gates
-- `scripts/build_one_trait_coverage_audit.py` — deterministic legacy/coverage audit builder
-- `docs/MIGRATION_RECEIPT.md` — BITA-to-SCH ownership boundary and provenance
 
 ## Immediate empirical programme
 
 ```text
-Stage 0A  freeze BA A and manipulation checks
-Stage 0B  combine the recovered pollen-loading and egg-removal tools
-          and test P/G cross-channel contamination
-Stage 1   if selectivity passes, run the balanced A x G x P pilot
-Stage 2   re-power from mechanism-scale pilot variance and execute confirmation
-Stage 3   independently assay the consumer-free remainder / direct cost
-Stage 4   extend to multiple A levels, populations or experimental evolution
+Stage 0  validate one shared z coordinate and selective functional interventions
+Stage 1  two-level crossed pilot: identify local opposing functional effects
+Stage 2  extend to >=3 z levels: recover F1(z), F2(z), W(z), z1*, z2*, zc*
+Stage 3  confirm balance by testing opposing gradients around zc*
+Stage 4  test evolutionary maintenance / movement
+Stage 5  hand the identified compromise to BITA and test dimensional release
 ```
 
-Literature-derived visitor effects must not be used as substitutes for channel-scale pilot effects when powering the confirmatory mechanism experiment.
-
-## Status
-
-SCH is now organized as a **mechanism-first empirical programme with a real-world evidence spine**. The systematic review remains useful and should continue, but it no longer determines the scientific identity of the project. For *Nicotiana*, L0 biological reality and the separate intervention components have now been recovered from primary studies; the decisive next result is combined pathway selectivity followed by a same-coordinate decomposition of pollinator gain, antagonist loss and their realized effect on attraction fitness. BITA then tests whether an added defence coordinate releases that identified conflict.
+SCH is therefore now organized around **the ecology and evolution of compromise under multifunctional trait integration**. The pollinator-antagonist literature demonstrates that the mechanism is real; the decisive chapter result is an experiment showing how two functional demands combine on one trait to generate a compromise surface.
