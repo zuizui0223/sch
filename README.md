@@ -150,6 +150,14 @@ J_A    = d[1,1] - d[1,0] - d[0,1] + d[0,0].
 
 A positive `M_A` and positive `G_A` on the same `A` contrast establish local functional conflict. To establish compromise / balance, extend the experiment across multiple informative `z` levels and recover `z1*`, `z2*`, and `zc*`.
 
+## Critical negative-control principle
+
+```text
+multifunctionality != conflict.
+```
+
+Experimental flower-orientation studies show that one trait can affect pollination and rain protection while both functions favor the same orientation. Such aligned-optimum systems are multifunctional but do not pay the SCH compromise penalty. Positive SCH inference therefore requires evidence for `z1* != z2*`, not merely two functions.
+
 ## Real-world evidence role
 
 The PRISMA programme and targeted primary-source audits remain as a **real-world evidence spine**. They do not define the SCH estimand.
@@ -172,13 +180,29 @@ MULTI_LEVEL_COMPROMISE_SURFACE_NOT_YET_EXECUTED
 HISTORICAL_INTEGRATION_TO_MODULARIZATION_NOT_YET_IDENTIFIED.
 ```
 
-## Current execution systems
+## Current execution strategy
 
-*Nicotiana attenuata* remains the strongest same-coordinate floral reality anchor because benzylacetone affects pollinator-mediated reproduction and hawkmoth oviposition. Its main unresolved gate is combined pathway selectivity and the length of the antagonist-to-fitness path.
+The generalized framing separates the system roles.
 
-`Castilleja linariaefolia` remains a promising short-path candidate because pollinator and pre-dispersal seed-predator functions are more separable and antagonist effects map directly to seed fitness, although a clean manipulable shared coordinate still requires validation.
+```text
+Dalechampia
+-> first-choice causal compromise-surface system
+-> opposing pollinator / seed-predator selection already recovered
+-> bract manipulation feasible at programme level
 
-System choice is driven by identifiability, not source count.
+Nicotiana attenuata
+-> first-choice local shared-cue mechanism system
+-> benzylacetone affects pollinator-mediated reproduction and oviposition
+-> strongest direct hand-off into BITA
+
+Platycodon / aligned-orientation systems
+-> negative controls
+-> same trait serves two functions but the preferred states are aligned.
+```
+
+`Castilleja linariaefolia` remains a high-value short-path alternative because pollinator and pre-dispersal seed-predator pathways are distinct and map directly onto seed fitness.
+
+The full ranking is `docs/SCH_GENERALIZED_EXECUTION_CANDIDATE_RANKING_V1.md`.
 
 ## SCH -> BITA
 
@@ -200,22 +224,24 @@ The strongest cross-chapter prediction is that adding a function-2 coordinate in
 ## Canonical reader path
 
 - `manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md` — **canonical Chapter-1 manuscript**
+- `manuscript/SHARED_TRAIT_COMPROMISE_FIGURE_MAP_V1.md` — main figure plan
 - `docs/SHARED_TRAIT_COMPROMISE_FRAMEWORK_V1.md` — generalized theory and claim ladder
 - `docs/SHARED_TO_DIFFERENTIATED_QUADRATIC_BRIDGE_V1.md` — analytic SCH -> BITA bridge
 - `docs/SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md` — multi-level optimum/gradient design
 - `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — two-level crossed mechanism design
+- `docs/BROAD_MULTIFUNCTIONAL_COMPROMISE_REALITY_CHECK_V1.md` — broad positive and negative-control grounding
+- `docs/SCH_GENERALIZED_EXECUTION_CANDIDATE_RANKING_V1.md` — execution-system ranking
 - `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — floral shared-cue implementation and evidence spine
 - `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — dissertation-level chapter bridge
-- `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md` — first-choice floral execution contract
-- `docs/SCH_SHORT_PATH_CANDIDATE_RANKING_V1.md` — alternative-system search
+- `empirical/architecture/SCH_COMPROMISE_PREDICTION_LEDGER_V1.csv` — machine-readable prediction contract
 - `empirical/one_trait_shared_cue/` and `empirical/prisma/` — real-world evidence products.
 
 ## Immediate empirical programme
 
 ```text
-Stage 0  validate one shared z coordinate and selective functional interventions
-Stage 1  two-level crossed pilot: identify local opposing functional effects
-Stage 2  extend to >=3 z levels: recover F1(z), F2(z), W(z), z1*, z2*, zc*
+Stage 0  choose one shared z with evidence for opposing function-specific optima
+Stage 1  validate multi-level z manipulation and selective functional interventions
+Stage 2  recover F1(z), F2(z), W(z), z1*, z2*, zc*
 Stage 3  test causal optimum shifts by weakening each function
 Stage 4  test evolutionary maintenance / movement
 Stage 5  hand the identified compromise to BITA and test dimensional release.
