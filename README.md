@@ -63,9 +63,9 @@ G_A(1) = d[0,1] - d[1,1].
 If `G_A(1) > 0`, antagonist presence flattens the attraction-fitness effect relative to an antagonist-free state. Stronger outcomes are predeclared separately:
 
 ```text
-constraint attenuation:              0 < d[1,1] < d[0,1]
+constraint attenuation:                  0 < d[1,1] < d[0,1]
 constraint release by antagonist removal: d[1,1] <= 0 < d[0,1]
-strict sign reversal:                    d[1,1] < 0 < d[0,1]
+strict sign reversal:                     d[1,1] < 0 < d[0,1]
 ```
 
 These are reproductive mechanism claims. They do not by themselves establish historical evolution of a private cue.
@@ -107,14 +107,29 @@ HISTORICAL_SHARED_TO_PRIVATE_TRANSITION_NOT_YET_IDENTIFIED
 
 The current first-choice system for direct SCH mechanism closure is *Nicotiana attenuata*.
 
-Why it ranks first:
+Primary-source recovery now establishes more than candidate plausibility:
 
-- floral benzylacetone supplies a manipulable candidate `A` coordinate;
-- the same research programme contains pollinator-mediated reproduction and antagonist/oviposition responses to attraction/reward manipulations;
-- the programme already connects directly to BITA's attraction-by-defence problem;
-- the critical uncertainty is experimentally explicit: hawkmoth pollination and antagonist roles must be selectively separated before channel claims are allowed.
+- benzylacetone (BA) manipulation strongly changes *M. sexta*-mediated seed production;
+- the same BA manipulation changes *M. sexta* oviposition in the native field experiment;
+- standardized pollen loading of moth proboscides, antherectomy and mature-seed scoring are established methods;
+- post-oviposition egg removal while moth visitation continues is already feasible in this system.
 
-The execution contract is `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md`. *Nicotiana* is promoted to the 8-cell pilot only after stable `A`, paired receiver response, workable selective `P/G` interventions and one common reproductive endpoint are validated. Failure of that selectivity gate triggers a move to the next biological system rather than forcing a decomposition.
+Accordingly, the current Nicotiana state is:
+
+```text
+L0 shared-coordinate reality:        SUPPORTED at programme level
+S0.1 BA coordinate stability:        STRONG PARTIAL
+S0.2 pollinator response:             RECOVERED
+S0.3 antagonist response:             RECOVERED in field
+S0.4 P intervention component:        FEASIBILITY RECOVERED
+S0.5 G intervention component:        FEASIBILITY RECOVERED
+S0.6 combined P/G selectivity:        OPEN / CRITICAL
+S0.7 common W feasibility:            STRONG PARTIAL
+```
+
+The execution contract is `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md`; source-level recovery is frozen in `docs/SCH_NICOTIANA_STAGE0_PRIMARY_SOURCE_RECOVERY_V1.md`; and the immediate go/no-go test is `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md`.
+
+The remaining high-information question is no longer whether BA can affect both audiences. It is whether the already demonstrated pollination and egg-removal tools can be combined without cross-channel contamination. Failure of that selectivity gate triggers a move to the next biological system rather than forcing a decomposition.
 
 ## SCH -> BITA
 
@@ -139,6 +154,8 @@ SCH therefore establishes **why attraction is constrained**. BITA asks **whether
 
 - `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — canonical 8-cell mechanism-identification contract
 - `docs/SCH_NICOTIANA_STAGE0_STAGE1_PILOT_V1.md` — first-choice biological-system and Stage 0/1 execution contract
+- `docs/SCH_NICOTIANA_STAGE0_PRIMARY_SOURCE_RECOVERY_V1.md` — primary-source recovery of Nicotiana Stage-0 gates
+- `docs/SCH_NICOTIANA_COMBINED_SELECTIVITY_PILOT_V1.md` — combined P/G go/no-go pilot and contamination tests
 - `docs/NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md` — real-world programme evidence supporting the first-choice system
 - `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — mechanism-first paper concept and evidence grounding
 - `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — SCH Chapter 1 -> BITA Chapter 2 research programme
@@ -152,16 +169,17 @@ SCH therefore establishes **why attraction is constrained**. BITA asks **whether
 ## Immediate empirical programme
 
 ```text
-Stage 0  Nicotiana: validate benzylacetone A and paired receiver access
-         then validate selective pollinator and antagonist interventions
-Stage 1  pilot A x antagonist x pollinator and estimate channel-scale variance
-Stage 2  re-power and execute the confirmatory 8-cell experiment
-Stage 3  independently assay the consumer-free remainder / direct cost
-Stage 4  extend to multiple A levels, populations or experimental evolution
+Stage 0A  freeze BA A and manipulation checks
+Stage 0B  combine the recovered pollen-loading and egg-removal tools
+          and test P/G cross-channel contamination
+Stage 1   if selectivity passes, run the balanced A x G x P pilot
+Stage 2   re-power from mechanism-scale pilot variance and execute confirmation
+Stage 3   independently assay the consumer-free remainder / direct cost
+Stage 4   extend to multiple A levels, populations or experimental evolution
 ```
 
 Literature-derived visitor effects must not be used as substitutes for channel-scale pilot effects when powering the confirmatory mechanism experiment.
 
 ## Status
 
-SCH is now organized as a **mechanism-first empirical programme with a real-world evidence spine**. The systematic review remains useful and should continue, but it no longer determines the scientific identity of the project. The decisive future result is a same-coordinate, selective-intervention decomposition of pollinator gain, antagonist loss and their realized effect on attraction fitness; BITA then tests whether an added defence coordinate releases that identified conflict.
+SCH is now organized as a **mechanism-first empirical programme with a real-world evidence spine**. The systematic review remains useful and should continue, but it no longer determines the scientific identity of the project. For *Nicotiana*, L0 biological reality and the separate intervention components have now been recovered from primary studies; the decisive next result is combined pathway selectivity followed by a same-coordinate decomposition of pollinator gain, antagonist loss and their realized effect on attraction fitness. BITA then tests whether an added defence coordinate releases that identified conflict.
