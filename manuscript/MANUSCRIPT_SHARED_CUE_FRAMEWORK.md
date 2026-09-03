@@ -2,127 +2,254 @@
 
 ## Working status
 
-Conceptual and evidence-audit spine for a separate one-trait synthesis. This document is not part of the BITA submission.
+Mechanism-first Chapter 1 framework paired with BITA. SCH develops an identifiable experiment for the one-trait shared-cue problem and uses systematic and targeted literature evidence to establish that the proposed routes and evolutionary outcomes occur in real biological systems. The literature synthesis is evidence grounding, not the primary estimand.
 
 ## 1. Question
 
-Floral colour, scent, display and reward can increase pollinator attraction while also exposing flowers to florivores, seed predators, nectar robbers or other antagonists. The operative question is not simply whether conspicuous flowers attract enemies. It is:
+Floral colour, scent, display and reward can increase pollinator attraction while also exposing flowers to florivores, seed predators, nectar robbers or other antagonists. The central question is:
 
-> **Does overlap in the cues used by pollinators and antagonists determine whether the attraction-antagonism trade-off can be escaped?**
+> **When pollinators and antagonists act on the same floral attraction coordinate, does antagonist exposure measurably constrain the reproductive value of attraction, and can that mechanism be separated into identifiable channels?**
 
-## 2. Estimands
+This question has an informational component and a functional component.
 
-Let `A` be one declared and commensurable manipulation of a floral attraction/display trait. Define the channel contrasts on that same `A` coordinate:
+- **Informational overlap:** both receiver classes use the same sensory/display coordinate of `A`.
+- **Functional conflict:** pollinator access increases the reproductive value of that `A`, while antagonist access decreases it.
+
+A complete SCH result requires these layers to be linked rather than inferred from visitor labels alone.
+
+## 2. Core estimand and 8-cell design
+
+Let `A` be one predeclared and commensurable manipulation of a floral attraction/display trait. Cross it with antagonist state `G` and pollinator state `P`:
 
 ```text
-M_A = E[M | do(A=1)] - E[M | do(A=0)]
-G_A = E[G | do(A=1)] - E[G | do(A=0)]
-S_A = M_A - G_A
+A x G x P
 ```
 
-`M_A` is the change in pollinator-mediated reproductive benefit and `G_A` is the change in antagonist-mediated reproductive loss. They may be estimated separately and combined only when their outcomes and scales are commensurable. Direct physiological or construction cost remains a separate term when it is not standardized by design.
+with two levels of each factor, giving eight cells on one common plant reproductive outcome `W`.
 
-This first-order target requires neither a second trait `D` nor `Delta_AD W`. It is identifiable under a weaker design than BITA's crossed mechanism-allocation problem, provided the two channels are measured or intervened upon defensibly on the same `A` contrast. Selective consumer intervention is one route to a causal channel estimate; it is not a requirement for the initial coverage count.
+Define
+
+```text
+W[a,g,p] = expected reproductive outcome
+
+d[g,p] = W[1,g,p] - W[0,g,p].
+```
+
+The natural-community attraction effect is
+
+```text
+Delta_A W_natural = d[1,1].
+```
+
+That total contrast is not a mechanism allocation.
+
+### 2.1 Pollinator-mediated contribution
+
+At fixed antagonist state `g`,
+
+```text
+M_A(g) = d[g,1] - d[g,0].
+```
+
+A positive `M_A(g)` means pollinator access makes increasing `A` more reproductively beneficial.
+
+### 2.2 Antagonist-mediated loss
+
+At fixed pollinator state `p`,
+
+```text
+G_A(p) = d[0,p] - d[1,p].
+```
+
+A positive `G_A(p)` means antagonist presence erodes the reproductive effect of increasing `A`.
+
+### 2.3 Consumer-independent remainder
+
+```text
+B_A = d[0,0].
+```
+
+`B_A` remains unallocated unless an independent assay identifies a narrower construction, physiological or autonomous-reproduction component. In particular, SCH must not silently equate `B_A` with `-C_A`.
+
+### 2.4 Channel-dependence diagnostic
+
+```text
+J_A = d[1,1] - d[1,0] - d[0,1] + d[0,0].
+```
+
+Equivalently,
+
+```text
+J_A = M_A(1) - M_A(0)
+    = -(G_A(1) - G_A(0)).
+```
+
+A non-zero `J_A` means the pollinator contribution depends on antagonist state and, equivalently, the antagonist loss depends on pollinator state. The simplest separable-channel model should then be rejected in favor of state-specific channel contrasts.
+
+Around the consumer-free baseline,
+
+```text
+d[1,1] = B_A + M_A(0) - G_A(0) + J_A.
+```
+
+This is an accounting identity, not permission to assign biological labels without selective interventions.
+
+The full inference contract is `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md`.
 
 ## 3. Shared-cue mechanism
 
-Let cue overlap denote the extent to which pollinators and antagonists respond to the same sensory coordinate of `A`. It is a biological property to be operationalized, not a value inferred from role labels alone.
+Cue overlap is a biological property of the manipulated coordinate, not a value inferred from the names of interacting species.
 
 ### Shared cue
 
-When both consumer classes track the same cue, increasing `A` tends to move `M_A` and `G_A` together. Selection cannot freely increase pollinator attraction without also changing antagonist exposure. Signal exaggeration is therefore constrained unless pollinator benefit rises faster than antagonist cost or another ecological process breaks the linkage.
+When pollinators and antagonists both track the same coordinate of `A`, increasing attraction can simultaneously increase pollinator-mediated reproductive gain and antagonist-mediated reproductive loss. Attraction is then constrained because the plant cannot move freely along that coordinate for the benefit of one audience without changing exposure to the other.
 
 ### Private or separable cue
 
-When pollinators and antagonists use different cue components, the signal can evolve along a coordinate that increases pollinator response while weakly affecting or reducing antagonist response. The attraction-antagonism trade-off is more avoidable.
+When the two receiver classes use different components, the plant can move along a pollinator-facing coordinate with weaker antagonist consequences. Component partitioning, conditional expression, temporal gating or receiver specificity can therefore increase the evolvability of attraction even when antagonists remain present in the system.
 
-## 4. Predeclared predictions
+## 4. Mechanism and constraint claims
 
-1. Greater cue sharing shifts the relationship between display intensity and net reproductive fitness toward a flatter or more negative slope.
-2. Shared-cue systems show more concordant pollinator and antagonist response directions to the same `A` contrast than private-cue systems.
-3. Manipulating a separable cue component can increase `M_A` without a corresponding increase in `G_A`.
-4. Removing or suppressing antagonists changes selection on shared floral signals more strongly than on pollinator-private signals.
-
-These are framework predictions. Current source counts do not establish their prevalence or effect-size distribution.
-
-## 5. Evolutionary outcomes that must be distinguished
-
-The same dual-audience trade-off can generate different evolutionary outcomes. They are not interchangeable interpretations of a positive or negative response to one experimental contrast.
-
-Let the net one-trait fitness surface be
+The strongest contemporary shared-cue result requires both:
 
 ```text
-W(A) = M(A) - G(A) - C(A).
+informational overlap on the same A coordinate
++
+M_A(g) > 0
++
+G_A(p) > 0
 ```
 
-Six outcome classes follow from different fitness geometry, frequency dependence, scale or architecture.
+with uncertainty appropriate to the intended directional claims.
 
-1. **Integrated compromise maintenance.** A single trait is maintained near an interior optimum `A*` when the net selection gradient is zero there and local curvature is negative. Pollinator gain and antagonist cost are balanced; neither channel must be absent.
-2. **Directional specialization on the same axis.** If the net gradient remains positive over the observed range, selection is toward stronger attraction and greater pollinator gain. If it remains negative, selection is toward weaker exposure and antagonist avoidance. An endpoint shift is directional specialization, not evolutionary branching.
-3. **Polymorphism maintenance.** Alternative values of one display can persist through negative frequency dependence, spatially or temporally varying selection, or gene flow among differently selected populations. This does not require an internal continuous optimum.
-4. **Population differentiation.** Different mutualist-antagonist balances can redirect heritable phenotype frequencies or means among populations. Population change is an evolutionary result, but not yet a historical lineage split.
-5. **Lineage branching.** True branching requires evidence for replicated transitions from an ancestral shared coordinate toward distinct audience-specific optima. Opposing consumer responses, maintained morphs or extant population differences alone do not establish this outcome.
-6. **Cue modularization.** A formerly integrated display may separate into pollinator-facing and antagonist-facing components. This is an architectural escape from the one-coordinate constraint and must be distinguished from divergence toward opposite ends of one unchanged `A` axis.
-
-The current evidence spine establishes more than shared tracking. A one-system observational fitness surface supports a stabilizing compromise, field studies of a floral-display dimorphism support context-dependent polymorphism maintenance and microevolutionary frequency change, and experimental or common-garden studies show that antagonists can redirect population-level floral evolution. Component partitioning and conditional emission support partial cue decoupling at the mechanism level. None of these results reconstructs the evolution of a private cue from an ancestral shared cue or a split into audience-specialized lineages.
-
-For that stronger historical endpoint, evidence is reported as a ladder rather than a binary branching claim:
+The realized constraint can then be expressed directly. Under natural pollinator access,
 
 ```text
-L0  contemporary dual-audience response / opposing selection
- -> L1  component partitioning, conditional gating or temporal receiver separation
- -> L2  population differentiation or measured microevolution
- -> L3  phylogenetic trait divergence associated with one audience
- -> L4  reconstructed shared-cue -> private-cue transition under both audiences
+G_A(1) = d[0,1] - d[1,1].
 ```
 
-Current evidence reaches L2 directly in several conflict systems and reaches L3 on the historical trait-divergence side. Systematic expansion through V19 retains four bounded `HISTORICAL_TRANSITION` records spanning receiver-role, mating-system and trait-history transitions, but none reconstructs shared-cue → private-cue evolution. The strict L4 endpoint remains unrecovered.
+If `G_A(1) > 0`, antagonists flatten the attraction-fitness effect relative to the antagonist-free state. Stronger functional forms are kept separate:
 
-## 6. First coverage gate
+```text
+constraint attenuation:
+0 < d[1,1] < d[0,1]
+
+constraint release under antagonist removal:
+d[1,1] <= 0 < d[0,1]
+
+strict sign reversal under antagonist removal:
+d[1,1] < 0 < d[0,1].
+```
+
+These outcome levels do not establish a historical shared-cue-to-private-cue transition.
+
+## 5. Predeclared predictions
+
+1. On a validated shared coordinate, pollinator access will make the reproductive effect of `A` more positive: `M_A(g) > 0`.
+2. On that same coordinate, antagonist access will make the reproductive effect of `A` less positive: `G_A(p) > 0`.
+3. Antagonist presence will flatten or reverse the attraction-fitness effect relative to antagonist suppression.
+4. If the two channels are approximately separable, `J_A` will be near zero; if consumer effects depend on one another, `J_A` will be non-zero and channel contrasts will be state dependent.
+5. A separable/private cue component will retain pollinator benefit with a smaller antagonist-mediated loss than a shared component measured on the same outcome scale.
+6. Repeated `A` levels or population contrasts should translate these channel differences into different fitness-surface geometries and evolutionary outcomes.
+
+## 6. Literature as real-world mechanism evidence
+
+The literature programme is retained because the identification framework must be biologically grounded. It has four explicit roles.
+
+### 6.1 Route reality
+
+Existing studies show that floral attraction/display traits influence pollinator behavior, antagonist behavior and reproductive outcomes across real systems. Shared or opposing responses to floral scent, color, morphology and display demonstrate that the proposed receiver routes are not hypothetical constructs.
+
+### 6.2 Outcome reality
+
+Primary-source audits recover several bounded evolutionary consequences of dual-audience conflict:
+
+- an observational stabilizing compromise around an integrated display;
+- context-dependent maintenance and change of alternative floral morphs;
+- population-level evolutionary redirection under antagonists and pollinators;
+- partial decoupling through component partitioning, conditional emission and temporal receiver separation.
+
+These cases show that conflict can shape evolutionary outcomes even though they do not all satisfy the complete SCH identification design.
+
+### 6.3 Design-gap localization
+
+The strict linked measurement gate asks whether the same study contains
 
 ```text
 A manipulated
 + pollinator response measured
 + antagonist response measured
-+ common plant reproductive outcome
++ common plant reproductive outcome.
 ```
 
-`D`, two-trait interaction, selective intervention and the BITA 16-cell design are deliberately absent from this first screen. The gate asks how often the literature has measured the linked empirical object before deciding whether effect-size synthesis is feasible.
+Through the current V20 systematic state, two studies satisfy this measurement architecture: Theis & Adler (2012) and Sánchez-Lafuente (2007). Theis & Adler recovers antagonist attraction and reduced seed production without a detected increase in pollinator attraction; *Linaria lilacina* recovers pollinator/reproductive effects while fruit-predator visitation does not respond to the manipulation.
 
-## 7. Evidence spine
+Thus the linked architecture now replicates, but the central positive dual-audience chain remains unrecovered in those strict cases. The measurement gap motivates the 8-cell experiment rather than replacing it.
 
-- **Sasidharan et al. 2023:** cross-study cue-response synthesis; supports recurrent shared attraction and rarer shared repulsion under source-version and pairing limits.
-- **Theis & Adler 2012:** one of two current strict linked measurement-architecture passes; enhanced fragrance increased florivore attraction and reduced seed production, without a detected pollinator-attraction increase.
-- **Sánchez-Lafuente 2007, *Linaria lilacina*:** the second strict linked measurement-architecture pass; experimental corolla damage changed pollinator response and reproduction while fruit-predator visitation showed no treatment response.
-- **Page et al. 2014:** floral colour and scent predict seed-eating pollinator host choice; supports antagonist use of floral cues but supplies no same-study pollination coefficient for the same axes.
-- **Junker & Blüthgen 2010:** a same-synthetic-scent near-pass in which bumblebees are attracted while ants are repelled; the opposite receiver responses are on the same chemical coordinate, but no common plant reproductive outcome is measured.
-- **Theis 2006, Canada thistle:** synthetic floral-scent baits show that benzaldehyde and phenylacetaldehyde attract both pollinators and floral herbivores. This is direct shared-code recurrence on a manipulated chemical coordinate, but no common plant reproductive outcome is measured.
-- **Knauer, Bakhtiari & Schiestl 2018:** antagonist removal by crab spiders changes the ecological context of floral-signal evolution; a mechanism/context anchor rather than a current strict coverage pass.
-- **Kleinschmidt et al. 2023, *Lithophragma bolanderi*–*Greya*:** population differences in floral morphology and pollinator assemblage are matched by local-versus-nonlocal differences in pollination efficacy and oviposition, supporting a geographic coevolutionary mosaic without a randomized floral `A`.
-- **Chen & Pannell 2022:** pollination and seed predation generate a disruptive selection surface on flowering height across alpine populations; the focal floral axis is observational, so this strengthens the compromise/branching precursor layer rather than the strict causal gate.
-- **Ramos & Schiestl 2020:** four generations of experimental evolution under reduced herbivore load shift floral fragrance, directly showing antagonist-mediated evolutionary redirection without a same-generation paired pollinator/antagonist fitness surface.
-- **Syngonium plant-bug transition:** comparative and behavioural evidence links recruitment of ancestrally florivorous plant bugs as specialized pollinators to a novel attractive floral volatile. This is a receiver-role transition and floral-trait divergence, not a reconstructed shared-cue → private-cue transition.
-- **Abronia mating-system transition:** field and common-garden comparisons associate the transition toward selfing with near-complete floral-fragrance vestigialization. This is a historical attraction-syndrome transition, not evidence that an ancestral shared cue became private.
-- **Haplopappus elevation mosaic:** floral volatile blends, insect olfactory preference, fertilized seeds and predated seeds covary across an Andean elevation gradient; because floral `A` is comparative rather than randomized, this strengthens the geographic/evolutionary layer rather than the strict gate.
-- **Collaea cipoensis:** pollinators favor larger and more numerous flowers while nectar robbers/florivores impose opposing selection on the same attractiveness traits and female fitness; the shared display axis is observational rather than randomized.
-- **Pedicularis rex and Gelsemium sempervirens geographic mosaics:** replicated populations/common gardens show that pollinator benefit, seed predation or nectar robbing, floral traits and reproduction vary geographically. These systems strengthen the biogeographic/evolutionary layer without satisfying `do(A)`.
+Near-passes strengthen the same conclusion. Theis (2006) shows direct shared chemical attraction of pollinators and floral herbivores but lacks a common reproductive outcome. Junker & Bluethgen (2010) shows opposite receiver responses to the same synthetic scent coordinate but also lacks the common plant outcome. Kessler et al. (2015) manipulates a floral scent coordinate but distributes pollinator-mediated reproduction and antagonist oviposition across assay structures. Other observational systems link both receiver roles and reproduction without randomized `A`.
 
-The strict gate is therefore now **replicated as measurement architecture (2 studies)**, but the central positive dual-audience chain remains open. Theis & Adler supplies directional antagonist cost with a non-detected pollinator-attraction increase; *Linaria* supplies directional pollinator/reproductive effects with a null fruit-predator response to the manipulated `A`. Neither study demonstrates the same manipulated floral coordinate simultaneously increasing pollinator response and antagonist response.
+### 6.4 Historical extension
 
-Three additional source-adjudicated systems form a supporting ring rather than strict passes. Kessler et al. (2015) manipulates a shared scent coordinate but separates pollinator-mediated seed production from antagonist oviposition across assay structures. Pérez-Barrales et al. (2013) links both visitor roles and reproductive components to the same bract axis, but `A` is observational. Theis et al. (2014) provides comparative shared tracking of floral sesquiterpenoids without an `A` manipulation or common reproductive outcome. These near passes locate the measurement gap more precisely: manipulation, paired consumer responses and a commensurable plant outcome are usually distributed across different designs.
+The literature also identifies candidate systems in which contemporary shared/private states might eventually be connected to historical transition. This is a later evolutionary layer, not the primary contemporary mechanism test.
 
-The exact admitted and prohibited uses are frozen in `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv`.
+## 7. Current systematic evidence state
 
-### 7.1 Historical bridge: Ficus is near L4 but not L4
+The frozen V2 OpenAlex cohort contains 868 records. The current V20 screening state is:
 
-A targeted history audit identifies the fig–fig-wasp radiation as the strongest composite bridge to the missing historical endpoint. A fixed 32-species receptive-scent scaffold contains two directly resolved pollinator recognition architectures and direct dual-audience evidence elsewhere in the same radiation.
+```text
+identified frozen cohort:        868
+title/abstract screened:         405
+primary studies included:        117
+unscreened:                      463
+strict linked experiments:         2
+directional / near-pass lane:    104
+evolutionary-outcome lane:        39
+historical-transition lane:        4
+```
 
-- **Ficus semicordata:** 4-methylanisole is sufficient for attraction of its pollinator. In the same host system, direct field observations place *Platyneura cunia* oviposition about 10 days after pollinator entry and *Sycoscapter trifemmensis* 14–32 days after pollinator entry. This is direct temporal receiver separation, but neither NPFW has been shown behaviourally to ignore, avoid or follow 4-methylanisole itself.
-- **Ficus carica:** its pollinator is attracted by a precise four-VOC ratio, and small perturbations of that ratio abolish attraction. *Philotrypesis caricae* is documented from the host, but no matched test has been recovered for NPFW response to the validated four-VOC code.
-- **Ficus hispida:** pollinator and non-pollinating *Philotrypesis* respond directly to receptive odour, but the minimal synthetic pollinator-attractive code is not yet resolved to the same standard.
-- **Ficus auriculata:** a useful leaky/shared comparator in which pollinator host preference is not chemically absolute.
+These counts are not natural-prevalence estimates and do not estimate `M_A`, `G_A`, `B_A` or `J_A`. Their current scientific value is real-world recurrence, outcome grounding and measurement-gap localization.
 
-The matched historical bottleneck is therefore not generic lack of phylogeny or lack of pollinator specificity. It is the absence of the same chemical-coordinate receiver intersection:
+The systematic screen may continue to completion, but completion is no longer the gate that defines SCH's scientific identity.
+
+## 8. Evolutionary outcomes
+
+The one-trait fitness problem can be represented generically as
+
+```text
+W(A) = M(A) - G(A) - C(A),
+```
+
+when the component scales are commensurable and direct cost is independently identified. Different fitness geometry, frequency dependence, spatial context and signal architecture can produce distinct outcomes:
+
+1. **Integrated compromise:** an interior optimum on one shared coordinate.
+2. **Directional specialization:** movement toward one end of the same coordinate.
+3. **Polymorphism maintenance:** alternative values maintained by frequency dependence or variable selection.
+4. **Population differentiation:** spatially differing mutualist-antagonist balances redirect phenotype means or frequencies.
+5. **Cue modularization:** an integrated display separates into more receiver-specific components.
+6. **Lineage branching:** replicated historical transitions toward distinct audience-specific optima.
+
+Current direct evidence reaches compromise, polymorphism/population change and partial modularization. Lineage branching from an ancestral shared cue remains unevaluated.
+
+For historical inference, retain the bounded ladder:
+
+```text
+L0  contemporary dual-audience response / opposing selection
+ -> L1  component partitioning, conditional gating or temporal separation
+ -> L2  population differentiation or measured microevolution
+ -> L3  phylogenetic trait divergence associated with one audience
+ -> L4  reconstructed shared-cue -> private-cue transition under both audiences
+```
+
+## 9. Ficus as historical extension, not the main SCH proof
+
+The fig-fig-wasp radiation remains the strongest composite bridge toward L4. Within the current fixed source set:
+
+- *Ficus semicordata* has a resolved pollinator-attractive code, 4-methylanisole, and direct temporal separation of non-pollinating fig-wasp oviposition windows;
+- *F. carica* has a validated ratio-specific four-VOC pollinator code and a documented non-pollinating wasp;
+- *F. hispida* has direct pollinator and non-pollinator response to receptive odor, but its minimal synthetic pollinator code remains unresolved;
+- *F. auriculata* provides a leaky/shared chemical-filter comparator.
+
+The decisive same-coordinate cell is still empty:
 
 ```text
 resolved pollinator attractive chemical codes:              2
@@ -131,32 +258,73 @@ resolved code + direct same-code NPFW behavioural response:  0
 DIRECT_L4 transitions:                                      0
 ```
 
-This distinction is essential. Temporal separation does not prove chemical privatization, NPFW host association does not prove interception of the pollinator code, and whole-odour response does not identify response to an unresolved key code. The radiation is therefore classified `COMPOSITE_NEAR_L4`, not `DIRECT_L4`.
+Therefore *Ficus* remains
 
-The remaining same-code experiment also exposes an information asymmetry that matters for interpreting both old and future bioassays. Strong attraction can be detected with tens to roughly a hundred decisive choices, whereas a positive claim of behavioural privacy requires an equivalence design rather than a failed attraction test. Under the registered default criterion — a 90% Wilson interval wholly inside `[0.40, 0.60]` when the true NPFW choice probability is 0.50 — the exact prospective planner requires 206 decisive choices for 80% power and 260 for 90%. With an explicit design-effect inflation of 1.5 and a decisive-choice fraction of 0.75, those targets become approximately 412 and 520 introduced wasps. By contrast, if true interception is strong (`p=0.65`), the corresponding 80% and 90% targets are 82 and 111 decisive choices; at `p=0.70` they are 43 and 62. Thus nonsignificance at a legacy attraction sample size cannot be reinterpreted as evidence for a private channel.
+```text
+COMPOSITE_NEAR_L4
+not DIRECT_L4.
+```
 
-The assay classifier therefore requires three gates before `BEHAVIORAL_NONRESPONSE_EQUIVALENT` can be assigned: replication of the pollinator code, a working NPFW host/stage positive control, and an NPFW same-code interval contained inside the predeclared equivalence zone. Interception, avoidance, equivalence-supported nonresponse and inconclusive response remain separate states. These rules convert the historical gap into a prospective measurement contract rather than a post hoc label.
+Temporal separation does not prove chemical privacy, host association does not prove interception of the pollinator code, and nonsignificant attraction does not establish equivalence-supported nonresponse.
 
-Directional and equivalence inference are also kept statistically separate. Attraction or avoidance is evaluated with a 95% directional interval, whereas equivalence-supported nonresponse uses a 90% interval against the predeclared equivalence zone. The trial-level pipeline therefore computes both intervals separately rather than reusing one confidence interval for two different questions. Trial records retain `NO_CHOICE`, the frozen `code_id`, receiver taxon and an explicit `cluster_id`; the first registered analysis resamples those clusters rather than treating all introduced wasps as exchangeable. A richer hierarchical model may supersede that first-pass bootstrap, but it must preserve the same chemical coordinate, positive controls and 95%-directional/90%-equivalence decision contract.
+The existing Ficus matrices, power calculations, trial-data contract and same-code protocol remain valid as the historical extension module.
 
-The machine-readable and bounded records are `empirical/one_trait_shared_cue/FICUS_32_SPECIES_L4_CANDIDATE_MATRIX_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_RECEIVER_GAP_V1.csv`, `empirical/one_trait_shared_cue/FICUS_SAME_CODE_ASSAY_POWER_V1.json`, `docs/SCH_FICUS_32_SPECIES_L4_MATRIX_READOUT_V1.md`, `docs/SCH_FICUS_SAME_CODE_RECEIVER_GAP_READOUT_V1.md`, `docs/SCH_FICUS_SAME_CODE_EXPERIMENT_PROTOCOL_V1.md`, and `docs/SCH_FICUS_SAME_CODE_TRIAL_DATA_CONTRACT_V1.md`. The executable trial analysis is `scripts/analyze_ficus_same_code_trials.py`.
+## 10. Empirical programme
 
-## 8. Research fork
+The mechanism-first programme is staged so that effect sizes are learned at the correct scale.
 
-The research fork now differs by evidence layer.
+```text
+Stage 0  validate one A coordinate and paired receiver access
+         manipulation checks + same-coordinate behavioral evidence
 
-For the first-order coverage and lower evolutionary layers, a broader systematic expansion remains useful: if enough linked experiments survive the coverage gate, the paper can estimate compatible effect-size lanes; if few survive, the measurement gap itself becomes a result.
+Stage 1  pilot A x antagonist x pollinator
+         estimate d[g,p], M_A(g), G_A(p), B_A, J_A,
+         variance, clustering and intervention selectivity
 
-For the historical L4 endpoint, the strategy is no longer a broad literature search. The high-value next step is to close three explicit same-code cells inside *Ficus*:
+Stage 2  re-power and execute the confirmatory 8-cell design
+         test paired functional conflict and realized constraint
 
-1. test NPFWs in *F. semicordata* against 4-methylanisole at their natural post-pollination timing windows;
-2. test *Philotrypesis caricae* and other relevant exploiters against the validated *F. carica* four-VOC ratio and perturbed ratios;
-3. resolve the minimal *F. hispida* pollinator code and test *Philotrypesis* against that identical synthetic coordinate.
+Stage 3  independently assay the consumer-free remainder
+         identify construction/physiological cost only if justified
 
-Those experiments should be powered to the intended claim. Interception/avoidance detection and equivalence-supported privacy are different information targets; the latter must not be inferred merely because the former is nonsignificant.
+Stage 4  evolutionary extension
+         multiple A levels, populations or experimental evolution
+         to estimate fitness-surface geometry and longer-term outcomes
+```
 
-Only after matched receiver states exist should shared/private code states be reconstructed on the 32-species phylogeny and tested against section, reproductive system, phylogenetic and abiotic/geographic alternatives. If the same-code cell remains empty, repeated shared-to-private evolution remains `NOT_EVALUABLE` rather than negative evidence for the hypothesis.
+Literature-derived visitor effects must not be substituted for mechanism-scale pilot effects when powering the confirmatory experiment.
 
-## 9. Separation from BITA
+## 11. Relationship to BITA
 
-BITA explains why mechanism attribution becomes difficult for a two-trait attraction-by-defence interaction. SCH asks what the first-order attraction-antagonism balance looks like before a second trait is introduced. Evidence may be shared as provenance, but estimands and claims must not be exchanged.
+SCH and BITA answer sequential questions.
+
+```text
+Chapter 1 — SCH
+A x antagonist x pollinator
+8 cells
+-> why is one attraction coordinate conflicted?
+
+Chapter 2 — BITA
+A x D x antagonist x pollinator
+16 cells
+-> can a distinct defence coordinate release that conflict,
+   and which relief / interference / joint-cost channels explain it?
+```
+
+SCH establishes the functional constraint that motivates an additional defence coordinate. BITA then separates the outcome question from the mechanism-allocation question for `A x D`.
+
+Evidence may be shared as provenance and biological grounding, but estimands must not be exchanged between repositories.
+
+## 12. Current claim ceiling
+
+The current literature and source-audit spine supports the following positive statement:
+
+> Floral attraction traits operate in a real multi-audience world: pollinator and antagonist routes recur, opposing biotic effects can generate compromise and evolutionary redirection, and partial signal decoupling occurs through multiple mechanisms. What the literature rarely supplies is the complete same-coordinate selective intervention needed to identify how much pollinator gain and antagonist loss jointly determine the reproductive value of attraction. SCH therefore turns that biological recurrence into an explicit 8-cell mechanism experiment, with BITA as the subsequent test of defence-mediated escape.
+
+Until a complete experiment is executed or fully recovered, the machine-readable conceptual status is:
+
+```text
+REAL_WORLD_MECHANISM_COMPONENTS_RECOVERED
+COMPLETE_SCH_CHANNEL_IDENTIFICATION_NOT_YET_EXECUTED
+HISTORICAL_SHARED_TO_PRIVATE_TRANSITION_NOT_YET_IDENTIFIED
+```
