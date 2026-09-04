@@ -88,7 +88,7 @@ Required columns:
 |---|---|
 | `population_id` | focal qualified population |
 | `season_id` | focal season / campaign |
-| `plant_id` | resampling cluster |
+| `plant_id` | matched biological block and resampling unit |
 | `blossom_id` | unique blossom |
 | `exposure_window` | `E0`, `E1`, `E2`, `E3`, `E4`, or additional preregistered window |
 | `bract_area` | measured z during exposure |
@@ -109,6 +109,29 @@ E4 post-receptive / early fruit-development exposure.
 
 Exact calendar windows are determined prospectively from focal-population phenology.
 
+### Matched within-plant design
+
+The preferred Stage-0 exposure experiment is blocked within plant. Each focal plant should contribute blossoms randomized across `E0` and as many candidate exposure windows as feasible.
+
+```text
+plant 1: E0 E1 E2 E3 E4
+plant 2: E0 E1 E2 E3 E4
+...
+```
+
+Multiple blossoms per plant/window are allowed and are first averaged within that plant/window. The primary exposure contrasts are then paired within plant:
+
+```text
+E1 - E0
+E2 - E0
+E3 - E0
+E4 - E0.
+```
+
+This removes stable between-plant differences in vigor, blossom size, resin production, mating geometry, and local microsite from the first-pass `G` selectivity contrast. Incomplete plants may contribute to other windows, but a given window is judged only from plants containing both `E0` and that window.
+
+The evaluator therefore bootstraps complete plant-level pairs rather than treating exposure groups as independent samples.
+
 ## Threshold config
 
 Thresholds are **not hard-coded** in the evaluator because the current literature does not justify universal biological cutoffs.
@@ -126,7 +149,7 @@ The analysis config is JSON with this structure:
     "min_positive_correlation": 0.0
   },
   "exposure": {
-    "min_group_n": 0,
+    "min_complete_plants": 0,
     "min_damage_fraction_delta": 0.0,
     "max_pollen_relative_change": 0.0,
     "max_z_relative_change": 0.0,
@@ -155,28 +178,28 @@ This does **not** show `z1* != z2*`. It establishes only that the same display c
 
 ## Exposure promotion logic
 
-For each candidate exposure window relative to `E0`, the evaluator estimates:
+For each candidate exposure window relative to `E0`, the evaluator estimates within-plant paired changes in:
 
 ```text
-change in predated-seed fraction
-relative change in pollen receipt
-relative change in measured z
-relative change in resin amount
+predated-seed fraction
+pollen receipt
+measured z
+resin amount.
 ```
 
-using plant-cluster bootstrap intervals.
+For pollen, z, and resin, the plant-level quantity is the absolute relative change from that plant's `E0` value. The damage quantity retains its sign because `G1` must increase antagonist damage relative to `E0`.
 
 A window passes only if:
 
 ```text
-lower 95% damage-delta bound >= declared minimum
-upper 97.5% absolute pollen relative-change bound <= declared tolerance
-upper 97.5% absolute z relative-change bound <= declared tolerance
-upper 97.5% absolute resin relative-change bound <= declared tolerance
-minimum group sizes are met.
+minimum number of complete E0/window plant pairs is met
+lower 95% paired-bootstrap damage-delta bound >= declared minimum
+upper 97.5% paired-bootstrap pollen relative-change bound <= declared tolerance
+upper 97.5% paired-bootstrap z relative-change bound <= declared tolerance
+upper 97.5% paired-bootstrap resin relative-change bound <= declared tolerance.
 ```
 
-If more than one window passes, the evaluator selects the passing window with the largest observed damage-fraction increase as the candidate `G1` window.
+If more than one window passes, the evaluator selects the passing window with the largest observed paired damage-fraction increase as the candidate `G1` window.
 
 Output status:
 
@@ -194,20 +217,23 @@ The selected window is still a candidate. It must be frozen and independently ch
 
 ## Fail-closed rules
 
-The analyzer stops rather than silently imputing when:
+The analyzer stops or rejects a window rather than silently imputing when:
 
 - required columns or values are missing;
 - a package mixes populations or seasons;
 - initiated seed count is zero or invalid for a scored blossom;
 - predation exceeds initiated seeds;
-- fewer than two plant clusters are available;
-- bootstrap resampling cannot retain enough valid exposure contrasts.
+- fewer than two plant clusters are available for population screening;
+- a candidate exposure window has too few complete `E0`/window plant pairs;
+- the predeclared complete-plant minimum is not met.
 
-`NOT_EVALUABLE` inputs are not converted into negative biological evidence.
+`NOT_EVALUABLE` or unqualified inputs are not converted into negative biological evidence.
 
-## Why cluster by plant
+## Why plant matching matters
 
-Multiple blossoms on one plant are not treated as independent biological replicates. The first-pass evaluator therefore resamples `plant_id` clusters. A final hierarchical model may replace the bootstrap if it preserves the same estimands and declared promotion rules while representing patch, date, genotype, and repeated-blossom dependence more fully.
+Multiple blossoms on one plant are not independent biological replicates. More importantly, `D. scandens` plants can differ strongly in vigor, blossom geometry, resin production, autonomous selfing, and local visitation environment. The exposure screen therefore uses the plant as a matched block: first summarize blossoms within plant/window, then compare each exposure window with that same plant's `E0`, then bootstrap those plant-level paired contrasts.
+
+A final hierarchical model may replace this first-pass bootstrap if it preserves the same estimands and declared promotion rules while representing patch, date, genotype, and repeated-blossom dependence more fully.
 
 ## Next stage
 
