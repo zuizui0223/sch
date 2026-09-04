@@ -2,28 +2,33 @@
 
 ## Decision
 
-*Dalechampia* is the first-choice system for a direct Chapter-1 test of **shared-trait compromise geometry** because the literature already supplies three unusually valuable pieces:
+`Dalechampia` is a **conditional first-choice** system for a direct Chapter-1 test of shared-trait compromise geometry.
 
-1. larger showy bracts increase pollinator visitation and pollen arrival;
-2. the same bract axis increases predispersal seed-predator exposure and the combined selection surface tends toward stabilizing selection;
-3. experimental reduction of bract size in *Dalechampia ipomoeifolia* reduces pollen arrival, showing that the advertisement axis is manipulable rather than purely observational.
+The positive anchor is the Mexican `D. scandens` population studied by Pérez-Barrales et al. (2013), where larger showy bracts increased bee visitation and pollen arrival and were also associated with greater seed predation, producing opposing selection and a stabilizing net tendency. The important boundary is that this is not species-wide: Opedal et al. (2019) found little relationship between floral advertisement and seed predation across focal and 20-population samples in northern Costa Rica.
 
-The missing object is not another correlational selection analysis. It is a causal multi-level experiment that identifies
+Therefore the experiment begins by identifying a **conflict-active focal population / season**. It does not assume that any `D. scandens` population has the required geometry.
+
+The target quantities remain:
 
 ```text
-z1*   pollination-function optimum
-z2*   antagonist-avoidance optimum
+z1*   function-1 / pollination optimum
+z2*   function-2 / predator-avoidance optimum
 zc*   combined shared-trait optimum
 ```
 
-and then verifies that changing the weight of either function moves the combined optimum in the predicted direction.
+and the decisive causal prediction remains:
+
+```text
+weaken one functional demand
+-> zc* moves toward the optimum favored by the remaining function.
+```
 
 ## Trait and functions
 
 Primary shared trait:
 
 ```text
-z = apparent involucral-bract display area during the receptive / pollinator-choice window
+z = apparent involucral-bract display area during the receptive / receiver-choice window
 ```
 
 Primary functions:
@@ -33,123 +38,202 @@ F1 = pollinator-mediated pollen transfer / reproductive gain
 F2 = avoidance of predispersal seed-predator loss
 ```
 
-The natural-history anchor is the *D. scandens* population in Pérez-Barrales et al. 2013, where larger bracts increased bee visitation and pollen arrival while also increasing seed-predator attack, yielding a net tendency toward stabilizing selection.
+Primary common fitness endpoint:
 
-## Critical manipulation problem
+```text
+mature intact viable seeds per focal blossom
+```
 
-Permanent bract clipping is **not** the preferred confirmatory manipulation when mature seeds are the common outcome.
+The common outcome is downstream of both functions; visitation and predator occurrence are mediators, not substitutes for `W`.
 
-Later in *D. scandens* development, involucral bracts turn green and contribute photosynthate to developing seeds. Permanent removal or shading after pollination lowers seed mass. Therefore a permanent size reduction can create a direct carbon / construction pathway that is not part of the pollinator-versus-seed-predator conflict.
+## Source-defined boundary before experimentation
 
-The confirmatory manipulation must therefore alter the **display coordinate during the ecological decision window** while preserving post-pollination bract tissue and function.
+### Positive case
 
-## Stage 0A — reversible apparent-size manipulation
+Pérez-Barrales et al. (2013; DOI `10.1111/j.1600-0706.2013.20780.x`) studied one Mexican population. Blossoms with larger bracts received more bee visits and pollen, and seed-predation probability increased with bract size and seed production. The integrated female-fitness surface tended toward stabilizing selection.
 
-Develop a reversible display manipulation before the full factorial.
+The paper explicitly states that interpreting the predation pattern as adult curculionid oviposition choice assumes the pattern was not generated instead by differential larval success or inter-inflorescence larval movement. Thus the natural selection result is direct, but the exact adult oviposition window is not yet a directly recovered SCH intervention coordinate.
 
-Preferred candidate:
+### Geographic negative / boundary case
+
+Opedal et al. (2019; DOI `10.1002/ajb2.1209`) studied northern Costa Rica and found seed-predation probability largely unrelated to floral advertisement within focal populations and across a broader 20-population sample. This makes antagonist weight a context-dependent property rather than a fixed species trait.
+
+Updated status:
+
+```text
+REAL_WORLD_DALECHAMPIA_CONFLICT:       RECOVERED_CASE_LEVEL
+SPECIES_WIDE_CONFLICT:                 NOT SUPPORTED
+GEOGRAPHIC_TURNOVER_IN_CONFLICT:       RECOVERED
+DIRECT_OVIPOSITION_WINDOW:             NOT RECOVERED
+```
+
+## Critical manipulation problem: do not permanently clip bracts
+
+Permanent bract clipping is not the preferred confirmatory manipulation when mature seeds are the common outcome.
+
+During fruit maturation, `D. scandens` bracts turn green and contribute photosynthate to developing seeds. Permanent removal or shading can therefore create a direct carbon / development effect on seed outcome that is not part of the pollinator-versus-seed-predator conflict.
+
+The confirmatory manipulation must alter the **apparent display coordinate during the ecological decision window** while preserving post-pollination bract tissue and function.
+
+## Stage 0P — qualify a conflict-active population
+
+Before constructing a factorial experiment, screen candidate populations / seasons with natural blossoms.
+
+Record:
+
+```text
+apparent bract area
+pollinator visitation
+stigmatic pollen receipt
+seed-predator incidence / damaged seeds
+seeds initiated
+mature intact seeds
+plant / patch / date / phase
+```
+
+Promotion requires:
+
+```text
+P0.1 enough seed-predator incidence to estimate a G contrast
+P0.2 pollination responds to the declared bract-display coordinate
+P0.3 predation also responds to that coordinate or a tightly linked same-blossom state
+P0.4 the two functions imply non-aligned preferred states over an experimentally reachable range.
+```
+
+If these conditions are not recovered, the focal population is not used for the positive compromise experiment. That outcome is biologically informative because SCH predicts that a weak antagonist weight can erase the compromise.
+
+## Stage 0A — reversible multi-level z manipulation
+
+Preferred manipulation:
 
 ```text
 natural bract tissue remains intact
 +
-removable, spectrally matched occluders for downward display shifts
+removable spectrally matched occluders for downward display shifts
 +
-removable, spectrally matched artificial extensions for upward display shifts
+removable spectrally matched artificial extensions for upward display shifts.
 ```
 
-A five-level initial target is:
+Initial planning levels:
 
 ```text
-z = 0.60, 0.80, 1.00, 1.20, 1.40 x the standardized reference apparent area
+z = 0.60, 0.80, 1.00, 1.20, 1.40 x a standardized reference apparent area
 ```
 
-These are planning levels, not frozen biological doses. Stage 0 must revise them if they exceed the natural or behaviourally relevant range.
+These are not frozen doses. Stage 0 narrows them to the locally natural / behaviourally relevant range.
 
 Promotion checks:
 
 ```text
-Z0.1 apparent area is changed as intended
-Z0.2 visible / UV reflectance is matched closely enough that area, not colour, is the dominant changed coordinate
+Z0.1 measured apparent area changes as intended
+Z0.2 visible and UV state is close enough that area is the main changed coordinate
 Z0.3 gland visibility and access are unchanged
 Z0.4 resin amount / gland size are unchanged
-Z0.5 bract posture and blossom geometry are not mechanically distorted
-Z0.6 manipulations can be removed after the ecological exposure window without lasting tissue damage
-Z0.7 sham material controls do not alter visitation, oviposition or seed development
+Z0.5 posture and blossom geometry are not mechanically distorted
+Z0.6 material can be removed without lasting tissue damage
+Z0.7 sham material does not alter visitation, predator response or seed development.
 ```
 
-If upward artificial extension cannot be made biologically credible, do not pretend a five-level causal surface exists. Use a bounded lower-side perturbation experiment plus natural-trait surface as separate evidence layers.
+If credible upward extension cannot be built, use a bounded lower-side intervention plus a separately labelled natural-trait surface rather than pretending that a symmetric five-level causal axis exists.
 
-## Stage 0B — selective functional interventions
+## Stage 0B — pollinator intervention
 
-The causal compromise claim requires changing the weight of pollination and seed-predator functions without changing `z` itself.
-
-### Pollinator intervention candidates
+Candidate pollinator states:
 
 ```text
 P1 = natural pollinator access during the receptive window
-P0 = pollinator exclusion during that window
+P0 = pollinator exclusion during a matched window
 ```
 
-Because *D. scandens* can produce seeds by autonomous self-pollination, `P0` is not assumed to imply zero reproduction. The consumer-independent / autonomous baseline is measured rather than set to zero.
+Because `D. scandens` is self-compatible and can produce seeds by autonomous self-pollination, `P0` is not assumed to imply zero reproduction. A hand-pollination calibration arm maps pollen receipt to seed production independently of pollinator choice.
 
-A hand-pollinated calibration arm should be retained to map pollen load to seed production independently of pollinator choice.
+Promotion requires the P manipulation to change pollen delivery strongly while leaving antagonist exposure, `z`, resin reward and blossom development unchanged except through the declared pollination pathway.
 
-### Seed-predator intervention candidates
+## Stage 0G — recover the antagonist intervention instead of assuming it
 
-The seed predators in the focal *D. scandens* work are small curculionid weevils; most feeding is visible later in developing seeds, while oviposition is presumed earlier. The exact selective intervention is therefore **not yet frozen**.
+The exact adult seed-weevil oviposition window is not currently frozen from primary-source recovery. Therefore broad passive exclusion is not the first-choice strategy.
 
-Candidate routes to pilot are:
+The preferred pilot is **controlled sequential adult-weevil exposure**.
+
+### Exposure-window pilot
+
+Use blossoms with matched `z` and pollination status, and assign controlled adult-weevil access to sequential phenological windows:
 
 ```text
-G1 = natural seed-predator access
-G0 candidate A = selective adult-weevil exclusion during the oviposition window
-G0 candidate B = post-oviposition egg / early-stage removal if eggs can be detected and removed without blossom damage
-G0 candidate C = highly focal barrier around the oviposition target after the pollinator window, only if timing is shown to separate the routes
+E0 no adult-weevil exposure
+E1 female-phase exposure
+E2 early bisexual-phase exposure
+E3 late bisexual-phase exposure
+E4 post-receptive / early fruit-development exposure.
 ```
 
-Broad bagging or insecticide is not accepted as `G0` unless manipulation checks show that pollinator access, bract optical state, resin reward and blossom microclimate remain unchanged.
+The Mexican study reports receptive blossoms for up to roughly 10–12 days, with an initial female phase followed by a bisexual phase. The exact exposure windows are updated from local phenology; the categories above define the identification logic rather than fixed days.
 
-### Selectivity gate
-
-Before a confirmatory compromise experiment, demonstrate:
+For each exposure:
 
 ```text
-P manipulation changes pollen delivery / visitation strongly
-but does not directly change G exposure or z
-
-G manipulation changes seed-predator establishment / loss strongly
-but does not directly change pollination or z
+standardize adult number and sex where possible
+standardize exposure duration
+use a chamber / mesh that does not alter the display outside the exposure period
+record adult contact, probing or feeding when observable
+retain a handling / chamber sham
+track blossoms to developing and mature seeds
+score damaged seeds, larvae / emergence where possible, and intact viable seeds.
 ```
 
-If the two functional routes cannot be separated adequately in this system, Dalechampia remains a strong real-world compromise anchor but is not used for a mechanism-resolved L3 claim.
+The primary antagonist chain is deliberately bounded:
 
-## Stage 1 — five-level local surface pilot
+```text
+controlled adult-weevil exposure
+-> later seed-predator establishment / seed damage
+-> mature intact seed loss.
+```
 
-After Stage 0 passes, use a balanced factorial:
+Do not call this direct oviposition unless eggs, oviposition scars or equivalent direct markers are independently observed.
+
+### G0/G1 promotion rule
+
+A seed-predator intervention is admitted only if:
+
+```text
+G1 controlled exposure materially increases later seed loss
+G0 no-exposure / validated exclusion keeps later seed loss low
+pollination / pollen receipt is preserved across G states conditional on P
+z, resin reward, bract posture and post-pollination bract integrity are preserved
+sham chamber / handling effects are acceptably small.
+```
+
+Broad insecticide is not admitted by default. Broad bagging is not admitted unless it passes the same selectivity checks.
+
+If controlled exposure cannot generate a reproducible antagonist contrast, Dalechampia remains a real-world compromise anchor but is not promoted to a mechanism-resolved L3 system.
+
+## Stage 1 — local multi-level surface pilot
+
+Only after Stage 0P, 0A, 0B and 0G pass, use:
 
 ```text
 5 z levels x 2 pollinator states x 2 seed-predator states
-= 20 cells
+= 20 cells.
 ```
 
-Randomize treatment within plant / patch as far as biology permits. Preserve at least:
+Randomize within plant / patch where biology permits. Preserve at minimum:
 
 ```text
 plant / genotype
 patch
 blossom
 calendar date
-female vs bisexual exposure day
+phenological phase
 z target and measured apparent area
 pollinator treatment
-seed-predator treatment
-sham / manipulation batch
+seed-predator treatment / exposure window
+sham / manipulation batch.
 ```
 
-Primary common fitness endpoint:
+Primary endpoint:
 
 ```text
-number of mature intact viable seeds per focal blossom
+mature intact viable seeds per focal blossom.
 ```
 
 Secondary decomposition:
@@ -157,141 +241,126 @@ Secondary decomposition:
 ```text
 bee visitation / visit probability
 stigmatic pollen load
-fruit set
-fertilized seed number before predation where measurable
-predated seed number
-intact seed number
-seed mass / viability
+fruit set / seed initiation
+predator contact or direct oviposition marker if available
+predated seed count
+intact seed count
+seed mass / viability.
 ```
 
-The primary outcome is deliberately downstream of both functions. Visitor counts and predator occurrence are mediators, not substitutes for `W`.
-
 ## Function-specific surfaces
-
-The pilot estimates state-specific response surfaces rather than forcing a single additive curve.
 
 At each `z`, estimate:
 
 ```text
-W(z, G, P)
+W(z,G,P)
 ```
 
-and derive pollinator-mediated contribution and predator-mediated loss analogues over the continuous / multi-level trait axis.
+and recover the multi-level analogues of pollinator-mediated contribution and predator-mediated loss.
 
-The simplest target surfaces are:
+Target surfaces:
 
 ```text
 F1(z)  pollinator-mediated reproductive contribution
 F2(z)  predator-avoidance / surviving-seed contribution
-W(z)   combined mature-intact-seed fitness
+W(z)   combined mature-intact-seed fitness.
 ```
 
-Use smooth curves or low-order polynomial models only after checking that the five-level data support the chosen shape. The quadratic bridge is a local benchmark, not a mandatory global model.
+Use flexible smooth or low-order polynomial models only if the data support their shape. The quadratic SCH -> BITA bridge is a local benchmark, not a compulsory global fit.
 
 ## Primary Chapter-1 decisions
 
 ### C1 — multifunctionality
 
 ```text
-z changes both functional routes
+z changes both functional routes.
 ```
 
-### C2 — conflict
+### C2 — functional conflict
 
 ```text
-z1* != z2*
+z1* != z2*.
 ```
-
-with uncertainty showing biologically meaningful separation of the function-specific preferred states.
 
 ### C3 — shared compromise
 
 ```text
-zc* lies between the function-specific optima in the predeclared trait orientation
+zc* lies away from both function-specific optima in the predicted direction
+and the combined surface contains an interior optimum or bounded balance region.
 ```
-
-with the combined surface showing an interior optimum or a bounded balancing region.
 
 ### C4 — causal optimum shift
 
-This is the decisive test.
-
 ```text
 weaken / remove seed-predator function
--> combined optimum moves toward z1*
+-> zc* moves toward z1*
 
 weaken / remove pollinator function
--> combined optimum moves toward z2*
+-> zc* moves toward z2*.
 ```
 
-The effect is reported as an optimum displacement with uncertainty, not only a treatment p-value.
+Report optimum displacement with uncertainty rather than only a treatment p-value.
 
 ### C5 — gradient cancellation
 
-Near `zc*`, the total gradient is approximately zero while the two function-specific marginal gradients are non-zero and oppose one another.
+Near `zc*`, the total gradient is approximately zero while function-specific marginal gradients remain non-zero and oppose one another.
 
-This distinguishes a true balance from a flat, weak-selection surface.
-
-## Negative-control logic
-
-A multifunctional trait is not automatically a compromise. The programme explicitly retains aligned-optima examples such as flower orientation systems in which pollination and abiotic protection favor the same state.
-
-Therefore the Dalechampia experiment fails the positive compromise hypothesis if the estimated functional optima overlap substantially, even if both functions respond strongly to bract display.
+This distinguishes balance from an uninformative flat surface.
 
 ## Direct-cost control
 
-Because bracts have post-pollination carbon functions, direct manipulation costs receive a dedicated check.
+After temporary display materials are removed, compare sham and manipulated blossoms under standardized hand pollination and predator exclusion. Persistent effects on seed number, seed mass or viability are treated as a direct manipulation / bract-function pathway, not silently assigned to pollination or predation.
 
-After all temporary display materials are removed, compare sham and manipulated blossoms under standardized hand pollination and predator exclusion. Any persistent difference in seed mass, viability or seed number is treated as a direct manipulation / bract-function pathway rather than silently allocated to pollination or predation.
+## Power policy
 
-## Pilot size and power policy
+Do not power the final experiment from the published observational stabilizing-selection coefficient or from a bract-reduction pollen effect in another `Dalechampia` species.
 
-Do **not** power the final experiment from the published observational stabilizing-selection coefficient or from the experimental bract-reduction pollen effect in another *Dalechampia* species.
-
-Stage 1 must estimate:
+Stage 1 estimates:
 
 ```text
-within-plant and within-patch variance
+within-plant / patch variance
 cell retention
-pollinator visit probability
+visit probability
 pollen-load dispersion
-seed-predation incidence
+predator incidence under controlled exposure
 mature-intact-seed variance
 curvature / optimum uncertainty
-cross-route contamination of P and G interventions
+cross-route contamination of P and G interventions.
 ```
 
-The confirmatory sample size is then determined by simulation for the predeclared decisions C2-C5, especially confidence in optimum separation and optimum displacement. Power for a single `z x treatment` coefficient is not an adequate substitute.
+Confirmatory sample size is then determined by simulation for C2-C5, especially optimum separation and optimum displacement.
 
-## Relationship to the existing literature
+## Negative-control logic
 
-The experiment closes a very specific gap between already established results.
+A multifunctional trait is not automatically a compromise. Aligned-optimum systems remain deliberate negative controls. Dalechampia itself also supplies a context-level boundary: Costa Rican populations with weak predator coupling may behave like a low-`w2` state in which the compromise is absent or small.
 
-- Pérez-Barrales et al. 2013: real-world opposing pollinator and seed-predator selection plus net stabilizing tendency on *D. scandens* bract size.
-- Armbruster et al. 2005: experimental reduction of *D. ipomoeifolia* bract size lowers pollen arrival, establishing causal manipulability of the advertisement axis.
-- Pélabon et al. 2015: post-pollination bracts contribute carbon to developing seeds, establishing why permanent clipping is a confounded common-fitness manipulation.
-
-The new experiment therefore does not ask whether Dalechampia has an interesting trade-off. It asks whether the observed balance can be **causally reconstructed as two function-specific optima competing on one shared coordinate**.
+Thus a failed Dalechampia population screen is not a nuisance result. It directly supports the prediction that changing functional weights can move or erase the shared optimum.
 
 ## Handoff to BITA
 
-If C2-C5 are recovered, Chapter 1 delivers an identified one-dimensional compromise:
+If C2-C5 are recovered, Chapter 1 delivers:
 
 ```text
-z1*, z2*, zc*, compromise penalty / displacement
+z1*, z2*, zc*, compromise penalty / optimum displacement.
 ```
 
-BITA then asks whether a second functional coordinate can reduce that penalty. The strongest cross-chapter prediction is not simply a positive two-trait interaction; it is that the first trait's optimum is released toward its function-specific optimum when the second coordinate carries more of the competing function.
+BITA then asks whether a second functional coordinate reduces that one-dimensional penalty and releases the first trait toward its function-specific optimum.
 
 ## Current status
 
 ```text
-REAL_WORLD_OPPOSING_SELECTION: RECOVERED
-OBSERVATIONAL_STABILIZING_COMPROMISE: RECOVERED_CASE_LEVEL
-BRact_ADVERTISEMENT_MANIPULABILITY: RECOVERED_IN_GENUS
+MEXICO_CASE_LEVEL_OPPOSING_SELECTION:      RECOVERED
+OBSERVATIONAL_STABILIZING_COMPROMISE:      RECOVERED_CASE_LEVEL
+COSTA_RICA_SPECIES_WIDE_GENERALIZATION:    NEGATIVE / GEOGRAPHICALLY_VARIABLE
+BRact_ADVERTISEMENT_MANIPULABILITY:        RECOVERED_IN_GENUS
 PERMANENT_BRact_REMOVAL_COMMON_W_CONFOUND: RECOVERED
-REVERSIBLE_MULTI_LEVEL_Z_MANIPULATION: TO_VALIDATE
-SELECTIVE_P_INTERVENTION: TO_VALIDATE
-SELECTIVE_G_INTERVENTION: TO_VALIDATE / MAIN BOTTLENECK
-CAUSAL_Z1_Z2_ZC_RECOVERY: NOT_YET_EXECUTED
+CONFLICT_ACTIVE_FOCAL_POPULATION:          TO SCREEN
+REVERSIBLE_MULTI_LEVEL_Z:                  TO VALIDATE
+SELECTIVE_P:                               TO VALIDATE
+DIRECT_OVIPOSITION_WINDOW:                 NOT RECOVERED
+CONTROLLED_WEevil_EXPOSURE:                TO PILOT
+SELECTIVE_G0_G1:                           MAIN BOTTLENECK
+CAUSAL_Z1_Z2_ZC_RECOVERY:                  NOT YET EXECUTED
 ```
+
+The companion recovery note is `docs/SCH_DALECHAMPIA_GEOGRAPHIC_CONFLICT_AND_G0_RECOVERY_V1.md`.
