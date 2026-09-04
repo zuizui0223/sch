@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "empirical" / "architecture" / "SCH_CAUSAL_COMPROMISE_SURFACE_TEMPLATE_V1.csv"
 CONFIG_TEMPLATE = ROOT / "empirical" / "architecture" / "SCH_CAUSAL_COMPROMISE_SURFACE_CONFIG_TEMPLATE_V1.json"
 CONTRACT = ROOT / "docs" / "SCH_CAUSAL_COMPROMISE_SURFACE_ANALYSIS_V1.md"
+MULTILEVEL = ROOT / "docs" / "SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md"
+MANUSCRIPT = ROOT / "manuscript" / "MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md"
 
 
 def _config() -> dict:
@@ -101,3 +103,14 @@ def test_contract_rejects_vertex_zero_slope_as_independent_proof() -> None:
     assert "opposing functional-component gradients" in text
     assert "construction / physiological cost by subtraction" in text
     assert "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE" in text
+
+
+def test_state_specific_optima_are_not_relabelled_as_pure_function_optima() -> None:
+    contract = CONTRACT.read_text(encoding="utf-8")
+    multilevel = MULTILEVEL.read_text(encoding="utf-8")
+    manuscript = MANUSCRIPT.read_text(encoding="utf-8")
+    for text in (contract, multilevel, manuscript):
+        assert "z_P* != automatically z_F1*" in text
+        assert "z_G* != automatically z_F2*" in text
+    assert "state-specific reproductive optima" in manuscript
+    assert "pure function optima require an additional identifying assay" in contract
