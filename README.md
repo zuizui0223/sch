@@ -83,7 +83,20 @@ z_P* != automatically z_F1*
 z_G* != automatically z_F2*.
 ```
 
-Pure `z_F1*` / `z_F2*` require an additional identifying assay.
+The default Chapter-1 result therefore remains state-specific.
+
+A stronger optional promotion uses the causal component contrasts from the same selective `z x P x G` experiment:
+
+```text
+M_G0(z) = W10(z) - W00(z)
+M_G1(z) = W11(z) - W01(z)
+H_P0(z) = W01(z) - W00(z)
+H_P1(z) = W11(z) - W10(z).
+```
+
+If the two pollinator-component optima agree across antagonist states and the two antagonist-component optima agree across pollinator states, with interior-optimum and bootstrap support inside a prospectively frozen equivalence bound, SCH may promote them to context-stable empirical `z_F1*` and `z_F2*`. If they differ by context, retain conditional component optima and do not use the pure-function label.
+
+This optional gate is implemented in `scripts/identify_sch_pure_function_optima.py` and documented in `docs/SCH_PURE_FUNCTION_OPTIMA_UPGRADE_V1.md`.
 
 ## Identification programme
 
@@ -146,6 +159,7 @@ Current bounded status:
 REAL_WORLD_MULTIFUNCTIONALITY_RECOVERED
 CASE_LEVEL_COMPROMISE_RECOVERED
 STATE_SPECIFIC_CAUSAL_COMPROMISE_ANALYZER_READY
+OPTIONAL_CONTEXT_STABLE_COMPONENT_OPTIMUM_UPGRADE_READY
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 HISTORICAL_INTEGRATION_TO_MODULARIZATION_NOT_YET_IDENTIFIED.
@@ -180,7 +194,8 @@ population qualification
 -> controlled adult-weevil exposure
 -> selective G0/G1 validation
 -> 5 z x 2 P x 2 G
--> causal compromise receipt.
+-> causal compromise receipt
+-> optional context-stable component-optimum upgrade.
 ```
 
 ## SCH -> BITA
@@ -203,7 +218,8 @@ x,y
 Optional stricter lane:
 
 ```text
-SCH independently identifies z_F1*
+SCH component contrasts identify context-stable z_F1*
+-> upgraded receipt exports identified_pure_function_optima.z_F1
 -> BITA additionally tests release toward pure z_F1*.
 ```
 
@@ -213,10 +229,12 @@ State-specific and pure-function release are kept separate.
 
 - `manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md` — canonical Chapter-1 manuscript
 - `docs/SCH_CAUSAL_COMPROMISE_SURFACE_ANALYSIS_V1.md` — state-specific optimum analyzer contract
+- `docs/SCH_PURE_FUNCTION_OPTIMA_UPGRADE_V1.md` — optional context-stable component-optimum promotion
 - `docs/SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md` — multi-level causal design
 - `docs/SHARED_TO_DIFFERENTIATED_QUADRATIC_BRIDGE_V1.md` — theory/empirical bridge
 - `docs/SCH_EXECUTION_SPINE_V1.md` — end-to-end execution
 - `scripts/analyze_sch_compromise_surface.py` — full compromise analyzer
+- `scripts/identify_sch_pure_function_optima.py` — optional pure-function upgrade
 - `scripts/evaluate_dalechampia_stage0.py` — Stage-0 qualification
 - `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — chapter bridge
 - `empirical/architecture/SCH_COMPROMISE_PREDICTION_LEDGER_V1.csv` — prediction contract
@@ -229,6 +247,7 @@ Stage 0  qualify one conflict-active context
 Stage 1  validate multi-level z and selective functional interventions
 Stage 2  recover z_P*, z_G*, z_C*
 Stage 3  test causal optimum shifts and component gradients
+Stage 3b optionally test context-stable component optima -> z_F1*, z_F2*
 Stage 4  test evolutionary maintenance / movement
 Stage 5  hand the identified compromise to BITA.
 ```
