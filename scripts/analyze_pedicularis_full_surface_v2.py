@@ -32,7 +32,7 @@ RAW_FIELDS = (
 
 POLLINATION_MAP = {"SUPPLEMENTED": 0, "NATURAL": 1}
 PREDATOR_MAP = {"EXCLUDED": 0, "EXPOSED": 1}
-READINESS_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V2"
+READINESS_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3"
 READINESS_STATUS = "PEDICULARIS_FULL_SURFACE_READY"
 SYSTEM_WRAPPER_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2"
 
@@ -111,16 +111,18 @@ def _context(rows: list[dict[str, str]]) -> tuple[str, str]:
 
 def _validate_readiness(readiness: dict, population: str, season: str) -> None:
     if readiness.get("receipt_schema_version") != READINESS_SCHEMA:
-        raise ValueError("Pedicularis V2 analysis requires SCH_PEDICULARIS_FULL_SURFACE_READINESS_V2")
+        raise ValueError("Pedicularis V2 analysis requires SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3")
     if readiness.get("status") != READINESS_STATUS:
         raise ValueError("Pedicularis V2 full-surface readiness status is not positive")
     if readiness.get("population_id") != population or readiness.get("season_id") != season:
         raise ValueError("raw V2 surface data must match the readiness population and season")
     if readiness.get("water_y_requirement") != "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE":
         raise ValueError("V2 readiness receipt does not require water-y to remain fixed")
+    if readiness.get("predator_method_requirement") != "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED":
+        raise ValueError("V2 readiness receipt lacks the timed predator-method qualification requirement")
     source_g = readiness.get("source_receipts", {}).get("g", {})
-    if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_WEIGHT_V2":
-        raise ValueError("V2 readiness must be grounded in the independent predator-weight receipt")
+    if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V3":
+        raise ValueError("V2 readiness must be grounded in the timed independent predator-method V3 receipt")
 
 
 def _system_checks(rows: list[dict[str, str]], config: dict) -> dict:
@@ -226,6 +228,7 @@ def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
         "population_id": readiness["population_id"],
         "season_id": readiness["season_id"],
         "g_schema": readiness["source_receipts"]["g"]["schema"],
+        "predator_method_requirement": readiness["predator_method_requirement"],
     }
     result["pedicularis_system_checks"] = checks
     result["pedicularis_secondary_outcomes"] = _secondary_summary(rows)
