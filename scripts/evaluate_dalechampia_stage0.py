@@ -187,88 +187,120 @@ def evaluate_population(rows: list[dict[str, str]], config: dict, rng: random.Ra
     }
 
 
-def _group_mean(rows: list[dict[str, str]], field: str) -> float:
-    return mean(_number(row, field) for row in rows)
-
-
-def _group_predation(rows: list[dict[str, str]]) -> float:
-    return mean(_predated_fraction(row) for row in rows)
-
-
 def _relative_change(a: float, b: float) -> float:
     scale = max(abs(b), 1e-12)
     return abs(a - b) / scale
 
 
-def _exposure_metric(sample: list[dict[str, str]], window: str, metric: str) -> float:
-    groups: dict[str, list[dict[str, str]]] = defaultdict(list)
-    for row in sample:
-        groups[row["exposure_window"]].append(row)
-    if "E0" not in groups or window not in groups:
-        raise ValueError("bootstrap replicate lost required exposure group")
-    control, treatment = groups["E0"], groups[window]
-    if metric == "damage_delta":
-        return _group_predation(treatment) - _group_predation(control)
-    if metric == "pollen_rel":
-        return _relative_change(_group_mean(treatment, "pollen_grains"), _group_mean(control, "pollen_grains"))
-    if metric == "z_rel":
-        return _relative_change(_group_mean(treatment, "bract_area"), _group_mean(control, "bract_area"))
-    if metric == "resin_rel":
-        return _relative_change(_group_mean(treatment, "resin_amount"), _group_mean(control, "resin_amount"))
-    raise ValueError(f"unknown exposure metric: {metric}")
+def _plant_window_summary(rows: list[dict[str, str]]) -> dict[tuple[str, str], dict[str, float]]:
+    grouped: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        grouped[(row["plant_id"], row["exposure_window"])].append(row)
+
+    summaries: dict[tuple[str, str], dict[str, float]] = {}
+    for key, group in grouped.items():
+        summaries[key] = {
+            "damage": mean(_predated_fraction(row) for row in group),
+            "pollen": mean(_number(row, "pollen_grains") for row in group),
+            "z": mean(_number(row, "bract_area") for row in group),
+            "resin": mean(_number(row, "resin_amount") for row in group),
+        }
+    return summaries
+
+
+def _paired_exposure_metrics(rows: list[dict[str, str]], window: str) -> list[dict[str, float]]:
+    summaries = _plant_window_summary(rows)
+    plant_ids = sorted({plant_id for plant_id, _ in summaries})
+    paired: list[dict[str, float]] = []
+    for plant_id in plant_ids:
+        control = summaries.get((plant_id, "E0"))
+        treatment = summaries.get((plant_id, window))
+        if control is None or treatment is None:
+            continue
+        paired.append(
+            {
+                "damage_delta": treatment["damage"] - control["damage"],
+                "pollen_rel": _relative_change(treatment["pollen"], control["pollen"]),
+                "z_rel": _relative_change(treatment["z"], control["z"]),
+                "resin_rel": _relative_change(treatment["resin"], control["resin"]),
+            }
+        )
+    return paired
+
+
+def _paired_bootstrap(
+    paired: list[dict[str, float]], metric: str, reps: int, rng: random.Random
+) -> list[float]:
+    if len(paired) < 2:
+        raise ValueError("paired exposure analysis requires at least two complete plants")
+    values: list[float] = []
+    for _ in range(reps):
+        sampled = rng.choices(paired, k=len(paired))
+        values.append(mean(item[metric] for item in sampled))
+    return values
 
 
 def evaluate_exposure(rows: list[dict[str, str]], config: dict, rng: random.Random) -> dict:
     population_id, season_id = _check_single_context(rows)
     cfg = config["exposure"]
     reps = int(config["bootstrap_reps"])
-    groups: dict[str, list[dict[str, str]]] = defaultdict(list)
-    for row in rows:
-        groups[row["exposure_window"]].append(row)
-    if "E0" not in groups:
+    windows = sorted({row["exposure_window"] for row in rows})
+    if "E0" not in windows:
         raise ValueError("exposure package requires E0 no-exposure control")
 
-    candidates = []
-    for window in sorted(key for key in groups if key != "E0"):
-        treatment = groups[window]
-        control = groups["E0"]
-        damage_delta = _group_predation(treatment) - _group_predation(control)
-        pollen_rel = _relative_change(_group_mean(treatment, "pollen_grains"), _group_mean(control, "pollen_grains"))
-        z_rel = _relative_change(_group_mean(treatment, "bract_area"), _group_mean(control, "bract_area"))
-        resin_rel = _relative_change(_group_mean(treatment, "resin_amount"), _group_mean(control, "resin_amount"))
+    min_complete_plants = int(cfg.get("min_complete_plants", cfg.get("min_group_n", 0)))
+    if min_complete_plants < 2:
+        raise ValueError("exposure config requires min_complete_plants >= 2")
 
-        boot = {}
-        for metric in ("damage_delta", "pollen_rel", "z_rel", "resin_rel"):
-            values = _cluster_bootstrap(
-                rows,
-                lambda sample, m=metric, w=window: _exposure_metric(sample, w, m),
-                reps,
-                rng,
+    candidates = []
+    for window in (window for window in windows if window != "E0"):
+        paired = _paired_exposure_metrics(rows, window)
+        if len(paired) < 2:
+            candidates.append(
+                {
+                    "window": window,
+                    "n_complete_plants": len(paired),
+                    "passes": False,
+                    "gates": {"minimum_complete_plants": False},
+                    "reason": "too_few_complete_E0_window_plant_pairs",
+                }
             )
-            boot[metric] = values
+            continue
+
+        observed = {
+            metric: mean(item[metric] for item in paired)
+            for metric in ("damage_delta", "pollen_rel", "z_rel", "resin_rel")
+        }
+        boot = {
+            metric: _paired_bootstrap(paired, metric, reps, rng)
+            for metric in ("damage_delta", "pollen_rel", "z_rel", "resin_rel")
+        }
 
         gates = {
-            "minimum_group_n": len(control) >= int(cfg["min_group_n"]) and len(treatment) >= int(cfg["min_group_n"]),
-            "damage_increase": _quantile(boot["damage_delta"], 0.025) >= float(cfg["min_damage_fraction_delta"]),
-            "pollination_selectivity": _quantile(boot["pollen_rel"], 0.975) <= float(cfg["max_pollen_relative_change"]),
-            "z_stability": _quantile(boot["z_rel"], 0.975) <= float(cfg["max_z_relative_change"]),
-            "resin_stability": _quantile(boot["resin_rel"], 0.975) <= float(cfg["max_resin_relative_change"]),
+            "minimum_complete_plants": len(paired) >= min_complete_plants,
+            "damage_increase": _quantile(boot["damage_delta"], 0.025)
+            >= float(cfg["min_damage_fraction_delta"]),
+            "pollination_selectivity": _quantile(boot["pollen_rel"], 0.975)
+            <= float(cfg["max_pollen_relative_change"]),
+            "z_stability": _quantile(boot["z_rel"], 0.975)
+            <= float(cfg["max_z_relative_change"]),
+            "resin_stability": _quantile(boot["resin_rel"], 0.975)
+            <= float(cfg["max_resin_relative_change"]),
         }
         candidates.append(
             {
                 "window": window,
-                "n_control": len(control),
-                "n_treatment": len(treatment),
-                "damage_fraction_delta": damage_delta,
+                "n_complete_plants": len(paired),
+                "damage_fraction_delta": observed["damage_delta"],
                 "damage_delta_bootstrap_95_ci": [
                     _quantile(boot["damage_delta"], 0.025),
                     _quantile(boot["damage_delta"], 0.975),
                 ],
-                "pollen_relative_change": pollen_rel,
+                "pollen_relative_change": observed["pollen_rel"],
                 "pollen_relative_change_97_5pct": _quantile(boot["pollen_rel"], 0.975),
-                "z_relative_change": z_rel,
+                "z_relative_change": observed["z_rel"],
                 "z_relative_change_97_5pct": _quantile(boot["z_rel"], 0.975),
-                "resin_relative_change": resin_rel,
+                "resin_relative_change": observed["resin_rel"],
                 "resin_relative_change_97_5pct": _quantile(boot["resin_rel"], 0.975),
                 "gates": gates,
                 "passes": all(gates.values()),
@@ -281,6 +313,7 @@ def evaluate_exposure(rows: list[dict[str, str]], config: dict, rng: random.Rand
         "analysis": "controlled_weevil_exposure",
         "population_id": population_id,
         "season_id": season_id,
+        "design": "within_plant_E0_vs_window_paired_contrasts",
         "candidate_windows": candidates,
         "selected_g1_window": selected["window"] if selected else None,
         "status": "SELECTIVE_G_WINDOW_CANDIDATE" if selected else "NO_SELECTIVE_G_WINDOW_RECOVERED",
