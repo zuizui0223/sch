@@ -32,7 +32,7 @@ def _config() -> dict:
             "min_positive_correlation": 0.15,
         },
         "exposure": {
-            "min_group_n": 15,
+            "min_complete_plants": 15,
             "min_damage_fraction_delta": 0.2,
             "max_pollen_relative_change": 0.1,
             "max_z_relative_change": 0.05,
@@ -112,11 +112,26 @@ def test_exposure_screen_selects_damage_window_that_preserves_pollination_and_tr
     result = evaluate_exposure(_exposure_rows(), _config(), random.Random(7))
     assert result["status"] == "SELECTIVE_G_WINDOW_CANDIDATE"
     assert result["selected_g1_window"] == "E2"
+    assert result["design"] == "within_plant_E0_vs_window_paired_contrasts"
     by_window = {item["window"]: item for item in result["candidate_windows"]}
+    assert by_window["E2"]["n_complete_plants"] == 24
     assert by_window["E2"]["passes"] is True
     assert by_window["E1"]["passes"] is False
     assert by_window["E1"]["gates"]["pollination_selectivity"] is False
     assert "not_direct_oviposition" in result["claim_ceiling"]
+
+
+def test_exposure_screen_requires_enough_complete_within_plant_pairs() -> None:
+    rows = [
+        row
+        for row in _exposure_rows()
+        if not (row["exposure_window"] == "E0" and int(row["plant_id"][1:]) >= 10)
+    ]
+    result = evaluate_exposure(rows, _config(), random.Random(7))
+    by_window = {item["window"]: item for item in result["candidate_windows"]}
+    assert by_window["E2"]["n_complete_plants"] == 10
+    assert by_window["E2"]["gates"]["minimum_complete_plants"] is False
+    assert result["status"] == "NO_SELECTIVE_G_WINDOW_RECOVERED"
 
 
 def test_invalid_seed_denominator_fails_closed() -> None:
@@ -132,3 +147,4 @@ def test_contract_does_not_promote_stage0_to_compromise() -> None:
     assert "population screen\n!= causal multifunctionality" in text
     assert "controlled exposure screen\n!= direct observation of oviposition" in text
     assert "Thresholds are **not hard-coded**" in text
+    assert "within-plant" in text.lower()
