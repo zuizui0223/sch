@@ -1,0 +1,18 @@
+{
+  "bootstrap_reps": 2000,
+  "random_seed": 20260904,
+  "stage_p0": {
+    "min_z_levels": "REQUIRED_BEFORE_USE",
+    "min_flowers_per_level": "REQUIRED_BEFORE_USE",
+    "min_plants": "REQUIRED_BEFORE_USE",
+    "min_adjacent_exsertion_gap": "REQUIRED_BEFORE_USE",
+    "max_opening_width_relative_change": "REQUIRED_BEFORE_USE",
+    "max_tube_diameter_relative_change": "REQUIRED_BEFORE_USE",
+    "max_bract_height_relative_change": "REQUIRED_BEFORE_USE",
+    "max_lower_lip_angle_change_deg": "REQUIRED_BEFORE_USE",
+    "max_water_depth_change": "REQUIRED_BEFORE_USE",
+    "max_flower_orientation_change_deg": "REQUIRED_BEFORE_USE",
+    "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+  },
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN"
+}
