@@ -31,11 +31,13 @@ z manipulation receipt
 pollination-weight receipt
   SCH_PEDICULARIS_POLLINATION_WEIGHT_V1
 
-independent predator-weight receipt
-  SCH_PEDICULARIS_PREDATOR_WEIGHT_V2
+method-qualified independent predator receipt
+  SCH_PEDICULARIS_PREDATOR_METHOD_V3
 ```
 
-assembled by:
+The predator method receipt must include both the antagonist-effect/selectivity result and a method-timing qualification showing that the barrier was applied in a registered post-pollination / pre-ovary-swelling window, or by an equivalently validated local barrier, without covering the pollinator-entry zone.
+
+These receipts are assembled by:
 
 ```text
 scripts/assemble_pedicularis_full_surface_readiness.py
@@ -44,16 +46,17 @@ scripts/assemble_pedicularis_full_surface_readiness.py
 The required readiness schema is:
 
 ```text
-SCH_PEDICULARIS_FULL_SURFACE_READINESS_V2
+SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
 ```
 
 and it must contain:
 
 ```text
-water_y_requirement = HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE.
+water_y_requirement = HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE
+predator_method_requirement = TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED.
 ```
 
-A V1 readiness receipt is rejected.
+Earlier readiness receipts are rejected.
 
 ## Registered state mapping
 
@@ -78,8 +81,8 @@ Independent antagonist states:
 
 ```text
 G0 = PREDATOR_EXCLUDED
-     seed-predator access is selectively suppressed by the validated independent
-     exclusion intervention
+     seed-predator access is selectively suppressed by the method-qualified
+     independent exclusion intervention
 
 G1 = PREDATOR_EXPOSED
      matched exposed / sham condition; seed-predator pressure remains active.
@@ -105,6 +108,26 @@ water defence is held fixed across every P/G/z cell.
 The full-surface wrapper checks the realized water-depth range against a prospectively frozen tolerance and fails closed if water state differs materially among SCH cells.
 
 This is essential because water defence is the intended BITA Chapter-2 `y` axis. Using the same water manipulation both to define the SCH reference and then to test BITA release toward that reference would create a circular cross-chapter test.
+
+## Why method timing is now part of G
+
+The known natural history places seed-predator oviposition after flowers open but before ovaries swell, with adults attacking from outside through the sepals or corolla tube. Pollination also occurs during the open-flower phase.
+
+Therefore a barrier can reduce predation yet still be invalid for SCH if it is applied early enough to alter bumblebee access or pollen receipt.
+
+The registered Stage-G method audit is:
+
+```text
+docs/SCH_PEDICULARIS_PREDATOR_EXCLUSION_METHOD_AUDIT_V1.md
+```
+
+and the timing/selectivity evaluator is:
+
+```text
+scripts/evaluate_pedicularis_predator_method_v3.py
+```
+
+The preferred first pilot is a post-pollination lower-flower / fruit shield. A lower-corolla ovipositor barrier during anthesis remains a second-choice unvalidated method and must independently pass the same pollinator-access and pollen-receipt gates.
 
 ## Raw-data contract
 
@@ -142,7 +165,7 @@ pollination_treatment = NATURAL | SUPPLEMENTED
 predator_treatment    = EXPOSED | EXCLUDED.
 ```
 
-`exclusion_method` is retained as provenance. The method itself must already have passed `SCH_PEDICULARIS_PREDATOR_WEIGHT_V2` selectivity testing.
+`exclusion_method` is retained as provenance. The method itself must already have passed `SCH_PEDICULARIS_PREDATOR_METHOD_V3`.
 
 ## Primary outcome
 
@@ -170,7 +193,7 @@ Run:
 ```bash
 python scripts/analyze_pedicularis_full_surface_v2.py \
   <pedicularis_surface_v2.csv> \
-  <pedicularis_readiness_v2.json> \
+  <pedicularis_readiness_v3.json> \
   <frozen_config_v2.json> \
   --output <sch_pedicularis_receipt.json>
 ```
@@ -228,13 +251,13 @@ Its shape across `z` is the pollination-facing selection signal. Its absolute va
 
 ## Antagonist interpretation
 
-Because V2 uses independent predator exposure,
+Because V2 uses a method-qualified independent predator intervention,
 
 ```text
 W01(z) - W00(z)
 ```
 
-isolates the reproductive consequence of seed-predator exposure under the supplemented-pollen state, subject to the validated selectivity of the exclusion intervention.
+isolates the reproductive consequence of seed-predator exposure under the supplemented-pollen state, subject to both the biological selectivity and timing/access validation of the exclusion method.
 
 The Chapter-1 antagonist effect is therefore no longer defined by manipulating water defence.
 
@@ -274,7 +297,7 @@ and tests:
 R_state = |x0* - z_P*| - |x1* - z_P*|.
 ```
 
-Because water-y was held fixed while `z_P*` was identified, this is a non-circular test of dimensional release.
+Because water-y was held fixed while `z_P*` was identified, and the antagonist G was independently method-qualified, this is a non-circular test of dimensional release.
 
 ## V1 deprecation boundary
 
@@ -298,8 +321,9 @@ docs/SCH_PEDICULARIS_WATER_G_DEPRECATION_V1.md
 Do not run or promote V2 if:
 
 ```text
-readiness schema is not V2;
-independent predator-weight receipt is absent;
+readiness schema is not V3;
+method-qualified independent predator receipt is absent;
+predator barrier timing or pollinator-access preservation has not passed;
 raw data and readiness population/season differ;
 water depth varies beyond the preregistered tolerance;
 handling damage exceeds tolerance;
