@@ -1,6 +1,6 @@
 # SCH shared-trait compromise figure map v1
 
-## Figure 1 — Why one trait produces compromise
+## Figure 1 — Theory: why one shared coordinate can produce compromise
 
 Four aligned panels:
 
@@ -12,19 +12,31 @@ function 1 ---\
 function 2 ---/
 ```
 
-**B. Function-specific surfaces.** Plot `F1(z)` and `F2(z)` with distinct optima `z1*` and `z2*`.
+**B. Pure function objectives.** Plot `F1(z)` and `F2(z)` with theory-level optima:
 
-**C. Combined surface.** Plot `W_shared(z)` with `zc*` between / displaced from the function-specific optima. Mark the local opposing component gradients at `zc*` to show that net zero does not mean no selection.
+```text
+z_F1*
+z_F2*.
+```
 
-**D. Causal optimum shifts.** Show `zc* -> z1*` when function 2 is weakened and `zc* -> z2*` when function 1 is weakened.
+**C. Ideal combined benchmark.** Plot the theory-level shared surface / mismatch loss with `z_C,theory*` between the pure optima.
 
-Primary message: compromise is a measurable consequence of forcing distinct functional optima onto one coordinate.
+**D. Theory intervention prediction.** Weakening function 2 moves the theory optimum toward `z_F1*`; weakening function 1 moves it toward `z_F2*`.
+
+Include:
+
+```text
+L_compromise,theory*
+  = [a b / (a + b)] (z_F1* - z_F2*)^2.
+```
+
+Primary message: the theory explains why shared dimensionality can create a mismatch penalty; it does not claim that pure function optima are automatically observed in the factorial experiment.
 
 ## Figure 2 — Local mechanism identification
 
-Use the floral implementation to show the registered `A x antagonist x pollinator` eight-cell design.
+Use the floral `A x antagonist x pollinator` eight-cell design.
 
-Display the four attraction contrasts `d[g,p]` and the derived quantities:
+Display:
 
 ```text
 M_A(g)
@@ -35,35 +47,55 @@ J_A.
 
 Separate informational overlap from functional reproductive conflict.
 
-Primary message: both audiences responding to a trait is not enough; selective intervention is required to identify opposing functional contributions.
+Primary message: both audiences responding to a trait is not enough; selective intervention is required to identify opposing causal contributions.
 
-## Figure 3 — From local conflict to a full compromise surface
+## Figure 3 — Empirical compromise geometry
 
-Show a multi-level `z` design with at least five illustrative `z` levels.
+Show the multi-level `z x P x G` design with at least five illustrative `z` levels.
 
-Panels:
-
-1. function-1 response curve and `z1*`;
-2. function-2 response curve and `z2*`;
-3. common fitness curve and `zc*`;
-4. functional-weight intervention shifts of `zc*`.
-
-Include the quadratic benchmark:
+Plot the four state surfaces:
 
 ```text
-L_compromise* = [a b / (a + b)] (z1* - z2*)^2.
+W00(z)
+W10(z)
+W01(z)
+W11(z).
 ```
 
-Primary message: the 2-level experiment identifies local conflict; the multi-level experiment identifies compromise geometry.
+Mark the directly identified optima:
+
+```text
+z_P* = argmax W10(z)
+z_G* = argmax W01(z)
+z_C* = argmax W11(z).
+```
+
+Show the causal shifts:
+
+```text
+G off -> z_C* toward z_P*
+P off -> z_C* toward z_G*.
+```
+
+Also show opposite pollinator- and antagonist-component gradients near `z_C*`.
+
+Add an explicit note:
+
+```text
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
+```
+
+Primary message: the empirical experiment identifies state-specific compromise geometry without overclaiming pure function optima.
 
 ## Figure 4 — Real-world evidence and claim ladder
 
-Place source classes along the SCH ladder:
+Place source classes along:
 
 ```text
 L0 multifunctionality / shared exposure
-L1 functional conflict
-L2 compromise geometry
+L1 local functional conflict
+L2 state-specific compromise geometry
 L3 causal balance
 L4 evolutionary maintenance
 L5 historical architecture.
@@ -71,37 +103,38 @@ L5 historical architecture.
 
 Highlight:
 
-- Perez-Barrales: case-level stabilizing compromise;
+- Pérez-Barrales: case-level stabilizing compromise;
 - Theis & Adler: negative side of the fitness surface;
 - Primula: context-dependent maintenance and microevolution;
 - Brassica experimental evolution: functional-weight redirection;
 - Nicotiana: same-coordinate reality and execution candidate;
 - Ficus: historical extension, not the contemporary mechanism proof.
 
-Primary message: the literature shows the mechanism is ecologically real but does not substitute for the identifying experiment.
+Primary message: literature establishes ecological reality but does not substitute for the identifying experiment.
 
 ## Figure 5 — Hand-off to BITA
 
-Use a single architecture transition:
+Show:
 
 ```text
-shared z
--> compromise penalty
--> add trait dimension
--> x for function 1 / y for function 2
+SCH empirical
+z_P*, z_G*, z_C*
+-> measured one-dimensional constraint
+
+BITA
+add y
+-> x* moves toward z_P* by default
+-> preferential functional loading
 -> functional differentiation.
 ```
 
-Show the ideal gain benchmark
+Alongside this, show the **separate theory benchmark**:
 
 ```text
-Delta_mod = [a b / (a + b)] (z1* - z2*)^2 - K.
+Delta_mod,theory
+  = [a b / (a + b)] (z_F1* - z_F2*)^2 - K.
 ```
 
-End with the testable Chapter-2 prediction:
+If a pure `z_F1*` is independently identified, show it as an optional stricter release target with a different line style or panel annotation.
 
-```text
-x*(y_high) moves toward z1*.
-```
-
-Primary message: Chapter 1 quantifies the constraint that Chapter 2 attempts to release.
+Primary message: Chapter 1 supplies a measured state-specific reference for Chapter 2, while the pure-function quadratic remains a theory-level upper-bound framework.
