@@ -2,119 +2,94 @@
 
 ## Abstract
 
-A single phenotype often performs more than one ecological function. When those functions favor different trait values, evolution along one shared coordinate cannot optimize them independently. We formalize this problem as a **shared-trait compromise**: two functional surfaces act on one trait `z`, their function-specific optima differ, and the realized optimum is maintained where opposing marginal fitness gradients balance. This framing separates three questions that are often conflated: whether one trait affects multiple functions, whether those functions impose conflicting selection, and whether the observed phenotype is causally maintained as a compromise. We develop two linked identification designs. A local crossed-intervention design identifies the opposing functional contributions of one declared trait contrast; in the floral implementation this is an `A x antagonist x pollinator` eight-cell experiment. A multi-level trait design then estimates the function-specific optima `z1*` and `z2*`, the combined optimum `zc*`, and the predicted movement of `zc*` when either functional demand is experimentally weakened. Under a local quadratic benchmark, the unavoidable fitness penalty of a one-dimensional architecture is `[ab/(a+b)](z1*-z2*)^2`, directly linking the strength of functional conflict to the potential value of later trait differentiation. Existing floral studies provide real-world evidence for the required biological ingredients: shared or jointly exposed traits affect mutualists and antagonists, stabilizing compromise and context-dependent maintenance occur, and interaction regimes redirect evolutionary trajectories. They rarely provide the complete same-coordinate intervention needed to identify the mechanism in one system. SCH therefore treats the literature as ecological grounding and uses explicit experiments to test why multifunctionality produces balance. Chapter 2 / BITA asks the complementary question: when does an additional trait dimension release that compromise through functional differentiation or modularization?
+A single phenotype often performs more than one ecological function. When those functions favor different regions of trait space, one shared coordinate can impose a compromise. SCH separates the theory of this constraint from what a crossed experiment can directly identify. At the theory level, pure function-specific objectives may have optima `z_F1*` and `z_F2*`. In the empirical floral implementation, however, a multi-level `z x pollinator x antagonist` experiment directly identifies state-specific reproductive optima `z_P* = argmax W10(z)`, `z_G* = argmax W01(z)`, and the combined optimum `z_C* = argmax W11(z)`. Because consumer-independent and direct trait consequences can remain in every reproductive state, `z_P*` is not automatically `z_F1*`, and `z_G*` is not automatically `z_F2*`. The decisive empirical compromise result therefore combines distinct state optima, an interior combined optimum, opposing shifts when either functional demand is removed, and opposing functional-component gradients near the combined optimum. Existing floral studies provide real-world evidence that shared traits experience opposing ecological demands, that stabilizing or context-dependent compromise occurs, and that changing interaction regimes redirects evolutionary trajectories. Literature is therefore ecological grounding rather than the chapter estimand. Chapter 2 / BITA asks whether adding a second, preferentially loaded trait dimension releases the measured one-dimensional constraint.
 
 ## 1. The general problem
 
-Traits are often multifunctional. A floral scent may recruit a pollinator and expose a plant to an antagonist; a structural element may support reproduction while also protecting tissue; a chemical compound may mediate attraction, defence, communication, or physiology. The important evolutionary problem is not simply that one trait has several effects. It is that **the same coordinate can be required to satisfy functions with different preferred states**.
+Traits are often multifunctional. A floral scent can recruit a pollinator and expose a plant to an antagonist; a structure can advertise reproduction while also protecting tissues; a chemical can mediate attraction, defence, physiology, or communication. The evolutionary problem is not multifunctionality alone. It is whether different functional demands pull one shared phenotypic coordinate in different directions.
 
-Let one shared trait be `z`. Define two function-specific fitness components, `F1(z)` and `F2(z)`, with function-specific optima
-
-```text
-z1* = argmax F1(z)
-z2* = argmax F2(z).
-```
-
-When
+Let the shared trait be `z`. At the theory level, define pure function-specific objectives
 
 ```text
-z1* != z2*,
+F1(z)
+F2(z)
 ```
 
-one value of `z` cannot simultaneously maximize both functions. If total fitness is
+with optima
+
+```text
+z_F1* = argmax F1(z)
+z_F2* = argmax F2(z).
+```
+
+Older shorthand in this programme used `z1*` and `z2*` for the same theory-level quantities. The explicit `z_F1*`, `z_F2*` notation is now preferred because it prevents them from being confused with experimentally observed state optima.
+
+If
+
+```text
+z_F1* != z_F2*,
+```
+
+one coordinate cannot simultaneously maximize both pure objectives. A simple total-fitness representation is
 
 ```text
 W_shared(z) = w1 F1(z) + w2 F2(z) - C(z),
 ```
 
-the combined optimum `zc*` is a compromise whenever it lies away from at least one function-specific optimum because the opposing functional gradients cancel there.
-
-The central Chapter-1 question is therefore:
-
-> **Does multifunctionality constrain evolution because different functions pull one shared trait toward different optima, and is the realized phenotype causally maintained by that balance?**
-
-This is broader than the floral pollinator-antagonist case. The floral system is the first operational implementation because it offers clear functional interventions and a direct bridge to Chapter 2.
+where `C(z)` represents direct or background consequences not assigned to either focal function.
 
 ## 2. What counts as compromise
 
-An intermediate phenotype is not sufficient evidence of compromise. Three nested conditions are required.
+An intermediate phenotype is not sufficient evidence of compromise.
 
 ### 2.1 Multifunctionality
 
-The same declared trait coordinate must affect both functions:
-
-```text
-z -> function 1
-z -> function 2.
-```
+The same declared coordinate must affect both focal functional routes.
 
 ### 2.2 Functional conflict
 
-The two functions must prefer different regions of trait space:
-
-```text
-z1* != z2*.
-```
-
-Equivalently, at the combined optimum the marginal contributions of the two functions should point in opposing directions.
+The two functional routes must favor different regions of the coordinate. At the theory level this can be expressed as `z_F1* != z_F2*`. Empirically, the minimum direct test is that the state favored when one competing route is suppressed differs from the state favored when the other is suppressed.
 
 ### 2.3 Balance
 
-At the realized combined optimum,
+At an integrated compromise, the total gradient can be near zero while component gradients remain non-zero and oppose each other. Balance therefore means cancellation of selection contributions, not equality of raw benefits or costs.
 
-```text
-w1 F1'(zc*) + w2 F2'(zc*) - C'(zc*) = 0,
-```
+The strongest evidence is causal: weakening one functional demand should move the realized optimum toward the state favored when that demand is suppressed.
 
-while at least two component gradients remain non-zero and oppose one another. Thus **balance means cancellation of selection gradients, not equality of raw benefits or costs**.
+## 3. Theory benchmark versus empirical estimands
 
-The strongest evidence is causal: experimentally weakening function 2 should shift the optimum toward `z1*`, whereas weakening function 1 should shift it toward `z2*`.
-
-## 3. A local quadratic benchmark
-
-Near the two function-specific optima, write the mismatch loss as
+Near pure function optima, an idealized mismatch-loss benchmark is
 
 ```text
 L_shared(z)
-  = a (z - z1*)^2
-  + b (z - z2*)^2,
+  = a (z - z_F1*)^2
+  + b (z - z_F2*)^2.
 ```
 
-with `a,b > 0`.
-
-Then
+The theory-level shared optimum is
 
 ```text
-zc* = (a z1* + b z2*) / (a + b)
+z_C,theory* = (a z_F1* + b z_F2*) / (a + b)
 ```
 
-and the minimum unavoidable mismatch loss is
+and the ideal one-dimensional mismatch penalty is
 
 ```text
-L_compromise*
-  = [a b / (a + b)] (z1* - z2*)^2.
+L_compromise,theory*
+  = [a b / (a + b)] (z_F1* - z_F2*)^2.
 ```
 
-This formula gives a transparent interpretation of constraint. The compromise penalty increases as the functional optima diverge and as both functional demands become strong. If one demand becomes negligible, the penalty vanishes because the shared trait can move toward the remaining optimum.
+This benchmark predicts that the potential value of an extra trait dimension increases as pure functional optima diverge and both functional demands remain strong.
 
-The same result produces the Chapter-2 prediction. If the two functions later gain partially independent coordinates `x` and `y`, the maximum ideal benefit of differentiation over the one-dimensional state is
-
-```text
-Delta_mod
-  = [a b / (a + b)] (z1* - z2*)^2 - K,
-```
-
-where `K` is the extra cost of the differentiated architecture. Functional differentiation is favored in this benchmark when the avoided compromise loss exceeds that added cost.
-
-The derivation and claim boundary are frozen in `docs/SHARED_TO_DIFFERENTIATED_QUADRATIC_BRIDGE_V1.md`.
+But this formula is not an instruction to relabel experimental state optima as pure function optima. In the crossed reproductive experiment, direct/background effects remain unless independently assayed.
 
 ## 4. Two complementary SCH experiments
 
-SCH separates **local mechanism identification** from **fitness-surface identification**.
+SCH separates local conflict identification from multi-level compromise identification.
 
 ### 4.1 Local crossed intervention
 
-In the floral implementation, the shared trait is one attraction/display coordinate `A`, and the two functions are pollinator-mediated reproductive gain and avoidance of antagonist-mediated reproductive loss. Cross
+For one floral trait contrast `A`, cross
 
 ```text
 A x antagonist x pollinator
@@ -132,96 +107,88 @@ B_A    = d[0,0]
 J_A    = d[1,1] - d[1,0] - d[0,1] + d[0,0].
 ```
 
-A positive `M_A` identifies a pollinator-mediated contribution to the reproductive value of the same trait contrast; a positive `G_A` identifies an antagonist-mediated erosion of that value. `J_A` diagnoses context dependence between the two channels. `B_A` remains an unallocated consumer-independent remainder unless an independent assay gives it a narrower biological interpretation.
+A positive `M_A(g)` identifies a pollinator-mediated contribution to the reproductive value of the same trait contrast. A positive `G_A(p)` identifies antagonist-mediated erosion of that value. `B_A` remains an unallocated consumer-independent remainder without an independent assay, and `J_A` diagnoses state dependence between the two pathways.
 
-This experiment shows **why a local trait contrast is conflicted**. It does not by itself locate the full compromise optimum.
+This experiment shows why a local trait contrast is conflicted. It **does not by itself locate the full compromise optimum**.
 
 ### 4.2 Multi-level `z` experiment
 
-To identify compromise geometry, manipulate at least three and preferably five or more levels of the same `z` coordinate and estimate, under selective functional conditions:
+Manipulate at least three and preferably five or more levels of the same coordinate and cross them with selective pollinator and antagonist states.
+
+The directly observed reproductive surfaces are
 
 ```text
-F1(z)
-F2(z)
-W_shared(z).
+W00(z) = P0 G0
+W10(z) = P1 G0
+W01(z) = P0 G1
+W11(z) = P1 G1.
 ```
 
-Recover
+The directly identified optima are
 
 ```text
-z1*, z2*, zc*.
+z_P* = argmax W10(z)
+z_G* = argmax W01(z)
+z_C* = argmax W11(z).
 ```
 
-Then test the causal optimum-shift predictions:
+These are state-specific reproductive optima.
+
+Critically,
 
 ```text
-weaken function 2 -> zc* shifts toward z1*
-weaken function 1 -> zc* shifts toward z2*.
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
 ```
 
-This design distinguishes a true multifunctional compromise from an arbitrary intermediate phenotype, a monotonic endpoint, or a phenotype maintained by an unmeasured third process.
+The equality would require an additional assay or identifying restriction that removes or measures direct/background trait effects.
 
-The full contract is `docs/SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md`.
+## 5. The causal compromise test
 
-## 5. The floral implementation as a mechanistic example
+A strong empirical Chapter-1 result requires four linked observations.
 
-The current floral mapping is
+First, `z_P*` and `z_G*` differ by a biologically meaningful amount. Second, `W11(z)` has a supported interior optimum `z_C*`. Third, removing antagonism moves the combined optimum toward `z_P*`, while removing pollination moves it toward `z_G*`. Fourth, the pollinator-mediated and antagonist-mediated component gradients near `z_C*` are non-zero and oppose one another.
+
+In shorthand:
 
 ```text
-function 1 = pollinator-mediated reproductive gain
-function 2 = avoidance / reduction of antagonist-mediated loss
-shared trait z = floral attraction/display coordinate A.
+z_P* != z_G*
+
+G off: z_C* -> z_P*
+P off: z_C* -> z_G*
+
+sign[g_P(z_C*)] != sign[g_G(z_C*)].
 ```
 
-A shared cue is one especially clear route to multifunctionality: pollinators and antagonists use the same sensory or display coordinate. Informational overlap alone is not enough. The stronger claim is that the two receivers make opposing causal contributions to the reproductive value of that coordinate.
+The zero derivative of an interior quadratic at its own fitted vertex is not treated as independent evidence; it is a mathematical property of the fit.
 
-This implementation motivates the eight-cell SCH design, but the general framework also accommodates other multifunctional traits in which the two functions are not defined by different receiver guilds.
+## 6. Real-world evidence
 
-## 6. Real-world evidence for Chapter 1
+The literature is a reality check on the mechanism rather than the primary estimator of SCH quantities.
 
-The literature is used as a **reality check on the mechanism**, not as the primary estimator of the chapter's causal quantities.
+Pérez-Barrales et al. provide the clearest case-level match: larger showy bracts increase pollination opportunity while also increasing seed-predator exposure, and net selection tends toward stabilizing selection. Theis & Adler experimentally show the negative side of the same logic: enhancing fragrance can increase antagonist attraction and reduce seed production without a compensating pollinator gain. Primula studies show that opposing interaction regimes can maintain polymorphism and shift morph frequencies, while multigeneration Brassica experiments show that antagonism can redirect pollinator-driven evolutionary trajectories.
 
-### 6.1 Integrated compromise
+These studies demonstrate that functional conflict, compromise, context dependence, and evolutionary redirection are real. They do not replace the same-coordinate intervention needed to identify SCH's causal geometry in one system.
 
-Pérez-Barrales et al. recover a one-trait observational fitness surface in which larger showy bracts increase pollination opportunity but also seed-predator exposure; antagonist selection counteracts pollinator selection and net selection tends toward stabilizing selection. This is the clearest existing case-level match to the shared-trait compromise geometry.
+## 7. Current execution systems
 
-Theis & Adler supply the negative side of the same logic experimentally: increasing floral fragrance increases florivore attraction and reduces seed production without a detected pollinator-attraction gain. This does not locate the full optimum but demonstrates that increasing one display can move the plant away from a beneficial balance.
+`Dalechampia` is the conditional first-choice compromise-surface system because a Mexican population provides strong opposing pollinator/seed-predator selection, but Costa Rican populations show that the conflict is not species-wide. It therefore requires population qualification before the full factorial.
 
-### 6.2 Context-dependent balance and polymorphism
+`Nicotiana attenuata` remains the strongest local shared-cue mechanism and direct SCH-to-BITA bridge because benzylacetone affects pollinator-mediated reproduction and hawkmoth oviposition on the same attraction axis.
 
-The `Primula farinosa` studies show that opposing mutualist-antagonist selection need not maintain one continuous intermediate phenotype. Frequency-dependent selection and spatially varying pollinator-versus-grazer regimes can maintain or change alternative display morphs. Long-term manipulations link those functional weights to microevolutionary frequency change.
+`Castilleja linariaefolia` is a high-value fallback for short antagonist-to-seed pathways, but its focal trait manipulation and selective predator intervention still require Stage-0 development.
 
-### 6.3 Experimental evolutionary redirection
-
-Multigeneration experiments in `Brassica rapa` show that adding antagonism changes pollinator-driven evolutionary trajectories. This is broader than the strict shared-cue case, but it supports the general prediction that changing functional weights moves the evolutionary endpoint.
-
-These cases establish that shared-function conflict and balance are real ecological phenomena. They do not replace the direct `z1*`, `z2*`, `zc*` identification experiment.
-
-## 7. Current floral execution programme
-
-The current system-selection work has two roles.
-
-`Nicotiana attenuata` is the strongest same-coordinate reality anchor. Primary-source recovery shows that benzylacetone affects pollinator-mediated reproduction and hawkmoth oviposition on the same attraction axis, and established pollen-loading and egg-removal methods provide components of a selective intervention. Its key remaining gate is combined pollinator/antagonist selectivity and a short enough antagonist-to-fitness pathway.
-
-`Castilleja linariaefolia` is a promising short-path candidate because pollinator and pre-dispersal seed-predator functions are more separable and antagonist effects map directly onto seed fitness, although a clean manipulable shared `z` coordinate still requires recovery and validation.
-
-System choice is therefore driven by identifiability, not by familiarity or source count.
+Aligned-optimum systems such as experimental flower-orientation cases remain important negative controls: multifunctionality does not imply compromise when both functions favor the same state.
 
 ## 8. Literature programme and claim boundary
 
-The frozen systematic cohort contains 868 records. Through V20, 405 records have title/abstract decisions and 117 primary studies are included. Only two studies satisfy the strict linked measurement architecture requiring a manipulated focal trait, both consumer responses, and a common reproductive outcome. These counts are not natural prevalence and are not the SCH estimand.
+The frozen systematic cohort contains 868 records. Through V20, 405 records have title/abstract decisions and 117 primary studies are included. Only two studies satisfy the strict linked architecture requiring a manipulated focal trait, both consumer responses, and a common reproductive outcome. These are workflow/evidence counts, not natural prevalence and not the SCH estimand.
 
-Their scientific role is to show that:
-
-1. the constituent functional routes recur in nature;
-2. compromise, polymorphism, evolutionary redirection, and partial decoupling occur;
-3. the complete identifying experiment is rare.
-
-The systematic screen therefore motivates and grounds the causal design rather than defining the paper as a literature review.
+Their role is to establish that constituent routes recur, that predicted evolutionary outcomes exist, and that complete identifying experiments are rare.
 
 ## 9. From compromise to differentiation
 
-Chapter 1 ends with a constraint:
+Chapter 1 ends with one-dimensional constraint:
 
 ```text
 function 1 ---\
@@ -229,7 +196,7 @@ function 1 ---\
 function 2 ---/
 ```
 
-Chapter 2 asks what happens when the architecture gains another dimension:
+Chapter 2 asks what happens when another phenotypic dimension becomes available:
 
 ```text
 shared compromise
@@ -240,32 +207,38 @@ function 2 -> trait y
 functional differentiation / modularization.
 ```
 
-The strongest cross-chapter prediction is not merely that `x` and `y` both exist. It is that adding a function-2 coordinate should release `x` from the function-2 demand, shifting the optimum of `x` toward the function-1 optimum identified in SCH.
+The default empirical cross-chapter prediction is now deliberately conservative:
 
-Contemporary functional differentiation is distinct from historical modularization. Demonstrating preferential loading and functional release in extant traits does not prove that an ancestral shared trait split into two descendant traits.
+> adding a function-2-facing coordinate `y` should move the optimum of retained coordinate `x` toward the **SCH state-specific function-1-facing reference `z_P*`**.
+
+Only if SCH independently identifies the pure function-1 objective should that stricter target be called `z_F1*`.
+
+**Contemporary functional differentiation is distinct from historical modularization.** Demonstrating preferential loading and dimensional release in extant traits **does not prove that an ancestral shared trait split** into two descendant traits.
 
 ## 10. Main predictions
 
-1. A genuinely multifunctional shared trait affects both declared functions.
-2. The function-specific optima differ: `z1* != z2*`.
-3. The combined optimum lies between or otherwise away from the function-specific optima because opposing marginal gradients balance.
-4. Weakening one functional demand shifts the combined optimum toward the other function's preferred value.
-5. The size of the compromise penalty increases with functional-optimum separation and the joint strength of both demands.
-6. Systems with larger compromise penalties should have greater potential fitness benefit from an additional, preferentially loaded trait dimension, conditional on the added cost of differentiation.
-7. Partial modularity should leave detectable residual cross-loading or context dependence.
+1. The same shared coordinate affects both focal functional routes.
+2. The intervention-defined state optima differ: `z_P* != z_G*`.
+3. The combined state has a supported interior optimum `z_C*` over the tested range.
+4. Removing each functional demand moves the optimum toward the state favored when that demand is absent.
+5. Functional-component gradients near `z_C*` oppose one another.
+6. Systems with stronger measured state-specific conflict should offer greater opportunity for dimensional release, while theory predicts the ideal upper bound from pure `z_F1*` and `z_F2*` when those quantities are independently identified.
+7. Partial modularity should leave residual cross-loading or context dependence.
 
 ## 11. Current claim ceiling
 
-The current evidence supports the positive statement that multifunctional floral traits experience real opposing ecological demands and that case-level compromise, context-dependent maintenance, evolutionary redirection, and partial decoupling occur in nature. What is not yet available is one complete experiment that identifies both function-specific optima, the combined optimum, and the causal optimum shifts on the same trait coordinate.
+Current literature supports real-world multifunctional conflict, case-level compromise, context-dependent maintenance, evolutionary redirection, and partial decoupling. The complete causal same-coordinate experiment has not yet been executed on a biological dataset.
 
-The current conceptual status is therefore
+Current status:
 
 ```text
 MULTIFUNCTIONAL_CONFLICT_REALITY_RECOVERED
 CASE_LEVEL_COMPROMISE_RECOVERED
-COMPLETE_CAUSAL_COMPROMISE_IDENTIFICATION_NOT_YET_EXECUTED.
+STATE_SPECIFIC_CAUSAL_COMPROMISE_ANALYZER_READY
+PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
+COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED.
 ```
 
 ## 12. Conclusion
 
-Multifunctionality can constrain evolution even when every component process is individually adaptive. The constraint arises because multiple functions are forced to share one coordinate. SCH turns that intuition into an identifiable problem: estimate the functional optima, identify the opposing causal contributions, and test whether changing functional weights moves the shared optimum. This makes compromise a measurable property of trait architecture rather than a verbal description of an intermediate phenotype. The same quantities then generate a direct Chapter-2 prediction: the greater the loss imposed by one-dimensional sharing, the greater the potential value of functional differentiation, provided the costs and residual coupling of a more modular architecture do not erase the gain.
+Multifunctionality can constrain evolution because several functional demands are forced to share one coordinate. SCH turns this into an identifiable problem without confusing theory symbols with experimental estimands. The crossed experiment directly asks whether selective functional demands generate distinct state-specific optima, whether their joint state has an interior optimum, and whether changing functional weights moves that optimum predictably. Pure function optima remain a stricter target requiring independent identification of direct/background pathways. This separation makes the Chapter-1 result both stronger and cleaner, and it gives BITA a defensible empirical reference for testing whether an additional trait dimension releases the measured constraint.
