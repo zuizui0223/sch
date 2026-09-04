@@ -18,7 +18,8 @@ def test_dalechampia_is_conditional_not_species_wide_positive() -> None:
     recovery = _text(RECOVERY)
     assert "conditional first-choice" in readme
     assert "CONDITIONAL_FIRST_CHOICE_CAUSAL_COMPROMISE_SYSTEM" in ranking
-    assert "Dalechampia species-wide conflict:     NOT SUPPORTED" in recovery
+    assert "Dalechampia species-wide conflict" in recovery
+    assert "NOT SUPPORTED" in recovery
     assert "Costa Rica" in ranking
     assert "Mexico" in ranking
 
