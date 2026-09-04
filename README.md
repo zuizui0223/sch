@@ -182,27 +182,40 @@ HISTORICAL_INTEGRATION_TO_MODULARIZATION_NOT_YET_IDENTIFIED.
 
 ## Current execution strategy
 
-The generalized framing separates the system roles.
+The generalized framing separates the system roles and now treats geographic interaction turnover as part of the mechanism.
 
 ```text
 Dalechampia
--> first-choice causal compromise-surface system
--> opposing pollinator / seed-predator selection already recovered
--> bract manipulation feasible at programme level
+-> conditional first-choice causal compromise-surface system
+-> Mexican case-level pollinator / seed-predator conflict recovered
+-> Costa Rica study shows that this conflict is not species-wide
+-> must first qualify a conflict-active population / season
+-> exact Nanobaris oviposition window and selective G0/G1 remain to be validated
 
 Nicotiana attenuata
 -> first-choice local shared-cue mechanism system
 -> benzylacetone affects pollinator-mediated reproduction and oviposition
 -> strongest direct hand-off into BITA
 
+Castilleja linariaefolia
+-> immediate short-path fallback if Dalechampia population or G-selectivity gates fail
+
 Platycodon / aligned-orientation systems
 -> negative controls
 -> same trait serves two functions but the preferred states are aligned.
 ```
 
-`Castilleja linariaefolia` remains a high-value short-path alternative because pollinator and pre-dispersal seed-predator pathways are distinct and map directly onto seed fitness.
+The Dalechampia Stage-0 sequence is now:
 
-The full ranking is `docs/SCH_GENERALIZED_EXECUTION_CANDIDATE_RANKING_V1.md`.
+```text
+population screen
+-> reversible multi-level bract-display validation
+-> controlled sequential adult-weevil exposure
+-> selective G0/G1 validation
+-> only then 5 z x 2 P x 2 G compromise experiment.
+```
+
+This is recorded in `docs/SCH_DALECHAMPIA_GEOGRAPHIC_CONFLICT_AND_G0_RECOVERY_V1.md` and the full ranking is `docs/SCH_GENERALIZED_EXECUTION_CANDIDATE_RANKING_V1.md`.
 
 ## SCH -> BITA
 
@@ -231,6 +244,7 @@ The strongest cross-chapter prediction is that adding a function-2 coordinate in
 - `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md` — two-level crossed mechanism design
 - `docs/BROAD_MULTIFUNCTIONAL_COMPROMISE_REALITY_CHECK_V1.md` — broad positive and negative-control grounding
 - `docs/SCH_GENERALIZED_EXECUTION_CANDIDATE_RANKING_V1.md` — execution-system ranking
+- `docs/SCH_DALECHAMPIA_GEOGRAPHIC_CONFLICT_AND_G0_RECOVERY_V1.md` — Dalechampia geographic conflict and antagonist-intervention gate
 - `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — floral shared-cue implementation and evidence spine
 - `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — dissertation-level chapter bridge
 - `empirical/architecture/SCH_COMPROMISE_PREDICTION_LEDGER_V1.csv` — machine-readable prediction contract
@@ -239,7 +253,7 @@ The strongest cross-chapter prediction is that adding a function-2 coordinate in
 ## Immediate empirical programme
 
 ```text
-Stage 0  choose one shared z with evidence for opposing function-specific optima
+Stage 0  choose one shared z and a population/context with evidence for opposing function-specific optima
 Stage 1  validate multi-level z manipulation and selective functional interventions
 Stage 2  recover F1(z), F2(z), W(z), z1*, z2*, zc*
 Stage 3  test causal optimum shifts by weakening each function
@@ -247,4 +261,4 @@ Stage 4  test evolutionary maintenance / movement
 Stage 5  hand the identified compromise to BITA and test dimensional release.
 ```
 
-SCH is therefore organized around **the ecology and evolution of compromise under multifunctional trait integration**. The literature demonstrates that the mechanism is biologically real; the decisive chapter result is a causal reconstruction of how multiple functional demands combine on one trait to generate balance.
+SCH is therefore organized around **the ecology and evolution of compromise under multifunctional trait integration**. The literature demonstrates that the mechanism is biologically real and context-dependent; the decisive chapter result is a causal reconstruction of how multiple functional demands combine on one trait to generate balance.
