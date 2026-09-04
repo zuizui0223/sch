@@ -113,4 +113,4 @@ def test_state_specific_optima_are_not_relabelled_as_pure_function_optima() -> N
         assert "z_P* != automatically z_F1*" in text
         assert "z_G* != automatically z_F2*" in text
     assert "state-specific reproductive optima" in manuscript
-    assert "pure function optima require an additional identifying assay" in contract
+    assert "Equality requires an additional identifying argument" in contract
