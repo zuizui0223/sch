@@ -75,10 +75,17 @@ def test_registered_template_and_fail_closed_config_exist() -> None:
     assert "DO_NOT_RUN" in config["status"]
 
 
-def test_positive_surface_recovers_interior_compromise_and_opposing_shifts() -> None:
+def test_positive_surface_recovers_versioned_state_specific_compromise_receipt() -> None:
     result = analyze(_positive_rows(), _config())
+    assert result["receipt_schema_version"] == "SCH_CAUSAL_COMPROMISE_STATE_OPTIMA_V1"
     assert result["status"] == "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
     assert all(result["decisions"].values())
+    semantics = result["optimum_semantics"]
+    assert semantics["z_pollinator_context"] == "STATE_SPECIFIC_P1G0_REPRODUCTIVE_OPTIMUM_NOT_AUTOMATICALLY_PURE_F1"
+    assert semantics["z_antagonist_context"] == "STATE_SPECIFIC_P0G1_REPRODUCTIVE_OPTIMUM_NOT_AUTOMATICALLY_PURE_F2"
+    assert semantics["z_combined"] == "STATE_SPECIFIC_P1G1_COMBINED_REPRODUCTIVE_OPTIMUM"
+    assert semantics["pure_function_optima_identified_by_default"] is False
+    assert "not_pure_function_optima" in result["claim_ceiling"]
     est = result["observed_estimands"]
     assert abs(est["z_combined"]) < 1e-8
     assert abs(est["z_pollinator_context"] - 2.0) < 1e-8
