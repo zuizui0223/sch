@@ -28,7 +28,6 @@ REQUIRED_FIELDS = (
     "undamaged_seed_count",
     "damaged_seed_count",
 )
-
 TREATMENTS = ("NATURAL", "SUPPLEMENTED")
 RECEIPT_SCHEMA_VERSION = "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1"
 
@@ -48,6 +47,18 @@ def _binary(row: dict[str, str], field: str) -> int:
     if raw not in {"0", "1"}:
         raise ValueError(f"{field} must be coded 0/1, got {raw!r}")
     return int(raw)
+
+
+def _validate_seed_counts(row: dict[str, str]) -> None:
+    ovules = _num(row, "ovule_count")
+    undamaged = _num(row, "undamaged_seed_count")
+    damaged = _num(row, "damaged_seed_count")
+    if ovules <= 0:
+        raise ValueError("ovule_count must be > 0")
+    if undamaged < 0 or damaged < 0:
+        raise ValueError("seed counts must be >= 0")
+    if undamaged + damaged > ovules:
+        raise ValueError("undamaged_seed_count + damaged_seed_count cannot exceed ovule_count")
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -88,18 +99,6 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
     return rows
 
 
-def _validate_seed_counts(row: dict[str, str]) -> None:
-    ovules = _num(row, "ovule_count")
-    undamaged = _num(row, "undamaged_seed_count")
-    damaged = _num(row, "damaged_seed_count")
-    if ovules <= 0:
-        raise ValueError("ovule_count must be > 0")
-    if undamaged < 0 or damaged < 0:
-        raise ValueError("seed counts must be >= 0")
-    if undamaged + damaged > ovules:
-        raise ValueError("undamaged_seed_count + damaged_seed_count cannot exceed ovule_count")
-
-
 def _initial_seed_set(row: dict[str, str]) -> float:
     return (_num(row, "undamaged_seed_count") + _num(row, "damaged_seed_count")) / _num(row, "ovule_count")
 
@@ -110,18 +109,15 @@ def _final_seed_set(row: dict[str, str]) -> float:
 
 def _predation_fraction(row: dict[str, str]) -> float:
     initiated = _num(row, "undamaged_seed_count") + _num(row, "damaged_seed_count")
-    if initiated <= 0:
-        return 0.0
-    return _num(row, "damaged_seed_count") / initiated
+    return 0.0 if initiated <= 0 else _num(row, "damaged_seed_count") / initiated
 
 
 def _quantile(values: list[float], q: float) -> float:
+    values = sorted(values)
     if not values:
         raise ValueError("cannot take quantile of empty values")
-    values = sorted(values)
     pos = (len(values) - 1) * q
-    lo = math.floor(pos)
-    hi = math.ceil(pos)
+    lo, hi = math.floor(pos), math.ceil(pos)
     if lo == hi:
         return values[lo]
     w = pos - lo
@@ -137,12 +133,12 @@ def _check_context(rows: list[dict[str, str]]) -> tuple[str, str]:
 
 
 def _groups(rows: list[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
-    groups: dict[str, list[dict[str, str]]] = defaultdict(list)
+    out: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
-        groups[row["pollination_treatment"]].append(row)
-    if set(groups) != set(TREATMENTS):
+        out[row["pollination_treatment"]].append(row)
+    if set(out) != set(TREATMENTS):
         raise ValueError("both NATURAL and SUPPLEMENTED treatments are required")
-    return groups
+    return out
 
 
 def _paired_plants(rows: list[dict[str, str]]) -> list[str]:
@@ -152,47 +148,39 @@ def _paired_plants(rows: list[dict[str, str]]) -> list[str]:
     return sorted(plant for plant, treatments in by_plant.items() if treatments == set(TREATMENTS))
 
 
-def _plant_treatment_mean(rows: list[dict[str, str]], plant: str, treatment: str, metric: Callable[[dict[str, str]], float]) -> float:
-    selected = [row for row in rows if row["plant_id"] == plant and row["pollination_treatment"] == treatment]
+def _plant_mean(rows: list[dict[str, str]], plant: str, treatment: str, metric: Callable[[dict[str, str]], float]) -> float:
+    selected = [r for r in rows if r["plant_id"] == plant and r["pollination_treatment"] == treatment]
     if not selected:
         raise ValueError("paired plant lost a treatment")
     return mean(metric(row) for row in selected)
 
 
-def _paired_difference(rows: list[dict[str, str]], metric: Callable[[dict[str, str]], float]) -> float:
+def _paired_difference(rows: list[dict[str, str]], metric: Callable[[dict[str, str]], float], absolute: bool = False) -> float:
     plants = _paired_plants(rows)
     if len(plants) < 2:
-        raise ValueError("at least two plants with both treatments are required")
-    diffs = [
-        _plant_treatment_mean(rows, plant, "SUPPLEMENTED", metric)
-        - _plant_treatment_mean(rows, plant, "NATURAL", metric)
-        for plant in plants
-    ]
-    return mean(diffs)
-
-
-def _paired_absolute_difference(rows: list[dict[str, str]], metric: Callable[[dict[str, str]], float]) -> float:
-    plants = _paired_plants(rows)
-    if len(plants) < 2:
-        raise ValueError("at least two plants with both treatments are required")
-    diffs = [
-        abs(
-            _plant_treatment_mean(rows, plant, "SUPPLEMENTED", metric)
-            - _plant_treatment_mean(rows, plant, "NATURAL", metric)
-        )
-        for plant in plants
-    ]
+        raise ValueError("at least two paired plants are required")
+    diffs = []
+    for plant in plants:
+        diff = _plant_mean(rows, plant, "SUPPLEMENTED", metric) - _plant_mean(rows, plant, "NATURAL", metric)
+        diffs.append(abs(diff) if absolute else diff)
     return mean(diffs)
 
 
 def _paired_relative_difference(rows: list[dict[str, str]], field: str) -> float:
     plants = _paired_plants(rows)
-    values = []
+    if len(plants) < 2:
+        raise ValueError("at least two paired plants are required")
+    diffs = []
     for plant in plants:
-        natural = _plant_treatment_mean(rows, plant, "NATURAL", lambda row, f=field: _num(row, f))
-        supplemented = _plant_treatment_mean(rows, plant, "SUPPLEMENTED", lambda row, f=field: _num(row, f))
-        values.append(abs(supplemented - natural) / max(abs(natural), 1e-12))
-    return mean(values)
+        natural = _plant_mean(rows, plant, "NATURAL", lambda r, f=field: _num(r, f))
+        supplemented = _plant_mean(rows, plant, "SUPPLEMENTED", lambda r, f=field: _num(r, f))
+        diffs.append(abs(supplemented - natural) / max(abs(natural), 1e-12))
+    return mean(diffs)
+
+
+def _maximum_damage_rate(rows: list[dict[str, str]]) -> float:
+    groups = _groups(rows)
+    return max(mean(_binary(row, "mechanical_damage") for row in groups[t]) for t in TREATMENTS)
 
 
 def _bootstrap_paired(rows: list[dict[str, str]], statistic: Callable[[list[dict[str, str]]], float], reps: int, rng: random.Random) -> list[float]:
@@ -206,8 +194,14 @@ def _bootstrap_paired(rows: list[dict[str, str]], statistic: Callable[[list[dict
     out: list[float] = []
     for _ in range(reps):
         sampled: list[dict[str, str]] = []
-        for plant in rng.choices(plants, k=len(plants)):
-            sampled.extend(by_plant[plant])
+        for draw, source_plant in enumerate(rng.choices(plants, k=len(plants))):
+            # Relabel each bootstrap draw so duplicate source plants remain
+            # distinct resampled clusters instead of collapsing back to one ID.
+            for source_row in by_plant[source_plant]:
+                row = dict(source_row)
+                row["plant_id"] = f"BOOT_{draw:04d}"
+                row["flower_id"] = f"BOOT_{draw:04d}_{source_row['flower_id']}"
+                sampled.append(row)
         try:
             out.append(statistic(sampled))
         except ValueError:
@@ -227,35 +221,26 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         raise ValueError("bootstrap_reps must be >= 200")
     rng = random.Random(int(config.get("random_seed", 20260904)))
 
-    seed_effect = _paired_difference(rows, _initial_seed_set)
-    pollen_effect = _paired_difference(rows, lambda row: _num(row, "pollen_grains_post_treatment"))
-    attack_abs = _paired_absolute_difference(rows, lambda row: float(_binary(row, "early_predator_attack_present")))
-    z_rel = _paired_relative_difference(rows, "realized_exsertion")
-    bract_rel = _paired_relative_difference(rows, "bract_height")
-    opening_rel = _paired_relative_difference(rows, "corolla_opening_width")
-    water_abs = _paired_absolute_difference(rows, lambda row: _num(row, "water_depth"))
-    damage_abs = _paired_absolute_difference(rows, lambda row: float(_binary(row, "mechanical_damage")))
-
-    stats = {
-        "initial_seed_set_delta": lambda sample: _paired_difference(sample, _initial_seed_set),
-        "pollen_grains_delta": lambda sample: _paired_difference(sample, lambda row: _num(row, "pollen_grains_post_treatment")),
-        "early_predator_attack_abs_difference": lambda sample: _paired_absolute_difference(sample, lambda row: float(_binary(row, "early_predator_attack_present"))),
-        "z_relative_difference": lambda sample: _paired_relative_difference(sample, "realized_exsertion"),
-        "bract_height_relative_difference": lambda sample: _paired_relative_difference(sample, "bract_height"),
-        "opening_width_relative_difference": lambda sample: _paired_relative_difference(sample, "corolla_opening_width"),
-        "water_depth_abs_difference": lambda sample: _paired_absolute_difference(sample, lambda row: _num(row, "water_depth")),
-        "mechanical_damage_abs_difference": lambda sample: _paired_absolute_difference(sample, lambda row: float(_binary(row, "mechanical_damage"))),
+    metrics: dict[str, Callable[[list[dict[str, str]]], float]] = {
+        "initial_seed_set_delta": lambda x: _paired_difference(x, _initial_seed_set),
+        "pollen_grains_delta": lambda x: _paired_difference(x, lambda r: _num(r, "pollen_grains_post_treatment")),
+        "early_predator_attack_abs_difference": lambda x: _paired_difference(x, lambda r: float(_binary(r, "early_predator_attack_present")), absolute=True),
+        "z_relative_difference": lambda x: _paired_relative_difference(x, "realized_exsertion"),
+        "bract_height_relative_difference": lambda x: _paired_relative_difference(x, "bract_height"),
+        "opening_width_relative_difference": lambda x: _paired_relative_difference(x, "corolla_opening_width"),
+        "water_depth_abs_difference": lambda x: _paired_difference(x, lambda r: _num(r, "water_depth"), absolute=True),
+        "maximum_mechanical_damage_rate": _maximum_damage_rate,
     }
-
+    observed = {name: stat(rows) for name, stat in metrics.items()}
     cis: dict[str, list[float]] = {}
-    for name, statistic in stats.items():
-        values = _bootstrap_paired(rows, statistic, reps, rng)
+    for name, stat in metrics.items():
+        values = _bootstrap_paired(rows, stat, reps, rng)
         cis[name] = [_quantile(values, 0.025), _quantile(values, 0.975)]
 
     min_group_n = int(cfg["min_flowers_per_treatment"])
     gates = {
         "minimum_paired_plants": len(plants) >= int(cfg["min_paired_plants"]),
-        "minimum_flowers_per_treatment": all(len(groups[treatment]) >= min_group_n for treatment in TREATMENTS),
+        "minimum_flowers_per_treatment": all(len(groups[t]) >= min_group_n for t in TREATMENTS),
         "supplementation_increases_pollen": cis["pollen_grains_delta"][0] >= float(cfg["min_pollen_grain_delta"]),
         "supplementation_changes_pollination_weight": cis["initial_seed_set_delta"][0] >= float(cfg["min_initial_seed_set_delta"]),
         "early_predator_attack_stable": cis["early_predator_attack_abs_difference"][1] <= float(cfg["max_early_predator_attack_difference"]),
@@ -263,9 +248,8 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "bract_height_stable": cis["bract_height_relative_difference"][1] <= float(cfg["max_bract_height_relative_change"]),
         "corolla_opening_stable": cis["opening_width_relative_difference"][1] <= float(cfg["max_opening_width_relative_change"]),
         "water_depth_stable": cis["water_depth_abs_difference"][1] <= float(cfg["max_water_depth_change"]),
-        "handling_damage_stable": cis["mechanical_damage_abs_difference"][1] <= float(cfg["max_damage_rate_difference"]),
+        "mechanical_damage_low": cis["maximum_mechanical_damage_rate"][1] <= float(cfg["max_mechanical_damage_rate"]),
     }
-
     status = "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED" if all(gates.values()) else "PEDICULARIS_POLLINATION_WEIGHT_NOT_VALIDATED"
 
     return {
@@ -276,21 +260,12 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "n_rows": len(rows),
         "n_paired_plants": len(plants),
         "n_by_treatment": {t: len(groups[t]) for t in TREATMENTS},
-        "observed_estimands": {
-            "initial_seed_set_delta_supplemented_minus_natural": seed_effect,
-            "pollen_grains_delta_supplemented_minus_natural": pollen_effect,
-            "early_predator_attack_abs_difference": attack_abs,
-            "z_relative_difference": z_rel,
-            "bract_height_relative_difference": bract_rel,
-            "corolla_opening_relative_difference": opening_rel,
-            "water_depth_abs_difference": water_abs,
-            "mechanical_damage_abs_difference": damage_abs,
-        },
+        "observed_estimands": observed,
         "bootstrap_95_ci": cis,
         "descriptive_downstream_outcomes": {
-            "initial_seed_set_by_treatment": {t: mean(_initial_seed_set(row) for row in groups[t]) for t in TREATMENTS},
-            "final_seed_set_by_treatment": {t: mean(_final_seed_set(row) for row in groups[t]) for t in TREATMENTS},
-            "predation_fraction_by_treatment": {t: mean(_predation_fraction(row) for row in groups[t]) for t in TREATMENTS},
+            "initial_seed_set_by_treatment": {t: mean(_initial_seed_set(r) for r in groups[t]) for t in TREATMENTS},
+            "final_seed_set_by_treatment": {t: mean(_final_seed_set(r) for r in groups[t]) for t in TREATMENTS},
+            "predation_fraction_by_treatment": {t: mean(_predation_fraction(r) for r in groups[t]) for t in TREATMENTS},
             "warning": "later predation fraction is descriptive here and is not the primary selectivity gate because pollen supplementation can change initiated seed number",
         },
         "gates": gates,
@@ -305,7 +280,6 @@ def main() -> None:
     parser.add_argument("config_path", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-
     rows = _read_csv(args.csv_path)
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
     result = evaluate(rows, config)
