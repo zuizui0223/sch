@@ -2,11 +2,9 @@
 
 ## Core biological question
 
-SCH is Chapter 1 of a broader trait-architecture programme. Its general question is not restricted to pollination versus antagonism:
+SCH is Chapter 1 of a broader trait-architecture programme:
 
 > **What happens when two fitness-relevant functions are forced to use the same phenotypic coordinate?**
-
-The canonical architecture is
 
 ```text
 function 1 ---\
@@ -14,207 +12,188 @@ function 1 ---\
 function 2 ---/
 ```
 
-A floral cue used by pollinators and antagonists is one empirical realization of this architecture. The chapter-level claim is more general: multifunctionality can constrain evolution when the functions favor different values of the same trait.
+A floral cue used by pollinators and antagonists is one empirical realization. The chapter-level claim is more general: multifunctionality can constrain evolution when functional demands pull the same trait in different directions.
 
-## Shared-coordinate model
+## Theory-level shared-coordinate model
 
-Let one trait `z` contribute to two fitness-relevant functional components,
-
-```text
-F1(z)
-F2(z)
-```
-
-and let any direct construction, physiological or allocation cost be `C(z)`. On a declared fitness scale,
+Let:
 
 ```text
 W_shared(z) = w1 F1(z) + w2 F2(z) - C(z).
 ```
 
-The weights `w1` and `w2` represent the reproductive consequences of the two functions on the chosen scale; they are not assumed equal.
-
-Define the function-specific optima
+Pure function-specific optima are:
 
 ```text
-z1* = argmax F1(z)
-z2* = argmax F2(z)
+z_F1* = argmax F1(z)
+z_F2* = argmax F2(z).
 ```
 
-or, when each function contains its own cost term, the corresponding function-specific fitness optima.
-
-The integration problem exists when
+The integration problem exists when:
 
 ```text
-z1* != z2*.
+z_F1* != z_F2*.
 ```
 
-A single trait cannot then sit at both optima simultaneously. The realized shared-trait optimum is
+These are theory-level quantities. They are not automatically the optima directly identified by the reproductive crossed experiment.
+
+## What the empirical experiment identifies
+
+In the floral crossed design:
 
 ```text
-zc* = argmax W_shared(z).
+W00(z) = P0G0
+W10(z) = P1G0
+W01(z) = P0G1
+W11(z) = P1G1.
 ```
 
-When `zc*` lies away from both function-specific optima, the phenotype is an **integrated compromise**.
+The directly identified state-specific optima are:
+
+```text
+z_P* = argmax W10(z)
+z_G* = argmax W01(z)
+z_C* = argmax W11(z).
+```
+
+Because direct/background trait effects can remain in all reproductive states:
+
+```text
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
+```
+
+Pure function optima require an additional identifying assay or restriction.
 
 ## What “balance” means
 
-Balance is not equality of raw benefits, visitor numbers or function values. The relevant quantity is the marginal fitness gradient.
+Balance is not equality of raw benefits, visitor numbers, or function values. The relevant quantity is the marginal reproductive gradient.
 
-At an interior shared optimum,
-
-```text
-w1 dF1/dz + w2 dF2/dz - dC/dz = 0.
-```
-
-A strong compromise result requires that the underlying functional gradients are not themselves both zero. In the simplest two-function case,
+A strong empirical compromise result requires:
 
 ```text
-sign(dF1/dz) != sign(dF2/dz)
+z_P* != z_G*
+W11(z) has a supported interior z_C*
+G off -> z_C* shifts toward z_P*
+P off -> z_C* shifts toward z_G*
+functional-component gradients near z_C* oppose one another.
 ```
 
-near the shared optimum, with both gradients meaningfully non-zero before they cancel on the total-fitness scale.
-
-Thus
-
-```text
-net selection approximately zero
-```
-
-does **not** mean “nothing is selecting on the trait.” It can mean that strong opposing functional demands are balanced on the same phenotype.
+Thus net selection near zero can reflect strong opposing demands rather than absence of selection.
 
 ## Empirical identification ladder
 
-SCH now separates five contemporary levels before any historical claim.
-
 ```text
 L0  multifunctionality
-    the same manipulated z affects both functions
+    the same manipulated z affects both focal routes
 
 L1  functional conflict
-    selective functional manipulations show opposing marginal effects
-    on the reproductive value of the same z contrast
+    selective manipulations show opposing local contributions
 
-L2  compromise geometry
-    >=3 declared z levels or a continuous manipulation recover
-    distinct function-specific response curves / optima and a shared optimum
+L2  state-specific compromise geometry
+    multi-level z x P x G recovers z_P*, z_G*, z_C*
 
 L3  mechanism-resolved balance
-    function-specific interventions across z identify how the opposing
-    gradients combine and whether their interaction is state-dependent
+    functional-component gradients and interactions explain the balance
 
 L4  evolutionary maintenance
-    heritable variation, repeated selection or experimental evolution
-    shows persistence / movement around the compromise geometry
+    heritable variation / repeated selection / experimental evolution
 
 L5  historical architecture
-    ancestral integration and later decoupling or specialization are
-    reconstructed rather than inferred from extant correlations alone
+    ancestral integration and later differentiation reconstructed.
 ```
 
-Evidence must not be promoted up this ladder by interpretation alone.
+Evidence is not promoted up this ladder by interpretation alone.
 
-## Why the current binary SCH design remains useful
+## Why the binary design remains useful
 
-The existing
-
-```text
-z x function-1 environment x function-2 environment
-```
-
-binary design is the correct local identification design for L1 and part of L3. In the pollinator-antagonist realization this is the registered
+The existing:
 
 ```text
 A x antagonist x pollinator
 ```
 
-8-cell experiment.
+8-cell experiment identifies L1 and part of L3 for one declared two-level trait contrast.
 
-For one two-level `z` contrast, it can identify whether function 1 makes the contrast more beneficial while function 2 makes it less beneficial. It cannot by itself prove an interior evolutionary compromise because two `z` values do not reconstruct the shape of the fitness surface.
+It cannot by itself prove an interior compromise because two trait values do not recover response-surface geometry.
 
-Accordingly the revised empirical programme is:
+The revised sequence is:
 
 ```text
 Stage 1  two-level crossed intervention
-         identify local opposing functional contributions
+         identify local opposing contributions
 
-Stage 2  multi-level z experiment
-         recover F1(z), F2(z) and W(z)
-         estimate z1*, z2* and zc*
+Stage 2  multi-level z x P x G
+         recover z_P*, z_G*, z_C*
 
-Stage 3  confirm compromise / balance
-         test opposing gradients around zc* with compatible uncertainty
+Stage 3  confirm causal compromise
+         test opposite optimum shifts and component gradients
 
-Stage 4  evolutionary extension
-         test maintenance, population shifts or experimental evolution
+Stage 4  evolutionary extension.
 ```
 
-At least three informative `z` levels are required for a minimal curvature test; more levels are preferable when the trait can be manipulated continuously.
+At least three informative `z` levels are mathematically required; five or more are preferred.
 
 ## Pollinator-antagonist realization
-
-The existing SCH floral programme becomes a high-information realization of the general framework.
 
 ```text
 function 1 = pollinator-mediated reproductive gain
 function 2 = antagonist avoidance / reduction of antagonist-mediated loss
-shared z   = one floral attraction/display coordinate
+shared z   = floral attraction/display coordinate.
 ```
 
-For the current notation,
+The local decomposition remains:
 
 ```text
-W(z) = M(z) - G(z) - C(z).
+M(z;g) = W(z,g,P=1) - W(z,g,P=0)
+G(z;p) = W(z,G=0,p) - W(z,G=1,p).
 ```
 
-If stronger floral display increases `M(z)` but also increases `G(z)`, the two functional demands can favor different values of the same `z`. The 8-cell design identifies the opposing local contributions; a multi-level `z` design is needed to establish the compromise surface itself.
-
-The literature layer remains valuable because it shows that all parts of this geometry occur in nature: same-coordinate receiver use, opposing selection, stabilizing compromise, polymorphism, population change and partial cue decoupling. It is real-world grounding, not the chapter's final identifying experiment.
+The multi-level experiment then asks whether those routes generate distinct state optima and a stable combined optimum.
 
 ## What counts as a positive Chapter-1 result
 
-The strongest contemporary Chapter-1 result is not merely
+The strongest contemporary result is the conjunction:
 
 ```text
-function 1 responds to z
-function 2 responds to z.
+1. the same z causally contributes to both focal routes;
+2. z_P* and z_G* differ;
+3. the combined W11 surface has an interior z_C*;
+4. removing each demand shifts z_C* toward the corresponding state optimum;
+5. functional-component gradients near z_C* oppose one another.
 ```
 
-It is the conjunction
+This identifies **multifunctional compromise** without requiring pure function optima to be point-identified.
+
+## Optional pure-function lane
+
+If direct/background consequences `C(z)` are independently measured or otherwise identified, SCH may additionally estimate:
 
 ```text
-1. the same z coordinate causally contributes to both functions;
-2. the functions favor different movement along z;
-3. the total fitness surface has a realized optimum that reflects their
-   opposing marginal contributions;
-4. selective intervention shows that removing one function shifts the
-   optimum or selection gradient in the predicted direction.
+z_F1*
+z_F2*.
 ```
 
-This identifies **multifunctional compromise**.
+This is a stronger theory-facing result and is reported separately from `z_P*` and `z_G*`.
 
 ## Bridge to Chapter 2
 
-Chapter 1 establishes the constraint created by functional integration. Chapter 2 asks whether that constraint can be relaxed by increasing trait dimensionality:
+Default empirical bridge:
 
 ```text
-Chapter 1 / SCH
-function 1 ---\
-               >--- z ---> compromise
-function 2 ---/
-
-Chapter 2 / BITA
-function 1 ---> x
-function 2 ---> y
-               |
-               +--> functional differentiation / modularization
+SCH: z_P*, z_G*, z_C*
+BITA: add x,y and test whether x* moves toward z_P*.
 ```
 
-The chapter transition is therefore
+Optional stricter bridge:
 
-> **from compromise under one shared coordinate to functional differentiation across partially independent coordinates.**
+```text
+SCH independently identifies z_F1*
+BITA additionally tests release toward z_F1*.
+```
 
-The existing attraction-defence implementation is one special case: attraction `A` can serve primarily the pollination function while a distinct defence-associated trait `D` can serve antagonist reduction.
+State-specific release and pure-function release are not silently conflated.
 
 ## Claim boundary
 
-A contemporary two-trait architecture does not by itself prove that an ancestral shared trait historically split into two descendant traits. SCH and BITA can establish **functional differentiation as an escape architecture** with experiments. The stronger term **historical modularization** requires phylogenetic, developmental or genetic evidence for an ancestral integrated state and a derived increase in functional independence.
+A contemporary two-trait architecture does not prove that an ancestral shared trait historically split into two descendants. SCH and BITA can establish contemporary functional differentiation experimentally. Historical modularization requires phylogenetic, developmental, or genetic evidence for an ancestral integrated state and a derived increase in functional independence.
