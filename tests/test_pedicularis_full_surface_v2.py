@@ -17,17 +17,18 @@ CONTRACT = ROOT / "docs" / "SCH_PEDICULARIS_FULL_SURFACE_CONTRACT_V2.md"
 
 def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
     return {
-        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V2",
-        "analysis": "pedicularis_pre_surface_readiness_independent_predator_G",
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "analysis": "pedicularis_pre_surface_readiness_timed_independent_predator_G",
         "population_id": population,
         "season_id": season,
         "status": "PEDICULARIS_FULL_SURFACE_READY",
         "source_receipts": {
             "z": {"schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1", "status": "PEDICULARIS_Z_MANIPULATION_VALIDATED"},
             "p": {"schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1", "status": "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED"},
-            "g": {"schema": "SCH_PEDICULARIS_PREDATOR_WEIGHT_V2", "status": "PEDICULARIS_PREDATOR_WEIGHT_VALIDATED"},
+            "g": {"schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V3", "status": "PEDICULARIS_PREDATOR_METHOD_VALIDATED"},
         },
         "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED",
     }
 
 
@@ -79,7 +80,7 @@ def _rows(water_contaminated: bool = False) -> list[dict[str, str]]:
                         "realized_exsertion": str(float(z)),
                         "pollination_treatment": pollination,
                         "predator_treatment": predator,
-                        "exclusion_method": "MATCHED_SHAM" if g else "MESH_EXCLUSION",
+                        "exclusion_method": "SHAM_SLEEVE" if g else "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
                         "water_depth": f"{water:.3f}",
                         "ovule_count": "100",
                         "undamaged_seed_count": f"{undamaged:.5f}",
@@ -109,6 +110,8 @@ def test_v2_mapping_recovers_non_circular_pedicularis_compromise_surface() -> No
     assert mapping["G0"] == "SEED_PREDATOR_INDEPENDENTLY_EXCLUDED"
     assert mapping["G1"] == "SEED_PREDATOR_EXPOSED"
     assert mapping["water_y"] == "HELD_FIXED_ACROSS_ALL_SCH_CELLS"
+    assert result["readiness_reference"]["g_schema"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V3"
+    assert "POLLINATOR_ACCESS_PRESERVED" in result["readiness_reference"]["predator_method_requirement"]
     est = result["observed_estimands"]
     assert abs(est["z_pollinator_context"] - 2.0) < 1e-8
     assert abs(est["z_antagonist_context"] + 2.0) < 1e-8
@@ -128,8 +131,18 @@ def test_v2_conversion_uses_independent_predator_G_semantics() -> None:
 
 def test_v2_rejects_legacy_readiness_schema() -> None:
     receipt = _readiness()
-    receipt["receipt_schema_version"] = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V1"
-    with pytest.raises(ValueError, match="READINESS_V2"):
+    receipt["receipt_schema_version"] = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V2"
+    with pytest.raises(ValueError, match="READINESS_V3"):
+        analyze(_rows(), receipt, _config())
+
+
+def test_v2_rejects_predator_weight_without_method_qualification() -> None:
+    receipt = _readiness()
+    receipt["source_receipts"]["g"] = {
+        "schema": "SCH_PEDICULARIS_PREDATOR_WEIGHT_V2",
+        "status": "PEDICULARIS_PREDATOR_WEIGHT_VALIDATED",
+    }
+    with pytest.raises(ValueError, match="predator-method V3"):
         analyze(_rows(), receipt, _config())
 
 
