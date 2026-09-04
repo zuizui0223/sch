@@ -136,7 +136,15 @@ The evaluator therefore bootstraps complete plant-level pairs rather than treati
 
 Thresholds are **not hard-coded** in the evaluator because the current literature does not justify universal biological cutoffs.
 
-The analysis config is JSON with this structure:
+A deliberately non-runnable template is stored at:
+
+```text
+empirical/architecture/DALECHAMPIA_STAGE0_CONFIG_TEMPLATE_V1.json
+```
+
+Its threshold fields contain `REQUIRED_BEFORE_USE` rather than permissive zero defaults. Copy it to a new versioned config, replace every placeholder from a prospectively declared pilot / feasibility rationale, and freeze that config before evaluating the target package.
+
+The final config has this structure:
 
 ```json
 {
@@ -158,9 +166,7 @@ The analysis config is JSON with this structure:
 }
 ```
 
-The zeros above are **schema placeholders, not recommended thresholds**. Before confirmatory use, all values must be filled from a prospectively declared pilot / feasibility rationale and frozen before evaluating the target package.
-
-At least 200 bootstrap replicates are required by code; confirmatory screening should normally use substantially more.
+The zeros above show numeric field types only; they are **not recommended thresholds**. At least 200 bootstrap replicates are required by code; confirmatory screening should normally use substantially more.
 
 ## Population promotion logic
 
