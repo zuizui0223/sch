@@ -21,6 +21,7 @@ REQUIRED_FIELDS = (
 )
 
 STATE_KEYS = ((0, 0), (1, 0), (0, 1), (1, 1))
+RECEIPT_SCHEMA_VERSION = "SCH_CAUSAL_COMPROMISE_STATE_OPTIMA_V1"
 
 
 def _number(row: dict[str, str], field: str) -> float:
@@ -310,7 +311,14 @@ def analyze(rows: list[dict[str, str]], config: dict) -> dict:
     }
 
     return {
+        "receipt_schema_version": RECEIPT_SCHEMA_VERSION,
         "analysis": "sch_multilevel_causal_compromise_surface",
+        "optimum_semantics": {
+            "z_pollinator_context": "STATE_SPECIFIC_P1G0_REPRODUCTIVE_OPTIMUM_NOT_AUTOMATICALLY_PURE_F1",
+            "z_antagonist_context": "STATE_SPECIFIC_P0G1_REPRODUCTIVE_OPTIMUM_NOT_AUTOMATICALLY_PURE_F2",
+            "z_combined": "STATE_SPECIFIC_P1G1_COMBINED_REPRODUCTIVE_OPTIMUM",
+            "pure_function_optima_identified_by_default": False,
+        },
         "n_rows": len(rows),
         "n_plants": len({row["plant_id"] for row in rows}),
         "z_levels": sorted({row["z_level"] for row in rows}),
@@ -335,25 +343,16 @@ def analyze(rows: list[dict[str, str]], config: dict) -> dict:
         "status": "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
         if all(decisions.values())
         else "COMPROMISE_CRITERIA_NOT_ALL_RECOVERED",
-        "claim_ceiling": (
-            "randomized_multilevel_local_quadratic_compromise_model_only_"
-            "not_historical_modularization_and_not_direct_cost_allocation"
-        ),
-        "interpretation_note": (
-            "The zero slope of an interior fitted P1G1 quadratic at its own vertex is a model property, "
-            "not an independent gradient-cancellation test. Evidence for balance comes from interior curvature, "
-            "opposed component-gradient intervals, and causal optimum shifts under selective P/G interventions."
-        ),
+        "claim_ceiling": "state_specific_causal_compromise_geometry_not_pure_function_optima_without_independent_assay",
     }
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Analyze SCH multi-level z x P x G compromise experiment")
+    parser = argparse.ArgumentParser(description="Analyze a multi-level SCH causal compromise surface")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("config_path", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-
     rows = read_rows(args.csv_path)
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
     result = analyze(rows, config)
