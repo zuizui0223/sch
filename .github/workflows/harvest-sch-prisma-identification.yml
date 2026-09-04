@@ -29,7 +29,7 @@ jobs:
       - name: Run auditable identification pass
         run: |
           mkdir -p artifacts/sch_prisma
-          python scripts/harvest_sch_prisma_ci.py \
+          python -m scripts.harvest_sch_prisma_ci \
             artifacts/sch_prisma/SCH_PRISMA_IDENTIFIED_CANDIDATES_V1.csv \
             artifacts/sch_prisma/SCH_PRISMA_IDENTIFICATION_RECEIPT_V1.json \
             --cap 200
