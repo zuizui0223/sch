@@ -1,0 +1,18 @@
+{
+  "bootstrap_reps": 2000,
+  "random_seed": 20260904,
+  "population": {
+    "min_blossoms": "REQUIRED_BEFORE_USE",
+    "min_plants": "REQUIRED_BEFORE_USE",
+    "min_predator_incidence": "REQUIRED_BEFORE_USE",
+    "min_positive_correlation": "REQUIRED_BEFORE_USE"
+  },
+  "exposure": {
+    "min_complete_plants": "REQUIRED_BEFORE_USE",
+    "min_damage_fraction_delta": "REQUIRED_BEFORE_USE",
+    "max_pollen_relative_change": "REQUIRED_BEFORE_USE",
+    "max_z_relative_change": "REQUIRED_BEFORE_USE",
+    "max_resin_relative_change": "REQUIRED_BEFORE_USE"
+  },
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN"
+}
