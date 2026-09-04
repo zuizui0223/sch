@@ -147,9 +147,9 @@ W11(z)
 and recovers:
 
 ```text
-z_pollinator_context
-z_antagonist_context
-z_combined
+z_P* = z_pollinator_context
+z_G* = z_antagonist_context
+z_C* = z_combined
 state-optimum separation
 shift after removing G
 shift after removing P
@@ -157,6 +157,8 @@ pollinator component gradient
 antagonist component gradient
 P x G interaction gradient.
 ```
+
+These are state-specific reproductive optima. They are not automatically the pure theory-level `z_F1*` / `z_F2*` because direct/background trait effects can remain in the state surfaces.
 
 The analysis contract is:
 
@@ -214,7 +216,7 @@ If the manipulation changes reward, physiology, geometry, or post-reproductive f
 
 ### S4 — no interior / no opposing shifts
 
-Report multifunctionality or local conflict at the level actually recovered. Do not narrate an intermediate compromise if the combined surface is monotonic, boundary-limited, or the functional optima overlap.
+Report multifunctionality or local conflict at the level actually recovered. Do not narrate an intermediate compromise if the combined surface is monotonic, boundary-limited, or the state optima overlap.
 
 ## Candidate routing
 
@@ -242,19 +244,21 @@ A positive SCH receipt supplies the one-dimensional reference architecture:
 
 ```text
 shared trait z
-z_pollinator_context
-z_antagonist_context
-z_combined
-compromise displacement / penalty geometry.
+z_P* = z_pollinator_context
+z_G* = z_antagonist_context
+z_C* = z_combined
+compromise displacement / gradient geometry.
 ```
 
 BITA then tests whether an added trait coordinate yields:
 
 ```text
 preferential functional loading
-+ movement of the first trait toward its function-specific optimum
++ movement of the first trait toward z_P* by default
 + a fitness combination outside the shared one-dimensional path
-= dimensional release / functional differentiation.
+= state-specific dimensional release / functional differentiation.
 ```
 
-Thus the two chapters are linked by measured quantities rather than by narrative analogy.
+Only if SCH independently identifies pure `z_F1*` should BITA add a stricter pure-function release lane.
+
+Thus the two chapters are linked by measured quantities rather than by narrative analogy, while theory-level and state-specific optima remain distinct.
