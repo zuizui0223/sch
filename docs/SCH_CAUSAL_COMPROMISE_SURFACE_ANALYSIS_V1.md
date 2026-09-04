@@ -17,22 +17,43 @@ The analysis turns a randomized multi-level
 z x P x G
 ```
 
-experiment into explicit estimates of:
+experiment into explicit estimates of intervention-defined state optima, optimum shifts, functional-component gradients, and residual P x G interaction.
 
-```text
-z1* / pollinator-favored state optimum
-z2* / antagonist-weighted state optimum
-zc* / combined shared-trait optimum
-optimum shifts after removing either functional demand
-functional component gradients at zc*
-residual P x G interaction.
-```
-
-The implementation is:
+Implementation:
 
 ```text
 scripts/analyze_sch_compromise_surface.py
 ```
+
+## Critical notation boundary
+
+SCH distinguishes **theoretical pure function optima** from **experimentally identified state optima**.
+
+The theoretical framework may define
+
+```text
+z_F1* = argmax F1(z)
+z_F2* = argmax F2(z)
+```
+
+for isolated function-specific objectives. These are useful theoretical quantities, but the crossed reproductive experiment does not generally identify them because consumer-independent/direct consequences `C(z)` remain in every reproductive state unless they are separately measured.
+
+The experiment directly identifies:
+
+```text
+z_P* = argmax W10(z)  = z_pollinator_context
+z_G* = argmax W01(z)  = z_antagonist_context
+z_C* = argmax W11(z)  = z_combined.
+```
+
+Therefore:
+
+```text
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
+```
+
+Equality requires an additional identifying argument or independent direct-cost / baseline assay. The analyzer never infers pure function optima by subtraction.
 
 ## Required data
 
@@ -88,33 +109,35 @@ BOUNDARY_OR_NONCONCAVE
 
 and the best observed z level is used as the bounded primary optimum. Such a state cannot by itself support an interior-compromise claim.
 
-## State optima
+## Experimentally identified optima
 
 The principal experimental optima are:
 
 ```text
-z_pollinator_context = argmax W10(z)
-z_antagonist_context = argmax W01(z)
-z_combined           = argmax W11(z).
+z_P* = z_pollinator_context = argmax W10(z)
+z_G* = z_antagonist_context = argmax W01(z)
+z_C* = z_combined           = argmax W11(z).
 ```
 
-These are intervention-defined state optima. They deliberately retain consumer-independent/direct trait consequences rather than silently allocating them to a physiological `C` term.
+These are **intervention-defined state optima**. They deliberately retain consumer-independent/direct trait consequences rather than silently allocating them to a physiological `C(z)` term.
 
 The corresponding causal shifts are:
 
 ```text
 shift_remove_antagonist
-  = z_pollinator_context - z_combined
+  = z_P* - z_C*
 
 shift_remove_pollinator
-  = z_antagonist_context - z_combined.
+  = z_G* - z_C*.
 ```
 
-Under the positive shared-compromise hypothesis these shifts should point in opposite directions and exceed a prospectively declared biologically meaningful displacement.
+Under a positive shared-compromise result these shifts should point in opposite directions and exceed a prospectively declared biologically meaningful displacement.
+
+This establishes that changing functional weights moves the realized optimum. It does not require pretending that `z_P*` or `z_G*` are pure isolated-function optima.
 
 ## Component decomposition
 
-The analyzer also derives quadratic component curves algebraically:
+The analyzer derives quadratic component curves algebraically:
 
 ```text
 baseline(z)
@@ -152,7 +175,7 @@ For an interior fitted quadratic, the derivative of `W11(z)` at its own fitted v
 Therefore:
 
 ```text
-W11'(zc*) = 0
+W11'(z_C*) = 0
 ```
 
 is **not** counted as an independent test of gradient cancellation.
@@ -205,14 +228,12 @@ These define biological relevance, not merely statistical non-zero values.
 
 ## Machine decisions
 
-The analyzer evaluates four gates.
-
 ### C2 — distinct state optima
 
 The 95% bootstrap interval for
 
 ```text
-z_pollinator_context - z_antagonist_context
+z_P* - z_G*
 ```
 
 must lie outside the predeclared equivalence region around zero.
@@ -226,15 +247,15 @@ The observed `W11` surface must be concave with an interior vertex and the fract
 The bootstrap intervals for:
 
 ```text
-shift_remove_antagonist
-shift_remove_pollinator
+z_P* - z_C*
+z_G* - z_C*
 ```
 
 must exceed the minimum meaningful displacement in opposite directions.
 
 ### C5 — opposed functional gradients
 
-The bootstrap intervals for the pollinator and antagonist component gradients at `zc*` must exceed the predeclared minimum magnitude with opposite signs.
+The bootstrap intervals for the pollinator and antagonist component gradients at `z_C*` must exceed the predeclared minimum magnitude with opposite signs.
 
 If all four pass, status is:
 
@@ -252,14 +273,15 @@ The word `CANDIDATE` is intentional: this first-pass analysis assumes the random
 
 ## Claim ceiling
 
-A positive output licenses a contemporary causal statement that selective functional demands generate an interior optimum and move that optimum predictably when either demand is weakened.
+A positive output licenses a contemporary causal statement that selective functional demands generate an interior reproductive optimum and move that optimum predictably when either demand is weakened.
 
 It does **not** by itself identify:
 
 ```text
+pure z_F1* or z_F2* unless direct/background costs are independently separated
+construction / physiological cost by subtraction
 historical origin of the shared trait
 ancestral integration -> modularization
-construction / physiological cost by subtraction
 long-term response to selection.
 ```
 
@@ -267,15 +289,15 @@ Those remain separate estimands.
 
 ## Cross-chapter handoff
 
-If the causal compromise gates pass, SCH delivers:
+The default SCH -> BITA handoff is therefore:
 
 ```text
-z_pollinator_context
-z_antagonist_context
-z_combined
+z_P* / z_pollinator_context   state-specific function-1-facing reference
+z_G* / z_antagonist_context   state-specific function-2-facing reference
+z_C* / z_combined             combined compromise reference
 optimum separation
 compromise shifts
 functional gradient geometry.
 ```
 
-BITA can then test whether adding a preferentially loaded second trait dimension moves the first trait toward its function-specific state optimum and recovers fitness combinations unavailable on the shared one-dimensional path.
+BITA should test release toward the **identified state-specific reference** by default. Only when SCH has an independent assay that identifies `z_F1*` should BITA relabel that reference as a pure function-1 optimum.
