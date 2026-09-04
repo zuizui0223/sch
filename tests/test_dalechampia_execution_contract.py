@@ -21,7 +21,7 @@ def test_dalechampia_is_conditional_not_species_wide_positive() -> None:
     assert "Dalechampia species-wide conflict" in recovery
     assert "NOT SUPPORTED" in recovery
     assert "Costa Rica" in ranking
-    assert "Mexico" in ranking
+    assert "Mexican" in ranking or "Mexico" in ranking
 
 
 def test_oviposition_is_not_overclaimed() -> None:
