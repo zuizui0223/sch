@@ -1,0 +1,11 @@
+{
+  "bootstrap_reps": 2000,
+  "random_seed": 20260904,
+  "min_z_levels": 5,
+  "min_valid_bootstrap_fraction": 0.8,
+  "min_interior_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+  "min_optimum_separation": "REQUIRED_BEFORE_USE",
+  "min_optimum_shift": "REQUIRED_BEFORE_USE",
+  "min_abs_component_gradient": "REQUIRED_BEFORE_USE",
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN"
+}

@@ -1,0 +1,19 @@
+{
+  "bootstrap_reps": 2000,
+  "random_seed": 20260904,
+  "antagonist_weight": {
+    "min_paired_plants": "REQUIRED_BEFORE_USE",
+    "min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
+    "min_water_depth_delta": "REQUIRED_BEFORE_USE",
+    "min_early_attack_delta": "REQUIRED_BEFORE_USE",
+    "min_predation_fraction_delta": "REQUIRED_BEFORE_USE",
+    "min_final_seed_set_delta": "REQUIRED_BEFORE_USE",
+    "max_pollinator_visit_difference": "REQUIRED_BEFORE_USE",
+    "max_initial_seed_set_difference": "REQUIRED_BEFORE_USE",
+    "max_z_relative_change": "REQUIRED_BEFORE_USE",
+    "max_bract_height_relative_change": "REQUIRED_BEFORE_USE",
+    "max_opening_width_relative_change": "REQUIRED_BEFORE_USE",
+    "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+  },
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN"
+}

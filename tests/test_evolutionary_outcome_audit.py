@@ -9,7 +9,7 @@ AUDIT = ROOT / "empirical" / "one_trait_shared_cue" / "EVOLUTIONARY_OUTCOME_EVID
 PROTOCOL = ROOT / "empirical" / "one_trait_shared_cue" / "EVOLUTIONARY_OUTCOME_PROTOCOL_V1.md"
 READOUT = ROOT / "empirical" / "one_trait_shared_cue" / "EVOLUTIONARY_OUTCOME_READOUT_V1.md"
 CHAPTERS = ROOT / "docs" / "CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md"
-FRAMEWORK = ROOT / "manuscript" / "MANUSCRIPT_SHARED_CUE_FRAMEWORK.md"
+FRAMEWORK = ROOT / "manuscript" / "MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md"
 PUBLICATION_LEDGER = ROOT / "docs" / "PUBLICATION_MATERIAL_LEDGER.md"
 
 
@@ -66,24 +66,28 @@ def test_protocol_and_readout_define_fail_closed_outcome_classes() -> None:
         assert token in protocol
     assert "observational interior compromise" in readout
     assert "lineage branching/specialization" in readout
-    assert "An endpoint shift is directional specialization, not evolutionary branching." in framework
+    assert "Contemporary functional differentiation is distinct from historical modularization" in framework
+    assert "does not prove that an ancestral shared trait split" in framework
 
 
 def test_chapter_sequence_keeps_estimands_and_positive_recovery_separate() -> None:
     text = CHAPTERS.read_text(encoding="utf-8")
     assert "Chapter 1 — SCH" in text
     assert "Chapter 2 — BITA" in text
-    assert "Delta_AD W = W11 - W10 - W01 + W00" in text
-    assert "= rho_delta - iota_delta - kappa_delta" in text
-    assert "share biological motivation but not estimands" in text
-    assert "report separately how far current data recover" in text
-    assert "positive interaction relief" in text
-    assert "constraint release" in text
-    assert "strict sign reversal" in text
+    assert "z1* != z2*" in text
+    assert "D2  preferential functional loading" in text
+    assert "D3  dimensional release" in text
+    assert "Delta_AD W = A1 - A0." in text
+    assert "Level 1  positive interaction relief" in text
+    assert "Level 2  constraint release" in text
+    assert "Level 3  strict reversal" in text
+    assert "Contemporary experiments can establish D1-D4 without proving D5." in text
 
 
 def test_publication_ledger_admits_outcomes_without_changing_coverage_gate() -> None:
     text = PUBLICATION_LEDGER.read_text(encoding="utf-8")
-    assert "12-source primary audit" in text
-    assert "lineage branching untested" in text
-    assert "Do not insert them into the frozen four-field coverage count" in text
+    assert "EVOLUTIONARY_OUTCOME" in text
+    assert "private-cue evolution from a shared cue: 0 direct sources" in text
+    assert "lineage branching/specialization" in text
+    assert "A manipulated" in text
+    assert "common plant reproductive outcome" in text

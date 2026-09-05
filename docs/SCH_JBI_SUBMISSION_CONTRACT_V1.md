@@ -1,12 +1,20 @@
-# SCH Journal of Biogeography submission contract v1
+# SCH Journal of Biogeography secondary-synthesis contract v1
 
-## Decision
+## Decision after mechanism-first reframe
 
-The first submission target is **Journal of Biogeography (JBI)**. The safest current article category is **Review & Synthesis**, not Research Article, because SCH combines a conceptual framework, a source-adjudicated evidence audit, and original reclassification/analysis rather than a single new geographical field dataset.
+The Journal of Biogeography (JBI) route is **preserved as a secondary synthesis product**, not the default identity or first submission target of SCH.
 
-The fallback remains **Ecology and Evolution** if the systematic expansion does not recover a defensible biogeographic axis.
+The main SCH programme is now the mechanism-first
 
-This document is a submission gate, not a claim that the current manuscript is already JBI-ready.
+```text
+A x antagonist x pollinator
+```
+
+8-cell identification design in `docs/SCH_MECHANISM_IDENTIFICATION_DESIGN_V1.md`.
+
+The systematic/geographic evidence stream remains valuable because it can test where shared-cue conflict varies across receiver regimes and geography, but completion of that review is no longer a prerequisite for the main SCH mechanism paper.
+
+If the systematic and biogeographic gates below close, the material can support a separate **JBI Review & Synthesis**. If those gates do not close, the evidence remains a real-world grounding layer for the mechanism-first SCH article rather than a failed project.
 
 ## Current journal requirements checked 2026-08-29
 
@@ -14,48 +22,48 @@ The current JBI author guidance permits theoretical synthesis/review papers to i
 
 JBI also requires a clearly biogeographic contribution: papers should sit at the intersection of biology and geography and articulate theoretical foundations and conceptual advance. A floral-signal review without a geographical/historical axis is therefore not automatically in scope.
 
-## Current SCH fit
+## Current SCH fit for a secondary synthesis
 
 Positive fit:
 
-- a general theoretical mechanism: cue overlap constrains whether attraction can evolve independently of antagonist exposure;
+- a general mechanism: cue overlap constrains whether attraction can evolve independently of antagonist exposure;
 - explicit evolutionary outcomes from compromise to population change, modularization and historical transition;
 - a phylogenetic/historical *Ficus* candidate radiation;
-- quantitative evidence-gap and experimental-identification results;
-- original analysis components are allowed inside a JBI Synthesis.
+- a frozen systematic denominator and cumulative screening programme;
+- geographic and receiver-regime coding already recovered in multiple primary studies.
 
 Current blockers:
 
-1. the existing frozen audit explicitly is **not** a systematic-review result;
-2. the current literature universe is partly inherited from BITA and partly target-expanded, so it cannot be presented as prevalence;
-3. no PRISMA identification/screening flow exists yet;
-4. geographical context is not coded consistently across the evidence ledger;
-5. the current same-code *Ficus* result is a historical/mechanistic bridge, not yet a reconstructed geographic evolutionary transition.
+1. the 868-record systematic screen is not complete;
+2. independence clustering across overlapping research programmes is incomplete;
+3. geography and receiver-regime contrasts are not yet reduced to one common analytical estimand;
+4. the same-code *Ficus* result remains a historical/mechanistic bridge, not a reconstructed geographic evolutionary transition;
+5. a geographic map alone would not establish a biogeographic mechanism.
 
 ## JBI promotion gates
 
-SCH may be described as JBI-ready only after all of the following are closed.
+SCH material may be promoted into a separate JBI synthesis only after all of the following are closed.
 
 ### Gate J1 — systematic identification
 
-Run the predeclared bibliographic search independently of the frozen BITA-derived audit. Preserve raw hit counts by database/query, deduplicate transparently, and freeze the identified candidate universe.
+Use the immutable V2 identified cohort and preserve exact query, retrieval and deduplication receipts. Do not regenerate the denominator from the live OpenAlex index.
 
 ### Gate J2 — PRISMA screening
 
-Every identified record receives a title/abstract decision and, if retained, a full-text decision with a predeclared exclusion reason. The PRISMA counts must be generated mechanically from that ledger rather than reconstructed after manuscript writing.
+Every identified record receives a title/abstract decision and, if retained, a full-text decision with a predeclared exclusion reason. PRISMA counts must be generated mechanically from the ledger.
 
 ### Gate J3 — unchanged scientific admission fields
 
-The systematic expansion must not relax the existing core gate simply to increase yield:
+The core linked-measurement gate remains:
 
 ```text
 A manipulated
 + pollinator response measured
 + antagonist response measured
-+ common plant reproductive outcome
++ common plant reproductive outcome.
 ```
 
-Lower evidence layers may be retained in explicitly separate lanes, but they may not be counted as strict linked experiments.
+Lower evidence layers may be retained separately but may not be counted as strict linked experiments.
 
 ### Gate J4 — biogeographic context
 
@@ -70,86 +78,104 @@ single_site_vs_multisite
 geographic_contrast
 receiver_assemblage_contrast
 island_mainland_or_other_biogeographic_context
-historical_or_phylogenetic_context
+historical_or_phylogenetic_context.
 ```
 
 Missing geography is `NOT_REPORTED`, not inferred from author affiliation.
 
 ### Gate J5 — geography is analytically consequential
 
-Before choosing JBI over the fallback, the expanded evidence must support at least one nontrivial biogeographic synthesis question, for example:
+The evidence must support at least one nontrivial biogeographic question, for example:
 
 - whether cue-overlap states or conflict outcomes differ across replicated geographic receiver assemblages;
 - whether spatial turnover in pollinators/antagonists predicts changes in the direction or strength of shared-cue conflict;
 - whether historical transitions in cue architecture can be linked to geographic/historical changes in receiver regimes.
 
-A map of study locations by itself does not satisfy this gate.
+A study-location map does not satisfy this gate.
 
-### Gate J6 — reproducible open materials
+### Gate J6 — independence and commensurability
+
+Overlapping research programmes, duplicate reports and dissertation/published pairs must be clustered before any quantitative synthesis. Effect-size pooling requires compatible outcome scales and a predeclared estimand; record counts alone are not independence counts.
+
+### Gate J7 — reproducible open materials
 
 Search ledger, screening decisions, code, derived tables and figure inputs must be archive-ready. Publisher PDFs and copyrighted full text are never stored in the repository.
 
-## Fail-closed journal decision
+## Fail-closed secondary-journal decision
 
 ```text
-J1–J6 closed
-    -> JBI Review & Synthesis
+J1-J7 closed
+    -> separate JBI Review & Synthesis is eligible
 
-systematic/evolutionary synthesis strong but J4/J5 weak
-    -> Ecology and Evolution fallback
+systematic/evolutionary synthesis strong but geography weak
+    -> retain as SCH evidence spine or consider a non-biogeographic synthesis venue
 
-J1/J2 incomplete
-    -> NOT_SUBMISSION_READY; do not present source counts as systematic prevalence
+screening / independence / estimand gates incomplete
+    -> do not submit as a prevalence or geographic synthesis.
 ```
 
-This preserves the first-choice JBI strategy without forcing a geographical story that the evidence cannot support.
+## Relationship to the mechanism-first main paper
 
-## Manuscript implications
+The main SCH article can use bounded literature results before J1-J7 are all closed, provided each use respects its claim ceiling:
+
+- route examples support biological plausibility;
+- strict linked counts support design-gap localization;
+- evolutionary-outcome cases support ecological consequence reality;
+- Ficus supports a bounded historical extension;
+- incomplete systematic counts are reported as workflow state, not prevalence.
+
+The mechanism-first paper must not wait for the secondary JBI product if a valid 8-cell dataset is available.
+
+## Manuscript implications for a future JBI product
 
 ### Main text
 
 Keep:
-- cue-overlap theory and estimands;
+
+- cue-overlap theory;
+- explicit distinction between informational overlap and functional conflict;
 - evolutionary-outcome ladder;
-- systematic evidence result after J1/J2;
-- biogeographic synthesis only if J4/J5 pass;
+- completed systematic evidence result;
+- biogeographic synthesis only if the geography estimand passes;
 - bounded *Ficus* historical bridge;
-- the key information-asymmetry result that privacy requires equivalence evidence, not nonsignificance.
+- the information asymmetry that privacy requires equivalence evidence rather than failed directional detection.
 
 ### Methods
 
-Add:
-- bibliographic databases and exact query version;
-- search date;
+Include:
+
+- frozen bibliographic query and search date;
 - deduplication algorithm;
 - screening/exclusion rules;
 - geography coding rules;
+- independence clustering;
 - source-role and claim-ceiling rules;
-- same-code prospective analysis contract when used as a generated research agenda.
+- statistical estimand for any geographic synthesis.
 
 ### Supporting information
 
 Place:
+
 - PRISMA flow;
-- complete search-query registry;
+- complete query registry;
 - identified-record ledger;
 - title/abstract and full-text exclusion ledger;
-- full 32-species *Ficus* matrix;
+- full *Ficus* matrices;
 - detailed same-code power and assay protocol;
 - reproducibility receipts.
 
 ## Title/abstract discipline
 
-The title must describe the general biogeographic problem rather than advertise *Ficus* as the whole paper. *Ficus* is currently the strongest historical bridge/case study, not the total source universe.
+A future JBI title must describe the general biogeographic problem rather than advertise *Ficus* as the whole paper. *Ficus* remains the strongest historical bridge/case study, not the total source universe.
 
-The abstract should make the sequence explicit:
+The abstract may use a sequence such as
 
 ```text
 geographic turnover in biotic audiences
 -> shared versus separable sensory coordinates
 -> constraints on floral-signal evolution
 -> systematic evidence state
--> missing matched historical transition
+-> historical transition gap
 ```
 
-If the systematic expansion does not support the first arrow empirically, that wording must remain conceptual and the JBI gate should be reconsidered rather than overstated.
+only if the first arrow is supported empirically. Otherwise the geographic route must remain secondary rather than being forced into the main SCH story.

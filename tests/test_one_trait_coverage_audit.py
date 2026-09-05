@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "build_one_trait_coverage_audit.py"
 AUDIT = ROOT / "empirical" / "one_trait_shared_cue" / "ONE_TRAIT_COVERAGE_AUDIT_V1.csv"
 READOUT = ROOT / "empirical" / "one_trait_shared_cue" / "ONE_TRAIT_COVERAGE_READOUT_V1.md"
-FRAMEWORK = ROOT / "manuscript" / "MANUSCRIPT_SHARED_CUE_FRAMEWORK.md"
+FRAMEWORK = ROOT / "manuscript" / "MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md"
 MANIFEST = ROOT / "data" / "source_exports" / "SOURCE_EXPORT_MANIFEST.json"
 EVIDENCE = ROOT / "evidence" / "EVIDENCE_ROLE_REGISTRY_V1.csv"
 PUBLICATION_LEDGER = ROOT / "docs" / "PUBLICATION_MATERIAL_LEDGER.md"
@@ -55,14 +55,16 @@ def test_a_route_clusters_have_manual_fail_closed_adjudications() -> None:
     assert all(row["audit_status"] in {"FAIL", "PASS_DIRECTIONAL_ONLY"} for row in candidates)
 
 
-def test_readout_and_framework_keep_one_and_two_trait_estimands_separate() -> None:
+def test_readout_and_canonical_keep_local_and_two_trait_estimands_separate() -> None:
     readout = READOUT.read_text(encoding="utf-8")
     framework = FRAMEWORK.read_text(encoding="utf-8")
     assert "Delta_A W = Delta_A M - Delta_A G - Delta_A C" in readout
     assert "coverage existence" in readout
-    assert "S_A = M_A - G_A" in framework
-    assert "requires neither a second trait `D` nor `Delta_AD W`" in framework
-    assert "Selective consumer intervention is one route" in framework
+    assert "M_A(g)" in framework
+    assert "G_A(p)" in framework
+    assert "does not by itself locate the full compromise optimum" in framework
+    assert "Chapter 2" in framework
+    assert "historical modularization" in framework
 
 
 def test_frozen_source_exports_match_declared_hashes() -> None:
@@ -90,11 +92,11 @@ def test_evidence_spine_preserves_claim_ceilings() -> None:
     assert "unavailable focal raw data" in theis["prohibited_use"]
 
 
-def test_publication_ledger_preserves_paper_fork_and_missing_gate() -> None:
+def test_publication_ledger_preserves_mechanism_first_boundary_and_strict_gate() -> None:
     text = PUBLICATION_LEDGER.read_text(encoding="utf-8")
-    lower = text.lower()
-    assert "existing-study integration plus shared-cue framework" in lower
-    assert "paired-channel measurement gap" in lower
-    assert "No pooled effect is authorized" in text
+    assert "mechanism-first empirical Chapter 1 with a real-world evidence spine" in text
+    assert "They must not substitute for SCH's channel identification" in text
+    assert "pooled mechanism estimate" in text
+    assert "A x antagonist x pollinator" in text
     assert "A manipulated" in text
-    assert "common reproductive outcome" in text
+    assert "common plant reproductive outcome" in text

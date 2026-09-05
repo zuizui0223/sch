@@ -1,55 +1,255 @@
-# Shared Cue Hypothesis (SCH)
+# Shared Trait Compromise / SCH
 
-SCH is the one-trait companion project separated from [BITA](https://github.com/zuizui0223/bita). BITA asks how an attraction trait `A` and an antagonist-reducing trait `D` jointly shape fitness and whether the resulting interaction can be allocated among mechanisms. SCH asks the prior, simpler question: what happens when pollinators and antagonists track the same floral cue?
-
-## Scientific target
-
-For one predeclared attraction/display contrast,
+SCH is Chapter 1 of a trait-architecture programme paired with [BITA](https://github.com/zuizui0223/bita).
 
 ```text
-M_A = change in pollinator-mediated benefit
-G_A = change in antagonist-mediated cost
-S_A = M_A - G_A
+Chapter 1 / SCH
+function 1 ---\
+               >--- shared trait z ---> compromise / balance
+function 2 ---/
+
+Chapter 2 / BITA
+shared compromise
+      ↓
+function 1 ---> trait x
+function 2 ---> trait y
+      ↓
+functional differentiation / modularization
 ```
 
-If direct physiological or construction costs of changing `A` matter, they are retained separately rather than silently absorbed into `S_A`.
+The general SCH question is:
 
-The central mechanism is **cue overlap**:
+> **What happens when two fitness-relevant functions are forced to use the same phenotypic coordinate?**
 
-- shared cues couple `M_A` and `G_A`, constraining signal exaggeration;
-- private or separable cues allow pollinator attraction to change with less antagonist exposure;
-- the predeclared prediction is that greater cue sharing shifts the display-intensity/net-fitness relationship toward a flatter or more negative slope.
+The pollinator-antagonist shared-cue problem is the first floral implementation, not the definition of the chapter.
 
-This is not the BITA two-trait estimand `Delta_AD W`, and SCH must never be cited as evidence that BITA tested the original one-trait hypothesis.
+## Theory target
 
-## Current evidence gate
-
-The first coverage screen asks only whether the same linked experiment contains:
+At the theory level, let one trait `z` contribute to two functions:
 
 ```text
-A manipulated
-+ pollinator response measured
-+ antagonist response measured
-+ common plant reproductive outcome
+W_shared(z) = w1 F1(z) + w2 F2(z) - C(z).
 ```
 
-It does **not** require `D`, an `A x D` interaction, a selective consumer intervention, or the BITA 16-cell design. Passing this gate establishes coverage existence, not channel point identification or a meta-analytic effect.
+Pure function-specific optima are:
 
-The frozen BITA-derived audit currently finds one directional-only pass among 25 route-ledger clusters: Theis & Adler (2012). The earlier 16-system identification matrix contains zero passes, but it was assembled for the BITA two-trait frontier and is not a complete one-trait literature universe.
+```text
+z_F1* = argmax F1(z)
+z_F2* = argmax F2(z).
+```
 
-## Repository map
+The older shorthand `z1* != z2*` refers to this theory-level conflict.
 
-- `manuscript/MANUSCRIPT_SHARED_CUE_FRAMEWORK.md` — paper concept, estimands, mechanism and predictions
-- `empirical/one_trait_shared_cue/` — fail-closed coverage protocol, adjudications and generated readout
-- `data/source_exports/` — immutable source tables exported from BITA
-- `evidence/EVIDENCE_ROLE_REGISTRY_V1.csv` — roles and claim ceilings for the current evidence spine
-- `empirical/one_trait_shared_cue/EVOLUTIONARY_OUTCOME_READOUT_V1.md` — fail-closed separation of compromise, specialization, branching and cue modularization
-- `docs/SCH_EVOLUTIONARY_OUTCOME_PRIMARY_SOURCE_AUDIT_V1.md` — primary-source verification of case-level compromise, polymorphism, population change and remaining historical gaps
-- `docs/PUBLICATION_MATERIAL_LEDGER.md` — paper sections, figures, evidence roles, missing gates and stop rules
-- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — SCH Chapter 1 to BITA Chapter 2 narrative
-- `scripts/build_one_trait_coverage_audit.py` — deterministic audit builder
-- `docs/MIGRATION_RECEIPT.md` — BITA-to-SCH ownership boundary and provenance
+Under the ideal local quadratic benchmark:
 
-## Status
+```text
+L_shared(z)
+  = a (z - z_F1*)^2
+  + b (z - z_F2*)^2
+```
 
-This repository establishes a clean research lane; it is not yet a completed systematic review or submission-ready manuscript. The next gate is a predeclared one-trait literature expansion using the same four coverage fields. A large retained set supports an existing-study synthesis plus shared-cue framework. A sparse retained set supports a measurement-gap result and motivates a linked field experiment.
+with theory-level mismatch penalty:
+
+```text
+L_compromise,theory*
+  = [a b / (a + b)] (z_F1* - z_F2*)^2.
+```
+
+This is a theory benchmark, not an instruction to relabel experimental state optima as pure function optima.
+
+## What the experiment directly identifies
+
+The multi-level crossed experiment fits:
+
+```text
+W00(z) = P0G0
+W10(z) = P1G0
+W01(z) = P0G1
+W11(z) = P1G1
+```
+
+and directly identifies:
+
+```text
+z_P* = argmax W10(z) = z_pollinator_context
+z_G* = argmax W01(z) = z_antagonist_context
+z_C* = argmax W11(z) = z_combined.
+```
+
+These are state-specific reproductive optima. Because direct/background trait effects can remain:
+
+```text
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
+```
+
+The default Chapter-1 result therefore remains state-specific.
+
+A stronger optional promotion uses the causal component contrasts from the same selective `z x P x G` experiment:
+
+```text
+M_G0(z) = W10(z) - W00(z)
+M_G1(z) = W11(z) - W01(z)
+H_P0(z) = W01(z) - W00(z)
+H_P1(z) = W11(z) - W10(z).
+```
+
+If the two pollinator-component optima agree across antagonist states and the two antagonist-component optima agree across pollinator states, with interior-optimum and bootstrap support inside a prospectively frozen equivalence bound, SCH may promote them to context-stable empirical `z_F1*` and `z_F2*`. If they differ by context, retain conditional component optima and do not use the pure-function label.
+
+This optional gate is implemented in `scripts/identify_sch_pure_function_optima.py` and documented in `docs/SCH_PURE_FUNCTION_OPTIMA_UPGRADE_V1.md`.
+
+## Identification programme
+
+```text
+L0  multifunctionality
+L1  local functional conflict
+L2  state-specific compromise geometry
+L3  mechanism-resolved balance
+L4  evolutionary maintenance
+L5  historical architecture.
+```
+
+The decisive empirical compromise result requires:
+
+```text
+z_P* != z_G*
+combined W11(z) has a supported interior z_C*
+G off -> z_C* shifts toward z_P*
+P off -> z_C* shifts toward z_G*
+opposing functional-component gradients near z_C*.
+```
+
+The zero derivative of an interior fitted quadratic at its own vertex is not counted as independent evidence.
+
+## Floral implementation
+
+For one binary attraction/display contrast `A`, SCH crosses:
+
+```text
+A x antagonist x pollinator
+```
+
+in eight cells on one common reproductive outcome.
+
+```text
+d[g,p] = W[1,g,p] - W[0,g,p]
+M_A(g) = d[g,1] - d[g,0]
+G_A(p) = d[0,p] - d[1,p]
+B_A    = d[0,0]
+J_A    = d[1,1] - d[1,0] - d[0,1] + d[0,0].
+```
+
+A positive `M_A` and positive `G_A` establish local functional conflict. The multi-level extension locates `z_P*`, `z_G*`, and `z_C*`.
+
+## Critical negative-control principle
+
+```text
+multifunctionality != conflict.
+```
+
+A trait can serve two functions while both functions favor the same state. Positive SCH inference therefore requires opposing causal geometry, not merely two functions.
+
+## Real-world evidence role
+
+The PRISMA programme and targeted primary-source audits remain a **real-world evidence spine**. They show that shared traits affect multiple functions, opposing selection and compromise occur, interaction weights redirect evolution, and partial decoupling occurs. They do not define the SCH estimand.
+
+Current bounded status:
+
+```text
+REAL_WORLD_MULTIFUNCTIONALITY_RECOVERED
+CASE_LEVEL_COMPROMISE_RECOVERED
+STATE_SPECIFIC_CAUSAL_COMPROMISE_ANALYZER_READY
+OPTIONAL_CONTEXT_STABLE_COMPONENT_OPTIMUM_UPGRADE_READY
+PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
+COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
+HISTORICAL_INTEGRATION_TO_MODULARIZATION_NOT_YET_IDENTIFIED.
+```
+
+## Current execution strategy
+
+```text
+Dalechampia
+-> conditional first-choice causal compromise-surface system
+-> Mexican case-level conflict recovered
+-> Costa Rica shows conflict is not species-wide
+-> qualify a conflict-active population / season first
+-> validate reversible z manipulation and selective G0/G1
+
+Nicotiana attenuata
+-> first-choice local shared-cue mechanism system
+-> strongest direct hand-off into BITA
+
+Castilleja linariaefolia
+-> high-value fallback, but its focal manipulation and selective antagonist control still require Stage 0
+
+Platycodon / aligned-orientation systems
+-> negative controls.
+```
+
+The Dalechampia execution chain is:
+
+```text
+population qualification
+-> reversible multi-level z validation
+-> controlled adult-weevil exposure
+-> selective G0/G1 validation
+-> 5 z x 2 P x 2 G
+-> causal compromise receipt
+-> optional context-stable component-optimum upgrade.
+```
+
+## SCH -> BITA
+
+Default empirical handoff:
+
+```text
+SCH
+z_P*, z_G*, z_C*
+-> causal compromise
+
+BITA
+x,y
+-> preferential functional loading
+-> x* moves toward z_P* by default
+-> joint fitness improvement
+-> 16-cell mechanism allocation.
+```
+
+Optional stricter lane:
+
+```text
+SCH component contrasts identify context-stable z_F1*
+-> upgraded receipt exports identified_pure_function_optima.z_F1
+-> BITA additionally tests release toward pure z_F1*.
+```
+
+State-specific and pure-function release are kept separate.
+
+## Canonical reader path
+
+- `manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md` — canonical Chapter-1 manuscript
+- `docs/SCH_CAUSAL_COMPROMISE_SURFACE_ANALYSIS_V1.md` — state-specific optimum analyzer contract
+- `docs/SCH_PURE_FUNCTION_OPTIMA_UPGRADE_V1.md` — optional context-stable component-optimum promotion
+- `docs/SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md` — multi-level causal design
+- `docs/SHARED_TO_DIFFERENTIATED_QUADRATIC_BRIDGE_V1.md` — theory/empirical bridge
+- `docs/SCH_EXECUTION_SPINE_V1.md` — end-to-end execution
+- `scripts/analyze_sch_compromise_surface.py` — full compromise analyzer
+- `scripts/identify_sch_pure_function_optima.py` — optional pure-function upgrade
+- `scripts/evaluate_dalechampia_stage0.py` — Stage-0 qualification
+- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — chapter bridge
+- `empirical/architecture/SCH_COMPROMISE_PREDICTION_LEDGER_V1.csv` — prediction contract
+- `empirical/one_trait_shared_cue/` and `empirical/prisma/` — real-world evidence.
+
+## Immediate empirical programme
+
+```text
+Stage 0  qualify one conflict-active context
+Stage 1  validate multi-level z and selective functional interventions
+Stage 2  recover z_P*, z_G*, z_C*
+Stage 3  test causal optimum shifts and component gradients
+Stage 3b optionally test context-stable component optima -> z_F1*, z_F2*
+Stage 4  test evolutionary maintenance / movement
+Stage 5  hand the identified compromise to BITA.
+```
+
+SCH is organized around **the ecology and evolution of compromise under multifunctional trait integration**. The literature establishes that the mechanism is biologically real; the decisive chapter result is the causal reconstruction of how competing functional demands shape one shared coordinate.

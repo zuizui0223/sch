@@ -2,178 +2,306 @@
 
 ## Dissertation-level question
 
-How do plants evolve floral signals when the same phenotype affects both mutualists and antagonists, and when can an additional defensive trait improve, release or reverse the resulting fitness constraint?
+How does evolution solve conflicting functional demands on phenotype?
 
-## Chapter 1 — SCH: why attraction becomes conflicted
-
-SCH begins with one attraction/display coordinate `A`.
+The two chapters address one architectural sequence:
 
 ```text
-W(A) = M(A) - G(A) - C(A)
+Chapter 1 / SCH
+function 1 ---\
+               >--- shared trait z ---> compromise / balance
+function 2 ---/
+
+Chapter 2 / BITA
+shared compromise
+      ↓
+function 1 ---> trait x
+function 2 ---> trait y
+      ↓
+functional differentiation / modularization
 ```
 
-Its empirical question is how pollinator benefit and antagonist loss move on that same coordinate. Shared cue use creates the conflict: when both audiences respond to the same sensory component of `A`, increasing attraction can increase pollinator benefit and antagonist exposure together. The plant cannot optimize the pollinator-facing effect independently unless the two response slopes differ enough or another ecological or architectural process breaks the linkage.
+The pollinator-antagonist floral system is the main empirical realization, not the upper-level definition of the programme.
 
-Its evolutionary question is which of six bounded outcomes the resulting conflict supports:
+## Chapter 1 — SCH: why multifunctionality creates compromise
 
-- an integrated interior compromise;
-- directional specialization on the same coordinate;
-- context-dependent polymorphism maintenance;
-- population differentiation or measured microevolution;
-- lineage branching from an ancestral shared cue; or
-- cue modularization that creates more separable coordinates.
+At the theory level,
 
-The current positive result goes beyond existence of shared tracking. Case-level evidence recovers an integrated stabilizing compromise, context-dependent maintenance of alternative morphs, and population-level evolutionary change. Component partitioning and conditional emission recover partial decoupling mechanisms.
+```text
+W_shared(z) = w1 F1(z) + w2 F2(z) - C(z).
+```
 
-The historical endpoint is a separate fail-closed ladder. A targeted eight-candidate audit finds phylogenetic pollinator-associated scent divergence, contemporary temporal gating, dual pollinator/seed-predator selection and a useful weak-conflict negative control, but no study in the audited set joins an ancestral shared cue, descendant private architecture, both receiver channels, replicated transitions and alternative-history tests. Thus private-cue origin and lineage branching remain `NOT_EVALUABLE`, not absent.
+Pure function-specific optima may be written:
 
-## Chapter 2 — BITA: adding a defence coordinate
+```text
+z_F1* = argmax F1(z)
+z_F2* = argmax F2(z).
+```
 
-BITA asks what a distinct antagonist-reducing trait `D` changes on the same declared reproductive scale. For the four trait states, define
+The earlier shorthand `z1* != z2*` refers to this theory-level conflict. The explicit notation is now preferred because the empirical crossed experiment does not automatically identify the pure function optima.
+
+### What SCH directly identifies
+
+The multi-level crossed experiment estimates:
+
+```text
+W00(z) = P0G0
+W10(z) = P1G0
+W01(z) = P0G1
+W11(z) = P1G1
+```
+
+and therefore:
+
+```text
+z_P* = argmax W10(z)
+z_G* = argmax W01(z)
+z_C* = argmax W11(z).
+```
+
+These are intervention-defined state optima. Because direct/background effects can remain in the state surfaces:
+
+```text
+z_P* != automatically z_F1*
+z_G* != automatically z_F2*.
+```
+
+The empirical compromise claim does not require that relabeling.
+
+### Balance is causal gradient opposition
+
+At a supported combined optimum, SCH requires opposite functional-component gradients and causal optimum shifts:
+
+```text
+G off -> z_C* shifts toward z_P*
+P off -> z_C* shifts toward z_G*.
+```
+
+This is what turns an intermediate phenotype into an identified compromise mechanism.
+
+## Chapter-1 evidence ladder
+
+```text
+L0  multifunctionality
+    the same z affects both functions
+
+L1  functional conflict
+    selective interventions show opposing contributions on z
+
+L2  compromise geometry
+    >=3 z levels recover distinct state-specific optima and z_C*
+
+L3  mechanism-resolved balance
+    crossed functional interventions explain how the gradients oppose
+
+L4  evolutionary maintenance
+    heritable variation / selection / experimental evolution tracks the surface
+
+L5  historical architecture
+    ancestral integration and later differentiation are reconstructed
+```
+
+The two-level SCH crossed design identifies L1 and part of L3. The multi-level design adds L2 and the causal optimum-shift test.
+
+## Floral realization of Chapter 1
+
+```text
+function 1 = pollinator-mediated reproductive gain
+function 2 = antagonist avoidance / reduction of antagonist-mediated loss
+z          = floral attraction / display coordinate.
+```
+
+The registered local mechanism experiment crosses:
+
+```text
+A x antagonist x pollinator
+8 cells.
+```
+
+For one two-level `A` contrast:
+
+```text
+d[g,p] = W[1,g,p] - W[0,g,p]
+M_A(g)  = d[g,1] - d[g,0]
+G_A(p)  = d[0,p] - d[1,p]
+B_A     = d[0,0]
+J_A     = d[1,1] - d[1,0] - d[0,1] + d[0,0].
+```
+
+This tells us whether pollination makes `A` more valuable and antagonism makes the same `A` less valuable. The multi-level extension asks whether those opposing routes generate distinct state optima and an integrated combined optimum.
+
+## Role of the SCH literature
+
+The literature is **real-world support for the architectural mechanism**. It establishes that shared floral traits can contribute to multiple functions, opposing selection occurs, stabilizing/context-dependent compromise is real, population trajectories can be redirected, and component partitioning or gating can reduce coupling.
+
+It does not replace the chapter-specific causal experiment.
+
+## Chapter 2 — BITA: release the shared-coordinate constraint
+
+Chapter 2 asks:
+
+> **Can increasing trait dimensionality allow the two functions to be tuned more independently?**
+
+```text
+shared state
+function 1 ---\
+               >--- z
+function 2 ---/
+
+more differentiated state
+function 1 ---> x
+function 2 ---> y.
+```
+
+The two-trait architecture is useful only if the added dimension reduces the functional coupling that generated the Chapter-1 compromise.
+
+## Functional differentiation criteria
+
+```text
+D1  shared conflict exists
+    Chapter 1 identifies opposing functional demands on z
+
+D2  preferential functional loading
+    x changes function 1 more strongly / cleanly than function 2
+    y changes function 2 more strongly / cleanly than function 1
+
+D3  dimensional release
+    x moves toward the declared SCH reference and the joint phenotype
+    reaches a better functional / fitness combination
+
+D4  mechanism allocation
+    selective interventions identify why the extra dimension improves,
+    releases or reverses the original compromise
+
+D5  historical modularization
+    ancestral shared architecture -> derived functionally differentiated
+    architecture reconstructed with phylogenetic / developmental evidence.
+```
+
+Contemporary experiments can establish D1-D4 without proving D5.
+
+## The cross-chapter reference
+
+The default empirical handoff is:
+
+```text
+SCH z_ref = z_P* = z_pollinator_context.
+```
+
+BITA tests whether:
+
+```text
+|x*(y1) - z_P*| < |x*(y0) - z_P*|.
+```
+
+This is **state-specific dimensional release**.
+
+A stricter pure-function lane is allowed only if SCH independently identifies and exports:
+
+```text
+z_F1*.
+```
+
+Then BITA may additionally test release toward `z_F1*`. State-specific and pure-function release are not silently equated.
+
+## Existing BITA as the floral implementation
+
+```text
+x = attraction trait A
+y = antagonist-reducing trait D.
+```
+
+BITA's four-cell trait surface is:
 
 ```text
 A0 = W10 - W00
-     attraction effect when defence is low
-
 A1 = W11 - W01
-     attraction effect when defence is high
-
-Delta_AD W = W11 - W10 - W01 + W00
-           = A1 - A0
-           = rho_delta - iota_delta - kappa_delta
+Delta_AD W = A1 - A0.
 ```
 
-The four-cell surface supports three nested outcome claims.
+Its nested outcome claims remain:
 
 ```text
-Level 1 — positive interaction relief
-Delta_AD W > 0
-D shifts the effect of attraction in a positive direction.
+Level 1  positive interaction relief
+         Delta_AD W > 0
 
-Level 2 — constraint release
-A0 <= 0 and A1 > 0
-Attraction is non-beneficial without D but beneficial with D.
+Level 2  constraint release
+         A0 <= 0 < A1
 
-Level 3 — strict sign reversal
-A0 < 0 and A1 > 0
-D changes attraction from detrimental to beneficial.
+Level 3  strict reversal
+         A0 < 0 < A1.
 ```
 
-Therefore
+These local outcomes complement, but do not replace, the multi-level dimensional-release test.
+
+## BITA mechanism allocation
+
+The full floral implementation crosses:
 
 ```text
-strict reversal
-    => constraint release
-    => positive interaction relief
+A x D x antagonist x pollinator
+16 cells.
 ```
 
-but the reverse implications do not hold. A positive `Delta_AD W` can occur while `A0` and `A1` are both negative.
-
-## Outcome and explanation are separate ladders
-
-Within the BITA bookkeeping model,
+The mechanism channels remain:
 
 ```text
-rho_delta > iota_delta + kappa_delta
-    <=> Delta_AD W > 0
+rho_delta    antagonist relief
+iota_delta   pollinator interference
+U_delta      remaining unallocated residual.
 ```
 
-This equivalence decides the Level-1 total-interaction inequality on the declared outcome scale. It does not decide whether attraction crossed zero. Levels 2 and 3 require the conditional attraction contrasts `A0` and `A1`.
+An independently validated remaining joint channel may be named only after its own assay; `U_delta` is not converted into a construction cost by subtraction.
 
-Mechanism allocation is a further question. Allocating the total surface to antagonist relief, pollinator interference and a remaining joint channel requires selective crossed interventions, pollinator-absent baseline handling, a separability diagnostic and an independent cost assay.
+The `A x D x G x P` interaction remains an internal test of residual functional coupling. A non-zero four-way term means the differentiated architecture is still only partially modular.
 
-Thus four questions must not be collapsed:
+## Strongest Chapter-2 claim
 
-1. **Did `D` improve the attraction effect?** Use `Delta_AD W`.
-2. **Did that improvement release a non-beneficial state?** Use `A0 <= 0 < A1`.
-3. **Did it strictly reverse a negative state?** Use `A0 < 0 < A1`.
-4. **Why did the outcome occur?** Allocate `rho_delta`, `iota_delta` and the independently validated joint channel.
+The strongest contemporary claim is:
 
-Full channel point identification is not required for a valid outcome-level decision. Conversely, neither a positive interaction nor a zero crossing identifies a realized mechanism allocation.
+> **two partially independent trait coordinates allow the system to satisfy previously conflicting functional demands more independently than one shared coordinate, and crossed intervention identifies the ecological channels that generate that release.**
 
-## Informational versus functional outcomes
+## Historical claim boundary
 
-The chapters distinguish changes to receiver overlap from changes to reproductive consequences.
+Contemporary functional modularity is supported by extant preferential loading and reduced cross-functional interference. Historical modularization additionally requires evidence that a lineage moved from an ancestrally integrated architecture toward the differentiated state.
 
-| Form | What changes | What it establishes | What it does not establish |
-|---|---|---|---|
-| **Informational / architectural escape** | pollinator-facing and antagonist-facing cue coordinates become separable or private | reduced receiver overlap on the signal itself | any particular `A × D` reproductive interaction |
-| **Functional interaction relief** | a distinct defence coordinate makes the attraction effect less negative or more positive | `Delta_AD W > 0` on the declared scale | zero crossing, cue privacy or mechanism allocation |
-| **Functional constraint release** | attraction changes from non-beneficial to beneficial across defence states | `A0 <= 0 < A1` | cue privacy, historical shared-to-private evolution or channel allocation |
-| **Strict functional reversal** | attraction changes from detrimental to beneficial | `A0 < 0 < A1` | disappearance of antagonist detection or a historical signal transition |
+Extant `A + D` alone does not prove that historical transition.
 
-BITA can therefore improve or even reverse the reproductive consequence of cue sharing while the SCH conflict remains informationally present. Antagonists may still detect `A`; `D` can act later through access, ingestion, oviposition, damage or another antagonist-reducing route.
-
-## Current BITA evidence ceiling
-
-Kessler et al. 2008 supplies a manipulated `A × D`-like field factorial. Published rounded capsule proportions preserve a positive total interaction range and a positive attraction effect under the defended state, but the attraction effect without defence remains compatible with either side of zero. The exact source/design-based intervals have not been recovered, and nicotine suppression is systemic rather than cleanly flower-restricted.
-
-The current bounded interpretation is therefore:
+## Unified research sequence
 
 ```text
-Level 1: strong positive aggregate-sign anchor;
-         formal source/design uncertainty unresolved
-Level 2: unresolved
-Level 3: unresolved
-mechanism allocation: unresolved
-flower-specific D scope: unresolved for the historical manipulation
-```
-
-Kessler is not evidence that `Delta_AD W > 0` automatically equals release of a previously negative attraction effect.
-
-## Nicotiana as a programme-level composite bridge
-
-The broader *Nicotiana attenuata* programme is the highest-information current candidate for closing the SCH–BITA sequence, but the evidence is distributed across papers.
-
-```text
-Kessler 2015
-A affects pollinator-mediated outcrossing and hawkmoth oviposition
-
-Kessler 2008
-an A × D-like reproductive factorial with a positive aggregate sign
-
-Li 2017
-flower-specific jasmonate-regulated defence biology
-
-Li 2018
-an upstream-pleiotropy warning because JA perturbation also changes attraction/reward outputs
-```
-
-This programme is classified
-
-```text
-PROGRAM_COMPOSITE_NEAR_COMPLETE
-DIRECT_COMPLETE_CHAIN_NOT_ESTABLISHED
-```
-
-Results from these papers cannot be pooled as cells of one experiment. The direct closure requires one invariant attraction manipulation, one independently validated flower-specific defence manipulation, both receiver channels, one common reproductive outcome, `A0`, `A1` and `Delta_AD W` with compatible uncertainty, followed separately by selective channel and independent-cost measurements.
-
-The detailed contract is `docs/NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md` in SCH and `docs/NICOTIANA_SCH_BITA_CHAIN_CLOSURE_V1.md` in BITA.
-
-## The two chapters answer one sequence
-
-```text
-Chapter 1: Why does one shared attraction coordinate create conflict,
-           and which one-axis or architectural responses follow?
+SCH Stage 0
+validate one multifunctional z coordinate
         ↓
-Chapter 2a: Does a second defensive coordinate improve the
-            attraction effect?  [Delta_AD W]
+SCH Stage 1
+selective two-level crossed intervention
+identify local opposing functional effects
         ↓
-Chapter 2b: Does that improvement cross from non-beneficial or
-            negative to positive?  [A0 and A1]
+SCH Stage 2
+multi-level z experiment
+recover z_P*, z_G*, z_C* and causal compromise geometry
         ↓
-Chapter 2c: Which relief / interference / joint-channel mechanism
-            produces the outcome?
+optional SCH pure-function lane
+independently identify z_F1*, z_F2* if possible
+        ↓
+BITA Stage 1
+validate two functional coordinates x,y
+        ↓
+BITA Stage 2
+test preferential loading and dimensional release toward z_P*
+(optional stricter test toward z_F1*)
+        ↓
+BITA Stage 3
+16-cell mechanism allocation + independent cost assay
+        ↓
+Historical extension
+reconstruct integration -> differentiation / modularization.
 ```
-
-The chapters therefore share biological motivation but not estimands. SCH must not claim that BITA tested the one-trait hypothesis. BITA may use SCH to state the constraint that motivates `D`, then report separately how far current data recover receiver overlap, interaction relief, constraint release, strict reversal and mechanism allocation.
 
 ## Joint claim ceiling
 
-Together the current repositories support a staged result: dual-audience signal conflict has multiple documented evolutionary responses; selective defence architectures recur; and a second trait can produce positive interaction-level improvement in a close historical factorial. Three stronger intersections remain open.
+Together the sister projects aim to establish:
 
-1. SCH has not reconstructed a replicated historical shared-cue-to-private-cue transition.
-2. BITA has not recovered source/design-based intervals that establish Level 1, Level 2 or Level 3 with clean flower-specific intervention scope in one complete system.
-3. No screened system allocates the complete outcome among the two biotic channels and an independently validated joint channel.
+> **Multifunctionality can create compromise when different functions are constrained to a shared phenotypic coordinate; increasing trait dimensionality can release that measured compromise when functions become more independently tunable.**
 
-These missing intersections now define specific analyses and experiments rather than an undefined call for more data.
+The floral pollinator-antagonist / attraction-defence system is the first complete empirical implementation of that principle.
