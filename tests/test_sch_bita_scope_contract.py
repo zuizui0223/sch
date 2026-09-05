@@ -3,6 +3,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 POSITIONING = ROOT / "docs" / "CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md"
+THREE_WORLD = ROOT / "docs" / "THREE_WORLD_PROGRAMME_V1.md"
 NICOTIANA = ROOT / "docs" / "NICOTIANA_PROGRAM_COMPOSITE_BRIDGE_V1.md"
 MANUSCRIPT = ROOT / "manuscript" / "MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md"
 README = ROOT / "README.md"
@@ -19,8 +20,19 @@ def test_sch_keeps_local_conflict_and_compromise_as_chapter_one_estimands() -> N
     assert "G_A(p)" in manuscript
     assert "does not by itself locate the full compromise optimum" in manuscript
     assert "z_1^*" in manuscript or "z1*" in manuscript
-    assert "Chapter 2 / BITA" in readme
+    assert "Chapter 2 / BALANCE" in readme
+    assert "Chapter 3 / BITA" in readme
     assert "functional differentiation / modularization" in readme
+
+
+def test_three_world_contract_keeps_sch_as_left_boundary_only() -> None:
+    text = _text(THREE_WORLD)
+    assert "Chapter 1 / SCH" in text
+    assert "Chapter 2 / BALANCE" in text
+    assert "Chapter 3 / BITA" in text
+    assert "L > 0" in text
+    assert "L > 0 and Phi < 0" in text
+    assert "SCH does **not** decide by itself whether differentiation is worthwhile" in text
 
 
 def test_positioning_separates_shared_compromise_from_functional_differentiation() -> None:

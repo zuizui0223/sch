@@ -1,20 +1,27 @@
 # Shared Trait Compromise / SCH
 
-SCH is Chapter 1 of a trait-architecture programme paired with [BITA](https://github.com/zuizui0223/bita).
+SCH is **Chapter 1** of a three-world trait-architecture programme with [BALANCE](https://github.com/zuizui0223/balance) as Chapter 2 and [BITA](https://github.com/zuizui0223/bita) as Chapter 3.
 
 ```text
-Chapter 1 / SCH
+Chapter 1 / SCH — shared-coordinate world
 function 1 ---\
-               >--- shared trait z ---> compromise / balance
+               >--- shared trait z ---> compromise
 function 2 ---/
+-> where does compromise settle?
 
-Chapter 2 / BITA
+Chapter 2 / BALANCE — middle world
+shared-axis conflict is real
+but differentiated architecture still does not pay
+-> why does compromise persist, and how deep/wide is that domain?
+
+Chapter 3 / BITA — differentiated-coordinate world
 shared compromise
       ↓
 function 1 ---> trait x
 function 2 ---> trait y
       ↓
 functional differentiation / modularization
+-> when does differentiation win, and through which mechanism?
 ```
 
 The general SCH question is:
@@ -177,7 +184,7 @@ Dalechampia
 
 Nicotiana attenuata
 -> first-choice local shared-cue mechanism system
--> strongest direct hand-off into BITA
+-> strong hand-off into the later architecture chapters once a common fitness-scale receipt exists
 
 Castilleja linariaefolia
 -> high-value fallback, but its focal manipulation and selective antagonist control still require Stage 0
@@ -198,21 +205,30 @@ population qualification
 -> optional context-stable component-optimum upgrade.
 ```
 
-## SCH -> BITA
+## SCH -> BALANCE -> BITA
+
+SCH defines the **left-hand boundary** of the middle world.
 
 Default empirical handoff:
 
 ```text
 SCH
 z_P*, z_G*, z_C*
--> causal compromise
-
++ causal compromise geometry
++ fitness-scale conflict budget L when identified
+        ↓
+BALANCE
+requires L > 0
+combines L with the BITA-facing architecture margin Phi=sL-K
+studies L > 0 and Phi < 0
+-> middle-world position, two-sided depth, reserve, topology, persistence
+        ↓
 BITA
-x,y
+studies Phi = 0 and Phi > 0
+-> dimensional release
 -> preferential functional loading
--> x* moves toward z_P* by default
 -> joint fitness improvement
--> 16-cell mechanism allocation.
+-> mechanism allocation.
 ```
 
 Optional stricter lane:
@@ -220,14 +236,26 @@ Optional stricter lane:
 ```text
 SCH component contrasts identify context-stable z_F1*
 -> upgraded receipt exports identified_pure_function_optima.z_F1
--> BITA additionally tests release toward pure z_F1*.
+-> BALANCE retains the same distinction between state-specific and pure-function reference lanes
+-> BITA may additionally test release toward pure z_F1*.
 ```
 
-State-specific and pure-function release are kept separate.
+State-specific and pure-function release remain separate.
+
+The key programme rule is:
+
+```text
+SCH says whether conflict exists and where the one-coordinate compromise lies.
+BALANCE asks what ecological world exists while conflict exists but differentiation still loses.
+BITA asks what happens at and beyond the architecture crossing.
+```
+
+See `docs/THREE_WORLD_PROGRAMME_V1.md`.
 
 ## Canonical reader path
 
 - `manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md` — canonical Chapter-1 manuscript
+- `docs/THREE_WORLD_PROGRAMME_V1.md` — Chapter 1 -> Chapter 2 -> Chapter 3 interface
 - `docs/SCH_CAUSAL_COMPROMISE_SURFACE_ANALYSIS_V1.md` — state-specific optimum analyzer contract
 - `docs/SCH_PURE_FUNCTION_OPTIMA_UPGRADE_V1.md` — optional context-stable component-optimum promotion
 - `docs/SCH_MULTI_LEVEL_COMPROMISE_IDENTIFICATION_V1.md` — multi-level causal design
@@ -236,7 +264,7 @@ State-specific and pure-function release are kept separate.
 - `scripts/analyze_sch_compromise_surface.py` — full compromise analyzer
 - `scripts/identify_sch_pure_function_optima.py` — optional pure-function upgrade
 - `scripts/evaluate_dalechampia_stage0.py` — Stage-0 qualification
-- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — chapter bridge
+- `docs/CHAPTER_1_TO_BITA_CHAPTER_2_POSITIONING.md` — retained legacy two-chapter positioning/provenance
 - `empirical/architecture/SCH_COMPROMISE_PREDICTION_LEDGER_V1.csv` — prediction contract
 - `empirical/one_trait_shared_cue/` and `empirical/prisma/` — real-world evidence.
 
@@ -249,7 +277,8 @@ Stage 2  recover z_P*, z_G*, z_C*
 Stage 3  test causal optimum shifts and component gradients
 Stage 3b optionally test context-stable component optima -> z_F1*, z_F2*
 Stage 4  test evolutionary maintenance / movement
-Stage 5  hand the identified compromise to BITA.
+Stage 5  export the compromise geometry and fitness-scale conflict budget to BALANCE
+Stage 6  retain matched contexts for later BITA architecture tests.
 ```
 
-SCH is organized around **the ecology and evolution of compromise under multifunctional trait integration**. The literature establishes that the mechanism is biologically real; the decisive chapter result is the causal reconstruction of how competing functional demands shape one shared coordinate.
+SCH is organized around **the ecology and evolution of compromise under multifunctional trait integration**. The literature establishes that the mechanism is biologically real; the decisive chapter result is the causal reconstruction of how competing functional demands shape one shared coordinate. BALANCE and BITA then ask what happens between, at, and beyond the architecture boundary without retroactively changing the SCH estimand.
