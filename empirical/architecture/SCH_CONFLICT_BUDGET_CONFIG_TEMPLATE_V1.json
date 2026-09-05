@@ -1,0 +1,8 @@
+{
+  "status": "DO_NOT_RUN_UNTIL_FROZEN",
+  "fitness_scale_id": "REQUIRED_BEFORE_USE",
+  "min_z_levels": 5,
+  "bootstrap_reps": 1000,
+  "random_seed": 20260905,
+  "min_valid_bootstrap_fraction": 0.8
+}
