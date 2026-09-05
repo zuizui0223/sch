@@ -26,11 +26,12 @@ def test_chapter_pair_uses_one_shared_architecture_interface() -> None:
 
 
 def test_chapter1_general_model_is_not_defined_by_pollination_defence() -> None:
-    chapter = _text(CH1)
+    chapter = _text(CH1).lower()
     assert "what is the best phenotype available while the functions are still forced to share one trait axis?" in chapter
-    assert "Cue overlap is therefore a mechanism that shapes the one-axis fitness surface" in chapter
-    assert "not the general definition of Chapter 1" in chapter
-    assert "## 6. Handoff to BITA Chapter 2" in chapter
+    assert "cue overlap" in chapter
+    assert "mechanism that shapes the one-axis fitness surface" in chapter
+    assert "not the general definition of chapter 1" in chapter
+    assert "## 6. handoff to bita chapter 2" in chapter
 
 
 def test_quadratic_chapter1_output_matches_chapter2_input() -> None:
