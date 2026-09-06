@@ -160,6 +160,54 @@ For equal-curvature quadratic surfaces this reduces to the minimum-enclosing-bal
 
 A comparative multi-function system can therefore ask not only how many functions exist, but how many actually define the worst shared compromise.
 
+### B6. Weight-perturbation design capacity
+
+Before interpreting a low empirical curvature rank, audit whether the experiment had enough independent relative-weight directions to reveal the registered dimension.
+
+Let `n` be the number of independently weightable functions and `q` the number of linearly independent fixed-total relative-weight perturbation directions. For projected curvature
+
+\[
+C=V^\top M V,
+\]
+
+theory gives
+
+\[
+\operatorname{rank}(C)\le\min(d,q).
+\]
+
+Therefore a design can only have capacity to recover `d` shared-coordinate curvature dimensions if
+
+\[
+\boxed{q\ge d}
+\]
+
+and, because the relative-weight simplex has dimension `n-1`, also
+
+\[
+\boxed{n\ge d+1.}
+\]
+
+These are necessary, not sufficient, conditions. Full local recovery additionally requires the manipulated directions to span phenotype-gradient space:
+
+\[
+\operatorname{rank}(GV)=d.
+\]
+
+A low-rank result from a design with `q<d` must therefore be labeled insufficient design capacity rather than evidence that the phenotype is low-dimensional.
+
+Prospective reporting should include:
+
+```text
+number of independently manipulable functions n
+independent relative-weight directions q
+target shared-coordinate dimension d
+maximum detectable curvature dimension min(n-1,q)
+capacity classification
+```
+
+The focal two-function Pedicularis design has at most one independent relative-weight direction, so it is suitable for the Chapter-1 conflict proof but cannot identify a genuinely two-dimensional weight-curvature geometry. The multidimensional dimension programme belongs to later generality systems with at least `d+1` independently manipulable functions.
+
 ---
 
 ## C. Promotion ladder
