@@ -57,6 +57,52 @@ An interior maximum occurs where residual functional losses are equal.
 
 This is optional for the focal causal proof; it is a stronger theory test if the manipulation supports a calibrated weight path.
 
+### A4. Finite weight-shift reoptimization relief
+
+For a registered finite change
+
+\[
+w_0\to w_1=w_0+\Delta w,
+\]
+
+let `z_0` be the baseline optimized shared phenotype and let
+
+\[
+r_0=(\ell_1(z_0),\ldots,\ell_n(z_0))
+\]
+
+be the baseline residual component-loss vector.
+
+If the weights changed but the phenotype were frozen at `z_0`, the final load would be
+
+\[
+L_0+r_0^\top\Delta w.
+\]
+
+After allowing the shared phenotype to re-optimize, the observed optimized load is `L_1`. The finite reoptimization relief is therefore
+
+\[
+\boxed{
+\mathcal R_w
+=L_0+r_0^\top\Delta w-L_1
+\ge0.
+}
+\]
+
+This can be estimated from the same calibrated weight-shift experiment without recovering a full weight Hessian.
+
+Prospective interpretation:
+
+```text
+R_w < 0 beyond uncertainty  -> common-loss/weight-mapping model fails
+R_w ~= 0                    -> little finite relief from phenotype movement
+R_w > 0                     -> reoptimization rescued conflict after the weight shift
+```
+
+If directional curvature bounds are preregistered, the theorem additionally predicts a quantitative interval for `R_w`.
+
+This is distinct from the midpoint chord-bulge test: `R_w` compares the final optimized load with a **frozen-baseline-phenotype counterfactual** at the same final weights.
+
 ---
 
 ## B. Multi-function generality layer
