@@ -115,7 +115,44 @@ Interpretation:
 - `d_eff>1` robustly: a one-dimensional shared-coordinate model is inadequate;
 - `d_eff` is not a count of genes or historical modules.
 
-### B4. d+1 binding-function certificate
+### B4. Noise-robust spectral dimension certificate
+
+Exact zero eigenvalues are not expected from estimated curvature matrices. Therefore preregister an operator-norm error bound
+
+\[
+\|\widehat M-M\|_{op}\le\varepsilon
+\]
+
+independently of the observed spectrum.
+
+For a registered shared-coordinate dimension `d`, theory requires
+
+\[
+\lambda_{d+1}(\widehat M)\le\varepsilon.
+\]
+
+Thus
+
+\[
+\boxed{
+\lambda_{d+1}(\widehat M)>\varepsilon
+\Rightarrow
+\text{dimension }d\text{ rejected under the registered error bound.}
+}
+\]
+
+Report the conservative lower bound
+
+\[
+r_{cert}(\varepsilon)
+=\#\{k:\lambda_k(\widehat M)>\varepsilon\}.
+\]
+
+Then the shared-coordinate model must have dimension at least `r_cert` if the regular curvature assumptions hold.
+
+This is stronger than visual scree-plot interpretation because the rejection threshold is tied to a prospective perturbation guarantee. A dimension not rejected is only compatible, not proven.
+
+### B5. d+1 binding-function certificate
 
 At the global worst-case functional weighting, there exists a certificate supported on at most `d+1` binding functions.
 
