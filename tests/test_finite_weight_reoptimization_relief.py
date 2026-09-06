@@ -41,6 +41,32 @@ def test_finite_effective_curvature_is_weighted_chord_average():
     assert 4.0 / 27.0 < kappa_eff < 0.5
 
 
+def test_forward_reverse_sum_recovers_full_chord_curvature():
+    # At w0=(1,1), r0=(1/2,1/2). At w1=(2,1), z1=-1/3 and
+    # r1=(2/9,8/9). For Delta w=(1,0), the symmetric endpoint identity is
+    # (r0-r1).Delta w = 5/18.
+    l0 = _quadratic_load(1.0, 1.0)
+    l1 = _quadratic_load(2.0, 1.0)
+    r0_first = 0.5
+    r1_first = 2.0 / 9.0
+    forward = l0 + r0_first - l1
+    reverse = l1 - r1_first - l0
+    symmetric = forward + reverse
+    assert math.isclose(forward, 1.0 / 6.0)
+    assert math.isclose(reverse, 1.0 / 9.0)
+    assert math.isclose(symmetric, 5.0 / 18.0)
+    assert math.isclose(symmetric, r0_first - r1_first)
+
+    # Full unweighted curvature integral int_0^1 4/(2+t)^3 dt = 5/18.
+    n = 20000
+    h = 1.0 / n
+    integral = 0.0
+    for k in range(n):
+        t = (k + 0.5) * h
+        integral += 4.0 / (2.0 + t) ** 3 * h
+    assert abs(integral - symmetric) < 1e-8
+
+
 def test_no_relief_when_all_function_optima_are_aligned():
     # If both functions have the same optimum, reweighting never moves the shared optimum.
     def load(w1: float, w2: float) -> float:
