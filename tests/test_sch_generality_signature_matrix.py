@@ -25,3 +25,10 @@ def test_negative_and_aligned_controls_remain_controls():
 def test_dalechampia_is_not_promoted_to_complete_causal_replication():
     rows = _rows()
     assert "INCOMPLETE" in rows["Dalechampia"]["causal_status"]
+
+
+def test_darwin_finches_are_cross_domain_observational_not_causal_replication():
+    rows = _rows()
+    item = rows["Darwin_finches_beak_jaw"]
+    assert item["program_role"] == "G2_CROSS_DOMAIN_OBSERVATIONAL_CONSTRAINT_CANDIDATE"
+    assert item["causal_status"] == "NO_REGISTERED_SCH_OPTIMUM_SHIFT_CAUSAL_SURFACE"
