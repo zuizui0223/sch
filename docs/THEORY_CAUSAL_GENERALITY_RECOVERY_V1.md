@@ -12,14 +12,26 @@ PAYOFF population frequency, invasion, coexistence and `eta` are explicitly outs
 
 ## T1. Shared-coordinate optimum
 
-For two functions with distinct preferred states on one coordinate `z`, derive the optimized shared state and the conflict load. In the quadratic baseline:
+For two functions with distinct preferred states on one coordinate `z`, derive the optimized shared state and the conflict load.
+
+In the quadratic baseline:
 
 ```text
 z* = (w1 theta1 + w2 theta2)/(w1+w2)
 L  = [w1 w2/(w1+w2)](theta1-theta2)^2.
 ```
 
-Status: `PROVED_FOR_DECLARED_BASELINE`.
+The result now extends beyond the quadratic baseline. For differentiable strictly convex one-axis losses with unique optima `theta1 < theta2`, the combined shared optimum is unique and satisfies
+
+```text
+theta1 < z* < theta2.
+```
+
+With twice-differentiable positive curvature, increasing the relative weight of function 1 moves `z*` monotonically toward `theta1`, and vice versa for function 2. The general compromise load is strictly positive whenever the two unique function optima differ.
+
+See `theory/GENERAL_CONVEX_SHARED_COMPROMISE_V1.md`.
+
+Status: `PROVED_FOR_STRICTLY_CONVEX_ONE_AXIS_CLASS`.
 
 ## T2. Operational conflict budget
 
@@ -38,11 +50,13 @@ the combined optimum can occupy an interior compromise;
 component gradients around the combined optimum oppose one another.
 ```
 
+The general convex theorem strengthens this point: directional optimum movement is not merely an artifact of parabolic fitness curves.
+
 Status: `REGISTERED`.
 
 ### Theory claim ceiling
 
-The mathematics establishes existence/geometry **conditional on the model assumptions**. It does not establish that any natural system actually has conflicting function-specific optima.
+The mathematics establishes existence/geometry **conditional on the model assumptions**. It does not establish that any natural system actually has conflicting function-specific optima or globally convex fitness surfaces.
 
 ---
 
@@ -141,7 +155,7 @@ Do not use literature count alone. Promotion requires recurrence of the defining
 # Current bottleneck
 
 ```text
-theory                         strong / operational
+theory                         stronger: quadratic + strict-convex one-axis theorem
 causal analysis machinery      implemented
 same-system causal biology     NOT YET EXECUTED
 cross-system generality        candidate map exists; causal replication incomplete
