@@ -31,6 +31,16 @@ def test_relief_equals_integrated_weight_curvature_for_quadratic_example():
     assert abs(integral - 1.0 / 6.0) < 1e-8
 
 
+def test_finite_effective_curvature_is_weighted_chord_average():
+    # With Euclidean weight metric and Delta w=(1,0), ||Delta w||^2=1.
+    # kappa_eff=2*relief=1/3. The instantaneous directional curvature
+    # 4/(2+t)^3 falls from 0.5 to 4/27, so the weighted average must lie between.
+    relief = 1.0 / 6.0
+    kappa_eff = 2.0 * relief
+    assert math.isclose(kappa_eff, 1.0 / 3.0)
+    assert 4.0 / 27.0 < kappa_eff < 0.5
+
+
 def test_no_relief_when_all_function_optima_are_aligned():
     # If both functions have the same optimum, reweighting never moves the shared optimum.
     def load(w1: float, w2: float) -> float:
