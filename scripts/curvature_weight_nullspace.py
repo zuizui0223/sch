@@ -11,6 +11,13 @@ class WeightNullspaceResult:
     residual_max_abs: float
 
 
+@dataclass(frozen=True)
+class NullspaceStabilityBound:
+    stable_one_dimensional_nullspace: bool
+    conservative_gap_lower: float
+    sin_angle_upper: float | None
+
+
 def _validate_square(matrix: Sequence[Sequence[float]]) -> list[list[float]]:
     rows = [list(map(float, row)) for row in matrix]
     if not rows or any(len(row) != len(rows) for row in rows):
@@ -91,4 +98,40 @@ def infer_relative_weights_from_curvature(
         relative_weights=w,
         nullity=1,
         residual_max_abs=max(abs(x) for x in residual),
+    )
+
+
+def nullspace_angle_bound_from_true_gap(*, true_gap: float, operator_error: float) -> float:
+    if true_gap <= 0.0:
+        raise ValueError("true_gap must be positive")
+    if operator_error < 0.0:
+        raise ValueError("operator_error must be nonnegative")
+    if operator_error >= true_gap / 2.0:
+        raise ValueError("operator_error must be smaller than half the true gap")
+    return operator_error / (true_gap - operator_error)
+
+
+def nullspace_stability_from_estimated_gap(
+    *,
+    estimated_second_eigenvalue: float,
+    operator_error: float,
+) -> NullspaceStabilityBound:
+    if estimated_second_eigenvalue < 0.0:
+        raise ValueError("estimated_second_eigenvalue must be nonnegative")
+    if operator_error < 0.0:
+        raise ValueError("operator_error must be nonnegative")
+
+    gap_lower = max(0.0, estimated_second_eigenvalue - operator_error)
+    if estimated_second_eigenvalue <= 3.0 * operator_error:
+        return NullspaceStabilityBound(
+            stable_one_dimensional_nullspace=False,
+            conservative_gap_lower=gap_lower,
+            sin_angle_upper=None,
+        )
+
+    denominator = estimated_second_eigenvalue - 2.0 * operator_error
+    return NullspaceStabilityBound(
+        stable_one_dimensional_nullspace=True,
+        conservative_gap_lower=gap_lower,
+        sin_angle_upper=operator_error / denominator,
     )
