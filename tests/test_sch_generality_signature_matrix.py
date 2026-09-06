@@ -32,3 +32,10 @@ def test_darwin_finches_are_cross_domain_observational_not_causal_replication():
     item = rows["Darwin_finches_beak_jaw"]
     assert item["program_role"] == "G2_CROSS_DOMAIN_OBSERVATIONAL_CONSTRAINT_CANDIDATE"
     assert item["causal_status"] == "NO_REGISTERED_SCH_OPTIMUM_SHIFT_CAUSAL_SURFACE"
+
+
+def test_hisa_trpf_is_experimental_conflict_anchor_not_registered_sch_surface():
+    rows = _rows()
+    item = rows["Salmonella_HisA_TrpF"]
+    assert item["program_role"] == "G2_CROSS_DOMAIN_ADAPTIVE_CONFLICT_EXPERIMENTAL_ANCHOR"
+    assert item["causal_status"] == "NO_REGISTERED_ONE_AXIS_WEIGHT_MANIPULATION_SURFACE"
