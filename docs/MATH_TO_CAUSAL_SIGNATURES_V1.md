@@ -89,9 +89,33 @@ For a shared coordinate in `R^d`, the global minimax conflict has a certificate 
 
 **Failure:** no subset of at most `d+1` functions can satisfy the registered minimax/KKT balance under the assumed `d`-dimensional common coordinate.
 
+## Signature S7 — curvature-nullspace weight balance
+
+The current functional-weight vector must satisfy
+
+\[
+\boxed{Cw=0.}
+\]
+
+because the shared optimum force-balance condition gives `Gw=0` and `C=G^T H^-1 G`.
+
+**Test:** register an independently calibrated relative-weight vector `w_0`, estimate `C` from graded weight perturbations, and evaluate a prospective residual norm such as
+
+\[
+T_w=\|\widehat C w_0\|.
+\]
+
+**Failure:** the residual remains larger than the preregistered curvature/weight uncertainty. This is a direct audit of the common-coordinate/fixed-loss-family model.
+
+If `ker(C)` is one-dimensional and its unique direction is strictly positive, normalize that null vector to sum to one and compare it with independently measured relative functional weights. Under this condition the theory predicts that relative weights are identifiable from curvature geometry itself.
+
+If nullity exceeds one, the correct conclusion is **weight underidentification from curvature**, not an arbitrary selected weight vector.
+
 ## Pedicularis use
 
-The current focal `z x P x G` surface directly addresses S1 for two functional weights and the positive conflict load. S3-S5 require additional independently varied functional demands or replicated graded P/G intensities; they are stronger extensions, not hidden requirements for the first two-function causal receipt.
+The current focal `z x P x G` surface directly addresses S1 for two functional weights and the positive conflict load. S3-S7 require additional independently varied functional demands or replicated graded P/G intensities; they are stronger extensions, not hidden requirements for the first two-function causal receipt.
+
+For exactly two functions on one shared axis, S7 is in principle identifiable because a rank-one `2 x 2` curvature matrix has a one-dimensional nullspace. In practice this requires enough graded P/G weighting information to estimate the curvature robustly.
 
 ## Promotion rule
 
