@@ -111,11 +111,43 @@ If `ker(C)` is one-dimensional and its unique direction is strictly positive, no
 
 If nullity exceeds one, the correct conclusion is **weight underidentification from curvature**, not an arbitrary selected weight vector.
 
+## Signature S8 — three-level weight-chord curvature gap
+
+For a preregistered weight chord
+
+\[
+w_t=(1-t)w_0+t w_1,
+\]
+
+let `v=w_1-w_0` and suppose the directional conflict curvature satisfies
+
+\[
+\alpha\le v^TC(w_t)v\le\beta
+\]
+
+throughout the chord. Then the optimized conflict-load bulge above endpoint interpolation obeys
+
+\[
+\boxed{
+\frac{\alpha}{2}t(1-t)
+\le
+L^*(w_t)-[(1-t)L^*(w_0)+tL^*(w_1)]
+\le
+\frac{\beta}{2}t(1-t).
+}
+\]
+
+**Test:** use two calibrated endpoint weight regimes plus a preregistered midpoint/interior regime. At `t=1/2`, the bulge must lie in `[alpha/8,beta/8]` when the curvature bounds are directional; include the registered metric factor when matrix bounds are used.
+
+**Failure:** a negative bulge rejects concavity; a bulge outside the registered interval rejects the corresponding curvature bound or common smooth optimum branch.
+
+This is useful even when only one independent P/G weight-transfer direction is experimentally available, because it tests integrated curvature without pretending to recover a full multidimensional Hessian.
+
 ## Pedicularis use
 
-The current focal `z x P x G` surface directly addresses S1 for two functional weights and the positive conflict load. S3-S7 require additional independently varied functional demands or replicated graded P/G intensities; they are stronger extensions, not hidden requirements for the first two-function causal receipt.
+The current focal `z x P x G` surface directly addresses S1 for two functional weights and the positive conflict load. S3-S8 require additional independently varied functional demands or replicated graded P/G intensities; they are stronger extensions, not hidden requirements for the first two-function causal receipt.
 
-For exactly two functions on one shared axis, S7 is in principle identifiable because a rank-one `2 x 2` curvature matrix has a one-dimensional nullspace. In practice this requires enough graded P/G weighting information to estimate the curvature robustly.
+For exactly two functions on one shared axis, S7 is in principle identifiable because a rank-one `2 x 2` curvature matrix has a one-dimensional nullspace. In practice this requires enough graded P/G weighting information to estimate the curvature robustly. S8 is a lower-burden extension: three calibrated weight levels along one relative-weight direction are enough for the finite-difference curvature audit.
 
 ## Promotion rule
 
