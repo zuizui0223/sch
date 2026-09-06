@@ -12,26 +12,29 @@ PAYOFF population frequency, invasion, coexistence and `eta` are explicitly outs
 
 ## T1. Shared-coordinate optimum
 
-For two functions with distinct preferred states on one coordinate `z`, derive the optimized shared state and the conflict load.
-
-In the quadratic baseline:
+For two functions with distinct preferred states on one coordinate `z`, the quadratic baseline is
 
 ```text
 z* = (w1 theta1 + w2 theta2)/(w1+w2)
 L  = [w1 w2/(w1+w2)](theta1-theta2)^2.
 ```
 
-The result now extends beyond the quadratic baseline. For differentiable strictly convex one-axis losses with unique optima `theta1 < theta2`, the combined shared optimum is unique and satisfies
+The result is now generalized beyond two functions and beyond quadratic loss. For strictly convex function losses `ell_i(z)` with positive weights,
 
 ```text
-theta1 < z* < theta2.
+J(z) = sum_i w_i ell_i(z)
 ```
 
-With twice-differentiable positive curvature, increasing the relative weight of function 1 moves `z*` monotonically toward `theta1`, and vice versa for function 2. The general compromise load is strictly positive whenever the two unique function optima differ.
+has one shared optimum inside the convex hull of the function-specific optima. Its exact log-weight sensitivity is
 
-See `theory/GENERAL_CONVEX_SHARED_COMPROMISE_V1.md`.
+```text
+d z*/d log(w_j)
+= - w_j ell_j'(z*) / sum_i w_i ell_i''(z*).
+```
 
-Status: `PROVED_FOR_STRICTLY_CONVEX_ONE_AXIS_CLASS`.
+Therefore increasing one function's relative weight moves the shared optimum toward that function's own optimum. A common positive rescaling of all function weights leaves `z*` unchanged.
+
+Status: `GENERAL_N_FUNCTION_STRICT_CONVEX_THEORY_PROVED_UNDER_DECLARED_ASSUMPTIONS`.
 
 ## T2. Operational conflict budget
 
@@ -50,13 +53,13 @@ the combined optimum can occupy an interior compromise;
 component gradients around the combined optimum oppose one another.
 ```
 
-The general convex theorem strengthens this point: directional optimum movement is not merely an artifact of parabolic fitness curves.
+The n-function theorem adds a stronger comparative-static signature: each selectively increased functional weight must shift the common optimum toward that function's own preferred state while all else remains fixed.
 
 Status: `REGISTERED`.
 
 ### Theory claim ceiling
 
-The mathematics establishes existence/geometry **conditional on the model assumptions**. It does not establish that any natural system actually has conflicting function-specific optima or globally convex fitness surfaces.
+The mathematics establishes existence/geometry **conditional on the model assumptions**. It does not establish that any natural system actually has conflicting function-specific optima or that changing environment alters only one weight while leaving the loss family fixed.
 
 ---
 
@@ -142,9 +145,9 @@ Status: `CANDIDATE_SET_REGISTERED_REPLICATION_INCOMPLETE`.
 
 ## G2. Cross-domain generality
 
-Only after causal floral replication should SCH ask whether the same one-coordinate conflict geometry appears in non-floral multifunctional traits.
+Cross-domain candidates now include Darwin finch beak/jaw performance constraints and the Salmonella HisA/TrpF adaptive-conflict system. These support biological reality of shared multifunctional constraints, but neither is currently a registered SCH optimum-shift causal replication on the same scalar coordinate.
 
-Status: `NOT_YET_AUDITED_SYSTEMATICALLY`.
+Status: `CROSS_DOMAIN_CANDIDATES_RECOVERED_CAUSAL_REPLICATION_NOT_YET_CLOSED`.
 
 ### Generality promotion rule
 
@@ -155,10 +158,10 @@ Do not use literature count alone. Promotion requires recurrence of the defining
 # Current bottleneck
 
 ```text
-theory                         stronger: quadratic + strict-convex one-axis theorem
+theory                         n-function convex comparative statics now proved
 causal analysis machinery      implemented
 same-system causal biology     NOT YET EXECUTED
-cross-system generality        candidate map exists; causal replication incomplete
+cross-system generality        candidate map expanded; causal replication incomplete
 ```
 
 The next scientific gate is empirical Pedicularis method qualification and the same-context `z x P x G` surface, not additional PAYOFF game theory.
