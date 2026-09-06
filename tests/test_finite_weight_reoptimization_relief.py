@@ -67,6 +67,20 @@ def test_forward_reverse_sum_recovers_full_chord_curvature():
     assert abs(integral - symmetric) < 1e-8
 
 
+def test_forward_reverse_asymmetry_localizes_decreasing_curvature():
+    # Directional curvature 4/(2+t)^3 decreases along the forward chord,
+    # so forward relief must exceed reverse relief.
+    forward = 1.0 / 6.0
+    reverse = 1.0 / 9.0
+    total = forward + reverse
+    localization = (forward - reverse) / total
+    curvature_mean_position = reverse / total
+    assert forward > reverse
+    assert math.isclose(localization, 1.0 / 5.0)
+    assert math.isclose(curvature_mean_position, 2.0 / 5.0)
+    assert math.isclose(localization, 1.0 - 2.0 * curvature_mean_position)
+
+
 def test_no_relief_when_all_function_optima_are_aligned():
     # If both functions have the same optimum, reweighting never moves the shared optimum.
     def load(w1: float, w2: float) -> float:
