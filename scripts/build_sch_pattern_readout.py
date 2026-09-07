@@ -36,6 +36,10 @@ def build(path: Path) -> dict:
     }
     negative = {r["cluster_id"] for r in rows if r["pattern_class"] == "SHARED_TRACKING_NO_CONFLICT"}
     switches = {r["cluster_id"] for r in rows if r["pattern_class"] == "CONTEXT_WEIGHT_SHIFT"}
+    shared_tracking_candidates = {
+        r["cluster_id"] for r in rows if r["pattern_class"] == "SHARED_TRACKING_CONFLICT_CANDIDATE"
+    }
+    high_confidence = {r["cluster_id"] for r in rows if r["confidence"] == "high"}
     return {
         "analysis": "sch_reality_pattern_readout",
         "n_records": len(rows),
@@ -43,9 +47,11 @@ def build(path: Path) -> dict:
         "pattern_class_counts": dict(sorted(patterns.items())),
         "context_axis_counts": dict(sorted(contexts.items())),
         "confidence_counts": dict(sorted(confidence.items())),
+        "n_high_confidence_clusters": len(high_confidence),
         "n_conflict_signature_clusters": len(positive_conflict),
         "n_context_shift_clusters": len(switches),
         "n_negative_control_clusters": len(negative),
+        "n_shared_tracking_conflict_candidate_clusters": len(shared_tracking_candidates),
         "n_quantitative_pool_eligible_clusters": len(quantitative),
         "claim_ceiling": "screened_source_adjudicated_recurrence_not_natural_prevalence_or_direct_L_identification",
     }
