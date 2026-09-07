@@ -54,14 +54,28 @@ SEQUENTIAL_FILTER_COMBINATION
 
 Claim ceiling: this shows how multispecies filters combine across life stages; it is not a direct one-coordinate SCH optimum decomposition.
 
-## What remains genuinely missing
+### Satyrium longicauda — manipulated gender compromise surface
 
-The targeted search strengthened opposing-direction and context-shift recurrence, but the strongest SCH-specific signatures remain sparse:
+Primary source: Ellis & Johnson 2010, *International Journal of Plant Sciences*, DOI `10.1086/656351`.
+
+In the Entabeni population, maximum pollen export occurred at the intermediate spur-length manipulation, whereas female fitness was highest at the maximum spur length. In one year, total fitness (pollen export + receipt) was hump-shaped. The authors explicitly describe the likely evolutionary compromise as lying above the male optimum.
+
+Registered class:
 
 ```text
-SEPARATED_OPTIMA_IDENTIFIED             still open
-COMBINED_INTERMEDIATE_OPTIMUM           still open as a repeated class
-DIRECT_CONTEXT_DRIVEN_OPTIMUM_MOVEMENT  still open
+COMBINED_INTERMEDIATE_OR_COMPROMISE
 ```
 
-Therefore the next retrieval round should search explicitly for studies reporting nonlinear fitness functions or experimentally shifted optima rather than adding more generic opposing-selection examples.
+This is the strongest new match to the SCH geometry because one manipulated coordinate is evaluated through male and female functions and a combined fitness surface. However, only spur shortening was experimentally available, so the upper side of the female fitness function was not mapped. The female optimum therefore cannot be declared fully bounded within the tested range.
+
+## What remains genuinely missing
+
+The targeted search now recovers one bounded combined-compromise surface in addition to recurrent opposing-direction and context-shift evidence. The strongest remaining SCH-specific gaps are:
+
+```text
+SEPARATED_OPTIMA_BOTH_FULLY_IDENTIFIED    still open
+COMBINED_INTERMEDIATE_OPTIMUM             recovered once, replication needed
+DIRECT_CONTEXT_DRIVEN_OPTIMUM_MOVEMENT    still open
+```
+
+The next retrieval round should therefore search explicitly for studies that manipulate one trait bidirectionally over a broad enough range to estimate both component optima and then change the ecological weights experimentally.
