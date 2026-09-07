@@ -1,0 +1,1 @@
+effect_id,study_id,study_cluster_id,doi,taxon,lane_id,shared_coordinate,function_or_component,context_id,effect_metric,effect_value,standard_error,n_total,trait_scale,trait_centering,optimum_estimate,optimum_se,quadratic_term,quadratic_se,effect_orientation,is_primary_effect,analysis_status,source_locator,extraction_note
