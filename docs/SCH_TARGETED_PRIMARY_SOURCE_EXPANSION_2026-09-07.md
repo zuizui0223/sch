@@ -68,6 +68,20 @@ COMBINED_INTERMEDIATE_OR_COMPROMISE
 
 This is the strongest new match to the SCH geometry because one manipulated coordinate is evaluated through male and female functions and a combined fitness surface. However, only spur shortening was experimentally available, so the upper side of the female fitness function was not mapped. The female optimum therefore cannot be declared fully bounded within the tested range.
 
+### Gymnadenia conopsea — factorial cancellation of agent-specific selection
+
+Primary source: Sletvold, Moritz & Agren 2015, *Ecology*, DOI `10.1890/14-0119.1`.
+
+A factorial manipulation of pollination and herbivory separated the two selective agents. Pollinators selected for later flowering, whereas herbivores selected for earlier flowering with similar additive strength. Their opposing effects produced no net selection on flowering phenology in the observed context. The paper explicitly notes that the direction of selection, and therefore the favored flowering time, should vary with the relative intensity of the mutualistic and antagonistic interactions.
+
+Registered class:
+
+```text
+CONTEXT_WEIGHT_SHIFT
+```
+
+This is a strong intervention-based weight-shift anchor because the two agents are experimentally separated and act in opposite directions on the same coordinate. It is not coded as `DIRECT_CONTEXT_DRIVEN_OPTIMUM_MOVEMENT`, because the study does not experimentally traverse several interaction-weight regimes and re-estimate a nonlinear optimum under each regime.
+
 ## What remains genuinely missing
 
 The targeted search now recovers one bounded combined-compromise surface in addition to recurrent opposing-direction and context-shift evidence. The strongest remaining SCH-specific gaps are:
