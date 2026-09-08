@@ -1,0 +1,17 @@
+{
+  "analysis": "sch_quantitative_lane_readout",
+  "n_effect_rows": 8,
+  "n_independent_clusters": 4,
+  "n_rows_with_standard_error": 4,
+  "n_clusters_with_any_uncertainty_bearing_effect": 3,
+  "n_strata_with_at_least_3_compatible_independent_clusters": 0,
+  "status": "NUMERIC_INVENTORY_STARTED_NO_STRICT_RANDOM_EFFECTS_POOL_YET",
+  "current_numeric_clusters": [
+    "Pedicularis_rex_water_bract_2015",
+    "Theis_et_al_2014_Cucurbitaceae",
+    "Gross_Sun_Schiestl_2016_Gymnadenia_odoratissima",
+    "Adler_Irwin_2005_Gelsemium"
+  ],
+  "main_blocker": "effect metrics and outcome constructs are not yet harmonized into a stratum with >=3 independent clusters",
+  "claim_ceiling": "numeric component inventory and context-weight evidence; not pooled SCH loss L or state-specific optima"
+}
