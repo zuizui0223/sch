@@ -4,14 +4,21 @@
   "n_independent_clusters": 4,
   "n_rows_with_standard_error": 4,
   "n_clusters_with_any_uncertainty_bearing_effect": 3,
+  "n_within_study_conflict_component_clusters": 2,
+  "within_study_conflict_component_clusters": [
+    "Dalechampia_shared_bract",
+    "Silene_petals_sexual_function"
+  ],
   "n_strata_with_at_least_3_compatible_independent_clusters": 0,
-  "status": "NUMERIC_INVENTORY_STARTED_NO_STRICT_RANDOM_EFFECTS_POOL_YET",
+  "status": "STRICT_COMPONENT_CONTRAST_LANE_STARTED_TWO_CLUSTERS_NO_RANDOM_EFFECTS_POOL_YET",
   "current_numeric_clusters": [
     "Pedicularis_rex_water_bract_2015",
     "Theis_et_al_2014_Cucurbitaceae",
     "Gross_Sun_Schiestl_2016_Gymnadenia_odoratissima",
-    "Adler_Irwin_2005_Gelsemium"
+    "Adler_Irwin_2005_Gelsemium",
+    "Dalechampia_shared_bract",
+    "Silene_petals_sexual_function"
   ],
-  "main_blocker": "effect metrics and outcome constructs are not yet harmonized into a stratum with >=3 independent clusters",
-  "claim_ceiling": "numeric component inventory and context-weight evidence; not pooled SCH loss L or state-specific optima"
+  "main_blocker": "a third independent within-study same-coordinate component contrast with valid contrast variance is still missing; existing broader effect metrics and outcomes remain heterogeneous",
+  "claim_ceiling": "within-study opposing component selection and numeric context-weight evidence; not pooled SCH loss L or bounded state-specific optima"
 }
