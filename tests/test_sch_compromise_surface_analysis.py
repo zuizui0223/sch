@@ -116,8 +116,14 @@ def test_state_specific_optima_are_not_relabelled_as_pure_function_optima() -> N
     contract = CONTRACT.read_text(encoding="utf-8")
     multilevel = MULTILEVEL.read_text(encoding="utf-8")
     manuscript = MANUSCRIPT.read_text(encoding="utf-8")
-    for text in (contract, multilevel, manuscript):
+    # Implementation contracts retain the compact ASCII guard strings.
+    for text in (contract, multilevel):
         assert "z_P* != automatically z_F1*" in text
         assert "z_G* != automatically z_F2*" in text
+    # The canonical manuscript expresses the same claim in typeset notation
+    # and prose rather than the legacy ASCII spelling.
+    assert "z_P^*\\neq z_{F1}^*" in manuscript
+    assert "z_G^*\\neq z_{F2}^*" in manuscript
     assert "state-specific reproductive optima" in manuscript
+    assert "not automatically optima of pure functional objectives" in manuscript
     assert "Equality requires an additional identifying argument" in contract
