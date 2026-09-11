@@ -1,0 +1,27 @@
+{
+  "analysis": "sch_quantitative_lane_readout",
+  "n_effect_rows": 8,
+  "n_independent_clusters": 4,
+  "n_rows_with_standard_error": 4,
+  "n_clusters_with_any_uncertainty_bearing_effect": 3,
+  "n_within_study_conflict_component_candidates": 4,
+  "n_within_study_conflict_component_clusters_with_exact_numeric_values": 2,
+  "within_study_conflict_component_candidates": [
+    "Dalechampia_shared_bract",
+    "Silene_petals_sexual_function",
+    "Fragaria_inflorescence_density",
+    "Gymnadenia_flowering_phenology"
+  ],
+  "n_strata_with_at_least_3_compatible_independent_clusters": 0,
+  "status": "FOUR_STRICT_CONFLICT_CANDIDATES_TWO_NUMERIC_EXACT_NO_RANDOM_EFFECTS_POOL_YET",
+  "current_numeric_clusters": [
+    "Pedicularis_rex_water_bract_2015",
+    "Theis_et_al_2014_Cucurbitaceae",
+    "Gross_Sun_Schiestl_2016_Gymnadenia_odoratissima",
+    "Adler_Irwin_2005_Gelsemium",
+    "Dalechampia_shared_bract",
+    "Silene_petals_sexual_function"
+  ],
+  "main_blocker": "The strict lane now has four replicated same-coordinate conflict designs, but only Dalechampia and Silene have exact component coefficients in the current extraction. Fragaria Table S2 and Gymnadenia Appendix A still require exact extraction, and valid within-study contrast variances/covariances are required before any random-effects pool.",
+  "claim_ceiling": "replicated same-coordinate opposing-selection signatures with a growing quantitative inventory; not a pooled grand effect, SCH loss L, or bounded state-specific optima"
+}
