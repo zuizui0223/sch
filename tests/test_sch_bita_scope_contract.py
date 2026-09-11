@@ -13,16 +13,19 @@ def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_sch_keeps_local_conflict_and_compromise_as_chapter_one_estimands() -> None:
+def test_sch_keeps_local_conflict_and_compromise_as_its_estimands() -> None:
     manuscript = _text(MANUSCRIPT)
     readme = _text(README)
-    assert "M_A(g)" in manuscript
-    assert "G_A(p)" in manuscript
-    assert "does not by itself locate the full compromise optimum" in manuscript
-    assert "z_1^*" in manuscript or "z1*" in manuscript
-    assert "Chapter 2 / BALANCE" in readme
-    assert "Chapter 3 / BITA" in readme
-    assert "functional differentiation / modularization" in readme
+    # Current SCH uses component contrasts on the shared z coordinate rather
+    # than the superseded M_A(g)/G_A(p) manuscript notation.
+    assert "M_{G0}(z)" in manuscript
+    assert "H_{P0}(z)" in manuscript
+    assert "A local contrast does not locate the full compromise optimum" in manuscript
+    assert "z_{F1}^*" in manuscript
+    assert "SLK owns downstream transport" in manuscript
+    assert "BITA owns mechanism identification after multiple trait axes exist" in manuscript
+    assert "multifunctionality != identified functional conflict" in readme
+    assert "trait interaction != mechanism" in readme
 
 
 def test_three_world_contract_keeps_sch_as_left_boundary_only() -> None:

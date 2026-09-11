@@ -66,8 +66,10 @@ def test_protocol_and_readout_define_fail_closed_outcome_classes() -> None:
         assert token in protocol
     assert "observational interior compromise" in readout
     assert "lineage branching/specialization" in readout
-    assert "Contemporary functional differentiation is distinct from historical modularization" in framework
-    assert "does not prove that an ancestral shared trait split" in framework
+    # Current SCH manuscript expresses the same historical ceiling through its
+    # explicit unsupported-claim class and downstream ownership boundary.
+    assert "HISTORICAL_TRAIT_SPLITTING_INFERRED" in framework
+    assert "Once multiple traits interact, mechanism allocation belongs to BITA" in framework
 
 
 def test_chapter_sequence_keeps_estimands_and_positive_recovery_separate() -> None:
