@@ -4,7 +4,7 @@
 
 For `Pedicularis rex`, do **not** make pollinator exclusion the default P manipulation. Pollinators and seed predators both act after flowers open, so bagging / caging risks changing the antagonist lane at the same time.
 
-The preferred first pilot is instead:
+The preferred P pilot is:
 
 ```text
 P1 = open natural pollination
@@ -14,6 +14,8 @@ P0 = open + standardized saturating supplemental cross-pollen
 Both treatments remain open to the same visitor and seed-predator environment.
 
 The P manipulation therefore changes **dependence on pollinator-mediated pollen delivery**, not physical pollinator access.
+
+> **Important V2 correction.** The earlier prototype in this document paired P with water retained/drained as SCH antagonist `G`. That mapping is deprecated for the same-species SCH -> BITA chain. The registered V2 surface uses an **independent seed-predator exposure/exclusion intervention as G while water defence is held fixed**. See `SCH_PEDICULARIS_WATER_G_DEPRECATION_V1.md` and `SCH_PEDICULARIS_FULL_SURFACE_CONTRACT_V2.md`.
 
 ## Biological basis
 
@@ -56,7 +58,7 @@ or an equivalent predeclared pre-predation reproductive endpoint.
 
 The supplementation lane should exceed a preregistered minimum improvement in initial seed set or other validated pollen-limitation endpoint.
 
-If natural pollination is already saturating in the focal context, supplementation is biologically uninformative as a P-weight manipulation. That is a valid stop result.
+If natural pollination is already saturating in the focal context, supplementation is biologically uninformative as a P-weight manipulation. That is a valid stop result, not evidence that pollination is unimportant.
 
 ## P-pilot selectivity gate
 
@@ -90,44 +92,57 @@ or another preregistered early attack indicator.
 
 If the P treatment changes early antagonist attack beyond tolerance, it is not selective enough for the SCH crossed design.
 
-## Antagonist-weight states
+## Corrected antagonist-weight states for the V2 chain
 
-Use the existing water-defence manipulation as the starting G intervention.
+The registered same-species SCH -> BITA route uses an antagonist manipulation independent of the Chapter-2 water-defence axis:
 
 ```text
-G0 = water-retention protection active / antagonist weight reduced
-G1 = bract drained / antagonist weight increased.
+G0 = PREDATOR_EXCLUDED
+     seed-predator exposure selectively suppressed by a method-qualified
+     independent exclusion intervention
+
+G1 = PREDATOR_EXPOSED
+     matched exposed / sham condition.
 ```
 
-The 2015 experiment showed that draining increased seed predation while pollinator visitation and initial seed set were not detectably changed in that study.
+Required method receipt:
 
-This selectivity must still be replicated / prospectively bounded in the focal SCH population and season.
+```text
+SCH_PEDICULARIS_PREDATOR_METHOD_V3
+status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
+```
 
-## Four-state mapping
+During the SCH V2 surface:
 
-With the two weight interventions, the SCH state surfaces become:
+```text
+water_y = HELD_FIXED_ACROSS_ALL_SCH_CELLS.
+```
+
+The historical water retained/drained experiment remains important as causal evidence that water defence reduces antagonist damage, but it belongs to the BITA `y` lane / functional-y selectivity precedent, not the definitive SCH `G` lane.
+
+## Corrected four-state mapping
+
+With open-flower P manipulation and independent predator G, the registered V2 state surfaces are:
 
 ```text
 W00(z)
 = P0 supplemental pollen
-+ G0 water protection active
-= both focal functional constraints strongly reduced
++ G0 predator excluded
 
 W10(z)
 = P1 natural pollination
-+ G0 water protection active
-= pollination-facing state
++ G0 predator excluded
 
 W01(z)
 = P0 supplemental pollen
-+ G1 water defence disabled
-= antagonist-facing state
++ G1 predator exposed
 
 W11(z)
 = P1 natural pollination
-+ G1 water defence disabled
-= both functional demands active / combined state.
++ G1 predator exposed.
 ```
+
+Water defence is held fixed in every cell.
 
 The default empirical state optima retain the registered meaning:
 
@@ -139,19 +154,23 @@ z_C* = argmax W11(z).
 
 They are **state-specific reproductive optima**, not automatically pure `z_F1*` or `z_F2*`.
 
-## Why this mapping is useful
+## Why the corrected mapping matters
 
-The two manipulations attack different bottlenecks without requiring different physical visitor-exclusion regimes:
+The two Chapter-1 interventions now alter distinct ecological weights while preserving the Chapter-2 axis for an independent downstream test:
 
 ```text
 P manipulation
 -> changes pollen-limitation weight while leaving flowers open
 
 G manipulation
--> changes water-based antagonist protection while leaving pollination access open.
+-> changes seed-predator exposure independently
+
+water-y
+-> held fixed in SCH
+-> manipulated later in BITA.
 ```
 
-This reduces cage / bag / access artefacts and makes the four reproductive surfaces much easier to compare on one common seed-fitness endpoint.
+This prevents the protected water state from helping define the Chapter-1 reference and then being asked in Chapter 2 to move the optimum toward that same reference.
 
 ## Sham controls
 
@@ -159,29 +178,31 @@ This reduces cage / bag / access artefacts and makes the four reproductive surfa
 
 Natural-pollination flowers receive the same handling duration and stigma-contact procedure without the standardized pollen addition.
 
-### G sham / handling control
+### G sham
 
-The final confirmatory experiment should distinguish the intended water-state difference from cutting / puncture artefacts. A reversible drain/refill or matched sham-hole treatment is preferable if Stage G validation shows it can reproduce the original water effect without persistent tissue damage.
-
-The historical 2015 hole-at-bract-base method is evidence that the function is manipulable, not automatically the final confirmatory implementation.
+The exposed control receives handling matched to the selected exclusion device. The method-qualified G intervention must preserve pollinator-entry geometry, pollen receipt, water state, realized exsertion and handling integrity within prospectively frozen tolerances.
 
 ## Full experiment
 
-Once z, P and G all pass their own validation gates:
+Once z, P and independent G all pass their own validation gates:
 
 ```text
 >=5 realized z levels
 x P0/P1 pollination-weight state
-x G0/G1 antagonist-weight state
+x G0/G1 independent predator state
+
+water-y held fixed.
 ```
 
 Primary outcome:
 
 ```text
-mature intact viable seeds / ovules or the frozen common reproductive scale.
+undamaged mature viable seeds per focal flower / capsule
 ```
 
-Secondary mechanism outcomes:
+or the prospectively frozen common reproductive scale used by the V2 contract.
+
+Secondary mechanism outcomes include:
 
 ```text
 pollen receipt
@@ -192,7 +213,7 @@ pollinator visitation / handling
 water retention.
 ```
 
-Run the registered SCH state-surface analyzer, then the optional context-stable component-optimum upgrade.
+Run `SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2`, then the registered SCH state-surface analyzer, then the optional context-stable component-optimum upgrade.
 
 ## Stop rules
 
@@ -203,17 +224,43 @@ P supplementation does not improve the pollen-limitation endpoint
 P supplementation changes early predator attack
 -> P intervention not selective
 
-G manipulation changes pollination beyond tolerance
+independent G changes pollination, realized z, or water state beyond tolerance
 -> G intervention not selective
 
 z manipulation changes water-defence state
--> z intervention invalid.
+-> z intervention invalid
+
+only water retained/drained is available as G
+-> same-species SCH -> BITA chain remains unqualified; do not revert to the deprecated mapping.
 ```
 
 Any failed gate blocks the full factorial rather than being statistically adjusted away later.
 
+## Machine implementation
+
+Pollination-weight pilot:
+
+```text
+scripts/evaluate_pedicularis_pollination_weight.py
+receipt = SCH_PEDICULARIS_POLLINATION_WEIGHT_V1.
+```
+
+Independent antagonist method:
+
+```text
+scripts/evaluate_pedicularis_predator_method_v3.py
+receipt = SCH_PEDICULARIS_PREDATOR_METHOD_V3.
+```
+
+Readiness assembly:
+
+```text
+scripts/assemble_pedicularis_full_surface_readiness.py
+receipt = SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3.
+```
+
 ## Claim ceiling
 
-A successful P and G validation establishes only that the two functional weights can be manipulated selectively enough for the main experiment.
+Successful P and G validation establishes only that the two functional weights can be manipulated selectively enough for the main V2 experiment.
 
-It does not itself establish compromise, dimensional release, or historical modularization.
+It does not itself establish compromise, conflict budget `L`, dimensional release, architecture value, or historical modularization.
