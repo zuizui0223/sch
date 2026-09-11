@@ -55,16 +55,18 @@ def test_a_route_clusters_have_manual_fail_closed_adjudications() -> None:
     assert all(row["audit_status"] in {"FAIL", "PASS_DIRECTIONAL_ONLY"} for row in candidates)
 
 
-def test_readout_and_canonical_keep_local_and_two_trait_estimands_separate() -> None:
+def test_readout_and_canonical_keep_local_and_multi_axis_estimands_separate() -> None:
     readout = READOUT.read_text(encoding="utf-8")
     framework = FRAMEWORK.read_text(encoding="utf-8")
     assert "Delta_A W = Delta_A M - Delta_A G - Delta_A C" in readout
     assert "coverage existence" in readout
-    assert "M_A(g)" in framework
-    assert "G_A(p)" in framework
-    assert "does not by itself locate the full compromise optimum" in framework
-    assert "Chapter 2" in framework
-    assert "historical modularization" in framework
+    # The current SCH paper no longer owns the old M_A(g)/G_A(p) notation.
+    # It expresses local component identification with state contrasts on z.
+    assert "M_{G0}(z)" in framework
+    assert "H_{P0}(z)" in framework
+    assert "A local contrast does not locate the full compromise optimum" in framework
+    assert "SLK owns downstream transport" in framework
+    assert "BITA owns mechanism identification after multiple trait axes exist" in framework
 
 
 def test_frozen_source_exports_match_declared_hashes() -> None:
