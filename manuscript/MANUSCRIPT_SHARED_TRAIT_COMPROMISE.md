@@ -6,9 +6,9 @@
 
 ## Abstract
 
-Multifunctional traits are often described as evolutionary compromises, but multifunctionality alone does not establish conflict. Two functions may use the same phenotypic coordinate while favoring the same state, and even when experiments recover different reproductive optima across ecological contexts, those state-specific optima are not automatically the pure optima of the focal functions. SCH separates these inferential levels. For a shared trait coordinate \(z\), theory may define pure function-specific objectives with optima \(z_{F1}^*\) and \(z_{F2}^*\). A crossed empirical experiment instead identifies state-specific reproductive surfaces \(W_{00}(z),W_{10}(z),W_{01}(z),W_{11}(z)\), with directly estimable optima \(z_P^*\), \(z_G^*\), and \(z_C^*\). Because consumer-independent and direct trait effects can remain in every state, \(z_P^*\neq z_{F1}^*\) and \(z_G^*\neq z_{F2}^*\) in general. We therefore define a promotion ladder from multifunctionality to local functional conflict, state-specific compromise, and—only when component contrasts are context-stable—empirical pure-function optima. A strong causal compromise result requires distinct state-specific optima, a supported interior combined optimum, predictable optimum shifts when each functional demand is selectively removed, and opposing functional-component gradients near the combined optimum. Existing literature establishes that shared traits can affect multiple ecological routes, opposing demands and compromise occur, and interaction regimes can redirect evolution; it does not substitute for the same-coordinate identifying experiment. SCH's contribution is an explicit claim ceiling: evidence for multiple functions should not be promoted to functional conflict, and state-specific optima should not be promoted to pure-function optima, without the corresponding causal gate.
+Multifunctional traits are often described as evolutionary compromises, but multifunctionality alone does not establish conflict. Two functions may use the same phenotypic coordinate while favoring the same state, and even when experiments recover different reproductive optima across ecological contexts, those state-specific optima are not automatically the pure optima of the focal functions. SCH separates these inferential levels. For a shared trait coordinate \(z\), theory may define pure function-specific objectives with optima \(z_{F1}^*\) and \(z_{F2}^*\). A crossed empirical experiment instead identifies state-specific reproductive surfaces \(W_{00}(z),W_{10}(z),W_{01}(z),W_{11}(z)\), with directly estimable optima \(z_P^*\), \(z_G^*\), and \(z_C^*\). Because consumer-independent and direct trait effects can remain in every state, \(z_P^*\neq z_{F1}^*\) and \(z_G^*\neq z_{F2}^*\) in general. We therefore define a promotion ladder from multifunctionality to local functional conflict, state-specific compromise, and—only when component contrasts are context-stable—empirical pure-function optima. We then translate this ladder into literature-observable signatures before prioritizing a focal causal experiment. A source-adjudicated synthesis currently contains 16 independent biological clusters: five direct conflict-signature clusters, seven context-weight-shift clusters, two aligned/no-conflict controls, one shared-tracking conflict candidate, and one sequential-filter boundary. One manipulated system additionally recovers a combined-intermediate/compromise surface, but complete bounded pure-function optima remain unidentified. A strict quantitative inventory contains four strong same-coordinate conflict designs at different levels of numerical completeness, but no random-effects stratum currently satisfies the frozen compatibility and uncertainty gate. These results support recurrence of conflict-compatible and compromise-like geometry while showing that multifunctionality can also remain aligned and non-conflicted. They do not identify a general SCH conflict budget \(L\) or justify relabeling state-specific reproductive optima as pure-function optima. The residual empirical target is therefore sharply defined: selective multi-level \(z\times P\times G\) experiments are reserved for final causal state-surface reconstruction and optional pure-function promotion after the cross-system reality pattern has been established.
 
-**Keywords:** multifunctionality; functional conflict; compromise; causal identification; trait optimum; crossed intervention; promotion gate
+**Keywords:** multifunctionality; functional conflict; compromise; causal identification; trait optimum; literature synthesis; crossed intervention; promotion gate
 
 ## 1. Introduction
 
@@ -29,6 +29,8 @@ state-specific reproductive optimum
 ```
 
 The paper therefore asks a methodological question: **what evidence is required to promote a multifunctional trait from “serves several functions” to “is causally constrained by opposing functional demands,” and what additional evidence is required to promote context-specific reproductive optima to pure-function optima?**
+
+The empirical strategy mirrors that hierarchy. We first establish the mathematical and identification mechanism, then ask whether its observable signatures recur across independent biological systems, including systems in which multifunctionality is present but conflict is not recovered. Only after that cross-system map is assembled do we reserve a focal experiment for the quantities that existing studies structurally fail to identify.
 
 ## 2. Theory target and empirical target are different objects
 
@@ -228,39 +230,87 @@ Such systems are not exceptions to the framework; they are required demonstratio
 
 Likewise, a system can show context dependence without a stable one-axis compromise. Strong environmental switching can move the optimum between states rather than producing a persistent interior balance. That outcome should remain distinct from an integrated compromise claim.
 
-## 7. Existing evidence: reality of the mechanism, not identification of the estimand
+## 7. Source-adjudicated reality-pattern synthesis
 
-The literature provides strong ecological grounding. Shared floral traits can influence pollination and antagonism. Opposing selection on display traits and stabilizing net selection have been reported. Manipulated fragrance can increase antagonist attraction and lower reproduction without a compensating pollinator gain. Interaction regimes can shift morph frequencies and redirect multigeneration evolutionary trajectories.
+We translated the SCH identification ladder into literature-observable signatures before prioritizing a focal causal experiment. The unit of recurrence is an **independent biological cluster**, not a paper, population, year, treatment cell, or measured trait. The current targeted source-adjudicated universe contains 16 independent clusters. Because retrieval was theory-targeted rather than probability-sampled, these counts describe recurrence and evidence structure within the screened universe; they do not estimate natural prevalence.
 
-These studies establish that the constituent biology is real: multifunctionality, opposing ecological effects, compromise-like outcomes, context dependence, and evolutionary redirection all occur.
+### 7.1 Conflict signatures recur, but aligned multifunctionality also occurs
 
-They do not replace the same-coordinate crossed experiment required by SCH. A literature case with one pollinator result and another antagonist result cannot by itself identify \(z_P^*\), \(z_G^*\), \(z_C^*\), opposing component gradients, or the pure-function promotion gate in one biological system.
+Five clusters provide the strongest conflict-linked signatures in the current classification. Four are classified as `OPPOSING_DIRECTION`, where distinct functional routes favor opposing changes on one shared or closely bounded coordinate. A fifth cluster, *Satyrium longicauda*, provides a `COMBINED_INTERMEDIATE_OR_COMPROMISE` surface: experimentally shortened nectar spurs produced a male pollen-export maximum at an intermediate spur treatment, female fitness was highest at the largest tested spur length, and total fitness was hump-shaped in one year.
 
-The systematic programme therefore plays a reality-check role rather than defining the estimand. Current workflow counts—hundreds of screened records and a much smaller strict linked subset—measure evidence coverage, not natural prevalence of conflict.
+These positive cases are not the only informative observations. Two independent flower-orientation systems are classified as `SHARED_TRACKING_NO_CONFLICT`: the same trait contributes to multiple functions, but the available evidence does not establish that those functions favor different states. This negative class is central to SCH. It shows why “one trait, several functions” cannot itself be treated as an identified compromise.
 
-## 8. Empirical execution strategy
+One further system is retained as a `SHARED_TRACKING_CONFLICT_CANDIDATE`, where a shared cue affects multiple biological routes but the antagonist-loss component is not sufficiently linked to a common fitness estimand for promotion. Another is retained as `SEQUENTIAL_FILTER_COMBINATION`, where pollination and seed-predation selection occur at different fitness stages rather than forming the same simultaneous shared-coordinate estimand.
 
-The empirical programme should proceed through qualification gates rather than choosing a charismatic system and forcing it through the framework.
+The literature therefore recovers both sides of the first promotion gate: opposing functional signatures recur, but multifunctionality without identified conflict also recurs.
 
-**Dalechampia** remains a high-value compromise-surface candidate because published populations show opposing pollinator and seed-predator selection on shared floral structures. But the conflict is not species-wide, so population and season must be qualified before a full causal surface experiment.
+### 7.2 Context-weight shifts are common but do not identify pure-function optima
 
-**Nicotiana attenuata** remains a strong local shared-cue mechanism system because a floral attraction axis affects pollinator-mediated reproduction and antagonist-related processes. It is valuable for local conflict identification and later cross-framework handoff.
+Seven independent clusters are classified as `CONTEXT_WEIGHT_SHIFT`. Across these studies, drought, herbivory, consumer identity, antagonist pressure, phenological setting, or experimental interaction regime alters the effective selection acting on a multifunctional trait. These observations are consistent with the theoretical idea that the realized compromise depends on the relative weighting of functional demands.
 
-**Castilleja linariaefolia** remains a promising fallback where antagonist-to-seed pathways are short, but reversible focal-trait manipulation and selective consumer control require Stage-0 validation.
+They do not identify \(z_{F1}^*\) or \(z_{F2}^*\). A changed directional gradient is not the same object as a bounded optimum, and an optimum recovered under an ecological state is not automatically a pure functional optimum. The literature synthesis therefore records context dependence without silently promoting it to Level 4.
 
-Aligned-optimum flower-orientation systems remain valuable negative controls precisely because they can demonstrate multifunctionality without conflict.
+Published external meta-analyses of herbivory effects on floral traits, pollinator attraction, and reproduction provide a complementary quantitative layer: antagonist effects vary systematically with ecological context and can propagate into pollinator-facing and reproductive outcomes. Those meta-analytic effects are useful as evidence that functional weights vary; they are not estimates of SCH conflict loss \(L\) or of any function-specific optimum.
 
-The preferred execution chain is therefore:
+### 7.3 Complete separated optima remain the main literature gap
+
+The strongest manipulated combined-compromise case still stops below pure-function identification. In *Satyrium*, the upper side of the female fitness function was not mapped because the manipulation primarily shortened spurs. The female optimum therefore cannot be declared fully bounded within the tested range.
+
+Across the current 16-cluster universe, no literature case is promoted to a complete same-system reconstruction in which both pure functional optima are independently bounded, the combined optimum is identified, and the component surfaces pass the context-stability promotion gate with propagated uncertainty. That absence is itself an identification result. It prevents the paper from converting suggestive state-specific or marginal effects into quantities that the source designs do not identify.
+
+### 7.4 Quantitative recovery is active but random-effects pooling remains fail-closed
+
+The strict quantitative inventory contains four strong same-coordinate conflict designs at different levels of numerical completeness: *Dalechampia*, *Silene*, *Fragaria*, and *Gymnadenia*. Exact component coefficients are currently recorded for *Dalechampia* and *Silene*. The *Fragaria* and *Gymnadenia* studies contain relevant factorial or treatment-specific information, but a valid shared contrast with its full uncertainty must be reconstructed before quantitative promotion.
+
+No strict random-effects stratum is currently admitted. The frozen gate requires at least three independent biological clusters with the same estimand family, compatible orientation, valid uncertainty, and correct treatment of within-study covariance. Missing covariance is not replaced by an independence assumption, and inaccessible supplementary values are not reconstructed by eye from figures.
+
+The inclusion rule also matters. If a future numerical pool includes only systems admitted because they already show the focal opposing-sign pattern, the resulting mean is **conditional on positive admission**. Such a pool may summarize magnitude and heterogeneity among positive cases, but it cannot serve as an unbiased mean across all design-eligible systems or as an independent statistical test that recurrence exists. A design-wide synthesis would require a sign-independent eligibility rule and retention of aligned/no-conflict systems in the same eligible universe.
+
+### 7.5 Empirical conclusion of the synthesis layer
+
+The literature layer supports four bounded conclusions:
+
+1. same-coordinate opposing functional signatures recur across independent systems;
+2. multifunctionality can also occur without identified conflict;
+3. ecological context frequently changes effective functional weighting;
+4. combined-compromise geometry can be recovered in a manipulated system, while complete pure-function optimum identification remains rare.
+
+It does **not** directly identify a general SCH conflict budget \(L\), the complete state-surface causal chain, or pure-function optima by default. Those objects remain behind the higher promotion gates.
+
+## 8. Final causal identification layer
+
+The literature synthesis defines rather than replaces the remaining experiment. Its role is no longer to show that multifunctionality, opposing demands, or compromise-like outcomes exist; those patterns are already recovered across independent systems. The final experiment is needed only for the quantities that the literature leaves structurally unidentified.
+
+A qualified focal system should therefore be chosen by fail-closed gates rather than by prominence. The strongest direct design manipulates the same trait coordinate \(z\) across several levels and selectively crosses pollinator and antagonist states so that \(W_{00}(z), W_{10}(z), W_{01}(z), W_{11}(z)\) can be fitted on one reproductive scale.
+
+A strong Level-3 causal compromise receipt then requires:
 
 ```text
-qualify conflict-active context
-→ validate reversible multi-level z manipulation
-→ validate selective consumer interventions
-→ fit W00(z), W10(z), W01(z), W11(z)
-→ recover z_P*, z_G*, z_C*
-→ test optimum shifts and opposing component gradients
-→ optionally test context-stable component optima
-→ export only justified quantities downstream
+z_P* != z_G*
+combined W11(z) has a supported interior z_C*
+G off -> optimum shifts toward z_P*
+P off -> optimum shifts toward z_G*
+opposing functional-component gradients near z_C*
+```
+
+Promotion to empirical pure-function optima is optional and stricter. The component surfaces \(M_{G0}(z),M_{G1}(z),H_{P0}(z),H_{P1}(z)\) must support context-stable component optima inside prospectively frozen equivalence bounds with propagated uncertainty. If they do not, SCH retains conditional component optima rather than forcing a pure-function interpretation.
+
+**Dalechampia** remains a high-value first candidate because published populations contain opposing pollinator and seed-predator selection on shared floral structures, but conflict is not species-wide and must be qualified by population and season. **Nicotiana attenuata** remains a strong local shared-cue mechanism candidate and downstream bridge system. **Castilleja linariaefolia** remains a fallback requiring reversible trait manipulation and selective consumer control. Aligned-optimum systems remain valuable experimental negative controls.
+
+The final execution chain is therefore deliberately last in the empirical programme:
+
+```text
+literature recurrence / specificity map
+-> quantitative compatibility audit
+-> residual identification gap
+-> qualify conflict-active focal context
+-> validate reversible multi-level z manipulation
+-> validate selective consumer interventions
+-> fit W00(z), W10(z), W01(z), W11(z)
+-> recover z_P*, z_G*, z_C*
+-> test optimum shifts and opposing component gradients
+-> optionally test context-stable component optima
+-> export only justified quantities downstream
 ```
 
 ## 9. Relation to SLK and BITA
@@ -305,6 +355,8 @@ The framework is falsified for the declared conflict claim if the two functions 
 
 The pure-function promotion is separately falsified when component optima change materially across the alternate consumer state. In that case SCH retains context-dependent functional objectives rather than forcing context stability.
 
+The literature synthesis supplies an additional specificity falsifier: aligned multifunctionality is an admissible and expected negative class. A framework that promoted every multifunctional trait to conflict would fail its own evidence ladder.
+
 ## 11. Claim ceiling
 
 Current evidence supports:
@@ -313,6 +365,8 @@ Current evidence supports:
 MULTIFUNCTIONALITY_REALITY_RECOVERED
 CASE_LEVEL_OPPOSING_DEMANDS_RECOVERED
 CASE_LEVEL_COMPROMISE_RECOVERED
+SOURCE_ADJUDICATED_CONFLICT_RECURRENCE_RECOVERED
+ALIGNED_NO_CONFLICT_CONTROLS_RECOVERED
 STATE_SPECIFIC_CAUSAL_COMPROMISE_ANALYZER_READY
 PURE_FUNCTION_PROMOTION_GATE_READY
 ```
@@ -320,17 +374,20 @@ PURE_FUNCTION_PROMOTION_GATE_READY
 Current evidence does **not** yet support:
 
 ```text
+GENERAL_SCH_LOSS_L_META_ESTIMATED
 COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_EXECUTED
 PURE_FUNCTION_OPTIMA_IDENTIFIED_BY_DEFAULT
 HISTORICAL_TRAIT_SPLITTING_INFERRED
 ```
 
-The latter claims require new biological evidence rather than stronger prose.
+Contemporary functional differentiation and mechanism allocation are distinct from historical trait splitting. The latter claims require new biological evidence rather than stronger prose.
 
 ## 12. Conclusion
 
 Multifunctionality is not functional conflict, and a context-specific reproductive optimum is not automatically a pure-function optimum. These are separate promotion steps with separate evidence requirements.
 
-SCH turns compromise from an intuitive label into an identification problem. A strong claim requires opposing causal geometry on the same coordinate, a supported combined optimum, predictable shifts when each functional demand is removed, and opposing component gradients. A still stronger pure-function claim requires context-stable component optima rather than a relabelled ecological state.
+SCH turns compromise from an intuitive label into an identification problem. The cross-system synthesis shows that opposing same-coordinate signatures and compromise-like geometry recur, that ecological weighting is strongly context-dependent, and that aligned multifunctionality provides a real negative class. At the same time, the literature rarely identifies complete bounded pure-function optima and does not justify a general conflict budget \(L\).
 
-This narrower paper is stronger because it stops before architecture value and evolutionary realization. Once conflict is identified, those downstream questions belong to SLK. Once multiple traits interact, mechanism allocation belongs to BITA. SCH's job is earlier and more basic: determine whether the conflict being transported downstream has actually been identified at all.
+This combination is the point of the paper: mathematics defines the promotion gates, the literature tests whether their observable signatures occur in reality, and the focal crossed experiment is reserved for the residual causal quantities that published studies do not identify. A strong final causal claim requires opposing geometry on the same coordinate, a supported combined optimum, predictable shifts when each functional demand is removed, and opposing component gradients. A still stronger pure-function claim requires context-stable component optima rather than a relabelled ecological state.
+
+This narrower ownership keeps the programme clean. Once conflict is identified, downstream architecture value and evolutionary realization belong to SLK. Once multiple traits interact, mechanism allocation belongs to BITA. SCH's job is earlier and more basic: determine whether the conflict being transported downstream has actually been identified at all.
