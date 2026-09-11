@@ -124,6 +124,6 @@ def test_state_specific_optima_are_not_relabelled_as_pure_function_optima() -> N
     # and prose rather than the legacy ASCII spelling.
     assert "z_P^*\\neq z_{F1}^*" in manuscript
     assert "z_G^*\\neq z_{F2}^*" in manuscript
-    assert "state-specific reproductive optima" in manuscript
+    assert "The directly identified state-specific optima are" in manuscript
     assert "not automatically optima of pure functional objectives" in manuscript
     assert "Equality requires an additional identifying argument" in contract
