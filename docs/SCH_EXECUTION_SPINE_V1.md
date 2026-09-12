@@ -8,7 +8,7 @@ real-world multifunctionality
 -> validate selective interventions
 -> manipulate one shared z over multiple levels
 -> recover causal compromise geometry
--> hand identified one-dimensional constraint to BITA.
+-> export only justified conflict receipts downstream.
 ```
 
 This document is the operational reader path. Literature products remain evidence that the biological architecture is real; they do not replace any experimental gate below.
@@ -228,7 +228,7 @@ Dalechampia
   requires conflict-active context + selective G recovery
 
 Nicotiana
-= strongest local same-coordinate mechanism + BITA continuity
+= strongest local same-coordinate mechanism + BITA mechanism-identification continuity
 
 Castilleja
 = strong short-path opposing-selection fallback
@@ -238,27 +238,48 @@ Platycodon / aligned-optimum class
 = negative control demonstrating multifunctionality without conflict.
 ```
 
-## BITA handoff
+## Downstream handoffs
 
-A positive SCH receipt supplies the one-dimensional reference architecture:
+A positive SCH receipt supplies a justified one-dimensional conflict reference:
 
 ```text
 shared trait z
 z_P* = z_pollinator_context
 z_G* = z_antagonist_context
 z_C* = z_combined
-compromise displacement / gradient geometry.
+compromise displacement / gradient geometry
 ```
 
-BITA then tests whether an added trait coordinate yields:
+These are state-specific quantities at the SCH claim ceiling.
+
+### Handoff to SLK
+
+SLK owns architecture-value transport. If SCH additionally passes a common-fitness conflict-budget gate, it may export an identified or explicitly bounded `L` receipt. SLK then owns downstream quantities such as:
 
 ```text
-preferential functional loading
-+ movement of the first trait toward z_P* by default
-+ a fitness combination outside the shared one-dimensional path
-= state-specific dimensional release / functional differentiation.
+R
+K
+Phi
+accessibility
+invasion
+fixation
+occupancy.
 ```
 
-Only if SCH independently identifies pure `z_F1*` should BITA add a stricter pure-function release lane.
+SCH does not infer those quantities from its compromise geometry alone.
 
-Thus the two chapters are linked by measured quantities rather than by narrative analogy, while theory-level and state-specific optima remain distinct.
+### Handoff to BITA
+
+BITA no longer treats the SCH receipt as proof of dimensional release. If the same biological system also provides a prospectively defined two-trait interaction, the SCH result can serve only as an upstream qualification/reference showing that a shared-coordinate conflict has been independently characterized.
+
+BITA then asks a different question:
+
+```text
+trait interaction != ecological mechanism
+```
+
+and requires its own focal A x D interaction, selective antagonist and pollinator interventions, pollinator-independent baseline handling, four-way separability diagnostic, and an independent assay before assigning a biological label to any remaining joint channel.
+
+The SCH antagonist intervention `G` must remain distinct from any defence trait `D` later used by BITA. A water-defence manipulation, for example, cannot simultaneously be counted as the independent SCH antagonist toggle and as the BITA defence coordinate.
+
+Thus SCH, SLK, and BITA may share a biological platform and frozen identifiers, but their inferential receipts remain distinct rather than being reused as proof of one another.
