@@ -13,6 +13,10 @@ import argparse
 import json
 import math
 from pathlib import Path
+from sys import float_info
+
+
+_DEFAULT_REL_TOL = 64.0 * float_info.epsilon
 
 
 def _finite(value: float, name: str) -> float:
@@ -34,6 +38,13 @@ def _nonnegative(value: float, name: str) -> float:
     if value < 0:
         raise ValueError(f"{name} must be >= 0")
     return value
+
+
+def _relative_close(left: float, right: float, rel_tol: float) -> bool:
+    scale = max(abs(left), abs(right))
+    if scale == 0.0:
+        return left == right
+    return abs(left - right) <= rel_tol * scale
 
 
 def recoverable_loss(function2_weight: float, function1_weight: float, coupling: float, optimum_distance: float) -> float:
@@ -58,17 +69,35 @@ def solve_critical_function2_weight(
     coupling: float,
     optimum_distance: float,
     architecture_cost: float,
-    tolerance: float = 1e-12,
+    tolerance: float = _DEFAULT_REL_TOL,
 ) -> dict:
+    """Solve the projected critical function-2 weight on a normalized scale.
+
+    ``function1_weight``, ``coupling``, ``architecture_cost`` and the solved
+    function-2 weight share a common fitness/curvature scale.  The solver first
+    divides those quantities by one common positive scale, performs all
+    numerical boundary comparisons in that dimensionless representation, and
+    restores the solved weight to the caller's original units.
+
+    ``tolerance`` is therefore dimensionless and relative; exact zero
+    architecture cost remains a distinct biological/model boundary.
+    """
+
     a = _positive(function1_weight, "function1_weight")
     lam = _nonnegative(coupling, "coupling")
     d = _nonnegative(optimum_distance, "optimum_distance")
     K = _nonnegative(architecture_cost, "architecture_cost")
     tol = _nonnegative(tolerance, "tolerance")
-    ceiling = asymptotic_recovery(a, lam, d)
+
+    fitness_scale = max(a, lam, K)
+    a_n = a / fitness_scale
+    lam_n = lam / fitness_scale
+    K_n = K / fitness_scale
+    ceiling_n = a_n * a_n * d * d / (a_n + lam_n)
+    ceiling = fitness_scale * ceiling_n
 
     if d == 0:
-        if K <= tol:
+        if K == 0.0:
             return {
                 "critical_function2_weight": 0.0,
                 "status": "ALL_WEIGHTS_ON_ZERO_CONFLICT_BOUNDARY",
@@ -80,30 +109,37 @@ def solve_critical_function2_weight(
             "asymptotic_recoverable_loss": ceiling,
         }
 
-    if K <= tol:
+    if K == 0.0:
         return {
             "critical_function2_weight": 0.0,
             "status": "ZERO_COST_COLLAPSES_PROJECTED_ARCHITECTURE_THRESHOLD_TO_CONFLICT_ONSET",
             "asymptotic_recoverable_loss": ceiling,
         }
 
-    scale = max(1.0, abs(K), abs(ceiling))
-    if abs(K - ceiling) <= tol * scale:
+    if _relative_close(K_n, ceiling_n, tol):
         return {
             "critical_function2_weight": math.inf,
             "status": "ASYMPTOTIC_CRITICAL_WEIGHT_NO_FINITE_CROSSING",
             "asymptotic_recoverable_loss": ceiling,
         }
-    if K > ceiling:
+    if K_n > ceiling_n:
         return {
             "critical_function2_weight": None,
             "status": "COST_EXCEEDS_MAX_RECOVERABLE_LOSS_BALANCE_ONLY",
             "asymptotic_recoverable_loss": ceiling,
         }
 
-    A = a * a * d * d - K * (a + lam)
-    discriminant = K * K * (a + 2.0 * lam) ** 2 + 4.0 * K * lam * A
-    bcrit = a * (K * (a + 2.0 * lam) + math.sqrt(discriminant)) / (2.0 * A)
+    A = a_n * a_n * d * d - K_n * (a_n + lam_n)
+    discriminant = (
+        K_n * K_n * (a_n + 2.0 * lam_n) ** 2
+        + 4.0 * K_n * lam_n * A
+    )
+    bcrit_n = (
+        a_n
+        * (K_n * (a_n + 2.0 * lam_n) + math.sqrt(discriminant))
+        / (2.0 * A)
+    )
+    bcrit = fitness_scale * bcrit_n
     return {
         "critical_function2_weight": bcrit,
         "status": "FINITE_PROJECTED_FUNCTION2_WEIGHT_CRITICAL_POINT",
