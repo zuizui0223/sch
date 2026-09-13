@@ -10,6 +10,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Callable
 
+from scripts.scale_free_relative import relative_change
+
 
 POPULATION_REQUIRED = (
     "population_id",
@@ -188,8 +190,7 @@ def evaluate_population(rows: list[dict[str, str]], config: dict, rng: random.Ra
 
 
 def _relative_change(a: float, b: float) -> float:
-    scale = max(abs(b), 1e-12)
-    return abs(a - b) / scale
+    return relative_change(a, b)
 
 
 def _plant_window_summary(rows: list[dict[str, str]]) -> dict[tuple[str, str], dict[str, float]]:

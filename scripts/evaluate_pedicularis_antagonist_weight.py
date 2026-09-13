@@ -10,6 +10,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Callable
 
+from scripts.scale_free_relative import relative_change
+
 
 REQUIRED_FIELDS = (
     "population_id","season_id","plant_id","flower_id","defence_treatment",
@@ -153,7 +155,7 @@ def _paired_relative_difference(rows: list[dict[str, str]], field: str) -> float
     for plant in plants:
         intact = _plant_mean(rows, plant, "INTACT", lambda r, f=field: _num(r, f))
         drained = _plant_mean(rows, plant, "DRAINED", lambda r, f=field: _num(r, f))
-        diffs.append(abs(drained - intact) / max(abs(intact), 1e-12))
+        diffs.append(relative_change(drained, intact))
     return mean(diffs)
 
 

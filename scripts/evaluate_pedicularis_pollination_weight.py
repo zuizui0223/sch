@@ -10,6 +10,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Callable
 
+from scripts.scale_free_relative import relative_change
+
 
 REQUIRED_FIELDS = (
     "population_id",
@@ -174,7 +176,7 @@ def _paired_relative_difference(rows: list[dict[str, str]], field: str) -> float
     for plant in plants:
         natural = _plant_mean(rows, plant, "NATURAL", lambda r, f=field: _num(r, f))
         supplemented = _plant_mean(rows, plant, "SUPPLEMENTED", lambda r, f=field: _num(r, f))
-        diffs.append(abs(supplemented - natural) / max(abs(natural), 1e-12))
+        diffs.append(relative_change(supplemented, natural))
     return mean(diffs)
 
 
@@ -195,8 +197,6 @@ def _bootstrap_paired(rows: list[dict[str, str]], statistic: Callable[[list[dict
     for _ in range(reps):
         sampled: list[dict[str, str]] = []
         for draw, source_plant in enumerate(rng.choices(plants, k=len(plants))):
-            # Relabel each bootstrap draw so duplicate source plants remain
-            # distinct resampled clusters instead of collapsing back to one ID.
             for source_row in by_plant[source_plant]:
                 row = dict(source_row)
                 row["plant_id"] = f"BOOT_{draw:04d}"
