@@ -81,13 +81,24 @@ def _quantile(values: list[float], q: float) -> float:
 
 
 def _solve3(matrix: list[list[float]], rhs: list[float]) -> tuple[float, float, float]:
+    """Solve a dense 3x3 system with scale-aware partial pivoting."""
+
     aug = [row[:] + [value] for row, value in zip(matrix, rhs)]
+    row_scales = [max(abs(value) for value in row) for row in matrix]
+    if any(scale == 0.0 for scale in row_scales):
+        raise ValueError("quadratic fit is singular")
+    relative_tol = 64.0 * math.ulp(1.0)
+
     for col in range(3):
-        pivot = max(range(col, 3), key=lambda r: abs(aug[r][col]))
-        if abs(aug[pivot][col]) < 1e-12:
+        pivot = max(
+            range(col, 3),
+            key=lambda r: abs(aug[r][col]) / row_scales[r],
+        )
+        if abs(aug[pivot][col]) <= relative_tol * row_scales[pivot]:
             raise ValueError("quadratic fit is singular")
         if pivot != col:
             aug[col], aug[pivot] = aug[pivot], aug[col]
+            row_scales[col], row_scales[pivot] = row_scales[pivot], row_scales[col]
         scale = aug[col][col]
         aug[col] = [value / scale for value in aug[col]]
         for row in range(3):
@@ -101,30 +112,49 @@ def _solve3(matrix: list[list[float]], rhs: list[float]) -> tuple[float, float, 
 def _fit_quadratic(points: list[tuple[float, float]]) -> dict:
     if len(points) < 3:
         raise ValueError("quadratic fit requires at least three z levels")
-    xs = [x for x, _ in points]
-    ys = [y for _, y in points]
-    if len({round(x, 12) for x in xs}) < 3:
+    xs = [float(x) for x, _ in points]
+    ys = [float(y) for _, y in points]
+    if len(set(xs)) < 3:
         raise ValueError("quadratic fit requires at least three distinct measured z values")
 
+    # Fit in a dimensionless coordinate t=(z-center)/scale.  This avoids
+    # making polynomial identifiability depend on the physical units of z and
+    # keeps the normal equations well-scaled even for very small/large z units.
+    center = mean(xs)
+    z_scale = max(abs(x - center) for x in xs)
+    if z_scale == 0.0:
+        raise ValueError("quadratic fit is singular")
+    ts = [(x - center) / z_scale for x in xs]
+
     n = float(len(points))
-    s1 = sum(xs)
-    s2 = sum(x * x for x in xs)
-    s3 = sum(x**3 for x in xs)
-    s4 = sum(x**4 for x in xs)
+    s1 = sum(ts)
+    s2 = sum(t * t for t in ts)
+    s3 = sum(t**3 for t in ts)
+    s4 = sum(t**4 for t in ts)
     t0 = sum(ys)
-    t1 = sum(x * y for x, y in points)
-    t2 = sum((x * x) * y for x, y in points)
-    a, b, c = _solve3(
+    t1 = sum(t * y for t, y in zip(ts, ys))
+    t2 = sum((t * t) * y for t, y in zip(ts, ys))
+    alpha, beta, gamma = _solve3(
         [[n, s1, s2], [s1, s2, s3], [s2, s3, s4]],
         [t0, t1, t2],
+    )
+
+    inv_scale = 1.0 / z_scale
+    c = gamma * inv_scale * inv_scale
+    b = beta * inv_scale - 2.0 * gamma * center * inv_scale * inv_scale
+    a = (
+        alpha
+        - beta * center * inv_scale
+        + gamma * center * center * inv_scale * inv_scale
     )
 
     discrete_index = max(range(len(points)), key=lambda i: points[i][1])
     discrete_optimum = points[discrete_index][0]
     z_min, z_max = min(xs), max(xs)
     vertex = None
-    if c < 0:
-        candidate = -b / (2 * c)
+    if gamma < 0:
+        candidate_t = -beta / (2.0 * gamma)
+        candidate = center + z_scale * candidate_t
         if z_min <= candidate <= z_max:
             vertex = candidate
     optimum = vertex if vertex is not None else discrete_optimum
