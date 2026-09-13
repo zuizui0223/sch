@@ -20,6 +20,10 @@ import argparse
 import json
 import math
 from pathlib import Path
+from sys import float_info
+
+
+_DEFAULT_REL_TOL = 64.0 * float_info.epsilon
 
 
 def _finite(value: float, name: str) -> float:
@@ -117,12 +121,25 @@ def projected_architecture_margin(
     return s * load - _nonnegative(architecture_cost, "architecture_cost")
 
 
-def classify_projected_boundary(margin: float, tolerance: float = 1e-12) -> str:
+def classify_projected_boundary(
+    margin: float,
+    reference_scale: float,
+    tolerance: float = _DEFAULT_REL_TOL,
+) -> str:
+    """Classify the projected architecture margin with relative roundoff.
+
+    ``reference_scale`` must be a commensurate fitness scale, normally
+    ``max(abs(s*L), abs(K))``.  ``tolerance`` is dimensionless; this avoids
+    introducing a fixed fitness-unit critical band.
+    """
+
     margin = _finite(margin, "margin")
+    reference_scale = _nonnegative(reference_scale, "reference_scale")
     tolerance = _nonnegative(tolerance, "tolerance")
-    if margin > tolerance:
+    numerical_band = tolerance * reference_scale
+    if margin > numerical_band:
         return "DIFFERENTIATED_WORLD_FAVOURED_IF_AVAILABLE"
-    if margin < -tolerance:
+    if margin < -numerical_band:
         return "SHARED_WORLD_RETAINS_ARCHITECTURE_ADVANTAGE"
     return "COMMON_ARCHITECTURE_CRITICAL_SURFACE"
 
@@ -154,7 +171,9 @@ def criticality_report(config: dict) -> dict:
 
     load = shared_conflict_load(theta1, theta2, w1, w2)
     s = decoupling_fraction(w1, w2, coupling)
-    margin = s * load - cost
+    recoverable = s * load
+    margin = recoverable - cost
+    margin_scale = max(abs(recoverable), abs(cost))
     report = {
         "chapter": "SCH_CHAPTER_1_BALANCE",
         "shared_optimum": shared_optimum(theta1, theta2, w1, w2),
@@ -167,7 +186,10 @@ def criticality_report(config: dict) -> dict:
         "projected_critical_conflict_load": projected_critical_conflict_load(cost, s),
         "projected_critical_optimum_distance": projected_critical_optimum_distance(cost, w1, w2, coupling),
         "projected_architecture_margin": margin,
-        "projected_architecture_status": classify_projected_boundary(margin),
+        "projected_architecture_margin_scale": margin_scale,
+        "projected_architecture_status": classify_projected_boundary(
+            margin, margin_scale
+        ),
         "critical_surface_identity": "s*L_S* = K",
         "interpretation": (
             "The Chapter-1 critical load is a projection of the cross-architecture boundary. "
