@@ -10,6 +10,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Callable
 
+from scripts.scale_free_relative import relative_change
+
 
 REQUIRED_FIELDS = (
     "population_id",
@@ -162,8 +164,7 @@ def _sham_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
 
 
 def _relative_difference(value: float, reference: float) -> float:
-    scale = max(abs(reference), 1e-12)
-    return abs(value - reference) / scale
+    return relative_change(value, reference)
 
 
 def _rank_metrics(rows: list[dict[str, str]]) -> dict:
