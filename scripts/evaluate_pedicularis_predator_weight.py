@@ -9,6 +9,8 @@ from collections import defaultdict
 from pathlib import Path
 from statistics import mean
 
+from scripts.scale_free_relative import relative_change
+
 
 REQUIRED_FIELDS = (
     "population_id","season_id","plant_id","flower_id","predator_treatment","exclusion_method",
@@ -75,10 +77,9 @@ def _plant_pairs(rows):
     for plant,treatments in sorted(by.items()):
         if set(treatments)!=set(TREATMENTS): continue
         def m(t,fn): return mean(fn(r) for r in treatments[t])
-        exposed=treatments["EXPOSED"]; excluded=treatments["EXCLUDED"]
         def rel(field):
             a=m("EXPOSED",lambda r,f=field:_num(r,f)); b=m("EXCLUDED",lambda r,f=field:_num(r,f))
-            return abs(b-a)/max(abs(a),1e-12)
+            return relative_change(b, a)
         pairs.append({
             "plant_id":plant,
             "attack_reduction":m("EXPOSED",lambda r:_bin(r,"early_predator_attack_present"))-m("EXCLUDED",lambda r:_bin(r,"early_predator_attack_present")),
