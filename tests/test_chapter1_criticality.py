@@ -39,7 +39,10 @@ def test_reference_case_projects_the_same_boundary_from_chapter1() -> None:
 
     margin = projected_architecture_margin(0.0, dcrit, 0.1, 1.0, 1.0, 1.0)
     assert abs(margin) < 1e-12
-    assert classify_projected_boundary(margin) == "COMMON_ARCHITECTURE_CRITICAL_SURFACE"
+    assert (
+        classify_projected_boundary(margin, reference_scale=0.1)
+        == "COMMON_ARCHITECTURE_CRITICAL_SURFACE"
+    )
 
 
 def test_either_side_of_reference_boundary_has_expected_projection() -> None:
