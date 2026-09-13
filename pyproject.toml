@@ -6,3 +6,6 @@ requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "prose_contract: Markdown-sensitive document/prose contract checks; advisory rather than core code validation",
+]
