@@ -69,37 +69,37 @@ def fig1() -> str:
 
 def fig2() -> str:
     b = [text(650, 48, "Figure 2. What the crossed experiment identifies", "title", "middle")]
-    # Four state surfaces as simple parabolas with shifted vertices.
-    x0, y0, w, h = 70, 115, 710, 510
+    x0, y0, w, h = 70, 115, 710, 620
     b.append(f'<rect x="{x0}" y="{y0}" width="{w}" height="{h}" rx="16" class="box"/>')
     b.append(text(x0 + 25, y0 + 38, "A. Context-specific reproductive surfaces", "head"))
-    b.append('<line x1="130" y1="565" x2="720" y2="565" class="line"/>')
-    b.append('<line x1="130" y1="565" x2="130" y2="185" class="line"/>')
-    b.append(text(425, 602, "trait coordinate z", "body", "middle"))
-    b.append(text(92, 365, "fitness", "body", "middle"))
+    b.append('<line x1="130" y1="545" x2="720" y2="545" class="line"/>')
+    b.append('<line x1="130" y1="545" x2="130" y2="185" class="line"/>')
+    b.append(text(425, 582, "trait coordinate z", "body", "middle"))
+    b.append(text(92, 350, "fitness", "body", "middle"))
     paths = [
-        ('M 155 500 Q 300 190 445 500', 'W10(z): pollinator-present / antagonist-off'),
-        ('M 300 500 Q 445 225 590 500', 'W11(z): combined state'),
-        ('M 445 500 Q 590 205 710 500', 'W01(z): pollinator-off / antagonist-present'),
-        ('M 205 515 Q 430 330 665 515', 'W00(z): both focal channels off'),
+        ('M 155 485 Q 300 190 445 485', 'W10(z): pollinator-present / antagonist-off'),
+        ('M 300 485 Q 445 225 590 485', 'W11(z): combined state'),
+        ('M 445 485 Q 590 205 710 485', 'W01(z): pollinator-off / antagonist-present'),
+        ('M 205 500 Q 430 330 665 500', 'W00(z): both focal channels off'),
     ]
     for d, _ in paths:
         b.append(f'<path d="{d}" class="line"/>')
     b.append(text(285, 180, "zP*", "head", "middle"))
     b.append(text(445, 215, "zC*", "head", "middle"))
     b.append(text(595, 195, "zG*", "head", "middle"))
-    yy = 650
+    yy = 620
     for _, lab in paths:
-        b.append(text(90, yy, lab, "small")); yy += 25
+        b.append(text(95, yy, lab, "small"))
+        yy += 25
 
     b.append(box(825, 115, 405, 220, "B. Direct claim", [
         "zP*, zG*, zC* are optima", "of declared ecological states.", "", "They are not automatically", "pure-function optima."
     ], "dark"))
-    b.append(box(825, 370, 405, 300, "C. Promotion test", [
-        "MG0(z)=W10-W00", "MG1(z)=W11-W01", "HP0(z)=W01-W00", "HP1(z)=W11-W10", "", "Promote only if component", "optima are context-stable", "within a frozen equivalence bound."
+    b.append(box(825, 370, 405, 365, "C. Promotion test", [
+        "M_G0(z)=W10-W00", "M_G1(z)=W11-W01", "H_P0(z)=W01-W00", "H_P1(z)=W11-W10", "", "Promote only if component", "optima are context-stable", "within a frozen equivalence bound."
     ], "soft"))
-    b.append(text(650, 735, "Consumer removal identifies causal contrasts; it does not erase every non-focal pathway by definition.", "head", "middle"))
-    return svg(1300, 780, "".join(b))
+    b.append(text(650, 805, "Consumer removal identifies causal contrasts; it does not erase every non-focal pathway by definition.", "head", "middle"))
+    return svg(1300, 850, "".join(b))
 
 
 def fig3() -> str:
@@ -122,7 +122,7 @@ def fig3() -> str:
         b.append(text(90, y + 58, note, "small"))
         y += 105
     b.append(box(90, 690, 1120, 150, "Quantitative gate remains fail-closed", [
-        "Four strong same-coordinate designs are in the strict inventory, but no random-effects stratum currently", 
+        "Four strong same-coordinate designs are in the strict inventory, but no random-effects stratum currently",
         "has ≥3 independent clusters with a compatible estimand, orientation, valid uncertainty, and covariance handling.",
         "Positive-only admission cannot be reinterpreted as prevalence or as an independent recurrence test."
     ], "soft"))
@@ -130,27 +130,27 @@ def fig3() -> str:
 
 
 def fig4() -> str:
-    b = [text(650, 48, "Figure 4. The residual experiment and programme hand-off", "title", "middle")]
-    b.append(box(70, 115, 360, 300, "SCH — identify conflict", [
-        "same coordinate", "opposing causal geometry", "state-specific compromise", "component stability gate", "", "Output: justified conflict", "and, when possible, L"
+    b = [text(650, 48, "Figure 4. From conflict identification to downstream questions", "title", "middle")]
+    b.append(box(55, 115, 355, 310, "Conflict identification", [
+        "same coordinate", "opposing causal geometry", "state-specific compromise", "component stability gate", "", "Output: justified conflict", "and, when possible, a", "common-scale conflict budget"
     ], "dark"))
-    b.append(arrow(440, 265, 585, 265))
-    b.append(text(510, 235, "export only", "small", "middle"))
-    b.append(text(510, 257, "identified quantities", "small", "middle"))
-    b.append(box(600, 115, 360, 300, "SLK — transport value", [
-        "L → R → Φ", "→ accessibility", "→ invasion", "→ fixation", "→ occupancy", "", "No re-identification of conflict"
+    b.append(arrow(420, 270, 550, 270))
+    b.append(text(485, 238, "export only", "small", "middle"))
+    b.append(text(485, 259, "identified quantities", "small", "middle"))
+    b.append(box(565, 115, 405, 310, "Value and evolutionary realization", [
+        "recoverable benefit vs cost", "→ local accessibility", "→ invasion", "→ fixation", "→ long-run occupancy", "", "Requires new estimands and", "population-process assumptions"
     ], "soft"))
-    b.append('<line x1="995" y1="95" x2="995" y2="435" class="dash"/>')
-    b.append(box(1025, 115, 230, 300, "BITA", [
-        "trait interaction", "≠ mechanism", "", "orthogonal", "identification", "problem"
+    b.append('<line x1="1002" y1="95" x2="1002" y2="445" class="dash"/>')
+    b.append(box(1030, 115, 220, 310, "Mechanism allocation", [
+        "after multiple trait axes", "", "trait interaction", "≠ mechanism", "", "orthogonal", "identification problem"
     ], "soft"))
-    b.append(box(70, 500, 1185, 250, "Final SCH experiment is a residual-identification test, not the premise of the paper", [
-        "literature recurrence / specificity map → compatibility audit → qualify focal context → reversible multi-level z", 
-        "→ selective consumer interventions → W00(z), W10(z), W01(z), W11(z) → zP*, zG*, zC*", 
-        "→ predicted optimum shifts + opposing component gradients → optional context-stable pure-function promotion"
+    b.append(box(55, 510, 1195, 250, "The focal experiment closes the residual upstream causal gap", [
+        "literature recurrence / specificity → compatibility audit → qualify focal context → reversible multi-level z",
+        "→ selective functional interventions → W00(z), W10(z), W01(z), W11(z) → zP*, zG*, zC*",
+        "→ predicted optimum shifts + opposing component gradients → optional context-stable function promotion"
     ], "box"))
-    b.append(text(650, 810, "Multifunctionality is not promoted to conflict until the causal gate is passed.", "head", "middle"))
-    return svg(1300, 850, "".join(b))
+    b.append(text(650, 820, "Multifunctionality is not promoted to conflict until the causal gate is passed.", "head", "middle"))
+    return svg(1300, 860, "".join(b))
 
 
 FIGURE_NAMES = [
