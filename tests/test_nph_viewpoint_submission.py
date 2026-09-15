@@ -51,12 +51,11 @@ def test_viewpoint_preserves_frozen_evidence_counts_and_ceiling() -> None:
     assert "does not, by itself, identify" in text
 
 
-def test_viewpoint_keeps_sch_upstream_of_slk_and_bita() -> None:
+def test_viewpoint_keeps_conflict_identification_upstream() -> None:
     text = MANUSCRIPT.read_text(encoding="utf-8")
     assert "first establish whether conflict exists on the shared coordinate" in text
     assert "downstream architecture" in text
     assert "orthogonal identification problem" in text
-    # SCH must not claim the SLK quadratic architecture bridge as its own result.
     assert "Phi=sL-K" not in text
     assert "Φ=sL-K" not in text
 
@@ -85,6 +84,13 @@ def test_builds_four_viewpoint_figures(tmp_path: Path) -> None:
         assert "Multifunctionality" in svg or "Figure" in svg
 
 
+def test_figure2_keeps_legend_and_message_separated() -> None:
+    svg = figures.fig2()
+    assert 'y="620"' in svg
+    assert 'y="805"' in svg
+    assert "M_G0(z)=W10-W00" in svg
+
+
 def test_figure3_matches_frozen_pattern_ledger_counts() -> None:
     svg = figures.fig3()
     assert "16 independent biological clusters" in svg
@@ -94,9 +100,12 @@ def test_figure3_matches_frozen_pattern_ledger_counts() -> None:
     assert "random-effects stratum" in svg
 
 
-def test_figure4_preserves_programme_ownership() -> None:
+def test_figure4_is_external_facing_and_preserves_boundaries() -> None:
     svg = figures.fig4()
-    assert "SCH — identify conflict" in svg
-    assert "SLK — transport value" in svg
-    assert "BITA" in svg
+    assert "Conflict identification" in svg
+    assert "Value and evolutionary realization" in svg
+    assert "Mechanism allocation" in svg
     assert "orthogonal" in svg
+    assert "SCH" not in svg
+    assert "SLK" not in svg
+    assert "BITA" not in svg
