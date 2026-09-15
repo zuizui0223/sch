@@ -98,6 +98,16 @@ This distinction matters because many verbal arguments about trade-offs jump dir
 
 **Figure 2. Crossed experiments identify ecological-state surfaces before they identify pure functions.** The four state surfaces yield directly estimable contextual optima `z_P*`, `z_G*` and `z_C*`. Function-specific causal components are reconstructed by differencing state surfaces. Promotion to an empirical pure-function optimum requires the component optimum to remain stable across the alternate functional state within a prospectively declared equivalence bound.
 
+### 2.1 “The same coordinate” must itself be identified
+
+Conflict can only be defined after the compared functions have been placed on a common phenotypic coordinate. This requirement is easy to obscure when traits are correlated. Pollinators may respond to colour while antagonists respond to scent; both responses may covary with floral size. A regression in which the two agents select in opposite directions does not establish same-coordinate conflict if the fitted coefficients refer to different causal interventions or to a latent trait complex whose components can vary independently.
+
+The safest operational definition is intervention-based. A declared coordinate is “the same” when the experimental manipulation changes the focal trait in the same way across functional states, and manipulation checks show that consumer treatments do not redefine what that coordinate means. For a continuous trait, this means the `z` manipulation should have comparable magnitude and biological interpretation under every `P × G` state. For a binary cue, the same `A` contrast must be presented to both audiences rather than reconstructed post hoc from different compounds, structures or assay contexts.
+
+This does not require traits to be developmentally indivisible. It requires the causal contrast used to claim conflict to be shared. If two trait components can be manipulated separately and different functions respond to different components, the system may already possess partial functional separation. Calling that a one-dimensional compromise would collapse the very architecture that the experiment needs to measure.
+
+The distinction between informational overlap and functional conflict follows immediately. Two consumers can detect the same cue without producing opposed contributions to plant fitness. Conversely, opposite fitness effects can arise downstream even when receiver responses are weak. Receiver behavior, reproductive consequences and the shared trait coordinate are therefore separate parts of the identification chain.
+
 ## 3. A causal promotion ladder
 
 ### 3.1 Level 0: multifunctionality
@@ -152,6 +162,16 @@ Each component can have its own optimum. A pollinator component is promoted towa
 
 Failure of this gate is not a failed experiment. It means that the effective functional objective changes with the state of the other channel. That conclusion is biologically richer than forcing context-dependent data into a context-free pure-function label.
 
+### 3.6 Uncertainty belongs to the claim, not only to the estimate
+
+A promotion ladder is useful only if uncertainty can stop promotion. Point estimates of `z_P*` and `z_G*` may differ while the data remain consistent with a common optimum. Likewise, a fitted `z_C*` can be numerically interior while its confidence region includes an edge of the manipulated range. Such cases should be reported as bounded or unresolved geometry rather than as decisive conflict.
+
+The same principle applies to the context-stability gate. Equality of two fitted component optima cannot be established by failing to reject a difference. Promotion requires an equivalence criterion that is biologically meaningful and specified before inspecting the final estimates. The criterion may be expressed as a maximum tolerable shift in trait units, as a fraction of the manipulated range, or as a fitness-equivalent bound, but its interpretation must be explicit.
+
+Selective interventions also need their own uncertainty. Pollinator exclusion can alter microclimate; antagonist exclusion can damage tissues; bags, cages or chemical treatments can change visitation by non-focal organisms. These side effects do not automatically invalidate a study, but they change the object being estimated. Manipulation checks should therefore be analyzed as part of the causal design rather than relegated to procedural detail.
+
+Finally, fitness scales must be comparable across states. A pollinator response measured as visitation rate and an antagonist response measured as damaged fruits do not form a conflict budget until their effects are linked to a common plant outcome. Behavioral responses are mechanistic evidence, not interchangeable units of fitness. The strongest designs follow the chain from trait manipulation to functional response to a common reproductive consequence.
+
 ## 4. What existing plant studies recover
 
 We translated the promotion ladder into literature-observable signatures and assembled a source-adjudicated evidence ledger. The unit of recurrence is an independent biological cluster rather than a paper, population, year, treatment or measured response. The current targeted universe contains 16 clusters. Retrieval was theory-targeted rather than probability-sampled, so the counts below describe recurrence and evidence structure inside the screened universe; they are not estimates of natural prevalence.
@@ -168,6 +188,16 @@ The shared-cue literature also reveals a recurring mechanistic boundary. Floral 
 
 **Figure 3. Existing studies recover recurrence and specificity, but not the full estimand.** The 16-cluster targeted evidence universe contains conflict signatures, frequent context-weight shifts, aligned/no-conflict controls and explicit boundary cases. A strict quantitative pool remains fail-closed because fewer than three independent clusters currently share an admissible estimand family with compatible orientation, valid uncertainty and covariance treatment.
 
+### 4.1 A literature synthesis can map identifiability without estimating prevalence
+
+A source-adjudicated synthesis has a different role from a conventional meta-analysis when the underlying studies target different causal objects. The first task is to classify what each design can identify. An observational selection gradient, an exclusion experiment, a cue-manipulation assay and a full multi-level crossed surface do not become exchangeable merely because all involve pollinators and antagonists.
+
+This design-first view makes incompleteness informative. A study that identifies opposite directional effects but not bounded optima is not “weak evidence” for the same final estimand; it is strong evidence for a lower rung of the ladder. A shared-cue behavioral experiment may strongly establish informational overlap while remaining silent about net plant fitness. A negative control may show multifunctionality with no conflict and therefore provide specificity that a positive-only review cannot supply.
+
+The synthesis should therefore preserve three labels for every case: the biological pattern recovered, the design feature that identifies it, and the strongest claim that remains licensed. These claim ceilings make it possible to aggregate recurrence qualitatively without constructing a false numerical common scale. They also reveal which missing measurements recur across systems and should be prioritized in future experiments.
+
+This approach does not replace systematic-review standards. Search denominators, screening rules and independence clustering still matter. It instead adds an estimand layer between study inclusion and biological interpretation. Where a valid common estimand eventually emerges, quantitative synthesis becomes appropriate. Where it does not, the correct result is a map of recurring design gaps rather than a forced pooled effect.
+
 ## 5. Why the quantitative synthesis should remain fail-closed
 
 The current strict numerical inventory contains four strong same-coordinate designs at different levels of completeness. Exact component coefficients are available for some systems, while other studies require reconstruction of the relevant shared contrast and its uncertainty. We do not fill missing covariance with an independence assumption and do not recover inaccessible values by eye from figures.
@@ -180,7 +210,7 @@ The fail-closed result is therefore a scientific output: existing plant studies 
 
 ## 6. A research agenda built from the residual identification gap
 
-The literature synthesis changes the role of the next experiment. A new focal study is no longer needed to show that plants can experience pollinator–antagonist conflict or that ecological context alters selection. Those points already have substantial empirical support. The experiment should be designed only to recover quantities that remain structurally unidentified.
+The literature synthesis changes the role of the next experiment. A new focal study is no longer needed to show that plants can experience pollinator-antagonist conflict or that ecological context alters selection. Those points already have substantial empirical support. The experiment should be designed only to recover quantities that remain structurally unidentified.
 
 A high-value system should pass four preconditions. First, one continuous or ordered trait coordinate must be manipulable reversibly across enough levels to locate nonlinear optima. Second, focal functional channels must be selectively manipulated without redefining the trait itself. Third, the same reproductive fitness scale must be measurable in all crossed states. Fourth, the candidate population and season must first be qualified as conflict-active; a species-level reputation for conflict is not enough when interaction strength varies geographically or temporally.
 
@@ -203,15 +233,23 @@ source-adjudicated recurrence and specificity
 
 The same framework also clarifies what a negative experiment would teach us. If two functions favor the same trait region, the conflict hypothesis is rejected for the declared context. If selective removal does not move the combined optimum as predicted, an apparent compromise may reflect background pathways rather than the focal functions. If component optima move across contexts, the pure-function promotion fails while context-dependent functional geometry remains supported. Each outcome has a different interpretation and therefore a different downstream claim ceiling.
 
+### 6.1 Reporting the result as a claim ceiling
+
+We suggest that multifunctional-trait studies report an explicit claim ceiling alongside the usual effect estimates. The ceiling should state the highest promotion gate passed and the next missing measurement. A study may therefore conclude “shared receiver response identified; common-fitness conflict unresolved,” “opposing local causal effects identified; nonlinear optimum unresolved,” or “contextual compromise identified; pure-function promotion rejected.”
+
+This vocabulary is intentionally asymmetric. Passing a lower gate is not undone by failing a higher one. If context-stability fails, the experiment can still provide an excellent causal estimate of state-specific conflict. If a combined optimum is unbounded, local opposing selection may still be well supported. Scientific value should not depend on reaching the strongest possible label.
+
+Claim ceilings also improve comparability across studies because they distinguish biological disagreement from design disagreement. Two systems can genuinely differ in whether functions conflict, but two papers can also appear to disagree simply because one measures receiver behavior while the other measures seed production. Making the estimand explicit prevents those layers from being conflated.
+
 ## 7. Keeping conflict identification separate from later evolutionary claims
 
 Once functional conflict is identified, additional questions begin rather than end. A measured conflict budget does not determine whether a more differentiated architecture would recover enough fitness to offset its costs, whether that architecture is mutationally accessible, or whether it can invade and fix. Those downstream questions require new estimands and population-process assumptions. Conversely, an observed interaction between multiple trait axes does not, by itself, identify the ecological mechanism generating that interaction.
 
 We therefore advocate modular inference: first establish whether conflict exists on the shared coordinate; only then export that identified quantity into downstream architecture or evolutionary models. This prevents a common escalation in which multifunctionality is treated as conflict, conflict is treated as evidence for differentiation, and trait interaction is treated as mechanism.
 
-![Figure 4. SCH as the upstream identification gate and the residual experimental programme.](nph_viewpoint_figures/FIG4_PROGRAM_HANDOFF.svg)
+![Figure 4. From conflict identification to downstream evolutionary and mechanistic questions.](nph_viewpoint_figures/FIG4_PROGRAM_HANDOFF.svg)
 
-**Figure 4. Conflict identification is an upstream gate, not a complete evolutionary theory.** SCH identifies whether a shared plant trait experiences opposing causal geometry and specifies the residual experiment needed to close that claim. Once a conflict quantity is justified, downstream architecture-value and evolutionary-realization questions can be tested separately. Mechanistic allocation of interactions among multiple trait axes is an orthogonal identification problem.
+**Figure 4. Conflict identification is an upstream gate, not a complete evolutionary theory.** A first stage identifies whether a shared plant trait experiences opposing causal geometry and specifies the residual experiment needed to close that claim. Once a conflict quantity is justified, architecture-value and evolutionary-realization questions require new estimands. Mechanistic allocation after multiple trait axes exist is an orthogonal identification problem.
 
 ## 8. Conclusion
 
