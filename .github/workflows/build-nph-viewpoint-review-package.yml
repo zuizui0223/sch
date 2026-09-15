@@ -1,0 +1,167 @@
+name: Build New Phytologist Viewpoint review package
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'manuscript/SCH_NPH_VIEWPOINT_V1.md'
+      - 'manuscript/NPH_PRESUBMISSION_ENQUIRY_V1.md'
+      - 'scripts/build_sch_viewpoint_figures_svg.py'
+      - 'scripts/format_nph_viewpoint_docx.py'
+      - 'tests/test_nph_viewpoint_submission.py'
+      - '.github/workflows/build-nph-viewpoint-review-package.yml'
+  pull_request:
+    paths:
+      - 'manuscript/SCH_NPH_VIEWPOINT_V1.md'
+      - 'manuscript/NPH_PRESUBMISSION_ENQUIRY_V1.md'
+      - 'scripts/build_sch_viewpoint_figures_svg.py'
+      - 'scripts/format_nph_viewpoint_docx.py'
+      - 'tests/test_nph_viewpoint_submission.py'
+      - '.github/workflows/build-nph-viewpoint-review-package.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install document toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc libreoffice-writer poppler-utils librsvg2-bin
+          python -m pip install --upgrade pip
+          python -m pip install pytest python-docx
+
+      - name: Run repository tests and Viewpoint guards
+        run: |
+          python -m pytest -q
+
+      - name: Generate four Viewpoint figures
+        run: |
+          python scripts/build_sch_viewpoint_figures_svg.py
+          test "$(find manuscript/nph_viewpoint_figures -name '*.svg' | wc -l)" -eq 4
+
+      - name: Prepare review source and raster figures
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          rm -rf "$GEN"
+          mkdir -p "$GEN/figures" "$GEN/rendered/main_pages"
+          for f in manuscript/nph_viewpoint_figures/*.svg; do
+            base=$(basename "$f" .svg)
+            rsvg-convert "$f" -o "$GEN/figures/${base}.png"
+          done
+          python - <<'PY'
+          from pathlib import Path
+          src = Path('manuscript/SCH_NPH_VIEWPOINT_V1.md').read_text(encoding='utf-8')
+          for name in (
+              'FIG1_PROMOTION_LADDER',
+              'FIG2_CROSSED_IDENTIFICATION',
+              'FIG3_REALITY_PATTERN',
+              'FIG4_PROGRAM_HANDOFF',
+          ):
+              src = src.replace(
+                  f'nph_viewpoint_figures/{name}.svg',
+                  f'figures/{name}.png',
+              )
+          Path('submission/nph_viewpoint/generated/SCH_NPH_VIEWPOINT_REVIEW_SOURCE.md').write_text(src, encoding='utf-8')
+          PY
+          cp manuscript/NPH_PRESUBMISSION_ENQUIRY_V1.md "$GEN/NPH_PRESUBMISSION_ENQUIRY.md"
+
+      - name: Build review DOCX
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          cd "$GEN"
+          pandoc SCH_NPH_VIEWPOINT_REVIEW_SOURCE.md \
+            --from=markdown+tex_math_single_backslash \
+            --to=docx \
+            --output=SCH_NPH_VIEWPOINT_RAW.docx
+          cd "$GITHUB_WORKSPACE"
+          python scripts/format_nph_viewpoint_docx.py \
+            "$GEN/SCH_NPH_VIEWPOINT_RAW.docx" \
+            "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx"
+          rm -f "$GEN/SCH_NPH_VIEWPOINT_RAW.docx"
+
+      - name: Validate review DOCX
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          unzip -p "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx" word/document.xml | grep -q 'w:lnNumType'
+          unzip -p "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx" word/footer1.xml | grep -q ' PAGE '
+          MEDIA_COUNT=$(unzip -l "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx" | grep -c 'word/media/' || true)
+          if [ "$MEDIA_COUNT" -lt 4 ]; then
+            echo "Expected four embedded figures; found $MEDIA_COUNT" >&2
+            exit 1
+          fi
+
+      - name: Render review PDF
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          mkdir -p "$GEN/rendered"
+          libreoffice --headless --convert-to pdf --outdir "$GEN/rendered" "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx"
+
+      - name: Validate PDF and write QA receipt
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          PDF="$GEN/rendered/SCH_NPH_VIEWPOINT_REVIEW.pdf"
+          TXT="$RUNNER_TEMP/sch-nph.txt"
+          test -s "$PDF"
+          pdftotext -layout "$PDF" "$TXT"
+          grep -q 'Multifunctionality is not functional conflict' "$TXT"
+          grep -q '16 independent plant systems' "$TXT"
+          grep -q 'aligned/no-conflict' "$TXT"
+          grep -q 'References' "$TXT"
+          PAGES=$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')
+          MEDIA_COUNT=$(unzip -l "$GEN/SCH_NPH_VIEWPOINT_REVIEW.docx" | grep -c 'word/media/' || true)
+          python - <<'PY' > "$RUNNER_TEMP/counts.txt"
+          import re
+          from pathlib import Path
+          text = Path('manuscript/SCH_NPH_VIEWPOINT_V1.md').read_text(encoding='utf-8')
+          title = text.splitlines()[0].removeprefix('# ')
+          summary = text.split('## Summary\n',1)[1].split('\n## ',1)[0]
+          pre_refs = text.split('\n## References\n',1)[0]
+          word = lambda s: re.findall(r"[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*", s)
+          print(f'title_chars={len(title)}')
+          print(f'summary_words={len(word(summary))}')
+          print(f'main_words_pre_references={len(word(pre_refs))}')
+          PY
+          {
+            echo "target=New Phytologist Viewpoint"
+            echo "canonical_science=manuscript/SCH_NPH_VIEWPOINT_V1.md"
+            echo "presubmission_enquiry=manuscript/NPH_PRESUBMISSION_ENQUIRY_V1.md"
+            cat "$RUNNER_TEMP/counts.txt"
+            echo "review_pages=$PAGES"
+            echo "embedded_figures=$MEDIA_COUNT"
+            echo "line_spacing=1.5"
+            echo "continuous_line_numbers=true"
+            echo "page_numbers=true"
+            echo "author_metadata=EXTERNAL_BLOCKER"
+            echo "presubmission_enquiry_recommended=true"
+            echo "scientific_package_state=REVIEW_READY_PENDING_AUTHOR_METADATA"
+          } > "$GEN/NPH_VIEWPOINT_PACKAGE_QA.txt"
+
+      - name: Render pages for visual QA
+        run: |
+          GEN=submission/nph_viewpoint/generated
+          pdftoppm -png -r 120 \
+            "$GEN/rendered/SCH_NPH_VIEWPOINT_REVIEW.pdf" \
+            "$GEN/rendered/main_pages/page" >/dev/null 2>&1
+          test "$(find "$GEN/rendered/main_pages" -name 'page-*.png' | wc -l)" -gt 0
+
+      - name: Upload Viewpoint review package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-new-phytologist-viewpoint-review-package
+          path: |
+            submission/nph_viewpoint/generated/SCH_NPH_VIEWPOINT_REVIEW.docx
+            submission/nph_viewpoint/generated/rendered/SCH_NPH_VIEWPOINT_REVIEW.pdf
+            submission/nph_viewpoint/generated/rendered/main_pages/*.png
+            submission/nph_viewpoint/generated/NPH_PRESUBMISSION_ENQUIRY.md
+            submission/nph_viewpoint/generated/NPH_VIEWPOINT_PACKAGE_QA.txt
+            submission/nph_viewpoint/generated/figures/*.png
+          if-no-files-found: error

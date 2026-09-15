@@ -1,14 +1,32 @@
 # Publication status
 
-## Active full paper
+## Active paper
 
-SCH remains an **active independent full paper**.
+SCH is an **active independent Viewpoint paper**.
+
+Primary target:
+
+```text
+New Phytologist — Viewpoint
+```
+
+Canonical journal-facing science source:
+
+```text
+manuscript/SCH_NPH_VIEWPOINT_V1.md
+```
+
+Presubmission enquiry:
+
+```text
+manuscript/NPH_PRESUBMISSION_ENQUIRY_V1.md
+```
 
 Working thesis:
 
-**Multifunctionality is not evidence of functional conflict.**
+**Multifunctionality is not functional conflict.**
 
-The paper's independent scientific question is upstream of SLK:
+The paper has two independent promotion boundaries:
 
 ```text
 multiple functions use one trait
@@ -16,12 +34,12 @@ multiple functions use one trait
 identified opposing causal geometry
 ```
 
-A second claim boundary is equally important:
+and
 
 ```text
 state-specific reproductive optimum
         !=
-pure-function optimum by default
+pure-function optimum by default.
 ```
 
 ## Core ownership
@@ -29,43 +47,52 @@ pure-function optimum by default
 SCH owns:
 
 - the distinction between multifunctionality and identified functional conflict;
-- the distinction between state-specific optima and pure-function optima;
-- the theory and promotion ladder that define what would count as causal compromise;
-- source-adjudicated recovery of conflict/compromise/context/no-conflict signatures in existing biological systems;
-- the crossed-intervention design for a final direct identification upgrade;
-- component contrasts and the prospective promotion gate from contextual optima to context-stable function-specific optima;
-- export of an identified conflict budget `L` only when justified on a common fitness scale.
+- the requirement that a conflict claim refer to the same causal trait coordinate;
+- the distinction between ecological-state optima and pure-function optima;
+- the L0–L4 promotion ladder from multifunctionality through causal compromise;
+- the crossed `z x P x G` state-surface design;
+- component contrasts and the prospective context-stability / equivalence gate;
+- source-adjudicated recovery of conflict, context-shift, compromise and aligned/no-conflict signatures;
+- fail-closed quantitative synthesis when no common estimand is available;
+- export of a common-scale conflict quantity only after its identification gate is passed.
 
-## Boundary with SLK
+## Boundary with downstream papers
 
-SLK may consume the output `L`, but SCH does not re-own the downstream chain
+The journal-facing Viewpoint does not use internal repository names as scientific concepts. Its external boundary is:
 
 ```text
-R -> Phi -> accessibility -> invasion -> fixation -> occupancy.
+conflict identification
+        ↓ only identified quantities are exported
+architecture value / evolutionary realization
 ```
 
-Conversely, SLK should not absorb the detailed causal promotion machinery that determines whether an empirical `L` is actually justified.
+and, orthogonally,
 
-The paper should therefore be written as an identification paper rather than as a shortened version of the SLK flagship.
+```text
+trait interaction
+        !=
+mechanism allocation.
+```
+
+Downstream architecture value, accessibility, invasion, fixation and long-run occupancy are not SCH novelty claims. Likewise, mechanism allocation after multiple trait axes exist is a separate identification problem.
 
 ## Empirical ordering
 
-The active paper now uses the same evidence order as the wider theory programme:
+The active paper uses:
 
 ```text
-mathematical / identification mechanism
+theory / identification mechanism
 -> observable signatures
 -> source-adjudicated literature pattern recovery
--> compatible quantitative sub-lanes when justified
+-> recurrence and specificity map
+-> compatible quantitative synthesis only when justified
 -> residual identification gap
--> focal causal experiment last
+-> focal causal experiment last.
 ```
 
-The literature synthesis is the primary empirical reality layer for the current manuscript. It asks whether SCH-linked signatures recur across independent systems and whether aligned/no-conflict cases also occur. It does **not** directly identify `L`, pure-function optima, or complete causal compromise in any system lacking the required intervention structure.
+The literature synthesis is the primary empirical reality layer. The focal multi-level crossed experiment is a residual-identification programme for quantities the literature structurally does not recover; it is not the premise required to publish the Viewpoint.
 
-The selective multi-level `z x P x G` experiment is retained as the final validation layer for the quantities that remain structurally unidentified after synthesis. It should not be used as the initial empirical justification for the general theory.
-
-## Current literature-layer status
+## Frozen literature-layer status
 
 ```text
 source-adjudicated biological clusters        16
@@ -77,37 +104,68 @@ sequential-filter boundary                      1
 strict random-effects strata currently ready   0
 ```
 
-The strict quantitative inventory currently contains four strong same-coordinate conflict designs at different levels of numerical completeness. Pooling remains fail-closed until compatible estimands and valid contrast uncertainty are available in at least three independent clusters. A positive-only pool, if admission depends on the observed opposition pattern, must be interpreted conditionally rather than as a design-wide mean or independent recurrence test.
+The strict numerical inventory contains four strong same-coordinate designs at different levels of completeness. Pooling remains fail-closed until at least three independent clusters share a compatible estimand family, orientation, valid uncertainty and appropriate covariance treatment. Positive-only admission cannot be reinterpreted as prevalence or as an independent recurrence test.
 
-## Preferred article shape
+## Current New Phytologist package
+
+The reproducible review package currently validates as:
 
 ```text
-problem:
-multifunctionality is routinely observed but conflict is over-inferred
-
-identification failure:
-state-specific optimum != pure-function optimum
-
-theory / solution:
-claim ladder + crossed intervention + component contrasts + promotion gate
-
-reality-pattern synthesis:
-positive conflict signatures + context shifts + compromise + aligned/no-conflict controls
-
-remaining identification gap:
-causal state surfaces / component-optimum promotion / L
-
-final empirical programme:
-qualify a conflict-active system and recover the missing causal geometry
-
-handoff:
-export L to SLK only after the gate is passed
+title characters                 98
+summary words                   173
+main words before References   4125
+display figures                   4
+review PDF pages                 18
+line spacing                    1.5
+continuous line numbers         PASS
+page numbers                    PASS
+full repository tests           PASS
+Viewpoint-specific guards       PASS
+page-by-page visual QA          PASS
 ```
 
-Best route: conceptual / methodological ecology journal with a theory + source-adjudicated reality-pattern synthesis, followed by a clearly bounded final validation programme.
+The four publication-facing figures are:
+
+1. promotion ladder;
+2. crossed state surfaces and pure-function promotion gate;
+3. source-adjudicated 16-cluster reality pattern and fail-closed pool;
+4. generic hand-off from conflict identification to downstream evolutionary/mechanistic questions.
+
+Internal programme/repository names have been removed from the publication-facing figures.
+
+## Presubmission route
+
+New Phytologist strongly encourages a presubmission enquiry for Viewpoints. The repository therefore contains a ready enquiry draft with the abstract and the three requested editor questions bounded to 50 words each.
+
+The scientific package can now be evaluated by the editor without waiting for a focal causal experiment.
+
+## Remaining external blockers
+
+The remaining items are author-controlled rather than scientific-development blockers:
 
 ```text
-STATUS = ACTIVE_FULL_PAPER
+AUTHOR_LIST_AND_ORDER            REQUIRED
+AFFILIATIONS                     REQUIRED
+CORRESPONDING_AUTHOR             REQUIRED
+EMAIL_AND_ORCID                  REQUIRED
+AUTHOR_APPROVAL                  REQUIRED
+PRESUBMISSION_EMAIL_SEND         REQUIRED
+FINAL_PORTAL_METADATA            LATER_IF_INVITED/SUBMITTED
+```
+
+These must be supplied before an actual enquiry or journal submission. They should not be guessed in repository automation.
+
+## Claim ceiling
+
+Current evidence supports recurrence of conflict-compatible signatures, context-dependent weighting, aligned/no-conflict multifunctionality and one manipulated combined-compromise surface. It does **not** support a population prevalence of conflict, a general pooled conflict effect, a general meta-estimated conflict budget, pure-function optima by default, complete same-system causal compromise, or historical trait splitting.
+
+```text
+STATUS = NPH_VIEWPOINT_SCIENTIFIC_PACKAGE_READY
+PRIMARY_TARGET = NEW_PHYTOLOGIST_VIEWPOINT
 PRIMARY_EMPIRICAL_LAYER = LITERATURE_PATTERN_RECOVERY
+LITERATURE_PATTERN_MODE = SOURCE_ADJUDICATED_RECURRENCE_AND_SPECIFICITY
 FOCAL_EXPERIMENT_POSITION = FINAL_IDENTIFICATION_UPGRADE
+FOCAL_EXPERIMENT_ROLE = RESIDUAL_IDENTIFICATION_UPGRADE
+INTERNAL_SCIENTIFIC_BLOCKERS = NONE
+EXTERNAL_BLOCKER = AUTHOR_METADATA_AND_APPROVAL
 ```
