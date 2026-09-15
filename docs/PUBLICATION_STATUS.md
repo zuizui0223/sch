@@ -83,7 +83,8 @@ The active paper uses:
 ```text
 theory / identification mechanism
 -> observable signatures
--> source-adjudicated recurrence and specificity
+-> source-adjudicated literature pattern recovery
+-> recurrence and specificity map
 -> compatible quantitative synthesis only when justified
 -> residual identification gap
 -> focal causal experiment last.
