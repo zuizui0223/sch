@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 
@@ -10,6 +11,8 @@ SOURCE = ROOT / "data" / "SCH_CONFLICT_COMPONENT_EFFECTS_V1.csv"
 MATRIX = ROOT / "docs" / "SCH_QUANTITATIVE_COMPATIBILITY_MATRIX_V1.md"
 READOUT = ROOT / "data" / "SCH_QUANTITATIVE_COMPATIBILITY_READOUT_V1.json"
 AUDIT = ROOT / "docs" / "QUANTITATIVE_RESULTS_DISCUSSION_AUDIT_V1.md"
+RECOVERY = ROOT / "data" / "SCH_PENDING_NUMERIC_SOURCE_RECOVERY_V1.json"
+RECOVERY_DOC = ROOT / "docs" / "SCH_PENDING_NUMERIC_SOURCE_RECOVERY_V1.md"
 
 
 def _load_module():
@@ -88,5 +91,40 @@ def test_results_discussion_audit_reports_the_inspectable_pooling_state() -> Non
         "zero are currently poolable",
         "SCH_QUANTITATIVE_COMPATIBILITY_MATRIX_V1.md",
         "POOLED_CONFLICT_EFFECT = NOT_ESTIMATED",
+    ):
+        assert token in text
+
+
+def test_pending_numeric_sources_are_located_but_not_guessed() -> None:
+    assert RECOVERY.exists(), "pending numeric source recovery manifest is missing"
+    assert RECOVERY_DOC.exists(), "pending numeric source recovery receipt is missing"
+    report = json.loads(RECOVERY.read_text(encoding="utf-8"))
+    assert report["n_pending_clusters"] == 2
+    assert report["n_source_locations_confirmed"] == 2
+    assert report["n_exact_numeric_extractions_completed"] == 0
+    assert report["status"] == "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED"
+
+    by_id = {row["cluster_id"]: row for row in report["sources"]}
+    fragaria = by_id["Fragaria_inflorescence_density"]
+    assert fragaria["source_object"] == "Table S2"
+    assert fragaria["source_file"] == "evl3262-sup-0001-suppmat.docx"
+    assert fragaria["published_analysis"] == "emtrends differences in beta"
+    assert fragaria["numeric_promotion"] == "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED"
+
+    gym = by_id["Gymnadenia_flowering_phenology"]
+    assert gym["source_object"] == "Appendix A Table A2"
+    assert gym["archive_id"] == "E096-022-A1"
+    assert gym["reported_content"] == "phenotypic linear selection gradients (beta +/- SE) for all four treatment groups"
+    assert gym["numeric_promotion"] == "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED"
+
+    text = RECOVERY_DOC.read_text(encoding="utf-8")
+    for token in (
+        "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED",
+        "do not digitize Figure 1 as if it were Table S2",
+        "do not infer missing covariance",
+        "Fragaria_inflorescence_density",
+        "Gymnadenia_flowering_phenology",
+        "NUMERIC_EXTRACTION_PENDING",
+        "RANDOM_EFFECTS_GATE = FAIL_CLOSED",
     ):
         assert token in text
