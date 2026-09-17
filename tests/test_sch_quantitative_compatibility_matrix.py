@@ -9,6 +9,7 @@ SCRIPT = ROOT / "scripts" / "build_sch_quantitative_compatibility_matrix.py"
 SOURCE = ROOT / "data" / "SCH_CONFLICT_COMPONENT_EFFECTS_V1.csv"
 MATRIX = ROOT / "docs" / "SCH_QUANTITATIVE_COMPATIBILITY_MATRIX_V1.md"
 READOUT = ROOT / "data" / "SCH_QUANTITATIVE_COMPATIBILITY_READOUT_V1.json"
+AUDIT = ROOT / "docs" / "QUANTITATIVE_RESULTS_DISCUSSION_AUDIT_V1.md"
 
 
 def _load_module():
@@ -74,5 +75,18 @@ def test_rendered_matrix_and_readout_freeze_fail_closed_pooling_gate() -> None:
         "RANDOM_EFFECTS_GATE = FAIL_CLOSED",
         "POOLED_CONFLICT_EFFECT = NOT_ESTIMATED",
         "not evidence that the true cross-system effect is zero",
+    ):
+        assert token in text
+
+
+def test_results_discussion_audit_reports_the_inspectable_pooling_state() -> None:
+    text = AUDIT.read_text(encoding="utf-8")
+    for token in (
+        "four strong same-coordinate designs",
+        "two have exact component coefficients",
+        "zero have a valid contrast variance",
+        "zero are currently poolable",
+        "SCH_QUANTITATIVE_COMPATIBILITY_MATRIX_V1.md",
+        "POOLED_CONFLICT_EFFECT = NOT_ESTIMATED",
     ):
         assert token in text
