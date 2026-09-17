@@ -26,7 +26,7 @@ numeric promotion:   BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED
 
 The article states that Supplementary Table S2 contains the exact treatment combinations used for the selection-gradient contrasts and that differences in beta were calculated with `emtrends`. The supporting-information DOCX has therefore been localized to the correct source object.
 
-The current environment has not materialized the DOCX bytes for table-level inspection. **Do not digitize Figure 1 as if it were Table S2.** Plot reading would replace a published coefficient table with a lower-precision reconstruction and would not recover the uncertainty or covariance needed by the registered pooling gate.
+The current environment has not materialized the DOCX bytes for table-level inspection. **do not digitize Figure 1 as if it were Table S2.** Plot reading would replace a published coefficient table with a lower-precision reconstruction and would not recover the uncertainty or covariance needed by the registered pooling gate.
 
 ## Gymnadenia conopsea
 
