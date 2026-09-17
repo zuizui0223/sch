@@ -1,0 +1,42 @@
+{
+  "analysis": "sch_pending_numeric_source_recovery_v1",
+  "status": "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED",
+  "n_pending_clusters": 2,
+  "n_source_locations_confirmed": 2,
+  "n_exact_numeric_extractions_completed": 0,
+  "sources": [
+    {
+      "cluster_id": "Fragaria_inflorescence_density",
+      "doi": "10.1002/evl3.262",
+      "source_object": "Table S2",
+      "source_file": "evl3262-sup-0001-suppmat.docx",
+      "source_location": "Evolution Letters supporting information / PMC Associated Data",
+      "published_analysis": "emtrends differences in beta",
+      "reported_scope": "selection gradient estimates for each trait; exact treatment combinations underlying Figure 1",
+      "retrieval_status": "SOURCE_LOCATION_CONFIRMED_BINARY_NOT_MATERIALIZED",
+      "numeric_promotion": "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED",
+      "covariance_rule": "DO_NOT_INFER_MISSING_COVARIANCE",
+      "figure_digitization_rule": "DO_NOT_DIGITIZE_FIGURE_1_AS_TABLE_S2"
+    },
+    {
+      "cluster_id": "Gymnadenia_flowering_phenology",
+      "doi": "10.1890/14-0119.1",
+      "source_object": "Appendix A Table A2",
+      "archive_id": "E096-022-A1",
+      "source_location": "Ecological Archives E096-022",
+      "reported_content": "phenotypic linear selection gradients (beta +/- SE) for all four treatment groups",
+      "retrieval_status": "SOURCE_LOCATION_CONFIRMED_BINARY_NOT_MATERIALIZED",
+      "numeric_promotion": "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED",
+      "covariance_rule": "DO_NOT_INFER_MISSING_COVARIANCE"
+    }
+  ],
+  "current_quantitative_state": {
+    "registered_designs": 4,
+    "exact_component_numeric_designs": 2,
+    "valid_contrast_variance_designs": 0,
+    "currently_poolable_designs": 0,
+    "random_effects_gate": "FAIL_CLOSED",
+    "pooled_conflict_effect": "NOT_ESTIMATED"
+  },
+  "promotion_rule": "Promote a pending row only after the exact source table bytes are inspected and the target coefficients, uncertainty, orientation, and covariance requirements are source-verified. Figure digitization and assumed independence are not substitutes."
+}
