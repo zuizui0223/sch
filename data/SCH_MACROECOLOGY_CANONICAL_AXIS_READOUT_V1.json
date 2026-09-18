@@ -6,10 +6,11 @@
     "CONTEXT_VARIABLE": 1,
     "ONE_SIDED_OR_NULL": 4,
     "ROLE_BOUNDARY": 14,
-    "UNRESOLVED": 17
+    "UNRESOLVED": 14
   },
   "claim_ceiling": [
     "source_axis_records_are_not_independent_trait_axes",
+    "source_records_failing_geometry_eligibility_are_not_model_trait_axes",
     "cross_source_same_axis_records_are_collapsed_before_modeling",
     "context_variable_axes_are_not_forced_into_one_static_geometry",
     "not_prevalence",
@@ -18,15 +19,22 @@
   "context_variable_canonical_axes": [
     "Gentiana_lutea_color_axis"
   ],
+  "excluded_source_axis_ids": [
+    "CloudForest_000214_patch_display",
+    "Haplopappus_000233_odor_blend",
+    "Pulsatilla_000213_stalk_height"
+  ],
   "multi_source_canonical_axes": [
     "Gentiana_lutea_color_axis"
   ],
   "n_axes_with_multiple_source_records": 1,
-  "n_canonical_trait_axes": 47,
+  "n_canonical_trait_axes": 44,
   "n_context_variable_canonical_axes": 1,
-  "n_fixed_role_canonical_axes": 33,
+  "n_fixed_role_canonical_axes": 30,
   "n_fixed_role_resolved_canonical_axes": 16,
+  "n_model_axis_source_records": 45,
   "n_role_boundary_canonical_axes": 14,
   "n_source_axis_records": 48,
+  "n_source_records_excluded_before_canonical_axis": 3,
   "status": "CANONICAL_AXIS_LAYER_READY_INFERENCE_CLOSED"
 }
