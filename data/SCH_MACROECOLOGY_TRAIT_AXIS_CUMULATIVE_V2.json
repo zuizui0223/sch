@@ -1,0 +1,43 @@
+{
+  "analysis": "sch_macroecology_trait_axis_cumulative_v2",
+  "n_trait_axes": 31,
+  "n_source_records": 19,
+  "n_biological_clusters": 17,
+  "antagonist_role_status_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "NET_ANTAGONISTIC": 22,
+    "ROLE_DEPENDENT": 4
+  },
+  "coding_status_counts": {
+    "AXIS_FROZEN_OUTCOME_PARTIAL": 9,
+    "AXIS_FROZEN_OUTCOME_PENDING": 1,
+    "OUTCOME_CODED": 10,
+    "OUTCOME_CODED_BOUNDARY": 8,
+    "SOURCE_DOWNGRADED_FUNCTION_ATTRIBUTION": 1,
+    "SOURCE_DOWNGRADED_NO_SHARED_AXIS": 2
+  },
+  "n_fixed_role_geometry_resolved_axes": 10,
+  "n_fixed_role_geometry_resolved_clusters": 8,
+  "resolved_fixed_role_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 3,
+    "CONFLICT": 4,
+    "ONE_SIDED_OR_NULL": 3
+  },
+  "n_consumer_role_boundary_axes": 9,
+  "consumer_role_boundary_axis_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "ROLE_DEPENDENT": 4
+  },
+  "n_source_downgraded_axes": 3,
+  "n_context_shift_yes_axes": 17,
+  "n_cancellation_yes_axes": 1,
+  "status": "CUMULATIVE_TRAIT_AXIS_V2_DESCRIPTIVE_PATTERN_READY_INFERENCE_CLOSED",
+  "claim_ceiling": [
+    "trait_axis_patterns_are_staged_descriptive_results",
+    "not_prevalence",
+    "source_level_downgrades_are_retained",
+    "fixed_role_and_role_boundary_strata_kept_separate",
+    "unresolved_axes_retained",
+    "full_systematic_recode_required_before_macro_model"
+  ]
+}
