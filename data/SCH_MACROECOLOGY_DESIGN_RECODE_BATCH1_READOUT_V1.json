@@ -1,0 +1,47 @@
+{
+  "analysis": "sch_macroecology_design_recode_batch1_v1",
+  "cancellation_eligibility_counts": {
+    "INELIGIBLE_NO_COMMON_FITNESS": 3,
+    "INELIGIBLE_NO_TWO_COMPONENTS": 9,
+    "PENDING_NUMERIC_EXTRACTION": 7,
+    "PENDING_SOURCE_RECODE": 3
+  },
+  "claim_ceiling": [
+    "design_eligibility_only",
+    "no_conflict_or_alignment_result_yet",
+    "not_final_macro_denominator",
+    "trait_axis_recode_required_before_outcome_coding"
+  ],
+  "context_switch_eligibility_counts": {
+    "ELIGIBLE_MULTI_CONTEXT": 5,
+    "INELIGIBLE_GEOMETRY_NOT_ESTABLISHED": 12,
+    "INELIGIBLE_SINGLE_CONTEXT": 3,
+    "PENDING_GEOMETRY_RESOLUTION": 1,
+    "PENDING_SOURCE_RECODE": 1
+  },
+  "design_audit_eligible_counts": {
+    "YES": 22
+  },
+  "geometry_eligibility_counts": {
+    "ELIGIBLE_BOUNDED_COORDINATE": 3,
+    "ELIGIBLE_SAME_COORDINATE": 5,
+    "INELIGIBLE_NO_COMMON_FITNESS_LINK": 3,
+    "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 9,
+    "UNRESOLVED_SOURCE": 2
+  },
+  "n_geometry_eligible": 8,
+  "n_outcomes_coded": 0,
+  "n_records": 22,
+  "outcome_coding_status_counts": {
+    "DEFERRED_PENDING_AXIS_SOURCE_RECODE": 2,
+    "DEFERRED_UNTIL_AXIS_RECODE": 8,
+    "NOT_CODED": 12
+  },
+  "status": "DESIGN_RECODE_FROZEN_OUTCOME_BLIND",
+  "trait_axis_action_counts": {
+    "NO_AXIS_PROMOTION": 5,
+    "SINGLE_AXIS": 11,
+    "SPLIT_FOR_H4": 1,
+    "SPLIT_REQUIRED": 5
+  }
+}
