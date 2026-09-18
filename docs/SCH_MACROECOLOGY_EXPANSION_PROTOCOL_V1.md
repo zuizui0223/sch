@@ -68,7 +68,9 @@ Order:
 5. assign independent biological cluster;
 6. only then code opposition/alignment/context outcomes.
 
-Required eligibility outcomes:
+The recode stores four separate gates: `geometry_eligibility`, `context_switch_eligibility`, `cancellation_eligibility`, and `design_audit_eligible`.
+
+Required geometry-eligibility outcomes:
 
 - `ELIGIBLE_SAME_COORDINATE`
 - `ELIGIBLE_BOUNDED_COORDINATE`
@@ -77,7 +79,7 @@ Required eligibility outcomes:
 - `INELIGIBLE_NOT_PRIMARY`
 - `UNRESOLVED_SOURCE`
 
-No study is excluded because its result is null, aligned, one-sided, or contrary to SCH.
+No study is excluded because its result is null, aligned, one-sided, or contrary to SCH. Failure of the geometry gate does not remove a study from the design audit: receiver-only, split-outcome, multivariate-unresolved, and missing-common-fitness studies remain informative H4 cases.
 
 ## Stage C — cluster, trait-axis and context decomposition
 
