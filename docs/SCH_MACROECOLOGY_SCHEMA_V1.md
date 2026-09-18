@@ -98,6 +98,15 @@ A trait axis/context is design-eligible when:
 
 Positive-only inclusion is prohibited for H1-H3 below.
 
+Eligibility is analysis-specific rather than one omnibus flag:
+
+- `geometry_eligibility` — can this trait axis enter H1 conflict/alignment analysis?
+- `context_switch_eligibility` — are at least two comparable ecological contexts observed for this trait axis?
+- `cancellation_eligibility` — are component effects commensurate enough to define the H3 cancellation index?
+- `design_audit_eligible` — can the study enter H4 as evidence about which design features raise or limit the SCH identification ceiling?
+
+A study may therefore be ineligible for H1 while remaining informative for H4. Shared-receiver studies lacking a common reproductive endpoint are a key example.
+
 ## Registered ecological hypotheses
 
 ### H1 — ecological structure within pollinator-antagonist systems predicts opposition
