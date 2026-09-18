@@ -9,6 +9,7 @@ READOUT = ROOT / "data" / "SCH_MACROECOLOGY_CLUSTER_SEED_READOUT_V1.json"
 CASE_TEMPLATE = ROOT / "data" / "SCH_MACROECOLOGY_CONTEXT_CASE_TEMPLATE_V1.csv"
 SCHEMA = ROOT / "docs" / "SCH_MACROECOLOGY_SCHEMA_V1.md"
 SCRIPT = ROOT / "scripts" / "build_sch_macroecology_seed_readout.py"
+QUEUE_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_recode_queue.py"
 
 
 def _build():
@@ -86,3 +87,25 @@ def test_schema_freezes_sign_independent_eligibility_and_four_hypotheses():
     assert "H3 — opposing components can hide behind weak net selection" in text
     assert "H4 — design predicts identification ceiling" in text
     assert "FULL_MACRO_SAMPLE = NOT_YET_CONSTRUCTED" in text
+
+
+def _queue():
+    spec = importlib.util.spec_from_file_location("sch_macro_queue", QUEUE_SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    return mod.build_queue()
+
+
+def test_macroecology_recode_queue_is_driven_by_current_fulltext_inclusions():
+    rows = _queue()
+    assert len(rows) == 117
+    assert len({row["record_id"] for row in rows}) == 117
+    assert all(row["title"] for row in rows)
+    assert all(row["year"] for row in rows)
+    assert sum("STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"] for row in rows) == 2
+    for row in rows:
+        assert row["cluster_id"] == ""
+        assert row["macro_design_eligible"] == ""
+        assert row["conflict_detected"] == ""
+        assert row["coding_status"] == ""
