@@ -7,14 +7,15 @@ Five trait-axis recoding batches now contain:
 ```text
 source records                     26
 source-axis records                 48
-canonical trait axes                47
+model-eligible source-axis records       45
+canonical trait axes                44
 independent biological clusters     24
 
-fixed-role canonical axes           33
+fixed-role canonical axes           30
 consumer-role boundary axes         14
 ```
 
-After cross-source canonicalization, sixteen fixed-role canonical axes across twelve biological clusters are resolved enough to classify:
+After source-level eligibility filtering and cross-source canonicalization, sixteen fixed-role canonical axes across twelve biological clusters are resolved enough to classify:
 
 ```text
 CONFLICT / OPPOSITION              9
@@ -108,9 +109,10 @@ This statement is now supported by source-adjudicated positive, negative and bou
 
 ```text
 SOURCE_AXIS_RECORDS = 48
-CANONICAL_TRAIT_AXES = 47
+MODEL_ELIGIBLE_SOURCE_AXES = 45
+CANONICAL_TRAIT_AXES = 44
 BIOLOGICAL_CLUSTERS = 24
-FIXED_ROLE_CANONICAL_AXES = 33
+FIXED_ROLE_CANONICAL_AXES = 30
 FIXED_ROLE_RESOLVED_CANONICAL_AXES = 16
 FIXED_ROLE_RESOLVED_CLUSTERS = 12
 
@@ -148,3 +150,29 @@ Gentiana_lutea_color_axis
 rather than counted once as reinforcement and once as one-sided geometry.
 
 This correction is now enforced by `SCH_MACROECOLOGY_CANONICAL_AXIS_OVERRIDES_V1.csv` and the canonical-axis builder.
+
+
+## Eligibility before canonicalization
+
+Three source-axis records are retained for provenance and H4 but are excluded from the H1/H2 canonical trait-axis denominator because source inspection invalidated the proposed functional geometry:
+
+```text
+Pulsatilla_000213_stalk_height
+  -> function attribution mixes pollination and selfing
+
+CloudForest_000214_patch_display
+  -> patch context, not one shared plant trait axis
+
+Haplopappus_000233_odor_blend
+  -> seed-predator outcome not linked to the same odor coordinate
+```
+
+Thus the current denominator transformation is:
+
+```text
+48 source-axis evidence records
+-> 45 geometry-eligible/boundary source-axis records
+-> 44 canonical biological trait axes
+```
+
+The three excluded records remain in the design frontier; they are not biological exclusions from SCH as a programme.
