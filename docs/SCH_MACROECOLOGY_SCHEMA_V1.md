@@ -40,7 +40,7 @@ A `NO` is used only when the source-adjudicated evidence supports a negative cla
 Trait-axis fields:
 
 - `trait_axis_id`: stable identifier nested inside `cluster_id`.
-- `trait_domain`: `MORPHOLOGY`, `ORIENTATION`, `CHEMICAL_SIGNAL`, `PHENOLOGY`, `ALLOCATION`, `DISPLAY_STATE`, or `MULTIVARIATE_OR_COMPOSITE`.
+- `trait_domain`: `MORPHOLOGY`, `ORIENTATION`, `CHEMICAL_SIGNAL`, `REWARD`, `PHENOLOGY`, `ALLOCATION`, `DISPLAY_STATE`, or `MULTIVARIATE_OR_COMPOSITE`.
 - `function_pair_family`: biological pairing such as `MUTUALIST_ANTAGONIST`, `MUTUALIST_ABIOTIC`, `REPRODUCTION_ABIOTIC`, `SEXUAL_FUNCTION`, `SEXUAL_FUNCTION_ANTAGONIST`, or `REPRODUCTIVE_ALLOCATION_ANTAGONIST`.
 - `antagonist_involved`: whether a florivore, herbivore, seed predator, grazer, robber, ovipositor, or analogous antagonist is part of the focal pair.
 - `abiotic_function_involved`: whether one focal function is abiotic/resource-facing rather than consumer-facing.
