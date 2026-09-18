@@ -1,0 +1,27 @@
+{
+  "analysis": "sch_macroecology_p1_manual_gate_frontier_v1",
+  "claim_ceiling": [
+    "record_level_candidate_frontier_not_independent_cluster_count",
+    "trait_axis_decomposition_required_before_ecological_model",
+    "programme_dependence_clustering_required",
+    "no_conflict_prevalence",
+    "no_H1_H2_model_fit_yet"
+  ],
+  "geometry_eligibility_counts": {
+    "BOUNDARY_BENEFIT_COST_COUPLED": 1,
+    "ELIGIBLE_BOUNDED_COORDINATE": 22,
+    "ELIGIBLE_SAME_COORDINATE": 10,
+    "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 5,
+    "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 7,
+    "UNRESOLVED_SOURCE": 2
+  },
+  "n_benefit_cost_coupled_boundary_records": 1,
+  "n_h1_geometry_candidate_records": 32,
+  "n_h2_context_candidate_records": 20,
+  "n_machine_p1_records": 47,
+  "n_p1_manual_gated": 47,
+  "n_p1_missing_manual_gate": 0,
+  "n_single_axis_records": 17,
+  "n_trait_axis_split_required_records": 25,
+  "status": "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
+}
