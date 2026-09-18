@@ -60,7 +60,8 @@ def test_candidate_csv_roundtrip(tmp_path):
         reread = list(csv.DictReader(handle))
     assert len(reread) == 117
     assert reread[0]["record_id"].startswith("SCHPRISMA-")
-    assert reread[0]["geometry_eligibility"] == "PENDING_SOURCE_RECODE"\n    assert reread[0]["design_audit_eligible"] == "YES_CURRENT_FULLTEXT_INCLUDE"
+    assert reread[0]["geometry_eligibility"] == "PENDING_SOURCE_RECODE"
+    assert reread[0]["design_audit_eligible"] == "YES_CURRENT_FULLTEXT_INCLUDE"
 
 
 def test_recode_priority_uses_design_structure_not_result_sign():
