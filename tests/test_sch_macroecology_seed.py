@@ -104,6 +104,6 @@ def test_schema_freezes_sign_independent_eligibility_and_four_hypotheses():
     assert "H2 — conflict geometry changes across ecological context" in text
     assert "H3 — opposing components can hide behind weak net selection" in text
     assert "H4 — design predicts identification ceiling" in text
-    assert "context case -> trait axis -> biological cluster -> taxon/lineage" in text
+    assert "context case -> canonical trait axis -> biological cluster -> taxon/lineage" in text
     assert "FULL_MACRO_SAMPLE = NOT_YET_CONSTRUCTED" in text
 
