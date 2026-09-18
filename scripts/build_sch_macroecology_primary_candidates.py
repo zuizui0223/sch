@@ -44,7 +44,10 @@ OUTPUT_FIELDS = [
     "receiver_assemblage_contrast",
     "biogeographic_context",
     "historical_or_phylogenetic_context",
-    "macro_design_eligible",
+    "geometry_eligibility",
+    "context_switch_eligibility",
+    "cancellation_eligibility",
+    "design_audit_eligible",
     "macro_cluster_id",
     "macro_context_cases_required",
     "macro_coding_status",
@@ -125,7 +128,10 @@ def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], di
         row = {**frozen[record_id], **update}
         row.update(
             {
-                "macro_design_eligible": "PENDING_SOURCE_RECODE",
+                "geometry_eligibility": "PENDING_SOURCE_RECODE",
+                "context_switch_eligibility": "PENDING_SOURCE_RECODE",
+                "cancellation_eligibility": "PENDING_SOURCE_RECODE",
+                "design_audit_eligible": "YES_CURRENT_FULLTEXT_INCLUDE",
                 "macro_cluster_id": "",
                 "macro_context_cases_required": "PENDING_SOURCE_RECODE",
                 "macro_coding_status": "UNADJUDICATED",
