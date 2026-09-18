@@ -31,7 +31,7 @@ def test_macro_candidate_universe_does_not_filter_by_existing_evidence_lane():
     assert lane_counts["DIRECTIONAL_OR_NEAR_PASS"] == 104
     assert lane_counts["EVOLUTIONARY_OUTCOME"] == 39
     assert lane_counts["HISTORICAL_TRANSITION"] == 4
-    assert all(row["macro_design_eligible"] == "PENDING_SOURCE_RECODE" for row in rows)
+    assert all(row["geometry_eligibility"] == "PENDING_SOURCE_RECODE" for row in rows)
     assert all(row["macro_coding_status"] == "UNADJUDICATED" for row in rows)
 
 
@@ -60,4 +60,4 @@ def test_candidate_csv_roundtrip(tmp_path):
         reread = list(csv.DictReader(handle))
     assert len(reread) == 117
     assert reread[0]["record_id"].startswith("SCHPRISMA-")
-    assert reread[0]["macro_design_eligible"] == "PENDING_SOURCE_RECODE"
+    assert reread[0]["geometry_eligibility"] == "PENDING_SOURCE_RECODE"\n    assert reread[0]["design_audit_eligible"] == "YES_CURRENT_FULLTEXT_INCLUDE"
