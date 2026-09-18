@@ -1,0 +1,72 @@
+{
+  "alignment_detected_counts": {
+    "NO": 5,
+    "UNRESOLVED": 17,
+    "YES": 2
+  },
+  "analysis": "sch_macroecology_trait_axis_cumulative_v1",
+  "antagonist_role_status_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "NET_ANTAGONISTIC": 17,
+    "ROLE_DEPENDENT": 2
+  },
+  "batch_files": [
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH1_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH2_V1.csv"
+  ],
+  "cancellation_detected_counts": {
+    "UNRESOLVED": 23,
+    "YES": 1
+  },
+  "claim_ceiling": [
+    "trait_axis_patterns_are_staged_descriptive_results",
+    "not_prevalence",
+    "fixed_role_and_role_boundary_strata_kept_separate",
+    "unresolved_axes_retained",
+    "full_systematic_recode_required_before_macro_model"
+  ],
+  "coding_status_counts": {
+    "AXIS_FROZEN_OUTCOME_PARTIAL": 9,
+    "AXIS_FROZEN_OUTCOME_PENDING": 1,
+    "OUTCOME_CODED": 7,
+    "OUTCOME_CODED_BOUNDARY": 7
+  },
+  "compromise_detected_counts": {
+    "UNRESOLVED": 24
+  },
+  "conflict_detected_counts": {
+    "NO": 4,
+    "UNRESOLVED": 17,
+    "YES": 3
+  },
+  "consumer_role_boundary_axis_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "ROLE_DEPENDENT": 2
+  },
+  "context_shift_detected_counts": {
+    "UNRESOLVED": 7,
+    "YES": 17
+  },
+  "n_batches": 2,
+  "n_biological_clusters": 10,
+  "n_consumer_role_boundary_axes": 7,
+  "n_consumer_role_boundary_clusters": 4,
+  "n_fixed_role_axes": 17,
+  "n_fixed_role_geometry_resolved_axes": 7,
+  "n_fixed_role_geometry_resolved_clusters": 5,
+  "n_resolved_fixed_role_axes_with_cancellation": 1,
+  "n_resolved_fixed_role_axes_with_context_shift": 4,
+  "n_source_records": 12,
+  "n_trait_axes": 24,
+  "one_sided_or_null_detected_counts": {
+    "NO": 5,
+    "UNRESOLVED": 17,
+    "YES": 2
+  },
+  "resolved_fixed_role_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 3,
+    "ONE_SIDED_OR_NULL": 2
+  },
+  "status": "CUMULATIVE_TRAIT_AXIS_DESCRIPTIVE_PATTERN_READY_INFERENCE_CLOSED"
+}
