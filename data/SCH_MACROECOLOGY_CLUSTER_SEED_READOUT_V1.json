@@ -1,0 +1,117 @@
+{
+  "abiotic_function_involved_counts": {
+    "NO": 13,
+    "YES": 3
+  },
+  "alignment_detected_counts": {
+    "NO": 6,
+    "UNRESOLVED": 8,
+    "YES": 2
+  },
+  "analysis": "sch_macroecology_cluster_seed_v1",
+  "antagonist_involved_counts": {
+    "NO": 4,
+    "YES": 12
+  },
+  "cancellation_detected_counts": {
+    "UNRESOLVED": 15,
+    "YES": 1
+  },
+  "claim_ceiling": [
+    "seed_rows_are_reencoded_from_targeted_16_cluster_pattern_ledger",
+    "not_sign_independent_macroecology_sample",
+    "not_natural_prevalence",
+    "no_ecological_moderator_causality",
+    "full_primary_study_recode_required_before_H1_H4"
+  ],
+  "compromise_detected_counts": {
+    "UNRESOLVED": 15,
+    "YES": 1
+  },
+  "conflict_by_antagonist_seed_crosstab": {
+    "NO": {
+      "NO": 2
+    },
+    "YES": {
+      "NO": 1,
+      "YES": 5
+    }
+  },
+  "conflict_detected_counts": {
+    "NO": 2,
+    "UNRESOLVED": 8,
+    "YES": 6
+  },
+  "context_shift_detected_counts": {
+    "UNRESOLVED": 8,
+    "YES": 8
+  },
+  "context_shift_yes_antagonist_counts": {
+    "NO": 1,
+    "YES": 7
+  },
+  "design_feature_counts": {
+    "common_fitness_endpoint": {
+      "NO": 1,
+      "UNRESOLVED": 12,
+      "YES": 3
+    },
+    "consumer_context_manipulated": {
+      "NO": 1,
+      "UNRESOLVED": 12,
+      "YES": 3
+    },
+    "multilevel_trait_surface": {
+      "NO": 7,
+      "UNRESOLVED": 8,
+      "YES": 1
+    },
+    "spatial_replication": {
+      "UNRESOLVED": 13,
+      "YES": 3
+    },
+    "temporal_replication": {
+      "UNRESOLVED": 13,
+      "YES": 3
+    },
+    "trait_manipulated": {
+      "NO": 11,
+      "UNRESOLVED": 1,
+      "YES": 4
+    }
+  },
+  "function_pair_family_counts": {
+    "MUTUALIST_ABIOTIC": 2,
+    "MUTUALIST_ANTAGONIST": 10,
+    "REPRODUCTION_ABIOTIC": 1,
+    "REPRODUCTIVE_ALLOCATION_ANTAGONIST": 1,
+    "SEXUAL_FUNCTION": 1,
+    "SEXUAL_FUNCTION_ANTAGONIST": 1
+  },
+  "n_clusters": 16,
+  "n_conflict_adjudicated_yes_or_no": 8,
+  "n_context_shift_yes": 8,
+  "shared_coordinate_status_counts": {
+    "COMPOSITE_OR_MULTIVARIATE": 4,
+    "NOT_STRICT_SHARED_COORDINATE": 1,
+    "SAME_COORDINATE": 11
+  },
+  "source_pattern_class_counts": {
+    "COMBINED_INTERMEDIATE_OR_COMPROMISE": 1,
+    "CONTEXT_WEIGHT_SHIFT": 7,
+    "OPPOSING_DIRECTION": 4,
+    "SEQUENTIAL_FILTER_COMBINATION": 1,
+    "SHARED_TRACKING_CONFLICT_CANDIDATE": 1,
+    "SHARED_TRACKING_NO_CONFLICT": 2
+  },
+  "status": "SEED_SCHEMA_VALIDATED_NOT_INFERENTIAL_MACRO_SAMPLE",
+  "trait_domain_counts": {
+    "ALLOCATION": 1,
+    "CHEMICAL_SIGNAL": 1,
+    "DISPLAY_STATE": 1,
+    "MORPHOLOGY": 6,
+    "MULTIVARIATE_OR_COMPOSITE": 4,
+    "ORIENTATION": 2,
+    "PHENOLOGY": 1
+  }
+}
