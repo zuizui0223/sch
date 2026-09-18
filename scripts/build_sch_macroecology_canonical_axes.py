@@ -46,8 +46,14 @@ def build(batch_paths: list[Path], override_path: Path) -> dict:
     if unknown:
         raise ValueError("canonical override references unknown source axes: " + ", ".join(unknown))
 
+    excluded = [
+        row for row in rows
+        if row.get("geometry_eligibility", "").startswith("INELIGIBLE_")
+    ]
+    model_rows = [row for row in rows if row not in excluded]
+
     grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
-    for row in rows:
+    for row in model_rows:
         override = overrides.get(row["trait_axis_id"])
         canonical = (
             override["canonical_trait_axis_id"]
@@ -91,6 +97,9 @@ def build(batch_paths: list[Path], override_path: Path) -> dict:
     return {
         "analysis": "sch_macroecology_canonical_trait_axis_v1",
         "n_source_axis_records": len(rows),
+        "n_model_axis_source_records": len(model_rows),
+        "n_source_records_excluded_before_canonical_axis": len(excluded),
+        "excluded_source_axis_ids": sorted(row["trait_axis_id"] for row in excluded),
         "n_canonical_trait_axes": len(grouped),
         "n_axes_with_multiple_source_records": len(multi_source_axes),
         "multi_source_canonical_axes": sorted(multi_source_axes),
@@ -103,6 +112,7 @@ def build(batch_paths: list[Path], override_path: Path) -> dict:
         "status": "CANONICAL_AXIS_LAYER_READY_INFERENCE_CLOSED",
         "claim_ceiling": [
             "source_axis_records_are_not_independent_trait_axes",
+            "source_records_failing_geometry_eligibility_are_not_model_trait_axes",
             "cross_source_same_axis_records_are_collapsed_before_modeling",
             "context_variable_axes_are_not_forced_into_one_static_geometry",
             "not_prevalence",
