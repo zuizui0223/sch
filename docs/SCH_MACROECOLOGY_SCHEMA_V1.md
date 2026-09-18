@@ -70,9 +70,18 @@ The cluster ledger separately records:
 
 These fields support an **identification model** distinct from the ecological model: which study designs are capable of promoting claims beyond multifunctionality?
 
+## Sampling-frame rule
+
+The existing frozen 868-record PRISMA V2 cohort was retrieved with pollinator-antagonist queries. It is therefore an appropriate discovery frame for **pollinator-antagonist macroecology**, but it is not an unbiased frame for comparing antagonist systems against abiotic multifunctionality such as rain protection or water economy.
+
+V1 therefore separates two lanes:
+
+1. **Primary macro lane — pollinator-antagonist systems.** Complete the frozen 868-record screen, then recode all design-eligible primary systems without conditioning on sign.
+2. **Cross-domain comparator lane — later, separate protocol.** Any formal mutualist-antagonist versus mutualist-abiotic comparison requires a prospectively registered matched search with comparable trait/function eligibility. The current two abiotic negative controls remain specificity examples, not the denominator for H1.
+
 ## Sign-independent eligibility rule
 
-The inferential macroecology sample must be built without conditioning inclusion on the observed sign.
+Within the declared sampling lane, the inferential macroecology sample must be built without conditioning inclusion on the observed sign.
 
 A cluster/context is design-eligible when:
 
@@ -86,23 +95,25 @@ Positive-only inclusion is prohibited for H1-H3 below.
 
 ## Registered ecological hypotheses
 
-### H1 — ecological pairing predicts realized conflict geometry
+### H1 — ecological structure within pollinator-antagonist systems predicts opposition
 
-Among sign-independently design-eligible same-coordinate cases:
+Among sign-independently design-eligible same-coordinate cases from the frozen pollinator-antagonist sampling frame:
 
-`conflict_detected ~ antagonist_involved + abiotic_function_involved + trait_domain + function_pair_family`
+`conflict_detected ~ antagonist_guild + trait_domain + interaction_timing + pollinator_guild + common_fitness_endpoint`
 
-Primary contrast: mutualist-antagonist versus mutualist-abiotic pairings.
+Where sample size permits, antagonist guild is resolved as florivory/herbivory, seed predation, nectar larceny, oviposition/brood exploitation, grazing, or other prospectively frozen classes.
 
-Interpretation ceiling: an association within the screened published evidence universe, not natural prevalence and not a causal antagonist effect unless the moderator itself is experimentally manipulated.
+Interpretation ceiling: an association within the screened published pollinator-antagonist evidence universe, not natural prevalence and not a causal antagonist effect unless the moderator itself is experimentally manipulated.
 
-### H2 — consumer-mediated conflict is more context-sensitive
+A later cross-domain H1b may compare mutualist-antagonist with mutualist-abiotic systems only after the matched comparator search is registered and completed.
+
+### H2 — conflict geometry changes across ecological context
 
 Among systems observed in at least two ecological contexts:
 
-`context_shift_detected ~ antagonist_involved + consumer_context_manipulated + spatial_replication + temporal_replication + trait_domain`
+`context_shift_detected ~ antagonist_pressure_or_identity + pollinator_identity + spatial_replication + temporal_replication + trait_domain`
 
-The denominator must be restricted to systems with an actual opportunity to observe switching.
+The denominator must be restricted to systems with an actual opportunity to observe switching. Experimental and observational context changes are coded separately.
 
 ### H3 — opposing components can hide behind weak net selection
 
@@ -153,4 +164,4 @@ NATURAL_PREVALENCE = NOT_ESTIMATED
 ECOLOGICAL_MODERATOR_CAUSALITY = NOT_ASSUMED
 ```
 
-The next data task is to recode the full screened primary-study set into the cluster/context architecture without looking at the desired macroecological result while setting eligibility.
+The next data task is to complete/recode the frozen pollinator-antagonist screen into the cluster/context architecture without looking at the desired macroecological result while setting eligibility. The current 117 included primary studies can be coded prospectively as an interim build, but inferential H1-H4 remain closed until the frozen screen and full-text decisions are complete. Cross-domain mutualist-abiotic comparison requires a separate matched search and is not licensed by the 868-record cohort.
