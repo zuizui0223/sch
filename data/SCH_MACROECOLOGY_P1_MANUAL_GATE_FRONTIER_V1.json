@@ -21,7 +21,7 @@
   "n_machine_p1_records": 47,
   "n_p1_manual_gated": 47,
   "n_p1_missing_manual_gate": 0,
-  "n_single_axis_records": 16,
+  "n_single_axis_records": 17,
   "n_trait_axis_split_required_records": 25,
   "status": "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
 }
