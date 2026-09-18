@@ -79,8 +79,10 @@ def test_schema_freezes_sign_independent_eligibility_and_four_hypotheses():
     text = SCHEMA.read_text(encoding="utf-8")
     assert "Sign-independent eligibility rule" in text
     assert "Positive-only inclusion is prohibited" in text
-    assert "H1 — ecological pairing predicts realized conflict geometry" in text
-    assert "H2 — consumer-mediated conflict is more context-sensitive" in text
+    assert "pollinator-antagonist macroecology" in text
+    assert "matched comparator search" in text
+    assert "H1 — ecological structure within pollinator-antagonist systems predicts opposition" in text
+    assert "H2 — conflict geometry changes across ecological context" in text
     assert "H3 — opposing components can hide behind weak net selection" in text
     assert "H4 — design predicts identification ceiling" in text
     assert "FULL_MACRO_SAMPLE = NOT_YET_CONSTRUCTED" in text
