@@ -30,7 +30,7 @@ The 117 currently included primary studies form an **interim recoding queue**, n
 
 ## Stage A — automatic queue construction
 
-`scripts/build_sch_macroecology_recode_queue.py` merges the frozen candidate registry with every versioned screening overlay and exports all current `screen_fulltext == INCLUDE` records.
+`scripts/build_sch_macroecology_primary_candidates.py` merges the frozen candidate registry with every versioned screening overlay and exports all current `screen_fulltext == INCLUDE` records together with a machine-readable receipt.
 
 The queue copies source metadata and leaves all macroecology judgments blank. This prevents screening decisions from being silently converted into ecological outcomes.
 
@@ -233,7 +233,7 @@ SCHEMA_V1                         READY
 16_CLUSTER_SEED                  READY
 NONEXCLUSIVE_OUTCOME_AXES        READY
 CONTEXT_CASE_TEMPLATE            READY
-117_PRIMARY_RECODE_QUEUE_BUILDER READY
+117_PRIMARY_CANDIDATE_BUILDER    READY
 INFERENTIAL_MACRO_SAMPLE         NOT_READY
 CROSS_DOMAIN_COMPARATOR          NOT_STARTED
 ```
