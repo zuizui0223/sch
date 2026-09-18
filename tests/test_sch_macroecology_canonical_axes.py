@@ -26,7 +26,9 @@ def _build():
 def test_source_axis_records_collapse_to_canonical_axes():
     built = _build()
     assert built["n_source_axis_records"] == 48
-    assert built["n_canonical_trait_axes"] == 47
+    assert built["n_model_axis_source_records"] == 45
+    assert built["n_source_records_excluded_before_canonical_axis"] == 3
+    assert built["n_canonical_trait_axes"] == 44
     assert built["n_axes_with_multiple_source_records"] == 1
     assert built["multi_source_canonical_axes"] == ["Gentiana_lutea_color_axis"]
 
@@ -41,15 +43,20 @@ def test_cross_source_geometry_change_is_context_variable():
         "CONTEXT_VARIABLE": 1,
         "ONE_SIDED_OR_NULL": 4,
         "ROLE_BOUNDARY": 14,
-        "UNRESOLVED": 17,
+        "UNRESOLVED": 14,
     }
 
 
 def test_canonical_fixed_role_denominator_is_not_source_record_count():
     built = _build()
-    assert built["n_fixed_role_canonical_axes"] == 33
+    assert built["n_fixed_role_canonical_axes"] == 30
     assert built["n_fixed_role_resolved_canonical_axes"] == 16
     assert built["n_role_boundary_canonical_axes"] == 14
+    assert built["excluded_source_axis_ids"] == [
+        "CloudForest_000214_patch_display",
+        "Haplopappus_000233_odor_blend",
+        "Pulsatilla_000213_stalk_height",
+    ]
     assert "source_axis_records_are_not_independent_trait_axes" in built["claim_ceiling"]
 
 
