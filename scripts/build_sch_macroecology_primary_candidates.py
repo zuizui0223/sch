@@ -50,6 +50,8 @@ OUTPUT_FIELDS = [
     "design_audit_eligible",
     "macro_cluster_id",
     "macro_context_cases_required",
+    "macro_recode_priority",
+    "context_recode_priority",
     "macro_coding_status",
     "macro_coding_note",
 ]
@@ -115,6 +117,33 @@ def _positive_receiver(value: str) -> bool:
     return _reported(value) and not value.upper().startswith("NO_")
 
 
+def _yes(value: str) -> bool:
+    return value.upper().startswith("YES")
+
+
+def _recode_priority(row: dict[str, str]) -> str:
+    pollinator = _yes(row.get("pollinator_response_measured", ""))
+    antagonist = _yes(row.get("antagonist_response_measured", ""))
+    common_fitness = _yes(row.get("common_reproductive_outcome", ""))
+    if pollinator and antagonist and common_fitness:
+        return "P1_LINKED_GEOMETRY"
+    if pollinator and antagonist:
+        return "P2_SHARED_RESPONSE_NO_COMMON_FITNESS"
+    if pollinator or antagonist:
+        return "P3_PARTIAL_ROUTE"
+    return "P4_DESIGN_ARCHITECTURE"
+
+
+def _context_priority(row: dict[str, str]) -> str:
+    if _positive_geo(row.get("geographic_contrast", "")):
+        return "YES"
+    if _positive_receiver(row.get("receiver_assemblage_contrast", "")):
+        return "YES"
+    if row.get("single_site_vs_multisite", "") == "MULTISITE":
+        return "YES"
+    return "NO_OR_UNRESOLVED"
+
+
 def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], dict]:
     frozen = {row["record_id"]: row for row in _read(frozen_path)}
     overlays = _merge_overlays(prisma_dir)
@@ -134,6 +163,8 @@ def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], di
                 "design_audit_eligible": "YES_CURRENT_FULLTEXT_INCLUDE",
                 "macro_cluster_id": "",
                 "macro_context_cases_required": "PENDING_SOURCE_RECODE",
+                "macro_recode_priority": _recode_priority(row),
+                "context_recode_priority": _context_priority(row),
                 "macro_coding_status": "UNADJUDICATED",
                 "macro_coding_note": "",
             }
@@ -143,8 +174,12 @@ def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], di
     included.sort(key=lambda row: row["record_id"])
 
     lanes: Counter[str] = Counter()
+    priorities: Counter[str] = Counter()
+    context_priorities: Counter[str] = Counter()
     for row in included:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
+        priorities[row["macro_recode_priority"]] += 1
+        context_priorities[row["context_recode_priority"]] += 1
 
     geo = [row for row in included if _positive_geo(row["geographic_contrast"])]
     receiver = [row for row in included if _positive_receiver(row["receiver_assemblage_contrast"])]
@@ -155,6 +190,8 @@ def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], di
         "candidate_rule": "all_current_fulltext_INCLUDE_records_no_outcome_sign_filter",
         "n_primary_candidates": len(included),
         "evidence_lane_counts": dict(sorted(lanes.items())),
+        "design_only_recode_priority_counts": dict(sorted(priorities.items())),
+        "context_recode_priority_counts": dict(sorted(context_priorities.items())),
         "existing_structured_field_coverage": {
             "A_trait_reported": sum(_reported(row["A_trait"]) for row in included),
             "A_manipulated_reported": sum(_reported(row["A_manipulated"]) for row in included),
@@ -182,6 +219,7 @@ def build(frozen_path: Path, prisma_dir: Path) -> tuple[list[dict[str, str]], di
             "no_conflict_prevalence",
             "no_moderator_test_before_source_recode",
             "independence_clustering_required_before_model_fit",
+            "recode_priority_uses_design_fields_not_outcome_sign",
         ],
     }
     return included, receipt
