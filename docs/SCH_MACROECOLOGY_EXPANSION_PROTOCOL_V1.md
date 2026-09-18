@@ -79,21 +79,24 @@ Required eligibility outcomes:
 
 No study is excluded because its result is null, aligned, one-sided, or contrary to SCH.
 
-## Stage C — cluster and context decomposition
+## Stage C — cluster, trait-axis and context decomposition
 
-One `cluster_id` represents an independent biological programme/system.
+One `cluster_id` represents an independent biological programme/system. Each distinct focal coordinate receives a nested `trait_axis_id`.
 
-Repeated observations become context cases rather than independent clusters:
+This prevents multivariate studies from being collapsed into one ecological label. A study can legitimately contain both conflict and reinforcement if different floral traits experience different agent-mediated geometry.
+
+Repeated observations then become context cases:
 
 ```text
 cluster
-  -> population/site
-  -> year/season
-  -> treatment/consumer regime
-  -> local ecological geometry
+  -> trait axis
+      -> population/site
+      -> year/season
+      -> treatment/consumer regime
+      -> local ecological geometry
 ```
 
-The context-case table is used whenever a source reports multiple populations, years, guilds, or treatments. This is required for the context-switch analysis.
+Neither multiple trait axes nor repeated contexts count as independent biological replication. The context-case table is required whenever a source reports multiple populations, years, guilds, or treatments.
 
 ## Stage D — ecological coding
 
@@ -125,7 +128,7 @@ Use the controlled V1 classes in `SCH_MACROECOLOGY_SCHEMA_V1.md`. Composite/mult
 
 ### Analysis 1: conflict geometry
 
-Primary unit: independent cluster, using only sign-independently eligible same/bounded-coordinate systems.
+Primary observational unit: sign-independently eligible trait axis. Standard errors/dependence must respect clustering by independent biological `cluster_id`.
 
 Candidate model:
 
@@ -153,7 +156,7 @@ context_shift
 + spatial_context
 + temporal_context
 + trait_domain
-+ (1 | cluster_id)
++ (1 | cluster_id/trait_axis_id)
 ```
 
 A system with only one observed context is not a negative for switching.
@@ -232,6 +235,7 @@ Before that point, seed and interim queue summaries are development readouts onl
 SCHEMA_V1                         READY
 16_CLUSTER_SEED                  READY
 NONEXCLUSIVE_OUTCOME_AXES        READY
+TRAIT_AXIS_TEMPLATE              READY
 CONTEXT_CASE_TEMPLATE            READY
 117_PRIMARY_CANDIDATE_BUILDER    READY
 INFERENTIAL_MACRO_SAMPLE         NOT_READY
