@@ -8,14 +8,17 @@ This layer asks a different question from the SCH identification paper:
 
 The macroecology layer is comparative and descriptive unless a moderator is experimentally manipulated. It does not replace the SCH L0-L4 promotion ladder and it does not turn heterogeneous literature effects into a universal conflict coefficient.
 
-## Two-level data architecture
+## Three-level data architecture
 
-SCH macroecology uses two linked tables.
+SCH macroecology uses three linked biological levels.
 
-1. **Cluster ledger** — one row per independent biological study programme/system. This protects independence and stores relatively stable biological/design metadata.
-2. **Context-case ledger** — one row per cluster x population/year/treatment/consumer regime for studies that provide repeated ecological contexts. This preserves the very switching that a one-row-per-study summary would erase.
+1. **Cluster ledger** — one row per independent biological study programme/system. This protects replication and stores programme-level metadata.
+2. **Trait-axis ledger** — one row per cluster x declared trait coordinate. This is the primary unit for conflict/alignment geometry. A single study may therefore contribute several trait axes without becoming several independent clusters.
+3. **Context-case ledger** — one row per trait axis x population/year/treatment/consumer regime when repeated ecological contexts are available. This preserves switching without inflating independent replication.
 
-The current V1 implementation seeds the cluster ledger from the existing 16-cluster SCH pattern synthesis. It is a schema-validation dataset, not the inferential macroecology sample.
+This third level is necessary because one study can contain opposite ecological geometry on different traits. For example, the existing *Gymnadenia* evidence contains conflicting agent-mediated selection on flowering phenology but reinforcing selection on spur length. Collapsing both into one cluster-level binary outcome would erase that biological result.
+
+The current 16-cluster seed remains a schema-validation summary inherited from the legacy pattern synthesis. Inferential H1-H3 will use trait-axis and context-case records while clustering uncertainty at the biological-cluster level.
 
 ## Outcome axes
 
@@ -33,8 +36,9 @@ A `NO` is used only when the source-adjudicated evidence supports a negative cla
 
 ## Core ecological moderators
 
-Cluster-level fields:
+Trait-axis fields:
 
+- `trait_axis_id`: stable identifier nested inside `cluster_id`.
 - `trait_domain`: `MORPHOLOGY`, `ORIENTATION`, `CHEMICAL_SIGNAL`, `PHENOLOGY`, `ALLOCATION`, `DISPLAY_STATE`, or `MULTIVARIATE_OR_COMPOSITE`.
 - `function_pair_family`: biological pairing such as `MUTUALIST_ANTAGONIST`, `MUTUALIST_ABIOTIC`, `REPRODUCTION_ABIOTIC`, `SEXUAL_FUNCTION`, `SEXUAL_FUNCTION_ANTAGONIST`, or `REPRODUCTIVE_ALLOCATION_ANTAGONIST`.
 - `antagonist_involved`: whether a florivore, herbivore, seed predator, grazer, robber, ovipositor, or analogous antagonist is part of the focal pair.
@@ -83,13 +87,14 @@ V1 therefore separates two lanes:
 
 Within the declared sampling lane, the inferential macroecology sample must be built without conditioning inclusion on the observed sign.
 
-A cluster/context is design-eligible when:
+A trait axis/context is design-eligible when:
 
 1. it is a primary plant study;
 2. at least two focal functions are linked to one declared trait coordinate or a prospectively declared bounded coordinate;
-3. the study contains enough directional, optimum, or performance information to classify the relation as opposing, aligned, null/one-sided, or unresolved;
-4. the biological unit can be assigned to an independent cluster;
-5. the outcome is coded even when no conflict is found.
+3. the trait coordinate is split into a separate `trait_axis_id` when another trait in the same study shows a different ecological geometry;
+4. the study contains enough directional, optimum, or performance information to classify the relation as opposing, aligned, null/one-sided, or unresolved;
+5. the biological unit can be assigned to an independent cluster;
+6. the outcome is coded even when no conflict is found.
 
 Positive-only inclusion is prohibited for H1-H3 below.
 
@@ -138,11 +143,11 @@ This is a study-design result, not a biological prevalence result.
 
 ## Independence and hierarchy
 
-Repeated populations, years, treatments, or consumer regimes from one programme are context cases nested inside one `cluster_id`. They do not become independent biological replication.
+Multiple trait coordinates from one programme are nested trait axes, and repeated populations, years, treatments, or consumer regimes are context cases nested inside those axes. Neither operation creates new independent biological clusters.
 
-The planned model hierarchy is therefore:
+The planned hierarchy is therefore:
 
-`context case -> biological cluster -> taxon/lineage`
+`context case -> trait axis -> biological cluster -> taxon/lineage`
 
 Phylogenetic structure may be added only after taxonomic coverage is large enough and names are source-normalized.
 
@@ -164,4 +169,4 @@ NATURAL_PREVALENCE = NOT_ESTIMATED
 ECOLOGICAL_MODERATOR_CAUSALITY = NOT_ASSUMED
 ```
 
-The next data task is to complete/recode the frozen pollinator-antagonist screen into the cluster/context architecture without looking at the desired macroecological result while setting eligibility. The current 117 included primary studies can be coded prospectively as an interim build, but inferential H1-H4 remain closed until the frozen screen and full-text decisions are complete. Cross-domain mutualist-abiotic comparison requires a separate matched search and is not licensed by the 868-record cohort.
+The next data task is to complete/recode the frozen pollinator-antagonist screen into the cluster/trait-axis/context architecture without looking at the desired macroecological result while setting eligibility. The current 117 included primary studies can be coded prospectively as an interim build, but inferential H1-H4 remain closed until the frozen screen and full-text decisions are complete. Cross-domain mutualist-abiotic comparison requires a separate matched search and is not licensed by the 868-record cohort.
