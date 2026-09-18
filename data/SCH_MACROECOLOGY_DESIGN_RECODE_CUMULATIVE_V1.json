@@ -1,0 +1,54 @@
+{
+  "analysis": "sch_macroecology_design_recode_cumulative_v1",
+  "batch_files": [
+    "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH1_V1.csv",
+    "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH2_V1.csv"
+  ],
+  "cancellation_eligibility_counts": {
+    "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 2,
+    "INELIGIBLE_NO_COMMON_FITNESS": 6,
+    "INELIGIBLE_NO_TWO_COMPONENTS": 20,
+    "INELIGIBLE_ROLE_DEPENDENT": 1,
+    "PENDING_NUMERIC_EXTRACTION": 8,
+    "PENDING_SOURCE_RECODE": 7
+  },
+  "claim_ceiling": [
+    "recode_batches_are_not_final_systematic_denominator",
+    "design_gap_counts_not_natural_frequencies",
+    "no_ecological_outcome_sign_used_for_eligibility",
+    "all_recoded_records_retained_for_H4"
+  ],
+  "context_switch_eligibility_counts": {
+    "ELIGIBLE_MULTI_CONTEXT": 8,
+    "INELIGIBLE_GEOMETRY_NOT_ESTABLISHED": 28,
+    "INELIGIBLE_SINGLE_CONTEXT": 4,
+    "PENDING_GEOMETRY_RESOLUTION": 3,
+    "PENDING_SOURCE_RECODE": 1
+  },
+  "geometry_eligibility_counts": {
+    "ELIGIBLE_BOUNDED_COORDINATE": 7,
+    "ELIGIBLE_SAME_COORDINATE": 5,
+    "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 2,
+    "INELIGIBLE_NO_COMMON_FITNESS_LINK": 6,
+    "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 20,
+    "UNRESOLVED_SOURCE": 4
+  },
+  "n_batches": 2,
+  "n_context_switch_eligible": 8,
+  "n_design_audit_eligible": 44,
+  "n_geometry_eligible": 12,
+  "n_outcomes_coded_in_design_batches": 0,
+  "n_records": 44,
+  "outcome_coding_status_counts": {
+    "DEFERRED_PENDING_AXIS_SOURCE_RECODE": 4,
+    "DEFERRED_UNTIL_AXIS_RECODE": 12,
+    "NOT_CODED": 28
+  },
+  "status": "CUMULATIVE_DESIGN_FRONTIER_DESCRIPTIVE_ONLY",
+  "trait_axis_action_counts": {
+    "NO_AXIS_PROMOTION": 9,
+    "SINGLE_AXIS": 20,
+    "SPLIT_FOR_H4": 5,
+    "SPLIT_REQUIRED": 10
+  }
+}
