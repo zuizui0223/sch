@@ -34,6 +34,15 @@ The 117 currently included primary studies form an **interim recoding queue**, n
 
 The queue copies source metadata and leaves all macroecology judgments blank. This prevents screening decisions from being silently converted into ecological outcomes.
 
+For workflow only, records receive a **design-only recode priority** that does not inspect conflict sign or ecological outcome:
+
+- `P1_LINKED_GEOMETRY` — pollinator response + antagonist response + common reproductive outcome already reported;
+- `P2_SHARED_RESPONSE_NO_COMMON_FITNESS` — both audience responses reported but the common-fitness gate is missing;
+- `P3_PARTIAL_ROUTE` — only one focal audience response is currently structured;
+- `P4_DESIGN_ARCHITECTURE` — useful for design/identification audit but both response routes are not yet structured.
+
+A separate context-recode flag is raised by pre-existing multisite/geographic/receiver-context metadata. Priority changes review order only; it never determines inclusion or outcome.
+
 Required blank-at-entry fields include:
 
 ```text
