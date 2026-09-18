@@ -6,19 +6,21 @@ Five trait-axis recoding batches now contain:
 
 ```text
 source records                     26
-independent biological clusters   24
-trait axes                         48
+source-axis records                 48
+canonical trait axes                47
+independent biological clusters     24
 
-fixed-role axes                    34
-consumer-role boundary axes        14
+fixed-role canonical axes           33
+consumer-role boundary axes         14
 ```
 
-Seventeen fixed-role axes across twelve biological clusters are resolved enough to classify:
+After cross-source canonicalization, sixteen fixed-role canonical axes across twelve biological clusters are resolved enough to classify:
 
 ```text
 CONFLICT / OPPOSITION              9
-ALIGNMENT / REINFORCEMENT         3
-ONE-SIDED OR NULL                 5
+ALIGNMENT / REINFORCEMENT         2
+ONE-SIDED OR NULL                 4
+CONTEXT-VARIABLE                   1
 ```
 
 These counts describe the staged recode, not prevalence in nature or the final systematic sample.
@@ -105,14 +107,17 @@ This statement is now supported by source-adjudicated positive, negative and bou
 ## Claim ceiling
 
 ```text
-TRAIT_AXES_RECODED = 48
+SOURCE_AXIS_RECORDS = 48
+CANONICAL_TRAIT_AXES = 47
 BIOLOGICAL_CLUSTERS = 24
-FIXED_ROLE_RESOLVED_AXES = 17
+FIXED_ROLE_CANONICAL_AXES = 33
+FIXED_ROLE_RESOLVED_CANONICAL_AXES = 16
 FIXED_ROLE_RESOLVED_CLUSTERS = 12
 
-CONFLICT_AXES = 9
-REINFORCEMENT_AXES = 3
-ONE_SIDED_AXES = 5
+CONFLICT_CANONICAL_AXES = 9
+REINFORCEMENT_CANONICAL_AXES = 2
+ONE_SIDED_CANONICAL_AXES = 4
+CONTEXT_VARIABLE_CANONICAL_AXES = 1
 
 CONSUMER_ROLE_BOUNDARY_AXES = 14
 ROLE_DEPENDENT_AXES = 9
@@ -127,3 +132,19 @@ FULL_MACRO_INFERENCE = CLOSED
 ```
 
 Next: finish the remaining multi-axis P1 records, consolidate overlapping programmes into source-to-axis mappings, and then freeze the independent trait-axis denominator before model fitting.
+
+
+## Canonical-axis correction
+
+Source-axis rows are evidence records, not automatically independent biological trait axes.
+
+The first cross-source duplicate identified is the yellow-to-orange flower-colour axis in *Gentiana lutea*. One focal-population source resolves reinforcement, whereas the broader multi-population source resolves a one-sided/context-dependent pattern. The two records are therefore collapsed to:
+
+```text
+Gentiana_lutea_color_axis
+-> CONTEXT_VARIABLE
+```
+
+rather than counted once as reinforcement and once as one-sided geometry.
+
+This correction is now enforced by `SCH_MACROECOLOGY_CANONICAL_AXIS_OVERRIDES_V1.csv` and the canonical-axis builder.
