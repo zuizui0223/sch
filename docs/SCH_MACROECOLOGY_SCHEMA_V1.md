@@ -31,6 +31,7 @@ Controlled values are `YES`, `NO`, and `UNRESOLVED`.
 - `context_shift_detected` — the effective favored direction, strength, or geometry changes across an ecological context axis.
 - `compromise_detected` — an intermediate/hump-shaped combined response is recovered on the focal coordinate.
 - `cancellation_detected` — non-zero opposing component effects approximately cancel in the reported net selection/outcome.
+- `one_sided_or_null_detected` — one focal functional route is directional while the other is null/unresolved on the declared coordinate, so the case is neither conflict nor alignment.
 
 A `NO` is used only when the source-adjudicated evidence supports a negative classification. Missing evidence is `UNRESOLVED`, not `NO`.
 
@@ -44,6 +45,7 @@ Trait-axis fields:
 - `antagonist_involved`: whether a florivore, herbivore, seed predator, grazer, robber, ovipositor, or analogous antagonist is part of the focal pair.
 - `abiotic_function_involved`: whether one focal function is abiotic/resource-facing rather than consumer-facing.
 - `shared_coordinate_status`: `SAME_COORDINATE`, `COMPOSITE_OR_MULTIVARIATE`, or `NOT_STRICT_SHARED_COORDINATE`.
+- `antagonist_role_status`: `NET_ANTAGONISTIC`, `ROLE_DEPENDENT`, or `UNRESOLVED`. A nectar robber or brood visitor that also provides pollination is not forced into a fixed antagonist category.
 
 Context-case fields to add during full recoding:
 
@@ -115,7 +117,7 @@ Among sign-independently design-eligible same-coordinate cases from the frozen p
 
 `conflict_detected ~ antagonist_guild + trait_domain + interaction_timing + pollinator_guild + common_fitness_endpoint`
 
-Where sample size permits, antagonist guild is resolved as florivory/herbivory, seed predation, nectar larceny, oviposition/brood exploitation, grazing, or other prospectively frozen classes.
+Where sample size permits, antagonist guild is resolved as florivory/herbivory, seed predation, nectar larceny, oviposition/brood exploitation, grazing, or other prospectively frozen classes. The primary fixed-role H1 excludes `ROLE_DEPENDENT` cases; those are retained as a boundary stratum rather than recoded as antagonistic by name alone.
 
 Interpretation ceiling: an association within the screened published pollinator-antagonist evidence universe, not natural prevalence and not a causal antagonist effect unless the moderator itself is experimentally manipulated.
 
