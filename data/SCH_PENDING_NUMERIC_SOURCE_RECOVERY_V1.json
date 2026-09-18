@@ -1,8 +1,10 @@
 {
   "analysis": "sch_pending_numeric_source_recovery_v1",
-  "status": "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED",
+  "status": "SOURCE_ROUTE_RESOLVED_EXTRACTION_FAIL_CLOSED",
   "n_pending_clusters": 2,
   "n_source_locations_confirmed": 2,
+  "n_download_routes_resolved": 1,
+  "n_binary_materializations_completed": 0,
   "n_exact_numeric_extractions_completed": 0,
   "sources": [
     {
@@ -10,10 +12,14 @@
       "doi": "10.1002/evl3.262",
       "source_object": "Table S2",
       "source_file": "evl3262-sup-0001-suppmat.docx",
-      "source_location": "Evolution Letters supporting information / PMC Associated Data",
+      "source_location": "Evolution Letters / Oxford Academic supporting information",
+      "source_article_url": "https://academic.oup.com/evlett/article/5/6/636/6697546",
       "published_analysis": "emtrends differences in beta",
       "reported_scope": "selection gradient estimates for each trait; exact treatment combinations underlying Figure 1",
-      "retrieval_status": "SOURCE_LOCATION_CONFIRMED_BINARY_NOT_MATERIALIZED",
+      "download_route_status": "SIGNED_OUP_CDN_ROUTE_RESOLVED",
+      "resolved_download_object": "evl3262-sup-0001-suppmat.docx",
+      "binary_materialized": false,
+      "retrieval_status": "DOWNLOAD_ROUTE_RESOLVED_BINARY_NOT_MATERIALIZED",
       "numeric_promotion": "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED",
       "covariance_rule": "DO_NOT_INFER_MISSING_COVARIANCE",
       "figure_digitization_rule": "DO_NOT_DIGITIZE_FIGURE_1_AS_TABLE_S2"
@@ -24,8 +30,11 @@
       "source_object": "Appendix A Table A2",
       "archive_id": "E096-022-A1",
       "source_location": "Ecological Archives E096-022",
+      "archive_landing_url": "https://esapubs.org/archive/ecol/E096/022/",
+      "archive_route_status": "ECOLOGICAL_ARCHIVES_OBJECT_RESOLVED",
       "reported_content": "phenotypic linear selection gradients (beta +/- SE) for all four treatment groups",
-      "retrieval_status": "SOURCE_LOCATION_CONFIRMED_BINARY_NOT_MATERIALIZED",
+      "binary_materialized": false,
+      "retrieval_status": "ARCHIVE_OBJECT_RESOLVED_BINARY_NOT_MATERIALIZED",
       "numeric_promotion": "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED",
       "covariance_rule": "DO_NOT_INFER_MISSING_COVARIANCE"
     }
@@ -38,5 +47,5 @@
     "random_effects_gate": "FAIL_CLOSED",
     "pooled_conflict_effect": "NOT_ESTIMATED"
   },
-  "promotion_rule": "Promote a pending row only after the exact source table bytes are inspected and the target coefficients, uncertainty, orientation, and covariance requirements are source-verified. Figure digitization and assumed independence are not substitutes."
+  "promotion_rule": "A resolved web route is provenance, not a numerical extraction. Promote a pending row only after the exact source table bytes are inspected and the target coefficients, uncertainty, orientation, and covariance requirements are source-verified. Figure digitization and assumed independence are not substitutes."
 }

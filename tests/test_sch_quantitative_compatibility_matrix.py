@@ -102,24 +102,31 @@ def test_pending_numeric_sources_are_located_but_not_guessed() -> None:
     assert report["n_pending_clusters"] == 2
     assert report["n_source_locations_confirmed"] == 2
     assert report["n_exact_numeric_extractions_completed"] == 0
-    assert report["status"] == "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED"
+    assert report["status"] == "SOURCE_ROUTE_RESOLVED_EXTRACTION_FAIL_CLOSED"
+    assert report["n_download_routes_resolved"] == 1
+    assert report["n_binary_materializations_completed"] == 0
 
     by_id = {row["cluster_id"]: row for row in report["sources"]}
     fragaria = by_id["Fragaria_inflorescence_density"]
     assert fragaria["source_object"] == "Table S2"
     assert fragaria["source_file"] == "evl3262-sup-0001-suppmat.docx"
     assert fragaria["published_analysis"] == "emtrends differences in beta"
+    assert fragaria["download_route_status"] == "SIGNED_OUP_CDN_ROUTE_RESOLVED"
+    assert fragaria["resolved_download_object"] == "evl3262-sup-0001-suppmat.docx"
     assert fragaria["numeric_promotion"] == "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED"
 
     gym = by_id["Gymnadenia_flowering_phenology"]
     assert gym["source_object"] == "Appendix A Table A2"
     assert gym["archive_id"] == "E096-022-A1"
+    assert gym["archive_route_status"] == "ECOLOGICAL_ARCHIVES_OBJECT_RESOLVED"
     assert gym["reported_content"] == "phenotypic linear selection gradients (beta +/- SE) for all four treatment groups"
     assert gym["numeric_promotion"] == "BLOCKED_UNTIL_SOURCE_TABLE_BYTES_ARE_INSPECTED"
 
     text = RECOVERY_DOC.read_text(encoding="utf-8")
     for token in (
-        "SOURCE_LOCATED_EXTRACTION_FAIL_CLOSED",
+        "SOURCE_ROUTE_RESOLVED_EXTRACTION_FAIL_CLOSED",
+        "SIGNED_OUP_CDN_ROUTE_RESOLVED",
+        "ECOLOGICAL_ARCHIVES_OBJECT_RESOLVED",
         "do not digitize Figure 1 as if it were Table S2",
         "do not infer missing covariance",
         "Fragaria_inflorescence_density",
