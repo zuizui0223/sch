@@ -61,3 +61,19 @@ def test_candidate_csv_roundtrip(tmp_path):
     assert len(reread) == 117
     assert reread[0]["record_id"].startswith("SCHPRISMA-")
     assert reread[0]["geometry_eligibility"] == "PENDING_SOURCE_RECODE"\n    assert reread[0]["design_audit_eligible"] == "YES_CURRENT_FULLTEXT_INCLUDE"
+
+
+def test_recode_priority_uses_design_structure_not_result_sign():
+    mod = _module()
+    base = {
+        "pollinator_response_measured": "YES",
+        "antagonist_response_measured": "YES",
+        "common_reproductive_outcome": "YES",
+        "selection_form": "OPPOSING",
+        "evidence_lanes": "DIRECTIONAL_OR_NEAR_PASS",
+    }
+    assert mod._recode_priority(base) == "P1_LINKED_GEOMETRY"
+    changed = {**base, "selection_form": "REINFORCING", "evidence_lanes": "EVOLUTIONARY_OUTCOME"}
+    assert mod._recode_priority(changed) == "P1_LINKED_GEOMETRY"
+    no_fitness = {**base, "common_reproductive_outcome": "NO_COMMON_REPRODUCTIVE_OUTCOME"}
+    assert mod._recode_priority(no_fitness) == "P2_SHARED_RESPONSE_NO_COMMON_FITNESS"
