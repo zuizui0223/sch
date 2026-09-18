@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SEED = ROOT / "data" / "SCH_MACROECOLOGY_CLUSTER_SEED_V1.csv"
 READOUT = ROOT / "data" / "SCH_MACROECOLOGY_CLUSTER_SEED_READOUT_V1.json"
+TRAIT_TEMPLATE = ROOT / "data" / "SCH_MACROECOLOGY_TRAIT_AXIS_TEMPLATE_V1.csv"
 CASE_TEMPLATE = ROOT / "data" / "SCH_MACROECOLOGY_CONTEXT_CASE_TEMPLATE_V1.csv"
 SCHEMA = ROOT / "docs" / "SCH_MACROECOLOGY_SCHEMA_V1.md"
 SCRIPT = ROOT / "scripts" / "build_sch_macroecology_seed_readout.py"
@@ -53,6 +54,23 @@ def test_committed_macroecology_seed_readout_is_reproducible():
     assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
 
 
+def test_trait_axis_template_prevents_multivariate_collapse():
+    with TRAIT_TEMPLATE.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+        fields = set(reader.fieldnames or ())
+    assert rows == []
+    for required in (
+        "trait_axis_id",
+        "cluster_id",
+        "trait_coordinate",
+        "conflict_detected",
+        "alignment_detected",
+        "macro_design_eligible",
+    ):
+        assert required in fields
+
+
 def test_context_case_template_preserves_nested_contexts():
     with CASE_TEMPLATE.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -62,6 +80,7 @@ def test_context_case_template_preserves_nested_contexts():
     for required in (
         "case_id",
         "cluster_id",
+        "trait_axis_id",
         "population_or_site",
         "year_or_season",
         "treatment_or_consumer_regime",
@@ -85,5 +104,6 @@ def test_schema_freezes_sign_independent_eligibility_and_four_hypotheses():
     assert "H2 — conflict geometry changes across ecological context" in text
     assert "H3 — opposing components can hide behind weak net selection" in text
     assert "H4 — design predicts identification ceiling" in text
+    assert "context case -> trait axis -> biological cluster -> taxon/lineage" in text
     assert "FULL_MACRO_SAMPLE = NOT_YET_CONSTRUCTED" in text
 
