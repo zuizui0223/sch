@@ -1,0 +1,46 @@
+{
+  "analysis": "sch_macroecology_canonical_trait_axis_v2",
+  "canonical_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 8,
+    "CONTEXT_VARIABLE": 2,
+    "ONE_SIDED_OR_NULL": 7,
+    "ROLE_BOUNDARY": 13,
+    "UNRESOLVED": 15
+  },
+  "claim_ceiling": [
+    "source_axis_records_are_not_independent_trait_axes",
+    "source_records_failing_geometry_eligibility_are_not_model_trait_axes",
+    "cross_source_same_axis_records_are_collapsed_before_modeling",
+    "context_variable_axes_are_not_forced_into_one_static_geometry",
+    "not_prevalence",
+    "full_systematic_recode_required_before_macro_model"
+  ],
+  "context_variable_canonical_axes": [
+    "Collaea_000312_flower_number",
+    "Gentiana_lutea_color_axis"
+  ],
+  "excluded_source_axis_ids": [
+    "Camissoniopsis_000287_corolla_width",
+    "CloudForest_000214_patch_display",
+    "Haplopappus_000233_odor_blend",
+    "Mahoro_000253_flowering_schedule",
+    "Mitraria_000202_flower_production",
+    "Protea_000209_flower_number",
+    "Pulsatilla_000213_stalk_height"
+  ],
+  "multi_source_canonical_axes": [
+    "Collaea_000312_flower_number",
+    "Gentiana_lutea_color_axis"
+  ],
+  "n_axes_with_multiple_source_records": 2,
+  "n_canonical_trait_axes": 47,
+  "n_context_variable_canonical_axes": 2,
+  "n_fixed_role_canonical_axes": 34,
+  "n_fixed_role_resolved_canonical_axes": 19,
+  "n_model_axis_source_records": 49,
+  "n_role_boundary_canonical_axes": 13,
+  "n_source_axis_records": 56,
+  "n_source_records_excluded_before_canonical_axis": 7,
+  "status": "CANONICAL_AXIS_V2_READY_INFERENCE_CLOSED"
+}
