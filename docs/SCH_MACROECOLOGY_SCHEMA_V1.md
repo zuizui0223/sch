@@ -13,12 +13,13 @@ The macroecology layer is comparative and descriptive unless a moderator is expe
 SCH macroecology uses three linked biological levels.
 
 1. **Cluster ledger** — one row per independent biological study programme/system. This protects replication and stores programme-level metadata.
-2. **Trait-axis ledger** — one row per cluster x declared trait coordinate. This is the primary unit for conflict/alignment geometry. A single study may therefore contribute several trait axes without becoming several independent clusters.
-3. **Context-case ledger** — one row per trait axis x population/year/treatment/consumer regime when repeated ecological contexts are available. This preserves switching without inflating independent replication.
+2. **Source-axis ledger** — one row per source x declared trait coordinate. This is the auditable evidence record. Multiple papers can describe the same biological trait axis.
+3. **Canonical trait-axis layer** — source-axis records are collapsed to one biological trait coordinate inside each cluster before model fitting. Cross-source repeats of the same axis become contexts/evidence links rather than independent trait axes.
+4. **Context-case ledger** — one row per canonical trait axis x population/year/treatment/consumer regime when repeated ecological contexts are available. This preserves switching without inflating independent replication.
 
 This third level is necessary because one study can contain opposite ecological geometry on different traits. For example, the existing *Gymnadenia* evidence contains conflicting agent-mediated selection on flowering phenology but reinforcing selection on spur length. Collapsing both into one cluster-level binary outcome would erase that biological result.
 
-The current 16-cluster seed remains a schema-validation summary inherited from the legacy pattern synthesis. Inferential H1-H3 will use trait-axis and context-case records while clustering uncertainty at the biological-cluster level.
+The current 16-cluster seed remains a schema-validation summary inherited from the legacy pattern synthesis. Inferential H1-H3 will use canonical trait axes and context cases while clustering uncertainty at the biological-cluster level. Source-axis rows remain provenance, not independent replication.
 
 ## Outcome axes
 
@@ -40,7 +41,7 @@ A `NO` is used only when the source-adjudicated evidence supports a negative cla
 Trait-axis fields:
 
 - `trait_axis_id`: stable identifier nested inside `cluster_id`.
-- `trait_domain`: `MORPHOLOGY`, `ORIENTATION`, `CHEMICAL_SIGNAL`, `PHENOLOGY`, `ALLOCATION`, `DISPLAY_STATE`, or `MULTIVARIATE_OR_COMPOSITE`.
+- `trait_domain`: `MORPHOLOGY`, `ORIENTATION`, `CHEMICAL_SIGNAL`, `REWARD`, `PHENOLOGY`, `ALLOCATION`, `DISPLAY_STATE`, or `MULTIVARIATE_OR_COMPOSITE`.
 - `function_pair_family`: biological pairing such as `MUTUALIST_ANTAGONIST`, `MUTUALIST_ABIOTIC`, `REPRODUCTION_ABIOTIC`, `SEXUAL_FUNCTION`, `SEXUAL_FUNCTION_ANTAGONIST`, or `REPRODUCTIVE_ALLOCATION_ANTAGONIST`.
 - `antagonist_involved`: whether a florivore, herbivore, seed predator, grazer, robber, ovipositor, or analogous antagonist is part of the focal pair.
 - `abiotic_function_involved`: whether one focal function is abiotic/resource-facing rather than consumer-facing.
@@ -158,7 +159,7 @@ Multiple trait coordinates from one programme are nested trait axes, and repeate
 
 The planned hierarchy is therefore:
 
-`context case -> trait axis -> biological cluster -> taxon/lineage`
+`context case -> canonical trait axis -> biological cluster -> taxon/lineage`
 
 Phylogenetic structure may be added only after taxonomic coverage is large enough and names are source-normalized.
 
