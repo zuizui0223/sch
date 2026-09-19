@@ -1,0 +1,79 @@
+{
+  "alignment_detected_counts": {
+    "NO": 18,
+    "UNRESOLVED": 35,
+    "YES": 4
+  },
+  "analysis": "sch_macroecology_trait_axis_cumulative_v1",
+  "antagonist_role_status_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "NET_ANTAGONISTIC": 43,
+    "ROLE_DEPENDENT": 9
+  },
+  "batch_files": [
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH1_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH2_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH3_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH4_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH5_V1.csv",
+    "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH6_V1.csv"
+  ],
+  "cancellation_detected_counts": {
+    "UNRESOLVED": 56,
+    "YES": 1
+  },
+  "claim_ceiling": [
+    "trait_axis_patterns_are_staged_descriptive_results",
+    "not_prevalence",
+    "fixed_role_and_role_boundary_strata_kept_separate",
+    "unresolved_axes_retained",
+    "full_systematic_recode_required_before_macro_model"
+  ],
+  "coding_status_counts": {
+    "AXIS_FROZEN_OUTCOME_PARTIAL": 18,
+    "AXIS_FROZEN_OUTCOME_PENDING": 1,
+    "OUTCOME_CODED": 21,
+    "OUTCOME_CODED_BOUNDARY": 10,
+    "SOURCE_DOWNGRADED_FUNCTION_ATTRIBUTION": 1,
+    "SOURCE_DOWNGRADED_NO_SHARED_AXIS": 6
+  },
+  "compromise_detected_counts": {
+    "UNRESOLVED": 57
+  },
+  "conflict_detected_counts": {
+    "NO": 13,
+    "UNRESOLVED": 35,
+    "YES": 9
+  },
+  "consumer_role_boundary_axis_counts": {
+    "BENEFIT_COST_COUPLED": 5,
+    "ROLE_DEPENDENT": 9
+  },
+  "context_shift_detected_counts": {
+    "NO": 1,
+    "UNRESOLVED": 23,
+    "YES": 33
+  },
+  "n_batches": 6,
+  "n_biological_clusters": 29,
+  "n_consumer_role_boundary_axes": 14,
+  "n_consumer_role_boundary_clusters": 8,
+  "n_fixed_role_axes": 43,
+  "n_fixed_role_geometry_resolved_axes": 21,
+  "n_fixed_role_geometry_resolved_clusters": 14,
+  "n_resolved_fixed_role_axes_with_cancellation": 1,
+  "n_resolved_fixed_role_axes_with_context_shift": 11,
+  "n_source_records": 32,
+  "n_trait_axes": 57,
+  "one_sided_or_null_detected_counts": {
+    "NO": 13,
+    "UNRESOLVED": 34,
+    "YES": 10
+  },
+  "resolved_fixed_role_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 3,
+    "CONFLICT": 9,
+    "ONE_SIDED_OR_NULL": 9
+  },
+  "status": "CUMULATIVE_TRAIT_AXIS_DESCRIPTIVE_PATTERN_READY_INFERENCE_CLOSED"
+}
