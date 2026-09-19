@@ -16,10 +16,15 @@ ALLOWED_RESOLUTION = {
 
 def _read(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as handle:
-        return [
-            {k: (v or "").strip() for k, v in row.items()}
-            for row in csv.DictReader(handle)
-        ]
+        reader = csv.DictReader(handle)
+        rows: list[dict[str, str]] = []
+        for row in reader:
+            if None in row:
+                raise ValueError(
+                    f"CSV row has more fields than header in {path}: {row[None]}"
+                )
+            rows.append({k: (v or "").strip() for k, v in row.items()})
+        return rows
 
 
 def build(evidence_path: Path, case_path: Path) -> dict:
