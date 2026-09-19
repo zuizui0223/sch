@@ -61,7 +61,7 @@
   "n_fixed_role_geometry_resolved_axes": 18,
   "n_fixed_role_geometry_resolved_clusters": 12,
   "n_resolved_fixed_role_axes_with_cancellation": 1,
-  "n_resolved_fixed_role_axes_with_context_shift": 7,
+  "n_resolved_fixed_role_axes_with_context_shift": 8,
   "n_source_records": 26,
   "n_trait_axes": 48,
   "one_sided_or_null_detected_counts": {
