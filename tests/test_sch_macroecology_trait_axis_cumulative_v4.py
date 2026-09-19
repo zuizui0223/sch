@@ -48,7 +48,7 @@ def test_cumulative_trait_axis_v4_context_and_role_structure():
         "BENEFIT_COST_COUPLED": 5,
         "ROLE_DEPENDENT": 9,
     }
-    assert built["n_resolved_fixed_role_axes_with_context_shift"] == 7
+    assert built["n_resolved_fixed_role_axes_with_context_shift"] == 8
     assert built["n_resolved_fixed_role_axes_with_cancellation"] == 1
 
 
