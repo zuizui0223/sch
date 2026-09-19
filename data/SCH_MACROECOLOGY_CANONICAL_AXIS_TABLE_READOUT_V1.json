@@ -1,0 +1,36 @@
+{
+  "analysis": "sch_macroecology_canonical_axis_table_v1",
+  "n_canonical_trait_axes": 47,
+  "canonical_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 8,
+    "CONTEXT_VARIABLE": 2,
+    "ONE_SIDED_OR_NULL": 7,
+    "ROLE_BOUNDARY": 13,
+    "UNRESOLVED": 15
+  },
+  "trait_domain_counts": {
+    "CHEMICAL_OR_VISUAL_SIGNAL": 2,
+    "CHEMICAL_SIGNAL": 4,
+    "DISPLAY_STATE": 4,
+    "MORPHOLOGY": 30,
+    "PHENOLOGY": 2,
+    "REWARD": 4,
+    "VISUAL_SIGNAL": 1
+  },
+  "n_h1_static_eligible_axes": 17,
+  "h1_static_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 8,
+    "ONE_SIDED_OR_NULL": 7
+  },
+  "n_h2_context_priority_axes": 30,
+  "n_axes_with_multiple_source_records": 2,
+  "status": "CANONICAL_MODEL_TABLE_READY_PREMODEL_GATE_REQUIRED",
+  "claim_ceiling": [
+    "table_is_current_P1_source_audit_only",
+    "h1_static_eligible_is_not_permission_to_fit_multivariable_model",
+    "cluster_dependence_must_be_respected",
+    "full_systematic_recode_required_for_final_inference"
+  ]
+}
