@@ -11,7 +11,7 @@ model-eligible source-axis records       45
 canonical trait axes                44
 independent biological clusters     24
 
-fixed-role canonical axes           30
+fixed-role canonical axes           31
 consumer-role boundary axes         14
 ```
 
@@ -112,7 +112,7 @@ SOURCE_AXIS_RECORDS = 48
 MODEL_ELIGIBLE_SOURCE_AXES = 45
 CANONICAL_TRAIT_AXES = 44
 BIOLOGICAL_CLUSTERS = 24
-FIXED_ROLE_CANONICAL_AXES = 30
+FIXED_ROLE_CANONICAL_AXES = 31
 FIXED_ROLE_RESOLVED_CANONICAL_AXES = 16
 FIXED_ROLE_RESOLVED_CLUSTERS = 12
 
@@ -121,7 +121,7 @@ REINFORCEMENT_CANONICAL_AXES = 2
 ONE_SIDED_CANONICAL_AXES = 4
 CONTEXT_VARIABLE_CANONICAL_AXES = 1
 
-CONSUMER_ROLE_BOUNDARY_AXES = 14
+CONSUMER_ROLE_BOUNDARY_AXES = 13
 ROLE_DEPENDENT_AXES = 9
 BENEFIT_COST_COUPLED_AXES = 5
 
