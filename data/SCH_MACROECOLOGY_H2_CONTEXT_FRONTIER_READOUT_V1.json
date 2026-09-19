@@ -1,0 +1,42 @@
+{
+  "analysis": "sch_macroecology_h2_context_frontier_v1",
+  "n_canonical_axes": 48,
+  "n_h2_queue_axes": 30,
+  "n_h2_queue_clusters": 13,
+  "h2_lane_counts": {
+    "H2A_GEOMETRY_SWITCH_CONFIRMED": 1,
+    "H2B_RESOLVED_GEOMETRY_CONTEXT_DEPENDENCE": 8,
+    "H2C_CONTEXT_PRESENT_GEOMETRY_UNRESOLVED": 10,
+    "H2D_CONSUMER_ROLE_CONTEXT": 11
+  },
+  "h2_priority_counts": {
+    "P1": 22,
+    "P2": 8
+  },
+  "antagonist_role_status_counts": {
+    "BENEFIT_COST_COUPLED": 4,
+    "NET_ANTAGONISTIC": 19,
+    "ROLE_DEPENDENT": 7
+  },
+  "trait_domain_counts": {
+    "CHEMICAL_SIGNAL": 3,
+    "DISPLAY_STATE": 2,
+    "MORPHOLOGY": 19,
+    "PHENOLOGY": 2,
+    "REWARD": 4
+  },
+  "n_geometry_switch_confirmed_axes": 1,
+  "n_fixed_role_resolved_context_axes": 8,
+  "n_fixed_role_unresolved_context_axes": 10,
+  "n_consumer_role_context_axes": 11,
+  "context_cases_materialized": 0,
+  "h2_model_ready": false,
+  "status": "H2_CONTEXT_FRONTIER_FROZEN_CONTEXT_CASES_PENDING",
+  "claim_ceiling": [
+    "context_shift_flag_is_not_a_context_case",
+    "axes_with_one_observed_context_are_not_negative_switching_cases",
+    "consumer_role_context_is_separate_from_fixed_role_geometry_switching",
+    "context_case_materialization_required_before_H2_model",
+    "no_H2_prevalence_claim"
+  ]
+}
