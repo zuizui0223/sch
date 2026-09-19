@@ -32,14 +32,14 @@ def test_complete_p1_canonical_denominator():
 
 def test_complete_p1_canonical_geometry():
     built = _build()
-    assert built["n_fixed_role_resolved_canonical_axes"] == 19
+    assert built["n_fixed_role_resolved_canonical_axes"] == 20
     assert built["canonical_geometry_counts"] == {
         "ALIGNMENT_REINFORCEMENT": 2,
         "CONFLICT": 8,
         "CONTEXT_VARIABLE": 2,
-        "ONE_SIDED_OR_NULL": 7,
+        "ONE_SIDED_OR_NULL": 8,
         "ROLE_BOUNDARY": 13,
-        "UNRESOLVED": 15,
+        "UNRESOLVED": 14,
     }
 
 
