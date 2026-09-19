@@ -1,0 +1,38 @@
+{
+  "analysis": "sch_macroecology_p1_source_axis_closure_v1",
+  "claim_ceiling": [
+    "record_level_H1_candidate_audit_complete",
+    "source_axis_rows_are_not_independent_axes",
+    "canonicalization_required_before_modeling",
+    "fully_downgraded_sources_remain_H4_evidence",
+    "not_prevalence"
+  ],
+  "fully_downgraded_source_ids": [
+    "SCHPRISMA-000202",
+    "SCHPRISMA-000213",
+    "SCHPRISMA-000214",
+    "SCHPRISMA-000233",
+    "SCHPRISMA-000253",
+    "SCHPRISMA-000287"
+  ],
+  "n_h1_candidates_missing_source_axis_recode": 0,
+  "n_h1_candidates_source_axis_recoded": 32,
+  "n_h1_record_level_candidates": 32,
+  "n_model_eligible_or_boundary_source_axes": 49,
+  "n_source_axis_records": 56,
+  "role_boundary_only_source_ids": [
+    "SCHPRISMA-000048",
+    "SCHPRISMA-000066",
+    "SCHPRISMA-000076",
+    "SCHPRISMA-000151",
+    "SCHPRISMA-000259",
+    "SCHPRISMA-000330",
+    "SCHPRISMA-000336"
+  ],
+  "source_fate_counts": {
+    "FULLY_DOWNGRADED": 6,
+    "RETAINS_FIXED_ROLE_AXIS": 19,
+    "ROLE_BOUNDARY_ONLY": 7
+  },
+  "status": "ALL_H1_RECORD_CANDIDATES_SOURCE_AUDITED"
+}

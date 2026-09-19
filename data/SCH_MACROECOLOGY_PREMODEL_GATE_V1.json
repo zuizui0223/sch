@@ -1,0 +1,60 @@
+{
+  "analysis": "sch_macroecology_premodel_gate_v1",
+  "claim_ceiling": [
+    "no_multinomial_H1_fit_under_sparse_alignment_support",
+    "binary_H1_is_exploratory_only",
+    "H2_requires_context_case_denominator",
+    "H3_requires_numeric_component_uncertainty",
+    "H4_final_frequency_waits_for_systematic_screen_completion"
+  ],
+  "h1_static": {
+    "axes": 18,
+    "binary_conflict_vs_other_status": "EXPLORATORY_ONLY_SYSTEMATIC_RECODE_INCOMPLETE",
+    "clusters": 13,
+    "geometry_support": {
+      "ALIGNMENT_REINFORCEMENT": {
+        "axes": 2,
+        "clusters": 2
+      },
+      "CONFLICT": {
+        "axes": 8,
+        "clusters": 7
+      },
+      "ONE_SIDED_OR_NULL": {
+        "axes": 8,
+        "clusters": 5
+      }
+    },
+    "minimum_observed_class_clusters": 2,
+    "multinomial_minimum_class_clusters_required": 5,
+    "multinomial_status": "FAIL_CLOSED_SPARSE_OUTCOME_CLASS"
+  },
+  "h2_context": {
+    "context_case_table_status": "NOT_MATERIALIZED",
+    "model_status": "FAIL_CLOSED_CONTEXT_CASE_DECOMPOSITION_REQUIRED",
+    "priority_axes": 30,
+    "priority_clusters": 14
+  },
+  "h3_cancellation": {
+    "directional_cancellation_axes": 1,
+    "model_status": "FAIL_CLOSED_NUMERIC_COMPONENT_AND_COVARIANCE_RECOVERY_REQUIRED"
+  },
+  "h4_design": {
+    "current_primary_study_universe": 117,
+    "status": "CURRENT_117_DESCRIPTIVE_READY_FINAL_SYSTEMATIC_INFERENCE_CLOSED"
+  },
+  "next_actions": [
+    "resolve_high_information_unresolved_canonical_axes",
+    "materialize_context_cases_for_H2_priority_axes",
+    "recover_numeric_component_effects_and_covariance_for_H3",
+    "complete_frozen_systematic_screen_before_final_macro_inference"
+  ],
+  "remaining_structure": {
+    "context_variable_axes": 2,
+    "role_boundary_axes": 13,
+    "role_boundary_clusters": 7,
+    "unresolved_canonical_axes": 14,
+    "unresolved_clusters": 5
+  },
+  "status": "PREMODEL_GATE_FROZEN_NO_FORCED_MODEL"
+}

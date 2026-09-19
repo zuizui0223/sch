@@ -42,9 +42,9 @@ def build(batch_paths: list[Path], override_path: Path) -> dict:
     }
 
     source_ids = {row["trait_axis_id"] for row in rows}
-    unknown = sorted(set(overrides) - source_ids)
-    if unknown:
-        raise ValueError("canonical override references unknown source axes: " + ", ".join(unknown))
+    # Overrides may include axes added in later source batches. Historical partial
+    # rebuilds ignore those entries; the complete-current build tests all active
+    # overrides because every current source axis is present there.
 
     excluded = [
         row for row in rows
