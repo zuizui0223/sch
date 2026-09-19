@@ -33,12 +33,12 @@ def test_cumulative_trait_axis_v4_structure():
 
 def test_cumulative_trait_axis_v4_fixed_role_geometry():
     built = _build()
-    assert built["n_fixed_role_geometry_resolved_axes"] == 17
+    assert built["n_fixed_role_geometry_resolved_axes"] == 18
     assert built["n_fixed_role_geometry_resolved_clusters"] == 12
     assert built["resolved_fixed_role_geometry_counts"] == {
         "ALIGNMENT_REINFORCEMENT": 3,
         "CONFLICT": 9,
-        "ONE_SIDED_OR_NULL": 5,
+        "ONE_SIDED_OR_NULL": 6,
     }
 
 
