@@ -14,7 +14,7 @@ CASES = [
     ROOT / "data" / "SCH_MACROECOLOGY_H2_CONTEXT_CASES_BATCH3_V1.csv",
 ]
 READOUT = ROOT / "data" / "SCH_MACROECOLOGY_H2_CONTEXT_CASES_CUMULATIVE_V2.json"
-SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_context_cases_cumulative.py"
+SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_context_cases_cumulative_v2.py"
 
 
 def _build():
