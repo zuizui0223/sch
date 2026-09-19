@@ -5,9 +5,9 @@
     "ALIGNMENT_REINFORCEMENT": 2,
     "CONFLICT": 8,
     "CONTEXT_VARIABLE": 2,
-    "ONE_SIDED_OR_NULL": 7,
+    "ONE_SIDED_OR_NULL": 8,
     "ROLE_BOUNDARY": 13,
-    "UNRESOLVED": 15
+    "UNRESOLVED": 14
   },
   "trait_domain_counts": {
     "CHEMICAL_SIGNAL": 4,
@@ -17,11 +17,11 @@
     "REWARD": 4,
     "VISUAL_SIGNAL": 3
   },
-  "n_h1_static_eligible_axes": 17,
+  "n_h1_static_eligible_axes": 18,
   "h1_static_geometry_counts": {
     "ALIGNMENT_REINFORCEMENT": 2,
     "CONFLICT": 8,
-    "ONE_SIDED_OR_NULL": 7
+    "ONE_SIDED_OR_NULL": 8
   },
   "n_h2_context_priority_axes": 30,
   "n_axes_with_multiple_source_records": 2,
