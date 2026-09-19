@@ -41,7 +41,7 @@ def test_premodel_gate_tracks_remaining_resolution_work():
     built = _build()
     assert built["remaining_structure"] == {
         "unresolved_canonical_axes": 14,
-        "unresolved_clusters": 6,
+        "unresolved_clusters": 5,
         "role_boundary_axes": 13,
         "role_boundary_clusters": 7,
         "context_variable_axes": 2,
