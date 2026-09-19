@@ -1,0 +1,30 @@
+{
+  "analysis": "sch_macroecology_h2_context_evidence_batch1_v1",
+  "n_context_evidence_rows": 6,
+  "n_canonical_axes_with_evidence": 5,
+  "n_source_records": 5,
+  "local_case_resolution_counts": {
+    "CONTEXT_STRUCTURE_RESOLVED_LOCAL_OUTCOMES_PENDING": 2,
+    "LOCAL_CONTEXT_GEOMETRY_RESOLVED": 1,
+    "LOCAL_CONTEXT_SOURCE_EXTRACTION_REQUIRED": 1,
+    "LOCAL_CONTEXT_TABLE_REQUIRED": 2
+  },
+  "n_local_context_cases_materialized": 1,
+  "materialized_case_ids": [
+    "Gentiana_lutea_color_Torrestio"
+  ],
+  "materialized_canonical_axes": [
+    "Gentiana_lutea_color_axis"
+  ],
+  "n_evidence_rows_requiring_source_object": 5,
+  "n_context_evidence_rows_not_yet_model_cases": 5,
+  "h2_model_ready": false,
+  "status": "H2_CONTEXT_EVIDENCE_BATCH1_READY_LOCAL_CASES_FAIL_CLOSED",
+  "claim_ceiling": [
+    "reported_context_count_is_not_model_case_count",
+    "one_source_resolved_local_case_is_materialized",
+    "factorial_or_geographic_context_structure_does_not_license_local_outcomes",
+    "source_tables_required_before_population_or_treatment_case_expansion",
+    "H2_model_not_ready"
+  ]
+}
