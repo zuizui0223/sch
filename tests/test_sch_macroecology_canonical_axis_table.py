@@ -31,11 +31,11 @@ def test_canonical_model_table_rebuilds_47_axes():
 
 def test_canonical_model_table_has_bounded_static_H1_set():
     _, receipt = _module().build(BATCHES, OVERRIDES)
-    assert receipt["n_h1_static_eligible_axes"] == 17
+    assert receipt["n_h1_static_eligible_axes"] == 18
     assert receipt["h1_static_geometry_counts"] == {
         "ALIGNMENT_REINFORCEMENT": 2,
         "CONFLICT": 8,
-        "ONE_SIDED_OR_NULL": 7,
+        "ONE_SIDED_OR_NULL": 8,
     }
     assert receipt["n_h2_context_priority_axes"] == 30
 
