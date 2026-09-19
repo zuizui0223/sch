@@ -49,6 +49,16 @@ def _one_or_join(values: list[str], sep: str = ";") -> str:
     return unique[0] if len(unique) == 1 else sep.join(unique)
 
 
+def _cross(rows: list[dict[str, str]], row_field: str, col_field: str) -> dict[str, dict[str, int]]:
+    table: dict[str, Counter[str]] = defaultdict(Counter)
+    for row in rows:
+        table[row[row_field]][row[col_field]] += 1
+    return {
+        key: dict(sorted(value.items()))
+        for key, value in sorted(table.items())
+    }
+
+
 def _role_family(guild: str) -> str:
     text = guild.lower()
     if not text:
@@ -213,6 +223,12 @@ def build(
         ),
         "antagonist_guild_family_counts_static": dict(
             sorted(Counter(row["antagonist_guild_family"] for row in static).items())
+        ),
+        "trait_domain_by_geometry_static": _cross(
+            static, "trait_domain", "canonical_geometry"
+        ),
+        "antagonist_guild_family_by_geometry_static": _cross(
+            static, "antagonist_guild_family", "canonical_geometry"
         ),
         "status": "CANONICAL_LEDGER_MATERIALIZED_INFERENCE_DIAGNOSTIC_READY",
         "claim_ceiling": [
