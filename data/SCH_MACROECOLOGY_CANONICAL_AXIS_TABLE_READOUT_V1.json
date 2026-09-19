@@ -10,13 +10,12 @@
     "UNRESOLVED": 15
   },
   "trait_domain_counts": {
-    "CHEMICAL_OR_VISUAL_SIGNAL": 2,
     "CHEMICAL_SIGNAL": 4,
     "DISPLAY_STATE": 4,
     "MORPHOLOGY": 30,
     "PHENOLOGY": 2,
     "REWARD": 4,
-    "VISUAL_SIGNAL": 1
+    "VISUAL_SIGNAL": 3
   },
   "n_h1_static_eligible_axes": 17,
   "h1_static_geometry_counts": {
