@@ -8,7 +8,7 @@
     "H4_final_frequency_waits_for_systematic_screen_completion"
   ],
   "h1_static": {
-    "axes": 17,
+    "axes": 18,
     "binary_conflict_vs_other_status": "EXPLORATORY_ONLY_SYSTEMATIC_RECODE_INCOMPLETE",
     "clusters": 13,
     "geometry_support": {
@@ -21,7 +21,7 @@
         "clusters": 7
       },
       "ONE_SIDED_OR_NULL": {
-        "axes": 7,
+        "axes": 8,
         "clusters": 5
       }
     },
@@ -53,7 +53,7 @@
     "context_variable_axes": 2,
     "role_boundary_axes": 13,
     "role_boundary_clusters": 7,
-    "unresolved_canonical_axes": 15,
+    "unresolved_canonical_axes": 14,
     "unresolved_clusters": 6
   },
   "status": "PREMODEL_GATE_FROZEN_NO_FORCED_MODEL"
