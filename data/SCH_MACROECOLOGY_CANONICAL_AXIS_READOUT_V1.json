@@ -4,9 +4,9 @@
     "ALIGNMENT_REINFORCEMENT": 2,
     "CONFLICT": 9,
     "CONTEXT_VARIABLE": 1,
-    "ONE_SIDED_OR_NULL": 4,
+    "ONE_SIDED_OR_NULL": 5,
     "ROLE_BOUNDARY": 13,
-    "UNRESOLVED": 15
+    "UNRESOLVED": 14
   },
   "claim_ceiling": [
     "source_axis_records_are_not_independent_trait_axes",
@@ -31,7 +31,7 @@
   "n_canonical_trait_axes": 44,
   "n_context_variable_canonical_axes": 1,
   "n_fixed_role_canonical_axes": 31,
-  "n_fixed_role_resolved_canonical_axes": 16,
+  "n_fixed_role_resolved_canonical_axes": 17,
   "n_model_axis_source_records": 45,
   "n_role_boundary_canonical_axes": 13,
   "n_source_axis_records": 48,
