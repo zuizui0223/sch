@@ -54,7 +54,7 @@
     "role_boundary_axes": 13,
     "role_boundary_clusters": 7,
     "unresolved_canonical_axes": 14,
-    "unresolved_clusters": 6
+    "unresolved_clusters": 5
   },
   "status": "PREMODEL_GATE_FROZEN_NO_FORCED_MODEL"
 }
