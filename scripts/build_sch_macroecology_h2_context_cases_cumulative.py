@@ -32,6 +32,8 @@ def _local_geometry(row: dict[str, str]) -> str:
         return yes[0]
     if row["function_2_direction_or_optimum"] == "REMOVED_BY_EXCLUSION":
         return "CONSUMER_REMOVED_NO_STATIC_GEOMETRY"
+    if row["antagonist_role_status"] != "NET_ANTAGONISTIC":
+        return "ROLE_BEHAVIOR_CONTEXT"
     return "UNRESOLVED"
 
 
@@ -93,6 +95,7 @@ def build(evidence_paths: list[Path], case_paths: list[Path]) -> dict:
             "materialized_case_count_is_the_only_current_local_H2_N",
             "reported_context_counts_are_not_model_cases",
             "consumer_removal_context_is_not_forced_into_static_two_function_geometry",
+            "role_behavior_context_is_not_relabelled_as_plant_fitness_geometry",
             "role_dependent_cases_remain_separate_from_fixed_role_H2",
             "H2_model_not_ready",
         ],
