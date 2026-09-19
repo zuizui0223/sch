@@ -64,13 +64,13 @@ Current 47-axis table:
 fixed-role canonical axes           34
 role-boundary canonical axes        13
 
-fixed-role resolved                 19
+fixed-role resolved                 20
   conflict                           8
   reinforcement                      2
-  one-sided / null                   7
+  one-sided / null                   8
   context-variable                   2
 
-fixed-role unresolved               15
+fixed-role unresolved               14
 ```
 
 The resolved categories are descriptive only.
@@ -166,12 +166,12 @@ PHENOLOGY         2
 ### H1 — static ecological geometry
 
 ```text
-eligible canonical axes     17
+eligible canonical axes     18
 independent clusters        13
 
 conflict                    8 axes / 7 clusters
 reinforcement               2 axes / 2 clusters
-one-sided/null              7 axes / 5 clusters
+one-sided/null              8 axes / 5 clusters
 ```
 
 A full multinomial H1 model remains fail-closed because the reinforcement category is too sparse for a stable multivariable fit.
@@ -217,4 +217,19 @@ The highest information-value next step is:
 -> only then fit the hierarchical context-switch model
 ```
 
-In parallel, the 15 unresolved fixed-role canonical axes should be source-mined because resolving even a few reinforcement/null cases would materially improve H1 category balance.
+In parallel, the 14 unresolved fixed-role canonical axes should be source-mined because resolving even a few reinforcement/null cases would materially improve H1 category balance.
+
+
+### White-clover flowering time resolved
+
+Full-text source inspection resolves the previously pending *Trifolium repens* flowering-time axis. Pollinators weaken selection for later flowering among cyanogenic plants but not acyanogenic plants, whereas the optimized source model does not retain an independent herbivore-mediated flowering-time effect.
+
+The axis is therefore promoted to:
+
+```text
+ONE_SIDED_OR_NULL = YES
+CONTEXT_SHIFT = YES
+context = defence genotype
+```
+
+This increases the current static H1 set to 18 axes while leaving the multinomial gate closed because reinforcement remains represented by only two independent clusters.
