@@ -1,0 +1,48 @@
+{
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_PILOT_PARAMETERS_AND_THRESHOLDS_ARE_FROZEN",
+  "candidate_plants_per_cell": "REQUIRED_BEFORE_USE",
+  "simulation_reps": "REQUIRED_BEFORE_USE",
+  "simulation_seed": 20260906,
+  "target_joint_power": "REQUIRED_BEFORE_USE",
+  "generating_model": {
+    "z_levels": "REQUIRED_BEFORE_USE",
+    "baseline_fitness": "REQUIRED_BEFORE_USE",
+    "pollination_peak": "REQUIRED_BEFORE_USE",
+    "pollination_optimum": "REQUIRED_BEFORE_USE",
+    "pollination_curvature": "REQUIRED_BEFORE_USE",
+    "antagonist_peak": "REQUIRED_BEFORE_USE",
+    "antagonist_optimum": "REQUIRED_BEFORE_USE",
+    "antagonist_curvature": "REQUIRED_BEFORE_USE",
+    "between_plant_sd": "REQUIRED_BEFORE_USE",
+    "residual_sd": "REQUIRED_BEFORE_USE",
+    "ovule_count": "REQUIRED_BEFORE_USE",
+    "water_depth_mean": "REQUIRED_BEFORE_USE",
+    "water_depth_sd": "REQUIRED_BEFORE_USE",
+    "mechanical_damage_rate": "REQUIRED_BEFORE_USE",
+    "predator_attack_rate_exposed": "REQUIRED_BEFORE_USE",
+    "predator_attack_rate_excluded": "REQUIRED_BEFORE_USE"
+  },
+  "production_surface_config": {
+    "sch_surface": {
+      "bootstrap_reps": 2000,
+      "random_seed": 20260904,
+      "min_z_levels": 5,
+      "min_valid_bootstrap_fraction": 0.8,
+      "min_interior_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+      "min_optimum_separation": "REQUIRED_BEFORE_USE",
+      "min_optimum_shift": "REQUIRED_BEFORE_USE",
+      "min_abs_component_gradient": "REQUIRED_BEFORE_USE"
+    },
+    "system_checks": {
+      "max_water_depth_range": "REQUIRED_BEFORE_USE",
+      "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+    }
+  },
+  "production_conflict_budget_config": {
+    "fitness_scale_id": "REQUIRED_BEFORE_USE",
+    "min_z_levels": 5,
+    "bootstrap_reps": 1000,
+    "random_seed": 20260905,
+    "min_valid_bootstrap_fraction": 0.8
+  }
+}
