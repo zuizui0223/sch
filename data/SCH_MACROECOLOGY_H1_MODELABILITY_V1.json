@@ -1,0 +1,69 @@
+{
+  "analysis": "sch_macroecology_h1_modelability_gate_v1",
+  "project_gates": {
+    "min_multinomial_class_n": 5,
+    "min_binary_outcome_n": 10,
+    "min_independent_clusters": 20,
+    "min_moderator_level_n": 3
+  },
+  "n_canonical_axes": 48,
+  "n_fixed_role_axes": 35,
+  "n_static_resolved_fixed_role_axes": 19,
+  "n_static_resolved_fixed_role_clusters": 13,
+  "n_multi_axis_static_clusters": 6,
+  "multi_axis_static_clusters": [
+    "Collaea_cipoensis_attractiveness_program",
+    "Gymnadenia_conopsea_agent_selection",
+    "Pedicularis_rex_geographic_selection_program",
+    "Protea_aurea_color_program",
+    "Tanacetum_vulgare_chemodiversity_program",
+    "Trifolium_repens_selection_program"
+  ],
+  "static_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 9,
+    "ONE_SIDED_OR_NULL": 8
+  },
+  "binary_conflict_count": 9,
+  "binary_nonconflict_count": 10,
+  "trait_domain_counts": {
+    "CHEMICAL_OR_VISUAL_SIGNAL": 2,
+    "CHEMICAL_SIGNAL": 3,
+    "DISPLAY_STATE": 4,
+    "MORPHOLOGY": 9,
+    "PHENOLOGY": 1
+  },
+  "antagonist_guild_family_counts": {
+    "FLORIVORE": 4,
+    "HERBIVORE_GRAZER": 5,
+    "MULTIPLE_ANTAGONISTS": 1,
+    "MULTIPLE_ANTAGONIST_GUILDS": 1,
+    "SEED_PREDATOR": 8
+  },
+  "multinomial_geometry_model_ready": false,
+  "binary_conflict_model_ready": false,
+  "trait_domain_moderator_ready_without_collapse": false,
+  "antagonist_guild_moderator_ready_without_collapse": false,
+  "primary_h1_status": "REGRESSION_GATE_FAIL_DESCRIPTIVE_EXACT_ONLY",
+  "permitted_now": [
+    "canonical_geometry_descriptive_counts",
+    "cluster-aware_case_synthesis",
+    "pre-registered_exact_or_fisher_sensitivity_after_moderator_collapse"
+  ],
+  "not_permitted_as_primary_now": [
+    "multinomial_regression",
+    "multivariable_logistic_regression",
+    "unregistered_post_hoc_category_collapse",
+    "conflict_prevalence_claim"
+  ],
+  "reasons": [
+    "reinforcement_class_is_sparse",
+    "only_13_independent_clusters_contribute_static_resolved_axes",
+    "multiple_static_axes_occur_within_some_clusters",
+    "trait_domain_has_sparse_levels",
+    "antagonist_guild_family_has_sparse_levels",
+    "15_fixed_role_canonical_axes_remain_unresolved",
+    "full_frozen_868_screen_is_not_complete"
+  ],
+  "status": "H1_MODELABILITY_GATE_FROZEN_V1"
+}

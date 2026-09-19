@@ -1,0 +1,88 @@
+{
+  "analysis": "sch_macroecology_canonical_ledger_v1",
+  "n_source_axis_records": 57,
+  "n_excluded_source_axis_records": 7,
+  "n_model_source_axis_records": 50,
+  "n_canonical_trait_axes": 48,
+  "canonical_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 9,
+    "CONTEXT_VARIABLE": 1,
+    "ONE_SIDED_OR_NULL": 8,
+    "ROLE_BOUNDARY": 13,
+    "UNRESOLVED": 15
+  },
+  "n_fixed_role_axes": 35,
+  "n_static_resolved_fixed_role_axes": 19,
+  "n_static_resolved_fixed_role_clusters": 13,
+  "static_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONFLICT": 9,
+    "ONE_SIDED_OR_NULL": 8
+  },
+  "trait_domain_counts_static": {
+    "CHEMICAL_OR_VISUAL_SIGNAL": 2,
+    "CHEMICAL_SIGNAL": 3,
+    "DISPLAY_STATE": 4,
+    "MORPHOLOGY": 9,
+    "PHENOLOGY": 1
+  },
+  "antagonist_guild_family_counts_static": {
+    "FLORIVORE": 4,
+    "HERBIVORE_GRAZER": 5,
+    "MULTIPLE_ANTAGONISTS": 1,
+    "MULTIPLE_ANTAGONIST_GUILDS": 1,
+    "SEED_PREDATOR": 8
+  },
+  "trait_domain_by_geometry_static": {
+    "CHEMICAL_OR_VISUAL_SIGNAL": {
+      "CONFLICT": 1,
+      "ONE_SIDED_OR_NULL": 1
+    },
+    "CHEMICAL_SIGNAL": {
+      "ONE_SIDED_OR_NULL": 3
+    },
+    "DISPLAY_STATE": {
+      "CONFLICT": 2,
+      "ONE_SIDED_OR_NULL": 2
+    },
+    "MORPHOLOGY": {
+      "ALIGNMENT_REINFORCEMENT": 2,
+      "CONFLICT": 5,
+      "ONE_SIDED_OR_NULL": 2
+    },
+    "PHENOLOGY": {
+      "CONFLICT": 1
+    }
+  },
+  "antagonist_guild_family_by_geometry_static": {
+    "FLORIVORE": {
+      "CONFLICT": 1,
+      "ONE_SIDED_OR_NULL": 3
+    },
+    "HERBIVORE_GRAZER": {
+      "ALIGNMENT_REINFORCEMENT": 1,
+      "CONFLICT": 2,
+      "ONE_SIDED_OR_NULL": 2
+    },
+    "MULTIPLE_ANTAGONISTS": {
+      "CONFLICT": 1
+    },
+    "MULTIPLE_ANTAGONIST_GUILDS": {
+      "CONFLICT": 1
+    },
+    "SEED_PREDATOR": {
+      "ALIGNMENT_REINFORCEMENT": 1,
+      "CONFLICT": 4,
+      "ONE_SIDED_OR_NULL": 3
+    }
+  },
+  "status": "CANONICAL_LEDGER_MATERIALIZED_INFERENCE_DIAGNOSTIC_READY",
+  "claim_ceiling": [
+    "canonical_rows_are_model_units_not_prevalence_units",
+    "static_H1_excludes_context_variable_and_role_boundary_axes",
+    "unresolved_geometry_is_missing_not_negative",
+    "cluster_dependence_must_be_respected",
+    "full_frozen_screen_still_required_for_final_inference"
+  ]
+}
