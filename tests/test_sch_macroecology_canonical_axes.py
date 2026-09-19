@@ -42,16 +42,16 @@ def test_cross_source_geometry_change_is_context_variable():
         "CONFLICT": 9,
         "CONTEXT_VARIABLE": 1,
         "ONE_SIDED_OR_NULL": 4,
-        "ROLE_BOUNDARY": 14,
-        "UNRESOLVED": 14,
+        "ROLE_BOUNDARY": 13,
+        "UNRESOLVED": 15,
     }
 
 
 def test_canonical_fixed_role_denominator_is_not_source_record_count():
     built = _build()
-    assert built["n_fixed_role_canonical_axes"] == 30
+    assert built["n_fixed_role_canonical_axes"] == 31
     assert built["n_fixed_role_resolved_canonical_axes"] == 16
-    assert built["n_role_boundary_canonical_axes"] == 14
+    assert built["n_role_boundary_canonical_axes"] == 13
     assert built["excluded_source_axis_ids"] == [
         "CloudForest_000214_patch_display",
         "Haplopappus_000233_odor_blend",
