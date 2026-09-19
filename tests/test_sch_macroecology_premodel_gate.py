@@ -18,12 +18,12 @@ def _build():
 
 def test_h1_multinomial_stays_fail_closed_under_sparse_alignment_support():
     built = _build()
-    assert built["h1_static"]["axes"] == 17
+    assert built["h1_static"]["axes"] == 18
     assert built["h1_static"]["clusters"] == 13
     assert built["h1_static"]["geometry_support"] == {
         "ALIGNMENT_REINFORCEMENT": {"axes": 2, "clusters": 2},
         "CONFLICT": {"axes": 8, "clusters": 7},
-        "ONE_SIDED_OR_NULL": {"axes": 7, "clusters": 5},
+        "ONE_SIDED_OR_NULL": {"axes": 8, "clusters": 5},
     }
     assert built["h1_static"]["multinomial_status"] == "FAIL_CLOSED_SPARSE_OUTCOME_CLASS"
 
@@ -40,7 +40,7 @@ def test_h2_h3_stay_closed_for_structural_reasons():
 def test_premodel_gate_tracks_remaining_resolution_work():
     built = _build()
     assert built["remaining_structure"] == {
-        "unresolved_canonical_axes": 15,
+        "unresolved_canonical_axes": 14,
         "unresolved_clusters": 6,
         "role_boundary_axes": 13,
         "role_boundary_clusters": 7,
