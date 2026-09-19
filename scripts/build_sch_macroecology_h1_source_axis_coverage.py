@@ -35,7 +35,7 @@ def build(design_paths: list[Path], axis_paths: list[Path]) -> dict:
     covered = h1_records & represented
     missing = sorted(h1_records - represented)
 
-    source_downgraded = {
+    source_ids_with_any_downgraded_axis = {
         row["source_id"]
         for row in axis_rows
         if row["source_id"] in h1_records
@@ -49,6 +49,11 @@ def build(design_paths: list[Path], axis_paths: list[Path]) -> dict:
         and not row.get("geometry_eligibility", "").startswith("INELIGIBLE_")
     }
 
+    fully_downgraded = (h1_records & represented) - source_ids_with_model_axis
+    partially_downgraded = (
+        source_ids_with_any_downgraded_axis & source_ids_with_model_axis
+    )
+
     return {
         "analysis": "sch_macroecology_h1_source_axis_coverage_v1",
         "n_record_level_h1_candidates": len(h1_records),
@@ -56,8 +61,10 @@ def build(design_paths: list[Path], axis_paths: list[Path]) -> dict:
         "n_h1_candidates_missing_source_axis_record": len(missing),
         "missing_h1_record_ids": missing,
         "n_h1_source_records_with_model_axis": len(source_ids_with_model_axis),
-        "n_h1_source_records_downgraded_after_source_audit": len(source_downgraded),
-        "downgraded_h1_record_ids": sorted(source_downgraded),
+        "n_h1_source_records_fully_downgraded_after_source_audit": len(fully_downgraded),
+        "fully_downgraded_h1_record_ids": sorted(fully_downgraded),
+        "n_h1_source_records_partially_downgraded": len(partially_downgraded),
+        "partially_downgraded_h1_record_ids": sorted(partially_downgraded),
         "n_source_axis_records_total": len(axis_rows),
         "n_source_axis_records_from_h1_candidate_records": sum(
             row["source_id"] in h1_records for row in axis_rows
