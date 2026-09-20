@@ -159,8 +159,8 @@ static fixed-role resolved axes            19
   reinforcement                             2
   one-sided / null                          8
 
-materialized H2 local cases                10
-  plant-performance                         3
+materialized H2 local cases                18
+  plant-performance                        11
   visitor-role behavior                     7
 
 H1 modelability = FAIL_CLOSED
@@ -177,7 +177,8 @@ See:
 
 - `docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
 - `data/SCH_MACROECOLOGY_CANONICAL_TRAIT_AXIS_LEDGER_V1.csv`
-- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V1.md`
+- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V2.md`
+- `docs/SCH_H2_GYMNADENIA_A2_EXTRACTION_V1.md`
 
 ## Empirical execution strategy
 
