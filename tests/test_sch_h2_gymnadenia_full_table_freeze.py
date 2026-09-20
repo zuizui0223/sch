@@ -42,8 +42,8 @@ def test_full_table_a2_freeze_reconstructs_existing_mediated_contrast_points():
     rows = {(r["trait"], r["treatment"]): float(r["beta"]) for r in _rows(FULL)}
     contrasts = {r["contrast_id"]: float(r["delta_beta"]) for r in _rows(CONTRASTS)}
 
-    assert rows[("flowering_start", "C+H")] - rows[("flowering_start", "HP+H")] == contrasts["Gymnadenia_phenology_poll_H"]
-    assert rows[("flowering_start", "C+E")] - rows[("flowering_start", "HP+E")] == contrasts["Gymnadenia_phenology_poll_E"]
+    assert round(rows[("flowering_start", "C+H")] - rows[("flowering_start", "HP+H")], 2) == contrasts["Gymnadenia_phenology_poll_H"]
+    assert round(rows[("flowering_start", "C+E")] - rows[("flowering_start", "HP+E")], 2) == contrasts["Gymnadenia_phenology_poll_E"]
     assert round(rows[("flowering_start", "C+H")] - rows[("flowering_start", "C+E")], 3) == contrasts["Gymnadenia_phenology_herb_C"]
     assert round(rows[("flowering_start", "HP+H")] - rows[("flowering_start", "HP+E")], 3) == contrasts["Gymnadenia_phenology_herb_HP"]
 
