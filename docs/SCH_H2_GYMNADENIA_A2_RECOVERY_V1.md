@@ -10,6 +10,12 @@ Source:
 
 Table A2 reports phenotypic linear selection gradients (beta ± SE) for four pollination × herbivory treatment groups in *Gymnadenia conopsea*.
 
+The complete five-trait × four-treatment table is now frozen as:
+
+`data/SCH_H2_GYMNADENIA_A2_SELECTION_GRADIENTS_V1.csv`
+
+This preserves all 20 source cells, including plant height, number of flowers and corolla size in addition to the two registered H2 axes.
+
 The four treatment states are:
 
 ```text
@@ -188,3 +194,19 @@ MEDIATED_CONTRAST_SE = NOT RECOVERED
 MEDIATED_CONTRAST_COVARIANCE = NOT RECOVERED
 COVARIANCE_AWARE_LOCAL_AGENT_GEOMETRY = NOT ESTIMATED
 ```
+
+
+## Source-table integrity
+
+The complete Table A2 freeze is regression-tested against the existing mediated-contrast table.
+
+For every registered H2 contrast, the stored treatment-group beta values reconstruct the published point estimate:
+
+```text
+beta_C+H - beta_HP+H
+beta_C+E - beta_HP+E
+beta_C+H - beta_C+E
+beta_HP+H - beta_HP+E
+```
+
+This is a provenance check only. It does not create contrast uncertainty that the source does not report.
