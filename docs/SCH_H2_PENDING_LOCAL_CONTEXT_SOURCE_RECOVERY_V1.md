@@ -73,11 +73,26 @@ Source structure:
 ```text
 floral / pollen information: 14 populations
 seed predation / seed production: 12 populations
-supplement contains population/locality tables
-local component geometry extraction: pending
+same-individual trait/pollination/seed linkage: 7 populations
+  population IDs: 1, 3, 5, 8, 9, 10, 11
+pressure-only seed outcomes after label loss: 5 populations
+  population IDs: 2, 4, 6, 7, 12
+population-specific trait geometry: not estimated as 12 or 14 independent coefficients
 ```
 
-Do not create 14 equal model cases from the population count alone.
+The primary article explicitly states that labels were lost in populations 2, 4, 6, 7 and 12, so seed production/predation there cannot be related back to individual mean floral morphology. These populations can support local antagonist pressure, not local shared-trait geometry.
+
+Resolved supplementary objects:
+
+```text
+supp_118_2_227__index.html
+supp_mcw097_aob-16074-s01.doc   66.5 KB
+supp_mcw097_aob-16074-s02.xls   48.5 KB
+```
+
+Table S1 contains population location/altitude; Table S2 contains initial/final seed set and seed predation for 12 populations; Appendix S1 contains trait means/SE and pollination success for 14 populations.
+
+Do not create 14 equal model cases from the population count alone. Even after supplement recovery, population-specific antagonist pressure is not automatically population-specific two-function geometry.
 
 ## Primula farinosa
 
@@ -108,3 +123,60 @@ Until then:
 ```text
 reported context count != H2 model N
 ```
+
+
+## Measurement-layer gate
+
+H2 now distinguishes the highest biological quantity supported by a source from the highest quantity actually materialized as a model row.
+
+```text
+LOCAL_GEOMETRY
+  both local functional routes + common outcome identify a local geometry
+
+LOCAL_NET_SELECTION
+  local realized/net trait effect is identified, but two functional components are not
+
+LOCAL_ANTAGONIST_PRESSURE
+  local antagonist intensity/outcome is identified, but local shared-trait geometry is not
+
+CONTEXT_STRUCTURE_ONLY
+  contexts are known, but local outcome values are not materialized
+```
+
+These layers are ordered by information content, not by biological importance.
+
+A source may support a higher layer while the repository remains at a lower materialized layer until the relevant table/object is inspected.
+
+Current examples:
+
+```text
+Gentiana focal population:
+  source supported = LOCAL_GEOMETRY
+  materialized     = LOCAL_GEOMETRY
+
+Gentiana 12-population source:
+  source supported = LOCAL_NET_SELECTION
+  materialized     = CONTEXT_STRUCTURE_ONLY
+
+Gymnadenia 2x2 factorial:
+  source supported = LOCAL_NET_SELECTION
+  materialized     = CONTEXT_STRUCTURE_ONLY
+
+Pedicularis geographic mosaic:
+  source supported = LOCAL_ANTAGONIST_PRESSURE
+  materialized     = CONTEXT_STRUCTURE_ONLY
+
+Primula farinosa programme:
+  source supported = LOCAL_GEOMETRY
+  materialized     = CONTEXT_STRUCTURE_ONLY
+
+Caryopteris natural robbery:
+  source supported = LOCAL_GEOMETRY
+  materialized     = LOCAL_GEOMETRY
+
+Caryopteris robber exclusion:
+  source supported = LOCAL_NET_SELECTION
+  materialized     = LOCAL_NET_SELECTION
+```
+
+This prevents local pressure, local net selection and local two-function geometry from being treated as interchangeable H2 observations.
