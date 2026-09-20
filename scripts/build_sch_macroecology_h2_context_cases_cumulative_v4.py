@@ -31,8 +31,6 @@ def _read(path: Path) -> list[dict[str, str]]:
 
 
 def _measurement_class(row: dict[str, str]) -> str:
-    if row["antagonist_role_status"] != "NET_ANTAGONISTIC":
-        return "ROLE_BEHAVIOR_CONTEXT"
     if (
         row["combined_or_net_response"] == "LOCAL_ANTAGONIST_PRESSURE_ONLY"
         or row["effect_metric"] == "SEED_PREDATION_PERCENT"
@@ -48,6 +46,8 @@ def _measurement_class(row: dict[str, str]) -> str:
         or row["one_sided_or_null_detected"] == "YES"
     ):
         return "LOCAL_GEOMETRY"
+    if row["antagonist_role_status"] != "NET_ANTAGONISTIC":
+        return "ROLE_BEHAVIOR_CONTEXT"
     return "UNRESOLVED"
 
 
