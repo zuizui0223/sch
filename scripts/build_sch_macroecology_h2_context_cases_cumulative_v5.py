@@ -5,6 +5,7 @@ import csv
 import importlib.util
 import json
 from pathlib import Path
+from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[1]
 V4_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_context_cases_cumulative_v4.py"
@@ -26,9 +27,36 @@ def _read(paths):
     return rows
 
 
+def _measurement_class_v5(row):
+    if (
+        row["combined_or_net_response"] == "LOCAL_ANTAGONIST_PRESSURE_ONLY"
+        or row["effect_metric"] == "SEED_PREDATION_PERCENT"
+    ):
+        return "LOCAL_ANTAGONIST_PRESSURE"
+    if row["effect_metric"] in {
+        "PHENOTYPIC_LINEAR_SELECTION_GRADIENT_BETA",
+        "STANDARDIZED_LINEAR_SELECTION_GRADIENT_BETA",
+    }:
+        return "LOCAL_NET_SELECTION"
+    if row["function_2_direction_or_optimum"] == "REMOVED_BY_EXCLUSION":
+        return "LOCAL_NET_SELECTION"
+    if (
+        row["conflict_detected"] == "YES"
+        or row["alignment_detected"] == "YES"
+        or row["one_sided_or_null_detected"] == "YES"
+    ):
+        return "LOCAL_GEOMETRY"
+    if row["antagonist_role_status"] != "NET_ANTAGONISTIC":
+        return "ROLE_BEHAVIOR_CONTEXT"
+    return "UNRESOLVED"
+
+
 def build(evidence_paths, case_paths):
     result = _load_v4().build(evidence_paths, case_paths)
     cases = _read(case_paths)
+    result["local_measurement_class_counts"] = dict(sorted(
+        Counter(_measurement_class_v5(row) for row in cases).items()
+    ))
     trif = [r for r in cases if r["source_id"] == "SCHPRISMA-000391"]
     if len(trif) != 4:
         raise ValueError(f"expected 4 Trifolium H2 cases, found {len(trif)}")
