@@ -5,7 +5,7 @@
 ```text
 H2_LOCAL_CONTEXT_EXTRACTION = FAIL_CLOSED
 GENTIANA_S3_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
-GYMNADENIA_A2_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
+GYMNADENIA_A2_ROUTE = EXACT_TABLE_EXTRACTED_LOCAL_NET_SELECTION_MATERIALIZED
 PEDICULARIS_POPULATION_SUPPLEMENT = IDENTIFIED_EXTRACTION_PENDING
 PRIMULA_POPULATION_EXPERIMENT_TABLES = PROGRAMME_SOURCE_EXTRACTION_PENDING
 ```
@@ -52,10 +52,17 @@ Ecological Archives E096-022
 Appendix A Table A2
 reported content: treatment-group selection gradients beta +/- SE
 local factorial cells: 4
-binary materialized: false
+exact table inspected: true
 ```
 
-The 2 × 2 design structure is known, but treatment-specific H2 cases remain blocked until the table bytes are inspected.
+The exact Table A2 values are now extracted from the Ecological Archives HTML table.
+
+Eight local net-selection cases are materialized:
+
+- flowering phenology: C+H, C+E, HP+H, HP+E;
+- spur length: C+H, C+E, HP+H, HP+E.
+
+The treatment-group beta values have source-reported SE. The mediated pollinator/herbivore contrast rows provide point estimates but no contrast SE/covariance, so agent-level geometry remains directional rather than uncertainty-supported.
 
 ## Pedicularis rex
 
@@ -169,12 +176,12 @@ and remain separate from the ordered plant-performance measurement layer.
 Current reconciliation:
 
 ```text
-total H2 local cases                         10
-plant-performance cases                       3
+total H2 local cases                         18
+plant-performance cases                      11
 visitor-role behavior cases                   7
 
 plant-performance LOCAL_GEOMETRY              2
-plant-performance LOCAL_NET_SELECTION         1
+plant-performance LOCAL_NET_SELECTION         9
 plant-performance LOCAL_ANTAGONIST_PRESSURE   0
 ```
 
@@ -211,7 +218,7 @@ At the current runtime state:
 ```text
 registered source objects                 6
 binary objects materialized               0
-exact local values extracted              0
+exact local values extracted              1
 ```
 
 Pending objects therefore do not create pseudo-cases.
