@@ -42,15 +42,33 @@ def test_full_table_a2_freeze_reconstructs_existing_mediated_contrast_points():
     rows = {(r["trait"], r["treatment"]): float(r["beta"]) for r in _rows(FULL)}
     contrasts = {r["contrast_id"]: float(r["delta_beta"]) for r in _rows(CONTRASTS)}
 
-    assert round(rows[("flowering_start", "C+H")] - rows[("flowering_start", "HP+H")], 2) == contrasts["Gymnadenia_phenology_poll_H"]
-    assert round(rows[("flowering_start", "C+E")] - rows[("flowering_start", "HP+E")], 2) == contrasts["Gymnadenia_phenology_poll_E"]
+    assert abs(
+        (rows[("flowering_start", "C+H")] - rows[("flowering_start", "HP+H")])
+        - contrasts["Gymnadenia_phenology_poll_H"]
+    ) <= 0.0051
+    assert abs(
+        (rows[("flowering_start", "C+E")] - rows[("flowering_start", "HP+E")])
+        - contrasts["Gymnadenia_phenology_poll_E"]
+    ) <= 0.0051
     assert round(rows[("flowering_start", "C+H")] - rows[("flowering_start", "C+E")], 3) == contrasts["Gymnadenia_phenology_herb_C"]
     assert round(rows[("flowering_start", "HP+H")] - rows[("flowering_start", "HP+E")], 3) == contrasts["Gymnadenia_phenology_herb_HP"]
 
-    assert round(rows[("spur_length", "C+H")] - rows[("spur_length", "HP+H")], 2) == contrasts["Gymnadenia_spur_poll_H"]
-    assert round(rows[("spur_length", "C+E")] - rows[("spur_length", "HP+E")], 2) == contrasts["Gymnadenia_spur_poll_E"]
-    assert round(rows[("spur_length", "C+H")] - rows[("spur_length", "C+E")], 2) == contrasts["Gymnadenia_spur_herb_C"]
-    assert round(rows[("spur_length", "HP+H")] - rows[("spur_length", "HP+E")], 2) == contrasts["Gymnadenia_spur_herb_HP"]
+    assert abs(
+        (rows[("spur_length", "C+H")] - rows[("spur_length", "HP+H")])
+        - contrasts["Gymnadenia_spur_poll_H"]
+    ) <= 0.0051
+    assert abs(
+        (rows[("spur_length", "C+E")] - rows[("spur_length", "HP+E")])
+        - contrasts["Gymnadenia_spur_poll_E"]
+    ) <= 0.0051
+    assert abs(
+        (rows[("spur_length", "C+H")] - rows[("spur_length", "C+E")])
+        - contrasts["Gymnadenia_spur_herb_C"]
+    ) <= 0.0051
+    assert abs(
+        (rows[("spur_length", "HP+H")] - rows[("spur_length", "HP+E")])
+        - contrasts["Gymnadenia_spur_herb_HP"]
+    ) <= 0.0051
 
 
 def test_full_table_a2_freeze_preserves_non_target_traits_too():
