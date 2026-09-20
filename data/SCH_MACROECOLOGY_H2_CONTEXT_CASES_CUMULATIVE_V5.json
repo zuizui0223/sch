@@ -30,8 +30,8 @@
     "consumer_removal_context_is_not_forced_into_static_two_function_geometry",
     "role_behavior_context_is_not_relabelled_as_plant_fitness_geometry",
     "treatment_cell_net_selection_is_not_agent_mediated_geometry",
-    "trifolium_treatment_gradients_are_local_net_selection_not_local_geometry",
     "role_dependent_cases_remain_separate_from_fixed_role_H2",
+    "trifolium_treatment_gradients_are_local_net_selection_not_local_geometry",
     "H2_model_not_ready"
   ],
   "local_measurement_class_counts": {
