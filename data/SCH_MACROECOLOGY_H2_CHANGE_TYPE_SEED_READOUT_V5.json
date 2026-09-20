@@ -1,0 +1,28 @@
+{
+  "analysis": "sch_macroecology_h2_change_type_seed_v6",
+  "n_change_records": 15,
+  "n_canonical_axes": 15,
+  "change_type_counts": {
+    "COMPONENT_WEIGHT_SHIFT": 1,
+    "COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE": 1,
+    "CONSUMER_ROLE_BEHAVIOR_SHIFT": 3,
+    "GEOMETRY_CLASS_SWITCH": 1,
+    "GEOMETRY_DISAPPEARANCE": 1,
+    "NET_SELECTION_CONTEXT_SHIFT": 8
+  },
+  "n_change_records_with_materialized_local_cases": 14,
+  "n_change_records_with_two_or_more_materialized_cases": 13,
+  "n_materialized_local_cases_represented": 44,
+  "n_change_records_without_materialized_local_cases": 1,
+  "status": "H2_CHANGE_TYPE_SEED_V6_ERYSIMUM_GEOGRAPHIC_SELECTION_ADDED",
+  "claim_ceiling": [
+    "change_types_are_mechanistic_descriptive_classes_not_frequencies",
+    "source_level_change_can_exist_without_materialized_local_cases",
+    "geometry_class_switch_is_not_equivalent_to_component_weight_shift",
+    "geometry_disappearance_is_not_equivalent_to_static_null_geometry",
+    "consumer_role_behavior_shift_is_not_plant_fitness_geometry",
+    "net_selection_context_shift_is_not_local_agent_geometry",
+    "antagonist_pressure_cases_do_not_identify_local_geometry",
+    "H2_change_type_model_not_ready"
+  ]
+}
