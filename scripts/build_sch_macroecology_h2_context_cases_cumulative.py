@@ -32,6 +32,8 @@ def _local_geometry(row: dict[str, str]) -> str:
         return yes[0]
     if row["function_2_direction_or_optimum"] == "REMOVED_BY_EXCLUSION":
         return "CONSUMER_REMOVED_NO_STATIC_GEOMETRY"
+    if row["antagonist_role_status"] != "NET_ANTAGONISTIC":
+        return "ROLE_BEHAVIOR_CONTEXT"
     return "UNRESOLVED"
 
 
