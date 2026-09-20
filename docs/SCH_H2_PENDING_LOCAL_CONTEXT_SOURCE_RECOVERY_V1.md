@@ -7,7 +7,7 @@ H2_LOCAL_CONTEXT_EXTRACTION = FAIL_CLOSED
 GENTIANA_S3_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
 GYMNADENIA_A2_ROUTE = TABLE_VALUES_EXTRACTED
 PEDICULARIS_MAIN_TEXT_PRESSURE = FOUR_POPULATIONS_MATERIALIZED; SUPPLEMENT_EXPANSION_PENDING
-PRIMULA_POPULATION_EXPERIMENT_TABLES = PROGRAMME_SOURCE_EXTRACTION_PENDING
+PRIMULA_POPULATION_EXPERIMENT_TABLES = PROGRAMME_DECOMPOSED_EXACT_LOCAL_VALUES_PENDING
 ```
 
 A context structure is not promoted to local model cases until the source object containing the local outcome is inspected.
@@ -118,11 +118,42 @@ Canonical axis:
 
 `Primula_farinosa_000523_scape`
 
-The programme spans a broad population survey plus smaller experimental subsets and long-term follow-up.
+The programme has now been decomposed into five source objects from the included PNAS 2013 primary study:
 
-The correct H2 unit is the source-specific population × manipulation × time observation, not all populations in the programme.
+```text
+Primula_PNAS2013_Fig2_TableS2
+  37 population-year contexts in 2000
+  46 population-year contexts in 2001
+  target = LOCAL_NET_SELECTION
 
-Population subset identities, treatment assignment and local selection/morph-frequency outcomes must be recovered from the individual primary sources before materialization.
+Primula_PNAS2013_Fig3_5pop
+  5 populations x 5 sampled years
+  target = LOCAL_NET_SELECTION
+
+Primula_PNAS2013_Fig4_factorial
+  4 populations x 4 pollination/grazer treatments
+  target = LOCAL_NET_SELECTION with causal agent context
+
+Primula_PNAS2013_Fig5_evolution
+  9 populations x 2 treatments x 2 times
+  target = LOCAL_EVOLUTIONARY_RESPONSE
+
+Primula_PNAS2013_SI
+  file = 1301421110_pnas.201301421SI.pdf
+  target = exact population/supporting tables
+```
+
+Exact programme-level values reported in the article are frozen in:
+
+`data/SCH_H2_PRIMULA_MAIN_TEXT_SUMMARY_V1.csv`
+
+Object-level provenance is frozen in:
+
+`data/SCH_H2_PRIMULA_SOURCE_OBJECTS_V1.csv`
+
+No local model rows are created because the exact population/treatment values remain in figures or supporting tables.
+
+The correct H2 unit remains the source-specific population x manipulation x time observation, not the 69-population programme count.
 
 ## Promotion gate
 

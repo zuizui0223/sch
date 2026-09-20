@@ -1,0 +1,38 @@
+{
+  "analysis": "sch_h2_primula_source_decomposition_v1",
+  "n_source_objects": 5,
+  "source_supported_layer_counts": {
+    "CONTEXT_STRUCTURE_ONLY": 1,
+    "LOCAL_EVOLUTIONARY_RESPONSE": 1,
+    "LOCAL_NET_SELECTION": 3
+  },
+  "exact_local_value_status_counts": {
+    "NO": 5
+  },
+  "n_model_cases_materialized": 0,
+  "n_main_text_summary_metrics": 18,
+  "registered_design_scopes": [
+    "37_population_years_2000_plus_46_population_years_2001",
+    "4_populations_x_4_treatment_states",
+    "5_populations_x_5_years",
+    "9_populations_x_2_treatments_x_2_times",
+    "SI_text_tables_S1_to_S4_figures_S1_to_S3"
+  ],
+  "main_text_exact_checks": {
+    "survey_populations_2001": 69,
+    "selection_population_years_2000": 37,
+    "selection_population_years_2001": 46,
+    "five_population_year_contexts": 25,
+    "factorial_population_treatment_contexts": 16,
+    "evolution_population_treatment_time_states": 36,
+    "grazer_exclosure_populations": 9
+  },
+  "status": "PRIMULA_PROGRAMME_DECOMPOSED_LOCAL_VALUES_PENDING",
+  "claim_ceiling": [
+    "programme_context_counts_are_not_model_N",
+    "figure_only_local_values_are_not_exact_cases",
+    "programme_aggregate_evolutionary_response_is_not_local_geometry",
+    "auxiliary_older_programme_sources_are_not_added_to_current_macro_denominator",
+    "exact_population_or_treatment_rows_require_source_table_or_exact_data"
+  ]
+}
