@@ -1,0 +1,83 @@
+{
+  "analysis": "sch_macroecology_h2_measurement_layer_v4",
+  "n_measurement_records": 8,
+  "n_canonical_axes": 6,
+  "n_source_records": 6,
+  "source_supported_layer_counts": {
+    "LOCAL_ANTAGONIST_PRESSURE": 1,
+    "LOCAL_GEOMETRY": 3,
+    "LOCAL_NET_SELECTION": 4
+  },
+  "materialized_layer_counts": {
+    "CONTEXT_STRUCTURE_ONLY": 2,
+    "LOCAL_ANTAGONIST_PRESSURE": 1,
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 3
+  },
+  "n_total_h2_local_cases": 22,
+  "n_plant_performance_measurement_cases": 15,
+  "plant_performance_case_ids": [
+    "Caryopteris_corolla_tube_robbers_excluded",
+    "Caryopteris_corolla_tube_robbers_present",
+    "Gentiana_lutea_color_Torrestio",
+    "Gymnadenia_phenology_CplusE",
+    "Gymnadenia_phenology_CplusH",
+    "Gymnadenia_phenology_HPplusE",
+    "Gymnadenia_phenology_HPplusH",
+    "Gymnadenia_spur_CplusE",
+    "Gymnadenia_spur_CplusH",
+    "Gymnadenia_spur_HPplusE",
+    "Gymnadenia_spur_HPplusH",
+    "Pedicularis_exsertion_pop11_seed_predation_pressure",
+    "Pedicularis_exsertion_pop12_seed_predation_pressure",
+    "Pedicularis_exsertion_pop3_seed_predation_pressure",
+    "Pedicularis_exsertion_pop5_seed_predation_pressure"
+  ],
+  "n_role_behavior_cases_separate": 7,
+  "role_behavior_case_ids": [
+    "Blueberry_corolla_access_Bluecrop",
+    "Blueberry_corolla_access_Duke",
+    "Sesame_corolla_normal",
+    "Sesame_corolla_short_no_landing",
+    "Sesame_corolla_short_with_landing",
+    "Sesame_nectar_high_nectar_high_pollen",
+    "Sesame_nectar_low_resource_control"
+  ],
+  "n_canonical_axes_with_plant_performance_cases": 5,
+  "n_canonical_axes_with_role_behavior_cases": 3,
+  "materialized_plant_performance_layer_counts": {
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 9,
+    "LOCAL_ANTAGONIST_PRESSURE": 4
+  },
+  "n_measurement_records_below_source_supported_layer": 2,
+  "n_source_objects": 6,
+  "source_object_route_status_counts": {
+    "INDEX_RESOLVED_BINARY_CONTENT_PENDING": 1,
+    "OBJECT_FILENAME_RESOLVED_BINARY_BLOCKED": 2,
+    "PROGRAMME_OBJECTS_NOT_YET_FROZEN": 1,
+    "ROUTE_RESOLVED_BINARY_BLOCKED": 1,
+    "TABLE_VALUES_SOURCE_INSPECTED": 1
+  },
+  "n_source_objects_binary_materialized": 0,
+  "n_source_objects_exact_local_values_extracted": 1,
+  "pedicularis_context_structure": {
+    "pollination_contexts_reported": 14,
+    "seed_outcome_contexts_reported": 12,
+    "individual_linked_contexts": 7,
+    "population_specific_geometry_cases_materialized": 0
+  },
+  "h2_model_ready": false,
+  "status": "H2_MEASUREMENT_LAYER_V4_PEDICULARIS_PRESSURE_MATERIALIZED",
+  "claim_ceiling": [
+    "measurement_layer_is_not_geometry_class",
+    "source_supported_layer_can_exceed_materialized_layer",
+    "local_antagonist_pressure_is_not_local_two_function_geometry",
+    "exact_main_text_antagonist_pressure_cases_are_not_local_geometry",
+    "local_net_selection_is_not_local_two_function_geometry",
+    "plant_performance_cases_and_role_behavior_cases_are_separate_H2_layers",
+    "mediated_component_point_estimates_without_contrast_uncertainty_are_not_local_geometry_cases",
+    "only_materialized_plant_performance_rows_count_as_current_plant_performance_H2_N",
+    "pending_source_objects_do_not_create_pseudo_cases"
+  ]
+}
