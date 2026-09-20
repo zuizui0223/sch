@@ -5,7 +5,7 @@
 ```text
 H2_LOCAL_CONTEXT_EXTRACTION = FAIL_CLOSED
 GENTIANA_S3_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
-GYMNADENIA_A2_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
+GYMNADENIA_A2_ROUTE = TABLE_VALUES_EXTRACTED
 PEDICULARIS_POPULATION_SUPPLEMENT = IDENTIFIED_EXTRACTION_PENDING
 PRIMULA_POPULATION_EXPERIMENT_TABLES = PROGRAMME_SOURCE_EXTRACTION_PENDING
 ```
@@ -53,9 +53,10 @@ Appendix A Table A2
 reported content: treatment-group selection gradients beta +/- SE
 local factorial cells: 4
 binary materialized: false
+exact table values extracted from source HTML: true
 ```
 
-The 2 × 2 design structure is known, but treatment-specific H2 cases remain blocked until the table bytes are inspected.
+All eight treatment-cell net-selection cases are now materialized for phenology and spur length. Mediated contrast point estimates are also recorded, but their contrast SE/covariance is not supplied in Table A2, so covariance-aware local agent geometry remains blocked.
 
 ## Pedicularis rex
 
@@ -169,12 +170,12 @@ and remain separate from the ordered plant-performance measurement layer.
 Current reconciliation:
 
 ```text
-total H2 local cases                         10
-plant-performance cases                       3
+total H2 local cases                         18
+plant-performance cases                      11
 visitor-role behavior cases                   7
 
 plant-performance LOCAL_GEOMETRY              2
-plant-performance LOCAL_NET_SELECTION         1
+plant-performance LOCAL_NET_SELECTION         9
 plant-performance LOCAL_ANTAGONIST_PRESSURE   0
 ```
 
@@ -211,7 +212,7 @@ At the current runtime state:
 ```text
 registered source objects                 6
 binary objects materialized               0
-exact local values extracted              0
+exact local values extracted              1
 ```
 
 Pending objects therefore do not create pseudo-cases.
