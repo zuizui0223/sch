@@ -159,8 +159,8 @@ static fixed-role resolved axes            19
   reinforcement                             2
   one-sided / null                          8
 
-materialized H2 local cases                18
-  plant-performance                        11
+materialized H2 local cases                22
+  plant-performance                        15
   visitor-role behavior                     7
 
 H1 modelability = FAIL_CLOSED
