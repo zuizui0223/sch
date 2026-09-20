@@ -1,6 +1,0 @@
-trait,delta_beta_poll_H,delta_beta_poll_E,delta_beta_herb_C,delta_beta_herb_HP,pollinator_direction,herbivore_direction,geometry_interpretation,contrast_se_reported,source_table
-plant_height,0.074,0.063,0.000,-0.011,POSITIVE,NEAR_ZERO_OR_WEAK_NEGATIVE,UNRESOLVED,NO,Table_A2
-number_of_flowers,0.10,0.040,0.030,-0.030,POSITIVE,CONTEXT_DEPENDENT_SIGN,UNRESOLVED,NO,Table_A2
-corolla_size,0.078,0.035,-0.012,-0.055,POSITIVE,NEGATIVE,OPPOSING_DIRECTIONAL_COMPONENTS,NO,Table_A2
-spur_length,0.10,0.12,0.10,0.13,POSITIVE,POSITIVE,REINFORCING_DIRECTIONAL_COMPONENTS,NO,Table_A2
-flowering_start,0.16,0.16,-0.098,-0.094,POSITIVE,NEGATIVE,OPPOSING_DIRECTIONAL_COMPONENTS,NO,Table_A2
