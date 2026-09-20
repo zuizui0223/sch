@@ -85,6 +85,14 @@ Weak observed net selection therefore does not necessarily mean weak ecological 
 
 Exact cancellation magnitude remains fail-closed until the treatment-group table and valid contrast uncertainty are recovered.
 
+## Gymnadenia H2 numeric upgrade
+
+Gymnadenia Table A2 now contributes eight exact local net-selection cases: four pollination × herbivory treatment groups for flowering phenology and four for spur length.
+
+The treatment-group gradients retain source-reported SE. Agent-mediated contrast point estimates confirm opposing directional components for phenology and reinforcing directional components for spur length, but contrast-level uncertainty is not reported.
+
+Therefore these eight cases are promoted to LOCAL_NET_SELECTION, not LOCAL_GEOMETRY.
+
 ## Result 4 — context changes several different parts of the geometry
 
 H2 no longer uses one undifferentiated “context dependent” label.
@@ -141,15 +149,15 @@ primary H1 output = descriptive canonical geometry
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  10
-canonical axes with cases           5
-biological clusters                 4
+total local cases                  18
+canonical axes with cases           7
+biological clusters                 5
 
-plant-performance cases             3
+plant-performance cases            11
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 2 canonical axes, 2 clusters, and only one axis with at least two local cases.
+Plant-performance layer: 4 canonical axes, 3 clusters, and 3 axes with at least two local cases.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
@@ -219,11 +227,10 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 ## Immediate priorities
 
 1. recover Gentiana S3 population selection table;
-2. recover Gymnadenia Appendix A Table A2;
-3. recover Pedicularis S1/S2/Appendix S1;
-4. decompose Primula farinosa population × manipulation × time sources;
-5. complete the frozen systematic screen;
-6. rerun H1/H2 modelability gates.
+2. recover Pedicularis S1/S2/Appendix S1;
+3. recover Primula farinosa population × manipulation × time tables;
+4. complete the frozen systematic screen;
+5. rerun H1/H2 modelability gates.
 
 ## Claim ceiling
 
