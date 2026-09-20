@@ -83,7 +83,7 @@ strong negative component
 
 Weak observed net selection therefore does not necessarily mean weak ecological selection.
 
-Exact cancellation magnitude remains fail-closed until the treatment-group table and valid contrast uncertainty are recovered.
+Treatment-cell beta ± SE values are now recovered from Appendix A Table A2. Cancellation magnitude based on mediated agent contrasts remains fail-closed because contrast uncertainty/covariance is not reported in Table A2.
 
 ## Result 4 — context changes several different parts of the geometry
 
@@ -141,15 +141,15 @@ primary H1 output = descriptive canonical geometry
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  10
-canonical axes with cases           5
-biological clusters                 4
+total local cases                  18
+canonical axes with cases           7
+biological clusters                 5
 
-plant-performance cases             3
+plant-performance cases            11
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 2 canonical axes, 2 clusters, and only one axis with at least two local cases.
+Plant-performance layer: 4 canonical axes, 3 clusters, and 3 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
