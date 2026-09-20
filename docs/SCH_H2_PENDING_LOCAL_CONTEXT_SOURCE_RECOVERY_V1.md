@@ -73,11 +73,32 @@ Source structure:
 ```text
 floral / pollen information: 14 populations
 seed predation / seed production: 12 populations
-supplement contains population/locality tables
-local component geometry extraction: pending
+same-individual trait/pollination/seed linkage: 7 populations
+  population IDs: 1, 3, 5, 8, 9, 10, 11
+pressure-only seed outcomes after label loss: 5 populations
+  population IDs: 2, 4, 6, 7, 12
+population-specific trait geometry: not estimated as 12 or 14 independent coefficients
 ```
 
-Do not create 14 equal model cases from the population count alone.
+The primary article states that plant labels were lost in populations 2, 4, 6, 7 and 12. Those populations can support population-level antagonist pressure but cannot be related back to individual floral morphology.
+
+Resolved supplementary object identities:
+
+```text
+Pedicularis_S1
+  supp_mcw097_aob-16074-s01.doc
+  population location / altitude
+
+Pedicularis_S2
+  supp_mcw097_aob-16074-s02.xls
+  initial/final seed set + seed predation for 12 populations
+
+Pedicularis_AppendixS1
+  supp_118_2_227__index.html
+  trait means / SE + pollination success for 14 populations
+```
+
+Do not create 14 equal model cases from the population count alone. Local antagonist pressure is not equivalent to local two-function trait geometry.
 
 ## Primula farinosa
 
@@ -107,4 +128,106 @@ Until then:
 
 ```text
 reported context count != H2 model N
+```
+
+
+## Measurement-layer gate
+
+H2 now separates two parallel information layers.
+
+### Plant-performance layer
+
+```text
+LOCAL_GEOMETRY
+  both local functional routes + common outcome resolve a local geometry
+
+LOCAL_NET_SELECTION
+  local realized/net trait effect is resolved,
+  but the two functional components are not
+
+LOCAL_ANTAGONIST_PRESSURE
+  local antagonist intensity/outcome is resolved,
+  but local trait geometry is not
+
+CONTEXT_STRUCTURE_ONLY
+  local contexts are known,
+  but outcome values have not been materialized
+```
+
+### Visitor-role behavior layer
+
+Blueberry and sesame provide fully source-resolved local contexts for visitor tactics, but do not provide a local plant-fitness geometry for those manipulations.
+
+Those cases are retained as:
+
+```text
+ROLE_BEHAVIOR_CONTEXT
+```
+
+and remain separate from the ordered plant-performance measurement layer.
+
+Current reconciliation:
+
+```text
+total H2 local cases                         10
+plant-performance cases                       3
+visitor-role behavior cases                   7
+
+plant-performance LOCAL_GEOMETRY              2
+plant-performance LOCAL_NET_SELECTION         1
+plant-performance LOCAL_ANTAGONIST_PRESSURE   0
+```
+
+The seven role-behavior cases come from blueberry cultivar morphology and sesame corolla/resource manipulations. They are real H2 local cases, but they do not count as plant-performance geometry cases.
+
+## Source-object registry
+
+Pending plant-performance promotions are registered in:
+
+`data/SCH_H2_LOCAL_CONTEXT_SOURCE_OBJECTS_V1.csv`
+
+Current registered objects:
+
+```text
+Gentiana_S3
+  DOI object 10.1371/journal.pone.0132522.s004
+  target = LOCAL_NET_SELECTION
+
+Gymnadenia_A2
+  Ecological Archives E096-022-A1
+  target = LOCAL_NET_SELECTION
+
+Pedicularis_S1
+Pedicularis_S2
+Pedicularis_AppendixS1
+  target = context structure / local antagonist pressure
+
+Primula_program_sources
+  target = LOCAL_GEOMETRY
+```
+
+At the current runtime state:
+
+```text
+registered source objects                 6
+binary objects materialized               0
+exact local values extracted              0
+```
+
+Pending objects therefore do not create pseudo-cases.
+
+## Revised promotion rule
+
+A plant-performance local case is promoted only when all required local quantities for its declared measurement layer are source-resolved.
+
+A role-behavior local case may be promoted without a local reproductive endpoint only when the source directly resolves the visitor-role contrast. Such a case remains explicitly outside plant-fitness geometry.
+
+Therefore:
+
+```text
+reported context count
+!=
+plant-performance model N
+!=
+visitor-role behavior case count
 ```
