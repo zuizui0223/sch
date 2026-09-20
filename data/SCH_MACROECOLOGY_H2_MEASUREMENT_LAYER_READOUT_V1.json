@@ -1,0 +1,53 @@
+{
+  "analysis": "sch_macroecology_h2_measurement_layer_v1",
+  "n_measurement_records": 8,
+  "n_canonical_axes": 6,
+  "n_source_records": 6,
+  "source_supported_layer_counts": {
+    "LOCAL_ANTAGONIST_PRESSURE": 1,
+    "LOCAL_GEOMETRY": 3,
+    "LOCAL_NET_SELECTION": 4
+  },
+  "materialized_layer_counts": {
+    "CONTEXT_STRUCTURE_ONLY": 5,
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 1
+  },
+  "n_materialized_model_cases": 3,
+  "materialized_case_ids": [
+    "Caryopteris_corolla_tube_robbers_excluded",
+    "Caryopteris_corolla_tube_robbers_present",
+    "Gentiana_lutea_color_Torrestio"
+  ],
+  "materialized_case_layer_counts": {
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 1,
+    "LOCAL_ANTAGONIST_PRESSURE": 0
+  },
+  "n_measurement_records_below_source_supported_layer": 5,
+  "n_source_objects": 6,
+  "source_object_route_status_counts": {
+    "INDEX_RESOLVED_BINARY_CONTENT_PENDING": 1,
+    "OBJECT_FILENAME_RESOLVED_BINARY_BLOCKED": 2,
+    "PROGRAMME_OBJECTS_NOT_YET_FROZEN": 1,
+    "ROUTE_RESOLVED_BINARY_BLOCKED": 2
+  },
+  "n_source_objects_binary_materialized": 0,
+  "n_source_objects_exact_local_values_extracted": 0,
+  "pedicularis_context_structure": {
+    "pollination_contexts_reported": 14,
+    "seed_outcome_contexts_reported": 12,
+    "individual_linked_contexts": 7,
+    "population_specific_geometry_cases_materialized": 0
+  },
+  "h2_model_ready": false,
+  "status": "H2_MEASUREMENT_LAYER_FROZEN_SOURCE_RECOVERY_FAIL_CLOSED",
+  "claim_ceiling": [
+    "measurement_layer_is_not_geometry_class",
+    "source_supported_layer_can_exceed_materialized_layer",
+    "local_antagonist_pressure_is_not_local_two_function_geometry",
+    "local_net_selection_is_not_local_two_function_geometry",
+    "only_materialized_case_rows_count_as_current_H2_model_N",
+    "pending_source_objects_do_not_create_pseudo_cases"
+  ]
+}
