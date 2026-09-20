@@ -6,7 +6,7 @@
 H2_LOCAL_CONTEXT_EXTRACTION = FAIL_CLOSED
 GENTIANA_S3_ROUTE = RESOLVED_BINARY_NOT_MATERIALIZED
 GYMNADENIA_A2_ROUTE = TABLE_VALUES_EXTRACTED
-PEDICULARIS_POPULATION_SUPPLEMENT = IDENTIFIED_EXTRACTION_PENDING
+PEDICULARIS_MAIN_TEXT_PRESSURE = FOUR_POPULATIONS_MATERIALIZED; SUPPLEMENT_EXPANSION_PENDING
 PRIMULA_POPULATION_EXPERIMENT_TABLES = PROGRAMME_SOURCE_EXTRACTION_PENDING
 ```
 
@@ -101,6 +101,17 @@ Pedicularis_AppendixS1
 
 Do not create 14 equal model cases from the population count alone. Local antagonist pressure is not equivalent to local two-function trait geometry.
 
+Four exact main-text pressure cases are now materialized:
+
+~~~text
+population 11   0.80 %
+population 3    1.36 %
+population 12  18.50 %
+population 5   27.42 %
+~~~
+
+Populations 3, 5 and 11 are among the individually linked subset; population 12 remains pressure-only after label loss. Table S2 is still required to expand exact pressure coverage to all 12 seed-outcome populations.
+
 ## Primula farinosa
 
 Canonical axis:
@@ -170,13 +181,13 @@ and remain separate from the ordered plant-performance measurement layer.
 Current reconciliation:
 
 ```text
-total H2 local cases                         18
-plant-performance cases                      11
+total H2 local cases                         22
+plant-performance cases                      15
 visitor-role behavior cases                   7
 
 plant-performance LOCAL_GEOMETRY              2
 plant-performance LOCAL_NET_SELECTION         9
-plant-performance LOCAL_ANTAGONIST_PRESSURE   0
+plant-performance LOCAL_ANTAGONIST_PRESSURE   4
 ```
 
 The seven role-behavior cases come from blueberry cultivar morphology and sesame corolla/resource manipulations. They are real H2 local cases, but they do not count as plant-performance geometry cases.
