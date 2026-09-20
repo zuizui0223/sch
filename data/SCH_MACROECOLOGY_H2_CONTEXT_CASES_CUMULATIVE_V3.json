@@ -1,0 +1,35 @@
+{
+  "analysis": "sch_macroecology_h2_context_cases_cumulative_v3",
+  "n_evidence_batches": 4,
+  "n_case_batches": 4,
+  "n_context_evidence_rows": 12,
+  "n_canonical_axes_with_context_evidence": 9,
+  "n_source_records_with_context_evidence": 8,
+  "n_materialized_local_cases": 18,
+  "n_canonical_axes_with_materialized_cases": 7,
+  "n_clusters_with_materialized_cases": 5,
+  "local_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONSUMER_REMOVED_NO_STATIC_GEOMETRY": 1,
+    "ROLE_BEHAVIOR_CONTEXT": 7,
+    "UNRESOLVED": 8
+  },
+  "local_role_status_counts": {
+    "NET_ANTAGONISTIC": 9,
+    "ROLE_DEPENDENT": 9
+  },
+  "n_context_shift_from_reference_yes": 11,
+  "n_evidence_rows_without_materialized_cases": 5,
+  "n_evidence_rows_requiring_source_object": 5,
+  "h2_model_ready": false,
+  "status": "H2_GYMNADENIA_NET_SELECTION_CASES_EXPANDED_INFERENCE_FAIL_CLOSED",
+  "claim_ceiling": [
+    "materialized_case_count_is_the_only_current_local_H2_N",
+    "reported_context_counts_are_not_model_cases",
+    "consumer_removal_context_is_not_forced_into_static_two_function_geometry",
+    "role_behavior_context_is_not_relabelled_as_plant_fitness_geometry",
+    "treatment_cell_net_selection_is_not_agent_mediated_geometry",
+    "role_dependent_cases_remain_separate_from_fixed_role_H2",
+    "H2_model_not_ready"
+  ]
+}
