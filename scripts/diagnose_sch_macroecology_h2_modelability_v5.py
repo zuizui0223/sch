@@ -18,7 +18,7 @@ def build(measurement_path,change_seed_path,case_paths):
     r["plant_performance_axis_gate_pass"]=p["n_canonical_axes"]>=g["min_canonical_axes_per_layer"]
     r["plant_performance_repeated_axis_gate_pass"]=p["n_axes_with_two_or_more_cases"]>=g["min_repeated_axes_per_layer"]
     r["reasons"]=[
-      f"only_{r['n_total_clusters_with_cases']}_independent_clusters_have_materialized_local_cases",
+      f"only_{p['n_clusters']}_plant_performance_clusters_have_materialized_local_cases",
       f"plant_performance_layer_has_{p['n_cases']}_cases_across_{p['n_canonical_axes']}_axes_and_{p['n_clusters']}_clusters",
       "case_axis_and_repeated_axis_gates_pass_but_independent_cluster_gate_fails",
       f"role_behavior_layer_has_{r['role_behavior_layer']['n_cases']}_cases_across_{r['role_behavior_layer']['n_canonical_axes']}_axes_and_{r['role_behavior_layer']['n_clusters']}_clusters",
