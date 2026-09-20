@@ -1,0 +1,82 @@
+{
+  "analysis": "sch_macroecology_h2_modelability_gate_v2",
+  "project_gates": {
+    "min_cases_per_layer": 12,
+    "min_canonical_axes_per_layer": 8,
+    "min_independent_clusters_per_layer": 8,
+    "min_repeated_axes_per_layer": 5
+  },
+  "n_total_local_cases": 18,
+  "n_total_canonical_axes_with_cases": 7,
+  "n_total_clusters_with_cases": 5,
+  "n_total_axes_with_two_or_more_local_cases": 6,
+  "axes_with_two_or_more_local_cases": [
+    "Blueberry_000076_corolla_access",
+    "Caryopteris_000330_corolla_tube",
+    "Gymnadenia_000030_phenology",
+    "Gymnadenia_000030_spur_length",
+    "Sesame_000336_corolla_tube",
+    "Sesame_000336_nectar_availability"
+  ],
+  "plant_performance_layer": {
+    "n_cases": 11,
+    "n_canonical_axes": 4,
+    "n_clusters": 3,
+    "n_axes_with_two_or_more_cases": 3,
+    "axes_with_two_or_more_cases": [
+      "Caryopteris_000330_corolla_tube",
+      "Gymnadenia_000030_phenology",
+      "Gymnadenia_000030_spur_length"
+    ],
+    "model_ready": false
+  },
+  "role_behavior_layer": {
+    "n_cases": 7,
+    "n_canonical_axes": 3,
+    "n_clusters": 2,
+    "n_axes_with_two_or_more_cases": 3,
+    "axes_with_two_or_more_cases": [
+      "Blueberry_000076_corolla_access",
+      "Sesame_000336_corolla_tube",
+      "Sesame_000336_nectar_availability"
+    ],
+    "model_ready": false
+  },
+  "n_change_records": 9,
+  "change_type_counts": {
+    "COMPONENT_WEIGHT_SHIFT": 1,
+    "COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE": 1,
+    "CONSUMER_ROLE_BEHAVIOR_SHIFT": 3,
+    "GEOMETRY_CLASS_SWITCH": 1,
+    "GEOMETRY_DISAPPEARANCE": 1,
+    "NET_SELECTION_SHIFT_ACROSS_CONSUMER_REGIME": 2
+  },
+  "n_change_records_with_two_or_more_materialized_cases": 6,
+  "combined_layer_model_permitted": false,
+  "combined_layer_model_blocker": "plant_performance_and_role_behavior_are_noncommensurate_estimands",
+  "plant_performance_model_ready": false,
+  "role_behavior_model_ready": false,
+  "primary_h2_status": "DESCRIPTIVE_WITHIN_SOURCE_CONTRASTS_ONLY",
+  "permitted_now": [
+    "treatment_group_net_selection_comparisons",
+    "source_resolved_within_axis_context_descriptions",
+    "within_source treatment or cultivar contrasts",
+    "mechanistic change_type synthesis",
+    "continued source_object recovery"
+  ],
+  "not_permitted_as_primary_now": [
+    "mixed_effects_context_switch_model",
+    "combined plant_performance plus role_behavior regression",
+    "context_switch prevalence estimate",
+    "treating treatment_group net selection as agent_specific local geometry"
+  ],
+  "reasons": [
+    "only_5_independent_clusters_have_materialized_local_cases",
+    "plant_performance_layer_has_11_cases_but_only_4_axes_and_3_clusters",
+    "only_3_plant_performance_axes_have_two_or_more_local_cases",
+    "role_behavior_layer_has_only_7_cases_across_3_axes_and_2_clusters",
+    "plant_performance_and_role_behavior_are_different_estimands",
+    "Gentiana_Pedicularis_and_Primula_source_objects_remain_unmaterialized"
+  ],
+  "status": "H2_MODELABILITY_GATE_V2_GYMNADENIA_ADDED_FAIL_CLOSED"
+}
