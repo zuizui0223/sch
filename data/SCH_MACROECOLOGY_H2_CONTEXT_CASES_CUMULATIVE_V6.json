@@ -1,0 +1,63 @@
+{
+  "analysis": "sch_macroecology_h2_context_cases_cumulative_v6",
+  "n_evidence_batches": 7,
+  "n_case_batches": 7,
+  "n_context_evidence_rows": 19,
+  "n_canonical_axes_with_context_evidence": 15,
+  "n_source_records_with_context_evidence": 10,
+  "n_materialized_local_cases": 44,
+  "n_canonical_axes_with_materialized_cases": 14,
+  "n_clusters_with_materialized_cases": 8,
+  "local_geometry_counts": {
+    "ALIGNMENT_REINFORCEMENT": 2,
+    "CONSUMER_REMOVED_NO_STATIC_GEOMETRY": 1,
+    "ROLE_BEHAVIOR_CONTEXT": 7,
+    "UNRESOLVED": 34
+  },
+  "local_role_status_counts": {
+    "NET_ANTAGONISTIC": 35,
+    "ROLE_DEPENDENT": 9
+  },
+  "n_context_shift_from_reference_yes": 18,
+  "n_evidence_rows_without_materialized_cases": 5,
+  "n_evidence_rows_requiring_source_object": 5,
+  "h2_model_ready": false,
+  "status": "H2_ERYSIMUM_NET_SELECTION_EXPANDED_INFERENCE_FAIL_CLOSED",
+  "claim_ceiling": [
+    "materialized_case_count_is_the_only_current_local_H2_N",
+    "reported_context_counts_are_not_model_cases",
+    "local_antagonist_pressure_cases_are_not_local_geometry",
+    "consumer_removal_context_is_not_forced_into_static_two_function_geometry",
+    "role_behavior_context_is_not_relabelled_as_plant_fitness_geometry",
+    "treatment_cell_net_selection_is_not_agent_mediated_geometry",
+    "role_dependent_cases_remain_separate_from_fixed_role_H2",
+    "trifolium_treatment_gradients_are_local_net_selection_not_local_geometry",
+    "erysimum_table5_paths_are_local_net_selection_not_local_agent_geometry",
+    "H2_model_not_ready"
+  ],
+  "local_measurement_class_counts": {
+    "LOCAL_ANTAGONIST_PRESSURE": 4,
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 31,
+    "ROLE_BEHAVIOR_CONTEXT": 7
+  },
+  "n_pedicularis_antagonist_pressure_cases": 4,
+  "pedicularis_pressure_populations_materialized": [
+    "population_11",
+    "population_12",
+    "population_3",
+    "population_5"
+  ],
+  "n_trifolium_local_net_selection_cases": 4,
+  "trifolium_axes_materialized": [
+    "Trifolium_000391_flowering_time",
+    "Trifolium_000391_inflorescence_production"
+  ],
+  "n_erysimum_local_net_selection_cases": 18,
+  "erysimum_axes_materialized": [
+    "Erysimum_000008_corolla_diameter",
+    "Erysimum_000008_corolla_shape",
+    "Erysimum_000008_corolla_tube_length",
+    "Erysimum_000008_corolla_tube_width"
+  ]
+}
