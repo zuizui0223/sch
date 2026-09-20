@@ -2,12 +2,12 @@
 
 ## Current H2 local-case architecture
 
-The H2 layer now contains ten materialized local cases, but they belong to two different biological measurement families.
+The H2 layer now contains eighteen materialized local cases, but they belong to two different biological measurement families.
 
 ```text
-TOTAL_H2_LOCAL_CASES = 10
+TOTAL_H2_LOCAL_CASES = 18
 
-PLANT_PERFORMANCE_CASES = 3
+PLANT_PERFORMANCE_CASES = 11
 ROLE_BEHAVIOR_CASES = 7
 ```
 
@@ -40,17 +40,19 @@ Currently materialized states:
 
 ```text
 LOCAL_GEOMETRY              2
-LOCAL_NET_SELECTION         1
-CONTEXT_STRUCTURE_ONLY      5
+LOCAL_NET_SELECTION         3
+CONTEXT_STRUCTURE_ONLY      3
 ```
 
-Five of eight records therefore remain below the resolution that the underlying source could in principle support.
+Three of eight records therefore remain below the resolution that the underlying source could in principle support.
 
-The three materialized plant-performance cases are:
+The eleven materialized plant-performance cases are:
 
 1. *Gentiana lutea* colour at Torrestío — `LOCAL_GEOMETRY`;
 2. *Caryopteris divaricata* with natural nectar robbery — `LOCAL_GEOMETRY`;
-3. *Caryopteris divaricata* under robber exclusion — `LOCAL_NET_SELECTION`.
+3. *Caryopteris divaricata* under robber exclusion — `LOCAL_NET_SELECTION`;
+4–7. *Gymnadenia conopsea* flowering phenology in four pollination × herbivory treatment cells — `LOCAL_NET_SELECTION`;
+8–11. *Gymnadenia conopsea* spur length in the same four treatment cells — `LOCAL_NET_SELECTION`.
 
 ## Visitor-role behavior layer
 
@@ -122,7 +124,7 @@ Six plant-performance source objects are registered:
 
 ```text
 Gentiana_S3
-Gymnadenia_A2
+Gymnadenia_A2  [Table A2 values extracted]
 Pedicularis_S1
 Pedicularis_S2
 Pedicularis_AppendixS1
@@ -133,7 +135,7 @@ Current state:
 
 ```text
 binary materialized                 0
-exact local values extracted        0
+exact local values extracted        1
 ```
 
 The registry therefore raises provenance without inflating local model N.
@@ -193,17 +195,18 @@ These are not relabelled as plant-fitness geometry.
 ## Change-type seed status
 
 ```text
-CHANGE_RECORDS = 7
-CANONICAL_AXES = 7
+CHANGE_RECORDS = 9
+CANONICAL_AXES = 9
 
 GEOMETRY_CLASS_SWITCH = 1
 GEOMETRY_DISAPPEARANCE = 1
 COMPONENT_WEIGHT_SHIFT = 1
 COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE = 1
 CONSUMER_ROLE_BEHAVIOR_SHIFT = 3
+NET_SELECTION_CONTEXT_SHIFT = 2
 
-MATERIALIZED_LOCAL_CASES_REPRESENTED = 10
-CHANGE_RECORDS_WITH_LOCAL_CASES = 5
+MATERIALIZED_LOCAL_CASES_REPRESENTED = 18
+CHANGE_RECORDS_WITH_LOCAL_CASES = 7
 CHANGE_RECORDS_WITHOUT_LOCAL_CASES = 2
 ```
 
@@ -233,8 +236,8 @@ This supports a stronger ecological interpretation:
 Current status:
 
 ```text
-H2_LOCAL_CASES = 10
-PLANT_PERFORMANCE_CASES = 3
+H2_LOCAL_CASES = 18
+PLANT_PERFORMANCE_CASES = 11
 ROLE_BEHAVIOR_CASES = 7
 
 PLANT_PERFORMANCE_AXES_WITH_CASES = 2
@@ -249,6 +252,5 @@ Plant-performance and role-behavior cases remain separate analysis layers.
 The next gains should come from recovering local plant-performance values for:
 
 1. *Gentiana* S3;
-2. *Gymnadenia* Table A2;
-3. *Pedicularis* S1/S2/Appendix S1;
-4. *Primula farinosa* experiment/time tables.
+2. *Pedicularis* S1/S2/Appendix S1;
+3. *Primula farinosa* experiment/time tables.

@@ -4,7 +4,7 @@
 
 H2 asks when the same canonical trait axis changes ecological state across contexts.
 
-The current H2 layer contains ten materialized local cases, but the cases belong to two noncommensurate measurement families:
+The current H2 layer contains eighteen materialized local cases, but the cases belong to two noncommensurate measurement families:
 
 ```text
 plant-performance contexts
@@ -16,16 +16,18 @@ A combined regression across those layers would mix different estimands.
 ## Current local-case denominator
 
 ```text
-TOTAL_LOCAL_CASES = 10
-CANONICAL_AXES_WITH_CASES = 5
-BIOLOGICAL_CLUSTERS_WITH_CASES = 4
-AXES_WITH >=2 LOCAL_CASES = 4
+TOTAL_LOCAL_CASES = 18
+CANONICAL_AXES_WITH_CASES = 7
+BIOLOGICAL_CLUSTERS_WITH_CASES = 5
+AXES_WITH >=2 LOCAL_CASES = 6
 ```
 
 Axes with at least two local contexts:
 
 ```text
 Caryopteris_000330_corolla_tube
+Gymnadenia_000030_phenology
+Gymnadenia_000030_spur_length
 Blueberry_000076_corolla_access
 Sesame_000336_corolla_tube
 Sesame_000336_nectar_availability
@@ -38,13 +40,13 @@ Gentiana currently has one materialized local plant-performance context plus bro
 Current state:
 
 ```text
-cases = 3
-canonical axes = 2
-clusters = 2
-axes with >=2 local cases = 1
+cases = 11
+canonical axes = 4
+clusters = 3
+axes with >=2 local cases = 3
 ```
 
-The single repeated plant-performance axis is *Caryopteris divaricata* corolla tube:
+Repeated plant-performance axes now include *Caryopteris divaricata* corolla tube plus *Gymnadenia conopsea* flowering phenology and spur length. Caryopteris provides a geometry-disappearance contrast; Gymnadenia provides exact treatment-cell net-selection gradients:
 
 ```text
 natural robbery
@@ -128,7 +130,7 @@ plant-fitness geometry switch
 
 ## Current mechanistic change classes
 
-Seven change records are registered:
+Nine change records are registered:
 
 ```text
 GEOMETRY_CLASS_SWITCH                         1
@@ -136,9 +138,10 @@ GEOMETRY_DISAPPEARANCE                        1
 COMPONENT_WEIGHT_SHIFT                        1
 COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE 1
 CONSUMER_ROLE_BEHAVIOR_SHIFT                  3
+NET_SELECTION_CONTEXT_SHIFT                   2
 ```
 
-Five change records already contain two or more local materialized cases.
+Six change records already contain two or more local materialized cases.
 
 Two remain source-level only:
 
@@ -174,17 +177,16 @@ This is the H2 ecological contribution.
 The largest gain now comes from fixed-role plant-performance source recovery:
 
 1. *Gentiana lutea* S3 population selection table;
-2. *Gymnadenia conopsea* Appendix A Table A2;
-3. *Pedicularis rex* S1/S2/Appendix S1;
-4. *Primula farinosa* population × experiment × time tables.
+2. *Pedicularis rex* S1/S2/Appendix S1;
+3. *Primula farinosa* population × experiment × time tables.
 
 These sources can increase the plant-performance H2 layer rather than merely adding more role-behavior examples.
 
 ## Status
 
 ```text
-H2_TOTAL_LOCAL_CASES = 10
-H2_PLANT_PERFORMANCE_CASES = 3
+H2_TOTAL_LOCAL_CASES = 18
+H2_PLANT_PERFORMANCE_CASES = 11
 H2_ROLE_BEHAVIOR_CASES = 7
 
 H2_PLANT_PERFORMANCE_MODEL = FAIL_CLOSED
