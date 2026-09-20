@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import importlib.util
 import json
 from pathlib import Path
@@ -19,8 +20,13 @@ def _load_v3():
 
 def build(path: Path) -> dict:
     result = _load_v3().build(path)
+    with path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
     result["analysis"] = "sch_macroecology_h2_change_type_seed_v4"
     result["status"] = "H2_CHANGE_TYPE_SEED_V4_PEDICULARIS_PRESSURE_ADDED"
+    result["n_change_records_with_two_or_more_materialized_cases"] = sum(
+        int(row["local_cases_materialized"]) >= 2 for row in rows
+    )
     marker = "antagonist_pressure_cases_do_not_identify_local_geometry"
     if marker not in result["claim_ceiling"]:
         result["claim_ceiling"].insert(-1, marker)
