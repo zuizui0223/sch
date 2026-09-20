@@ -151,20 +151,26 @@ These rows directly demonstrate geographic variation in antagonist pressure. The
 
 With these four rows, the plant-performance H2 case-count threshold passes, but the structural axis/cluster/repeated-axis gates still fail.
 
+## Erysimum geographic net-selection upgrade
+
+Eighteen exact Table 5 population-level total selection paths are now materialized across four corolla axes. Tube width and corolla shape show source-resolved geographic sign reversals.
+
+These rows are local net selection, not local pollinator–herbivore component geometry.
+
 ## Current H2 modelability boundary
 
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  26
-canonical axes with cases          10
-biological clusters                 7
+total local cases                  44
+canonical axes with cases          14
+biological clusters                 8
 
-plant-performance cases            19
+plant-performance cases            37
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 7 canonical axes, 5 clusters, and 6 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
+Plant-performance layer: 11 canonical axes, 6 clusters, and 10 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
