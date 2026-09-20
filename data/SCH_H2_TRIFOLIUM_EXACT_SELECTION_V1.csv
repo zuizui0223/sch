@@ -1,0 +1,5 @@
+axis,context,beta,F_num_df,F_den_df,p_value,interaction_test,source_location,notes
+inflorescence_production,AMBIENT_INVERTEBRATE_HERBIVORY,0.91,1,69,P_LT_0.001,trait_x_herbivory_P_LT_0.001,Results_3.3,"Herbivory weakened selection for increased inflorescence production by 32%."
+inflorescence_production,REDUCED_INVERTEBRATE_HERBIVORY,1.34,1,77,P_LT_0.001,trait_x_herbivory_P_LT_0.001,Results_3.3,"Herbivory weakened selection for increased inflorescence production by 32%."
+flowering_time_HCNplus,OPEN_POLLINATION,-0.03,1,27,P_EQ_0.77,trait_x_defence_x_pollination_P_EQ_0.013,Results_3.5,"Among cyanogenic plants; pollination-mediated selection context."
+flowering_time_HCNplus,SUPPLEMENTAL_POLLINATION,0.19,1,34,P_EQ_0.03,trait_x_defence_x_pollination_P_EQ_0.013,Results_3.5,"Among cyanogenic plants; source cautions potential CYP79D15 pleiotropy/allocation contribution."

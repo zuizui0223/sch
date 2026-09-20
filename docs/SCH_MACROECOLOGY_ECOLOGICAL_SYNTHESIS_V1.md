@@ -156,15 +156,15 @@ With these four rows, the plant-performance H2 case-count threshold passes, but 
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  22
-canonical axes with cases           8
-biological clusters                 6
+total local cases                  26
+canonical axes with cases          10
+biological clusters                 7
 
-plant-performance cases            15
+plant-performance cases            19
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 5 canonical axes, 4 clusters, and 4 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
+Plant-performance layer: 7 canonical axes, 5 clusters, and 6 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
