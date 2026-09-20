@@ -189,9 +189,9 @@ The seven role-behavior cases come from blueberry cultivar morphology and sesame
 
 ## Source-object registry
 
-Pending plant-performance promotions are registered in:
+Plant-performance source objects and their current recovery states are registered in:
 
-`data/SCH_H2_LOCAL_CONTEXT_SOURCE_OBJECTS_V1.csv`
+`data/SCH_H2_LOCAL_CONTEXT_SOURCE_OBJECTS_V2.csv`
 
 Current registered objects:
 
