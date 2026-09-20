@@ -136,20 +136,35 @@ H1 binary conflict model = FAIL
 primary H1 output = descriptive canonical geometry
 ~~~
 
+## Pedicularis main-text pressure upgrade
+
+Four exact population seed-predation values are now materialized as LOCAL_ANTAGONIST_PRESSURE cases:
+
+~~~text
+population 11   0.80 %
+population 3    1.36 %
+population 12  18.50 %
+population 5   27.42 %
+~~~
+
+These rows directly demonstrate geographic variation in antagonist pressure. They do not identify local two-function trait geometry.
+
+With these four rows, the plant-performance H2 case-count threshold passes, but the structural axis/cluster/repeated-axis gates still fail.
+
 ## Current H2 modelability boundary
 
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  18
-canonical axes with cases           7
-biological clusters                 5
+total local cases                  22
+canonical axes with cases           8
+biological clusters                 6
 
-plant-performance cases            11
+plant-performance cases            15
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 4 canonical axes, 3 clusters, and 3 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
+Plant-performance layer: 5 canonical axes, 4 clusters, and 4 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
