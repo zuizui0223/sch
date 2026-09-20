@@ -144,6 +144,41 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Comparative macroecology extension
+
+SCH now also carries an active comparative ecological layer built from the same identification rules.
+
+Current bounded state:
+
+~~~text
+current primary-study inclusions         117
+canonical biological trait axes           48
+
+static fixed-role resolved axes            19
+  conflict                                  9
+  reinforcement                             2
+  one-sided / null                          8
+
+materialized H2 local cases                10
+  plant-performance                         3
+  visitor-role behavior                     7
+
+H1 modelability = FAIL_CLOSED
+H2 modelability = FAIL_CLOSED
+~~~
+
+The current biological synthesis is:
+
+> realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
+
+The macroecology layer is an **active upgrade path**, not a reason to delay the frozen New Phytologist Viewpoint. It becomes a candidate full comparative paper only after the systematic denominator is completed and an H1 or plant-performance H2 modelability gate passes.
+
+See:
+
+- `docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
+- `data/SCH_MACROECOLOGY_CANONICAL_TRAIT_AXIS_LEDGER_V1.csv`
+- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V1.md`
+
 ## Empirical execution strategy
 
 ```text

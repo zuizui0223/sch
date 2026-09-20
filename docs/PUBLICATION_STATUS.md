@@ -92,6 +92,55 @@ theory / identification mechanism
 
 The literature synthesis is the primary empirical reality layer. The focal multi-level crossed experiment is a residual-identification programme for quantities the literature structurally does not recover; it is not the premise required to publish the Viewpoint.
 
+## Parallel macroecology extension
+
+The Viewpoint package remains frozen and submission-ready, but SCH now has an active comparative macroecology extension.
+
+Current macroecology state:
+
+~~~text
+primary-study inclusions                 117
+canonical trait axes                      48
+
+static resolved fixed-role axes           19
+independent clusters in static H1         13
+  conflict                                 9
+  reinforcement                            2
+  one-sided / null                         8
+
+H2 local context cases                    10
+H2 axes with local cases                   5
+H2 clusters with local cases               4
+  plant-performance cases                  3
+  visitor-role behavior cases              7
+~~~
+
+The macroecology result is currently descriptive rather than regression-based. Both model gates remain fail-closed because the canonical and local-context datasets are too sparse/nested for the registered primary models.
+
+The current ecological synthesis is:
+
+> multifunctional geometry is assembled at trait axis × ecological context × consumer functional role, rather than being a fixed property of a species or interaction label.
+
+Publication strategy therefore remains two-stage:
+
+~~~text
+NOW:
+New Phytologist Viewpoint
+= submission-ready
+
+LATER UPGRADE:
+full comparative empirical/theory paper
+= only after systematic-screen completion
+  + frozen canonical denominator
+  + H1 or plant-performance H2 modelability PASS
+~~~
+
+The macro extension should not delay the presubmission enquiry.
+
+Canonical macroecology status document:
+
+`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
+
 ## Frozen literature-layer status
 
 ```text
