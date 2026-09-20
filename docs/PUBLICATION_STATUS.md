@@ -108,10 +108,10 @@ independent clusters in static H1         13
   reinforcement                            2
   one-sided / null                         8
 
-H2 local context cases                    18
-H2 axes with local cases                   7
-H2 clusters with local cases               5
-  plant-performance cases                 11
+H2 local context cases                    22
+H2 axes with local cases                   8
+H2 clusters with local cases               6
+  plant-performance cases                 15
   visitor-role behavior cases              7
 ~~~
 
