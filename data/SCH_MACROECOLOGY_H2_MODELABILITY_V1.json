@@ -1,0 +1,76 @@
+{
+  "analysis": "sch_macroecology_h2_modelability_gate_v1",
+  "project_gates": {
+    "min_cases_per_layer": 12,
+    "min_canonical_axes_per_layer": 8,
+    "min_independent_clusters_per_layer": 8,
+    "min_repeated_axes_per_layer": 5
+  },
+  "n_total_local_cases": 10,
+  "n_total_canonical_axes_with_cases": 5,
+  "n_total_clusters_with_cases": 4,
+  "n_total_axes_with_two_or_more_local_cases": 4,
+  "axes_with_two_or_more_local_cases": [
+    "Blueberry_000076_corolla_access",
+    "Caryopteris_000330_corolla_tube",
+    "Sesame_000336_corolla_tube",
+    "Sesame_000336_nectar_availability"
+  ],
+  "plant_performance_layer": {
+    "n_cases": 3,
+    "n_canonical_axes": 2,
+    "n_clusters": 2,
+    "n_axes_with_two_or_more_cases": 1,
+    "axes_with_two_or_more_cases": [
+      "Caryopteris_000330_corolla_tube"
+    ],
+    "model_ready": false
+  },
+  "role_behavior_layer": {
+    "n_cases": 7,
+    "n_canonical_axes": 3,
+    "n_clusters": 2,
+    "n_axes_with_two_or_more_cases": 3,
+    "axes_with_two_or_more_cases": [
+      "Blueberry_000076_corolla_access",
+      "Sesame_000336_corolla_tube",
+      "Sesame_000336_nectar_availability"
+    ],
+    "model_ready": false
+  },
+  "n_change_records": 7,
+  "change_type_counts": {
+    "COMPONENT_WEIGHT_SHIFT": 1,
+    "COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE": 1,
+    "CONSUMER_ROLE_BEHAVIOR_SHIFT": 3,
+    "GEOMETRY_CLASS_SWITCH": 1,
+    "GEOMETRY_DISAPPEARANCE": 1
+  },
+  "n_change_records_with_two_or_more_materialized_cases": 4,
+  "combined_layer_model_permitted": false,
+  "combined_layer_model_blocker": "plant_performance_and_role_behavior_are_noncommensurate_estimands",
+  "plant_performance_model_ready": false,
+  "role_behavior_model_ready": false,
+  "primary_h2_status": "DESCRIPTIVE_WITHIN_SOURCE_CONTRASTS_ONLY",
+  "permitted_now": [
+    "source-resolved_within-axis_context_descriptions",
+    "within-source treatment or cultivar contrasts",
+    "mechanistic change-type synthesis",
+    "continued source-object recovery"
+  ],
+  "not_permitted_as_primary_now": [
+    "mixed_effects_context_switch_model",
+    "combined plant-performance plus role-behavior regression",
+    "context-switch prevalence estimate",
+    "treating reported but unmaterialized contexts as model rows"
+  ],
+  "reasons": [
+    "only_4_independent_clusters_have_materialized_local_cases",
+    "plant_performance_layer_has_only_3_cases_across_2_axes_and_2_clusters",
+    "only_1_plant_performance_axis_has_two_or_more_local_cases",
+    "role_behavior_layer_has_only_7_cases_across_3_axes_and_2_clusters",
+    "plant_performance_and_role_behavior_are_different_estimands",
+    "fixed_role source objects remain unmaterialized"
+  ],
+  "status": "H2_MODELABILITY_GATE_FROZEN_FAIL_CLOSED"
+}
