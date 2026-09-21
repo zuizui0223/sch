@@ -1,0 +1,4 @@
+population,n,nectar_gland_raw_coefficient,nectar_gland_standardized_b,nectar_gland_t,nectar_gland_p,robbing_raw_coefficient,robbing_standardized_b,robbing_t,robbing_p,source_table
+Montmajor,131,7.192,0.311,3.293,0.001,-1.533,-0.225,-2.667,0.009,Table_5
+Serrat_dels_Boixos,76,10.429,0.169,1.559,0.123,-0.209,-0.011,-0.103,0.919,Table_5
+Colldecarrera,112,13.955,0.255,2.573,0.011,-3.944,-0.188,-1.988,0.049,Table_5
