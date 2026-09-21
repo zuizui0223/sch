@@ -164,7 +164,7 @@ materialized H2 local cases                44
   visitor-role behavior                     7
 
 H1 modelability = FAIL_CLOSED
-H2 modelability = FAIL_CLOSED
+H2 modelability = FAIL_CLOSED\n  broad plant-performance clusters = 6\n  homogeneous LOCAL_NET_SELECTION clusters = 4
 ~~~
 
 The current biological synthesis is:
@@ -177,7 +177,7 @@ See:
 
 - `docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
 - `data/SCH_MACROECOLOGY_CANONICAL_TRAIT_AXIS_LEDGER_V1.csv`
-- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V1.md`
+- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V6.md`\n- `docs/SCH_MACROECOLOGY_H2_ESTIMAND_HOMOGENEITY_V1.md`\n- `docs/SCH_H2_DIRECTIONAL_STATE_PROTOCOL_V1.md`
 - `docs/SCH_H2_GYMNADENIA_A2_RECOVERY_V1.md`
 - `docs/SCH_H2_TRIFOLIUM_RECOVERY_V1.md`
 - `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`
