@@ -44,12 +44,12 @@ def test_priority_queue_covers_exact_current_unscreened_denominator_and_generate
 
 
 def test_priority_queue_has_unique_records_and_deterministic_order():
-    rows, _ = _mod().build(FROZEN, PRISMA)
+    mod = _mod()
+    rows, _ = mod.build(FROZEN, PRISMA)
     assert len({row["record_id"] for row in rows}) == 463
     assert [int(row["review_order"]) for row in rows] == list(range(1, 464))
-    assert [mod_tier := _mod().TIER_RANK[row["priority_tier"]] for row in rows] == sorted(
-        _mod().TIER_RANK[row["priority_tier"]] for row in rows
-    )
+    tiers = [mod.TIER_RANK[row["priority_tier"]] for row in rows]
+    assert tiers == sorted(tiers)
 
 
 def test_priority_rule_is_explicitly_review_order_only():
