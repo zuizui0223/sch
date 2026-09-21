@@ -159,8 +159,8 @@ static fixed-role resolved axes            19
   reinforcement                             2
   one-sided / null                          8
 
-materialized H2 local cases                26
-  plant-performance                        19
+materialized H2 local cases                44
+  plant-performance                        37
   visitor-role behavior                     7
 
 H1 modelability = FAIL_CLOSED
@@ -180,6 +180,7 @@ See:
 - `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V1.md`
 - `docs/SCH_H2_GYMNADENIA_A2_RECOVERY_V1.md`
 - `docs/SCH_H2_TRIFOLIUM_RECOVERY_V1.md`
+- `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`
 
 ## Empirical execution strategy
 
