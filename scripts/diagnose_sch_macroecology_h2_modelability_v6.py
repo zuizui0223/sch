@@ -30,8 +30,8 @@ def _families(rows,field,gates):
           "n_cases":v["cases"],"n_axes":len(v["axes"]),"n_clusters":len(v["clusters"]),
           "n_repeated_axes":len(v["repeated_axes"]),
           "model_ready":(
-            v["cases"]>=g["min_cases_per_layer"] and len(v["axes"])>=g["min_canonical_axes_per_layer"]
-            and len(v["clusters"])>=g["min_independent_clusters_per_layer"] and len(v["repeated_axes"])>=g["min_repeated_axes_per_layer"]
+            v["cases"]>=gates["min_cases_per_layer"] and len(v["axes"])>=gates["min_canonical_axes_per_layer"]
+            and len(v["clusters"])>=gates["min_independent_clusters_per_layer"] and len(v["repeated_axes"])>=gates["min_repeated_axes_per_layer"]
           )
         }
     return result
@@ -39,7 +39,7 @@ def _families(rows,field,gates):
 def build(measurement_path,change_seed_path,case_paths):
     r=_base().build(measurement_path,change_seed_path,case_paths)
     rows=_read(measurement_path); g=r["project_gates"]; p=r["plant_performance_layer"]
-    broad=(p["n_cases"]>=g["min_cases_per_layer"] and p["n_canonical_axes"]>=g["min_canonical_axes_per_layer"] and p["n_clusters"]>=g["min_independent_clusters_per_layer"] and p["n_axes_with_two_or_more_cases"]>=g["min_repeated_axes_per_layer"])
+    broad=(p["n_cases"]>=gates["min_cases_per_layer"] and p["n_canonical_axes"]>=gates["min_canonical_axes_per_layer"] and p["n_clusters"]>=gates["min_independent_clusters_per_layer"] and p["n_axes_with_two_or_more_cases"]>=gates["min_repeated_axes_per_layer"])
     estimands=_families(rows,"estimand_family",g); pools=_families(rows,"numeric_pooling_family",g)
     estimand_ready=any(x["model_ready"] for x in estimands.values())
     numeric_ready=any(x["model_ready"] for x in pools.values())
