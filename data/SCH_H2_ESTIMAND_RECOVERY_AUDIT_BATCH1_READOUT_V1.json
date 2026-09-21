@@ -1,0 +1,33 @@
+{
+  "analysis": "sch_h2_estimand_recovery_audit_batch1_v1",
+  "n_frozen_queue_records": 29,
+  "n_audited_records": 8,
+  "n_unaudited_queue_records": 21,
+  "audited_tier_counts": {
+    "FT0_EXPLICIT_SELECTION": 2,
+    "FT1_FINAL_PERFORMANCE": 3,
+    "FT2_CONTEXT_RICH": 3
+  },
+  "decision_counts": {
+    "NOT_PROMOTED": 8
+  },
+  "reason_counts": {
+    "NOT_PRIMARY_EMPIRICAL_STUDY": 1,
+    "NO_COMMON_FITNESS_SELECTION_ESTIMAND": 1,
+    "NO_COMMON_REPRODUCTIVE_OUTCOME": 1,
+    "NO_DIRECT_ANTAGONIST_RESPONSE_ON_SELECTED_TRAIT": 1,
+    "NO_FOCAL_POLLINATOR_ANTAGONIST_TRAIT_ESTIMAND": 1,
+    "NO_MEASURED_CONSUMER_COMPONENTS": 1,
+    "NO_SHARED_TRAIT_COORDINATE": 2
+  },
+  "n_total_selection_effect_promotions": 0,
+  "promoted_record_ids": [],
+  "status": "ESTIMAND_RECOVERY_BATCH1_AUDITED_NO_TOTAL_SELECTION_PROMOTIONS",
+  "claim_ceiling": [
+    "negative_recovery_yield_does_not_change_formal_prisma_inclusion_by_itself",
+    "queue_priority_was_frozen_before_fulltext_outcome_adjudication",
+    "title_or_abstract_estimand_signal_is_not_an_estimand",
+    "same_trait_consumer_components_and_common_outcome_remain_required",
+    "do_not_retune_batch1_priority_rules_after_observing_zero_promotions"
+  ]
+}

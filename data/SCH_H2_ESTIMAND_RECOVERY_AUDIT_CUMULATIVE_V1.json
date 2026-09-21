@@ -1,0 +1,37 @@
+{
+  "analysis": "sch_h2_estimand_recovery_audit_cumulative_v1",
+  "n_frozen_queue_records": 29,
+  "n_audit_batches": 2,
+  "n_audited_records": 13,
+  "n_unaudited_queue_records": 16,
+  "audited_tier_counts": {
+    "FT0_EXPLICIT_SELECTION": 2,
+    "FT1_FINAL_PERFORMANCE": 3,
+    "FT2_CONTEXT_RICH": 3,
+    "FT3_OTHER_RETAINED": 5
+  },
+  "decision_counts": {
+    "NOT_PROMOTED": 13
+  },
+  "reason_counts": {
+    "NOT_PRIMARY_EMPIRICAL_STUDY": 1,
+    "NO_COMMON_FITNESS_SELECTION_ESTIMAND": 1,
+    "NO_COMMON_REPRODUCTIVE_OUTCOME": 2,
+    "NO_DIRECT_ANTAGONIST_RESPONSE_ON_SELECTED_TRAIT": 1,
+    "NO_FOCAL_POLLINATOR_ANTAGONIST_TRAIT_ESTIMAND": 1,
+    "NO_MEASURED_CONSUMER_COMPONENTS": 1,
+    "NO_SHARED_TRAIT_COORDINATE": 6
+  },
+  "n_total_selection_effect_promotions": 0,
+  "promoted_record_ids": [],
+  "n_shared_trait_coordinate_failures": 6,
+  "promotion_rate": 0,
+  "status": "ESTIMAND_RECOVERY_13_AUDITED_ZERO_TOTAL_SELECTION_PROMOTIONS",
+  "claim_ceiling": [
+    "zero_promotion_yield_is_a_development_result_not_a_prevalence_estimate",
+    "formal_prisma_inclusion_is_not_changed_by_estimand_recovery_audit",
+    "queue_priority_rules_remain_frozen",
+    "shared_trait_coordinate_failure_is_distinct_from_null_ecological_effect",
+    "estimand_family_bottleneck_is_identification_not_raw_case_count"
+  ]
+}
