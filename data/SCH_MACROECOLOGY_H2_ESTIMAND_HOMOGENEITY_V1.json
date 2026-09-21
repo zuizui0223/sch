@@ -1,0 +1,195 @@
+{
+  "analysis": "sch_macroecology_h2_estimand_homogeneity_v1",
+  "project_gates": {
+    "min_cases": 12,
+    "min_axes": 8,
+    "min_clusters": 8,
+    "min_repeated_axes": 5
+  },
+  "n_materialized_plant_performance_cases": 37,
+  "n_broad_plant_performance_clusters": 6,
+  "layer_summary": {
+    "LOCAL_ANTAGONIST_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "axes": [
+        "Pedicularis_000376_corolla_exsertion"
+      ],
+      "clusters": [
+        "Pedicularis_rex_geographic_selection_program"
+      ],
+      "gate_pass": false
+    },
+    "LOCAL_GEOMETRY": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 2,
+      "n_repeated_axes": 0,
+      "axes": [
+        "Caryopteris_000330_corolla_tube",
+        "Gentiana_lutea_color_axis"
+      ],
+      "clusters": [
+        "Caryopteris_divaricata_robbing_program",
+        "Gentiana_lutea_color_program"
+      ],
+      "gate_pass": false
+    },
+    "LOCAL_NET_SELECTION": {
+      "n_cases": 31,
+      "n_axes": 9,
+      "n_clusters": 4,
+      "n_repeated_axes": 8,
+      "axes": [
+        "Caryopteris_000330_corolla_tube",
+        "Erysimum_000008_corolla_diameter",
+        "Erysimum_000008_corolla_shape",
+        "Erysimum_000008_corolla_tube_length",
+        "Erysimum_000008_corolla_tube_width",
+        "Gymnadenia_000030_phenology",
+        "Gymnadenia_000030_spur_length",
+        "Trifolium_000391_flowering_time",
+        "Trifolium_000391_inflorescence_production"
+      ],
+      "clusters": [
+        "Caryopteris_divaricata_robbing_program",
+        "Erysimum_mediohispanicum_selection_mosaic",
+        "Gymnadenia_conopsea_agent_selection",
+        "Trifolium_repens_selection_program"
+      ],
+      "gate_pass": false
+    }
+  },
+  "effect_metric_summary": {
+    "LOCAL_ANTAGONIST_PRESSURE": {
+      "SEED_PREDATION_PERCENT": {
+        "n_cases": 4,
+        "n_axes": 1,
+        "n_clusters": 1,
+        "n_repeated_axes": 1,
+        "axes": [
+          "Pedicularis_000376_corolla_exsertion"
+        ],
+        "clusters": [
+          "Pedicularis_rex_geographic_selection_program"
+        ],
+        "gate_pass": false
+      }
+    },
+    "LOCAL_GEOMETRY": {
+      "DIRECTIONAL_GROUP_COMPARISON": {
+        "n_cases": 1,
+        "n_axes": 1,
+        "n_clusters": 1,
+        "n_repeated_axes": 0,
+        "axes": [
+          "Caryopteris_000330_corolla_tube"
+        ],
+        "clusters": [
+          "Caryopteris_divaricata_robbing_program"
+        ],
+        "gate_pass": false
+      },
+      "PATH_ANALYSIS_DIRECTIONAL_COMPONENTS": {
+        "n_cases": 1,
+        "n_axes": 1,
+        "n_clusters": 1,
+        "n_repeated_axes": 0,
+        "axes": [
+          "Gentiana_lutea_color_axis"
+        ],
+        "clusters": [
+          "Gentiana_lutea_color_program"
+        ],
+        "gate_pass": false
+      }
+    },
+    "LOCAL_NET_SELECTION": {
+      "DIRECTIONAL_GROUP_COMPARISON": {
+        "n_cases": 1,
+        "n_axes": 1,
+        "n_clusters": 1,
+        "n_repeated_axes": 0,
+        "axes": [
+          "Caryopteris_000330_corolla_tube"
+        ],
+        "clusters": [
+          "Caryopteris_divaricata_robbing_program"
+        ],
+        "gate_pass": false
+      },
+      "PHENOTYPIC_LINEAR_SELECTION_GRADIENT_BETA": {
+        "n_cases": 8,
+        "n_axes": 2,
+        "n_clusters": 1,
+        "n_repeated_axes": 2,
+        "axes": [
+          "Gymnadenia_000030_phenology",
+          "Gymnadenia_000030_spur_length"
+        ],
+        "clusters": [
+          "Gymnadenia_conopsea_agent_selection"
+        ],
+        "gate_pass": false
+      },
+      "SEM_TOTAL_DIRECT_SELECTION_PATH_COEFFICIENT": {
+        "n_cases": 18,
+        "n_axes": 4,
+        "n_clusters": 1,
+        "n_repeated_axes": 4,
+        "axes": [
+          "Erysimum_000008_corolla_diameter",
+          "Erysimum_000008_corolla_shape",
+          "Erysimum_000008_corolla_tube_length",
+          "Erysimum_000008_corolla_tube_width"
+        ],
+        "clusters": [
+          "Erysimum_mediohispanicum_selection_mosaic"
+        ],
+        "gate_pass": false
+      },
+      "STANDARDIZED_LINEAR_SELECTION_GRADIENT_BETA": {
+        "n_cases": 4,
+        "n_axes": 2,
+        "n_clusters": 1,
+        "n_repeated_axes": 2,
+        "axes": [
+          "Trifolium_000391_flowering_time",
+          "Trifolium_000391_inflorescence_production"
+        ],
+        "clusters": [
+          "Trifolium_repens_selection_program"
+        ],
+        "gate_pass": false
+      }
+    }
+  },
+  "local_net_selection_structural_gate_pass": false,
+  "max_clusters_in_any_exact_local_net_selection_metric_family": 1,
+  "exact_effect_metric_cross_system_model_ready": false,
+  "broad_plant_performance_pooling_permitted": false,
+  "broad_pooling_blocker": "LOCAL_GEOMETRY_LOCAL_NET_SELECTION_AND_LOCAL_ANTAGONIST_PRESSURE_ARE_DIFFERENT_ESTIMANDS",
+  "primary_numeric_h2_model_ready": false,
+  "primary_h2_status": "ESTIMAND_HOMOGENEITY_GATE_FAIL_CLOSED",
+  "permitted_now": [
+    "within_estimand descriptive summaries",
+    "within_axis context contrasts",
+    "scale_free mechanistic change_type synthesis",
+    "prospective design of a common state_based H2 outcome"
+  ],
+  "not_permitted_as_primary_now": [
+    "pooling geometry net_selection and antagonist_pressure as one response",
+    "cross_system numeric effect_size model across incompatible effect metrics",
+    "declaring H2 regression ready solely because broad cluster count reaches eight",
+    "post_hoc metric collapse chosen after inspecting results"
+  ],
+  "reasons": [
+    "broad plant_performance cluster count mixes three measurement layers",
+    "LOCAL_NET_SELECTION currently spans incompatible effect metric families",
+    "LOCAL_NET_SELECTION has only four independent clusters",
+    "each exact LOCAL_NET_SELECTION effect metric family currently comes from one cluster"
+  ],
+  "status": "H2_ESTIMAND_HOMOGENEITY_GATE_FROZEN_V1"
+}
