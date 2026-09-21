@@ -159,12 +159,12 @@ static fixed-role resolved axes            19
   reinforcement                             2
   one-sided / null                          8
 
-materialized H2 local cases                44
-  plant-performance                        37
+materialized H2 local cases                49
+  plant-performance                        42
   visitor-role behavior                     7
 
 H1 modelability = FAIL_CLOSED
-H2 modelability = FAIL_CLOSED
+H2 breadth gate = PASS\nH2 estimand-family modelability = FAIL_CLOSED
 ~~~
 
 The current biological synthesis is:
@@ -177,10 +177,10 @@ See:
 
 - `docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
 - `data/SCH_MACROECOLOGY_CANONICAL_TRAIT_AXIS_LEDGER_V1.csv`
-- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V1.md`
+- `docs/SCH_MACROECOLOGY_H2_MODELABILITY_V6.md`
 - `docs/SCH_H2_GYMNADENIA_A2_RECOVERY_V1.md`
 - `docs/SCH_H2_TRIFOLIUM_RECOVERY_V1.md`
-- `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`
+- `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`\n- `docs/SCH_H2_POLYGALA_TANACETUM_RECOVERY_V1.md`
 
 ## Empirical execution strategy
 
