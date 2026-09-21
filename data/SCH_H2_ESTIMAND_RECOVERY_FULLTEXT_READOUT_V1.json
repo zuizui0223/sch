@@ -1,0 +1,31 @@
+{
+  "analysis": "sch_h2_estimand_recovery_fulltext_queue_v1",
+  "source_screening_version": 20,
+  "n_fulltext_pending": 29,
+  "tier_counts": {
+    "FT0_EXPLICIT_SELECTION": 2,
+    "FT1_FINAL_PERFORMANCE": 3,
+    "FT2_CONTEXT_RICH": 3,
+    "FT3_OTHER_RETAINED": 21
+  },
+  "n_selection_or_performance_priority": 5,
+  "n_context_rich_priority": 3,
+  "priority_record_ids": [
+    "SCHPRISMA-000317",
+    "SCHPRISMA-000400",
+    "SCHPRISMA-000309",
+    "SCHPRISMA-000310",
+    "SCHPRISMA-000386",
+    "SCHPRISMA-000370",
+    "SCHPRISMA-000372",
+    "SCHPRISMA-000378"
+  ],
+  "status": "ESTIMAND_RECOVERY_FULLTEXT_QUEUE_FROZEN_OUTCOME_BLIND",
+  "claim_ceiling": [
+    "priority_changes_review_order_not_inclusion",
+    "title_and_existing_title_abstract_notes_only",
+    "no_ecological_outcome_sign_used_for_priority",
+    "candidate_estimand_family_is_unconfirmed_until_fulltext",
+    "fulltext_adjudication_must_preserve_same_axis_and_common_outcome_gates"
+  ]
+}
