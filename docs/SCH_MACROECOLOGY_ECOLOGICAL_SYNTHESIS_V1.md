@@ -157,27 +157,37 @@ Eighteen exact Table 5 population-level total selection paths are now materializ
 
 These rows are local net selection, not local pollinator–herbivore component geometry.
 
+## Estimand harmonization milestone
+
+Polygala adds three exact population-level reproductive-component effects on the nectar-reward axis. Tanacetum adds two exact germination-performance tests, one for chemotype and one for plot chemodiversity.
+
+These additions bring the broad plant-performance layer to 42 cases across 14 axes and 8 independent clusters, so the original breadth gate passes.
+
+They also expose a more important limitation: plant-performance is not a single estimand. Current cases include local two-function geometry, total-selection effects, realized net performance, antagonist pressure, reproductive-component effects and germination proxies.
+
+The largest coherent family, TOTAL_SELECTION_EFFECT, contains 30 cases across 8 axes but only 3 independent clusters. Therefore the numeric mixed model remains fail-closed.
+
 ## Current H2 modelability boundary
 
 Current materialized H2 local cases:
 
 ~~~text
-total local cases                  44
-canonical axes with cases          14
-biological clusters                 8
+total local cases                  49
+canonical axes with cases          17
+biological clusters                10
 
-plant-performance cases            37
+plant-performance cases            42
 visitor-role behavior cases         7
 ~~~
 
-Plant-performance layer: 11 canonical axes, 6 clusters, and 10 axes with at least two local cases. Gymnadenia contributes eight treatment-cell net-selection cases across phenology and spur length.
+Plant-performance layer: 14 canonical axes, 8 clusters, and 11 axes with at least two local cases. The original ecological-breadth thresholds now pass.
 
 Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two local cases.
 
 Frozen result:
 
 ~~~text
-plant-performance H2 model = FAIL
+plant-performance H2 breadth gate = PASS\ncommensurate estimand-family model = FAIL
 role-behavior H2 model = FAIL
 combined model = invalid estimand
 ~~~
