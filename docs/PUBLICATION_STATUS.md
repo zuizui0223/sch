@@ -108,14 +108,24 @@ independent clusters in static H1         13
   reinforcement                            2
   one-sided / null                         8
 
-H2 local context cases                    44
-H2 axes with local cases                  14
-H2 clusters with local cases               8
-  plant-performance cases                 37
+H2 local context cases                    49
+H2 axes with local cases                  17
+H2 clusters with local cases              10
+  plant-performance cases                 42
   visitor-role behavior cases              7
 ~~~
 
-The macroecology result is currently descriptive rather than regression-based. Both model gates remain fail-closed because the canonical and local-context datasets are too sparse/nested for the registered primary models.
+The macroecology result is currently descriptive rather than regression-based. The broad H2 ecological-breadth gate now passes, but the commensurate-estimand gate remains fail-closed: local geometry, total selection, antagonist pressure, reproductive-component effects and germination proxies are not one numeric estimand. H1 also remains fail-closed.
+
+Current H2 promotion state:
+
+~~~text
+H2_BROAD_BREADTH_GATE = PASS
+H2_COMMENSURATE_ESTIMAND_GATE = FAIL
+H2_COMMENSURATE_NUMERIC_POOLING_GATE = FAIL
+~~~
+
+The largest coherent estimand family is TOTAL_SELECTION_EFFECT with 30 cases across 8 axes but only 3 independent biological clusters.
 
 The current ecological synthesis is:
 
