@@ -1,0 +1,6 @@
+response,contrast_or_predictor,estimate_or_statistic,df,p_value,direction,source_table
+pollinator_visits,Homogeneous_vs_heterogeneous_plot_type,-0.21,1,0.02,HETEROGENEOUS_HIGHER,Table_2
+florivore_visits,Homogeneous_vs_heterogeneous_plot_type,-0.0133,1,NS,NO_DETECTED_EFFECT,Table_2
+germination_rate,plot_type_Wald_chisq,0.61,1,0.434,NO_DETECTED_EFFECT,Results_3.3
+germination_rate,pollinator_visits_Wald_chisq,5.05,1,0.025,POSITIVE_ASSOCIATION,Results_3.3
+germination_rate,florivore_visits_Wald_chisq,0.85,1,0.356,NO_DETECTED_ASSOCIATION,Results_3.3
