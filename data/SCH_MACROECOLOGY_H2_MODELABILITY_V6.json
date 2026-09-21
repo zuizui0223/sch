@@ -1,0 +1,146 @@
+{
+  "analysis": "sch_macroecology_h2_modelability_gate_v6",
+  "project_gates": {
+    "min_cases_per_layer": 12,
+    "min_canonical_axes_per_layer": 8,
+    "min_independent_clusters_per_layer": 8,
+    "min_repeated_axes_per_layer": 5
+  },
+  "n_total_local_cases": 49,
+  "n_total_canonical_axes_with_cases": 17,
+  "n_total_clusters_with_cases": 10,
+  "n_total_axes_with_two_or_more_local_cases": 14,
+  "plant_performance_layer": {
+    "n_cases": 42,
+    "n_canonical_axes": 14,
+    "n_clusters": 8,
+    "n_axes_with_two_or_more_cases": 11,
+    "model_ready": true
+  },
+  "role_behavior_layer": {
+    "n_cases": 7,
+    "n_canonical_axes": 3,
+    "n_clusters": 2,
+    "n_axes_with_two_or_more_cases": 3,
+    "model_ready": false
+  },
+  "n_change_records": 16,
+  "n_change_records_with_two_or_more_materialized_cases": 14,
+  "combined_layer_model_permitted": false,
+  "combined_layer_model_blocker": "plant_performance_and_role_behavior_are_noncommensurate_estimands",
+  "broad_plant_performance_structural_gate_pass": true,
+  "estimand_family_modelability": {
+    "ANTAGONIST_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "model_ready": false
+    },
+    "LOCAL_TWO_FUNCTION_GEOMETRY": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 2,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "REALIZED_NET_PERFORMANCE": {
+      "n_cases": 1,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "REPRODUCTIVE_COMPONENT_EFFECT": {
+      "n_cases": 3,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "model_ready": false
+    },
+    "REPRODUCTIVE_PERFORMANCE_PROXY": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 1,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "TOTAL_SELECTION_EFFECT": {
+      "n_cases": 30,
+      "n_axes": 8,
+      "n_clusters": 3,
+      "n_repeated_axes": 8,
+      "model_ready": false
+    }
+  },
+  "numeric_pooling_family_modelability": {
+    "GEOMETRY_CLASS": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 2,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "GERMINATION_WALD_TEST": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 1,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "NET_TRAIT_EFFECT": {
+      "n_cases": 1,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 0,
+      "model_ready": false
+    },
+    "NONE_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "model_ready": false
+    },
+    "STANDARDIZED_SELECTION_GRADIENT": {
+      "n_cases": 12,
+      "n_axes": 4,
+      "n_clusters": 2,
+      "n_repeated_axes": 4,
+      "model_ready": false
+    },
+    "SUCCESSFUL_POLLINATION_STANDARDIZED_B": {
+      "n_cases": 3,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "model_ready": false
+    },
+    "TOTAL_SELECTION_PATH_COEFFICIENT": {
+      "n_cases": 18,
+      "n_axes": 4,
+      "n_clusters": 1,
+      "n_repeated_axes": 4,
+      "model_ready": false
+    }
+  },
+  "commensurate_estimand_family_model_ready": false,
+  "commensurate_numeric_pooling_model_ready": false,
+  "plant_performance_model_ready": false,
+  "role_behavior_model_ready": false,
+  "primary_h2_status": "BREADTH_GATE_PASS_ESTIMAND_HARMONIZATION_FAIL",
+  "structural_gate_blockers": [],
+  "estimand_gate_blockers": [
+    "no_single_estimand_family_meets_registered_case_axis_cluster_repeat_gates",
+    "effect_metrics_are_not_numerically_commensurate_across_estimand_families",
+    "antagonist_pressure_and_reproductive_proxy_rows_cannot_be_treated_as_selection_gradients"
+  ],
+  "reasons": [
+    "broad_plant_performance_layer_has_42_cases_across_14_axes_and_8_clusters",
+    "legacy_breadth_thresholds_pass_but_commensurate_estimand_family_thresholds_fail",
+    "largest_estimand_family_is_total_selection_effect_but_has_only_3_independent_clusters",
+    "Polygala_adds_reproductive_component_effect_not_final_fitness_selection",
+    "Tanacetum_adds_germination_proxy_performance_not_seed_set_or_selection_gradient"
+  ],
+  "status": "H2_BREADTH_GATE_PASS_ESTIMAND_FAMILY_FAIL_CLOSED"
+}
