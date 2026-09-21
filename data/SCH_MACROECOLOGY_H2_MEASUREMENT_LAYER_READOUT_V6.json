@@ -1,0 +1,148 @@
+{
+  "analysis": "sch_macroecology_h2_measurement_layer_v7",
+  "n_measurement_records": 17,
+  "n_canonical_axes": 15,
+  "n_source_records": 10,
+  "source_supported_layer_counts": {
+    "LOCAL_ANTAGONIST_PRESSURE": 1,
+    "LOCAL_GEOMETRY": 3,
+    "LOCAL_NET_SELECTION": 13
+  },
+  "materialized_layer_counts": {
+    "CONTEXT_STRUCTURE_ONLY": 2,
+    "LOCAL_ANTAGONIST_PRESSURE": 1,
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 12
+  },
+  "n_total_h2_local_cases": 49,
+  "n_plant_performance_measurement_cases": 42,
+  "n_role_behavior_cases_separate": 7,
+  "n_canonical_axes_with_plant_performance_cases": 14,
+  "n_canonical_axes_with_role_behavior_cases": 3,
+  "materialized_plant_performance_layer_counts": {
+    "LOCAL_GEOMETRY": 2,
+    "LOCAL_NET_SELECTION": 36,
+    "LOCAL_ANTAGONIST_PRESSURE": 4
+  },
+  "n_measurement_records_below_source_supported_layer": 2,
+  "n_source_objects": 6,
+  "source_object_route_status_counts": {
+    "INDEX_RESOLVED_BINARY_CONTENT_PENDING": 1,
+    "OBJECT_FILENAME_RESOLVED_BINARY_BLOCKED": 2,
+    "PROGRAMME_OBJECTS_NOT_YET_FROZEN": 1,
+    "ROUTE_RESOLVED_BINARY_BLOCKED": 1,
+    "TABLE_VALUES_SOURCE_INSPECTED": 1
+  },
+  "n_source_objects_binary_materialized": 0,
+  "n_source_objects_exact_local_values_extracted": 1,
+  "pedicularis_context_structure": {
+    "pollination_contexts_reported": 14,
+    "seed_outcome_contexts_reported": 12,
+    "individual_linked_contexts": 7,
+    "population_specific_geometry_cases_materialized": 0
+  },
+  "h2_model_ready": false,
+  "status": "H2_MEASUREMENT_LAYER_V7_ESTIMAND_FAMILIES_EXPLICIT",
+  "claim_ceiling": [
+    "measurement_layer_is_not_geometry_class",
+    "source_supported_layer_can_exceed_materialized_layer",
+    "local_antagonist_pressure_is_not_local_two_function_geometry",
+    "exact_main_text_antagonist_pressure_cases_are_not_local_geometry",
+    "local_net_selection_is_not_local_two_function_geometry",
+    "plant_performance_cases_and_role_behavior_cases_are_separate_H2_layers",
+    "mediated_component_point_estimates_without_contrast_uncertainty_are_not_local_geometry_cases",
+    "only_materialized_plant_performance_rows_count_as_current_plant_performance_H2_N",
+    "trifolium_exact_gradients_are_local_net_selection_not_two_function_geometry",
+    "erysimum_total_direct_paths_are_not_local_pollinator_herbivore_components",
+    "estimand_family_must_be_preserved_before_numeric_pooling",
+    "reproductive_component_effect_is_not_final_fitness_selection",
+    "germination_proxy_is_not_seed_set_or_selection_gradient",
+    "pending_source_objects_do_not_create_pseudo_cases"
+  ],
+  "n_trifolium_local_net_selection_cases": 4,
+  "n_erysimum_local_net_selection_cases": 18,
+  "n_polygala_reproductive_component_cases": 3,
+  "n_tanacetum_reproductive_performance_proxy_cases": 2,
+  "estimand_family_materialized_counts": {
+    "ANTAGONIST_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "LOCAL_TWO_FUNCTION_GEOMETRY": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 2,
+      "n_measurement_records": 2
+    },
+    "REALIZED_NET_PERFORMANCE": {
+      "n_cases": 1,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "REPRODUCTIVE_COMPONENT_EFFECT": {
+      "n_cases": 3,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "REPRODUCTIVE_PERFORMANCE_PROXY": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 1,
+      "n_measurement_records": 2
+    },
+    "TOTAL_SELECTION_EFFECT": {
+      "n_cases": 30,
+      "n_axes": 8,
+      "n_clusters": 3,
+      "n_measurement_records": 8
+    }
+  },
+  "numeric_pooling_family_materialized_counts": {
+    "GEOMETRY_CLASS": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 2,
+      "n_measurement_records": 2
+    },
+    "GERMINATION_WALD_TEST": {
+      "n_cases": 2,
+      "n_axes": 2,
+      "n_clusters": 1,
+      "n_measurement_records": 2
+    },
+    "NET_TRAIT_EFFECT": {
+      "n_cases": 1,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "NONE_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "STANDARDIZED_SELECTION_GRADIENT": {
+      "n_cases": 12,
+      "n_axes": 4,
+      "n_clusters": 2,
+      "n_measurement_records": 4
+    },
+    "SUCCESSFUL_POLLINATION_STANDARDIZED_B": {
+      "n_cases": 3,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_measurement_records": 1
+    },
+    "TOTAL_SELECTION_PATH_COEFFICIENT": {
+      "n_cases": 18,
+      "n_axes": 4,
+      "n_clusters": 1,
+      "n_measurement_records": 4
+    }
+  }
+}

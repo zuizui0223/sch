@@ -1,0 +1,5 @@
+axis,test,chisq,df,p,n,source_section,interpretation
+individual_chemotype,germination_rate_by_chemotype,10.44,4,0.034,95,Results_3.3,chemotype_affects_germination_proxy
+plot_chemodiversity,germination_rate_by_plot_type,0.61,1,0.434,95,Results_3.3,no_detected_plot_type_effect_on_germination_proxy
+pollinator_visits,germination_rate_vs_pollinator_visits,5.05,1,0.025,95,Results_3.3,positive_association
+florivore_visits,germination_rate_vs_florivore_visits,0.85,1,0.356,95,Results_3.3,no_detected_association
