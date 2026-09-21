@@ -115,7 +115,7 @@ H2 clusters with local cases               8
   visitor-role behavior cases              7
 ~~~
 
-The macroecology result is currently descriptive rather than regression-based. Both model gates remain fail-closed because the canonical and local-context datasets are too sparse/nested for the registered primary models.
+The macroecology result is currently descriptive rather than regression-based. Both model gates remain fail-closed. For H2, the broad plant-performance layer contains 37 cases across 6 clusters, but these mix LOCAL_GEOMETRY, LOCAL_NET_SELECTION and LOCAL_ANTAGONIST_PRESSURE. The comparable LOCAL_NET_SELECTION stratum contains 31 cases across 9 axes but only 4 independent clusters, and no exact numeric effect metric is yet replicated across systems.
 
 The current ecological synthesis is:
 
@@ -139,7 +139,7 @@ The macro extension should not delay the presubmission enquiry.
 
 Canonical macroecology status document:
 
-`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
+`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`\n\nEstimand-aware H2 status:\n\n`docs/SCH_MACROECOLOGY_H2_MODELABILITY_V6.md`
 
 ## Frozen literature-layer status
 
