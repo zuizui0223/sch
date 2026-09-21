@@ -14,6 +14,13 @@
     "broad_registered_cluster_gate_pass": false
   },
   "estimand_homogeneity": {
+    "LOCAL_ANTAGONIST_PRESSURE": {
+      "n_cases": 4,
+      "n_axes": 1,
+      "n_clusters": 1,
+      "n_repeated_axes": 1,
+      "model_ready": false
+    },
     "LOCAL_GEOMETRY": {
       "n_cases": 2,
       "n_axes": 2,
@@ -26,13 +33,6 @@
       "n_axes": 9,
       "n_clusters": 4,
       "n_repeated_axes": 8,
-      "model_ready": false
-    },
-    "LOCAL_ANTAGONIST_PRESSURE": {
-      "n_cases": 4,
-      "n_axes": 1,
-      "n_clusters": 1,
-      "n_repeated_axes": 1,
       "model_ready": false
     }
   },
@@ -47,19 +47,21 @@
   "primary_h2_model_ready": false,
   "primary_h2_status": "ESTIMAND_HOMOGENEITY_GATE_FAIL_CLOSED",
   "corrected_bottleneck": {
-    "previous_broad_structural_statement": "2 additional broad plant-performance clusters would satisfy the V5 structural cluster count",
-    "current_primary_numeric_requirement": "4 additional independent LOCAL_NET_SELECTION clusters are required to satisfy the registered 8-cluster gate within that measurement layer",
-    "caveat": "Even 8 LOCAL_NET_SELECTION clusters would not by itself make raw numeric effect sizes commensurate across effect-metric families."
+    "broad_structural_additional_clusters_to_eight": 2,
+    "local_net_selection_additional_clusters_to_eight": 4,
+    "max_clusters_in_one_exact_numeric_metric_family": 1,
+    "statement": "Broad structural cluster count is not sufficient. Primary numeric H2 requires estimand-homogeneous replication."
   },
   "prospective_routes": [
     "recover additional independent LOCAL_NET_SELECTION clusters",
-    "prospectively freeze a scale_free directional state outcome before admitting new clusters",
-    "retain LOCAL_GEOMETRY and LOCAL_ANTAGONIST_PRESSURE as separate descriptive strata"
+    "prospectively apply the frozen directional-state protocol",
+    "retain LOCAL_GEOMETRY and LOCAL_ANTAGONIST_PRESSURE as separate strata"
   ],
   "not_permitted": [
-    "counting LOCAL_GEOMETRY LOCAL_NET_SELECTION and LOCAL_ANTAGONIST_PRESSURE as one numeric response",
-    "claiming primary H2 regression readiness when only the broad structural cluster gate passes",
-    "post_hoc transformation chosen to make current sparse metrics poolable"
+    "pooling geometry net_selection and antagonist_pressure as one response",
+    "cross_system numeric effect_size model across incompatible effect metrics",
+    "declaring H2 regression ready solely because broad cluster count reaches eight",
+    "post_hoc metric collapse chosen after inspecting results"
   ],
   "status": "H2_MODELABILITY_V6_ESTIMAND_AWARE_FAIL_CLOSED"
 }
