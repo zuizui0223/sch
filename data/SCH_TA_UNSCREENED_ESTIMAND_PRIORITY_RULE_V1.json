@@ -1,0 +1,122 @@
+{
+  "analysis": "sch_ta_unscreened_estimand_priority_v1",
+  "source_frontier": "current frozen PRISMA V2 title/abstract unscreened records",
+  "expected_unscreened_n": 463,
+  "priority_tiers": [
+    {
+      "tier": "TA0_EXPLICIT_SELECTION_FITNESS",
+      "rule": "title contains a registered selection/fitness phrase",
+      "phrases": [
+        "selection",
+        "selective",
+        "fitness"
+      ]
+    },
+    {
+      "tier": "TA1_FINAL_REPRODUCTIVE_PERFORMANCE",
+      "rule": "otherwise title contains final reproductive-performance language",
+      "phrases": [
+        "reproductive success",
+        "reproductive output",
+        "reproductive performance",
+        "fecundity",
+        "fruit set",
+        "fruit production",
+        "seed set",
+        "seed production",
+        "seed output"
+      ]
+    },
+    {
+      "tier": "TA2_REPEATED_CONTEXT",
+      "rule": "otherwise title contains repeated-context language",
+      "phrases": [
+        "population",
+        "populations",
+        "geographic",
+        "geographical",
+        "spatial",
+        "temporal",
+        "year",
+        "years",
+        "gradient",
+        "habitat",
+        "environment",
+        "environmental",
+        "fragmentation",
+        "landscape",
+        "variation",
+        "context",
+        "community",
+        "communities"
+      ]
+    },
+    {
+      "tier": "TA3_OTHER_UNSCREENED",
+      "rule": "all other frozen unscreened records",
+      "phrases": []
+    }
+  ],
+  "tie_breakers": [
+    "all three registered floral/pollinator/antagonist concept words visible in title",
+    "explicit focal trait language visible in title",
+    "repeated-context language visible in title",
+    "number of matched priority phrases",
+    "record_id"
+  ],
+  "trait_title_phrases": [
+    "floral trait",
+    "floral signal",
+    "floral scent",
+    "flower scent",
+    "floral volatile",
+    "floral color",
+    "floral colour",
+    "flower color",
+    "flower colour",
+    "floral display",
+    "flower size",
+    "floral morphology",
+    "flower morphology",
+    "corolla",
+    "spur",
+    "nectar",
+    "reward",
+    "phenology",
+    "flower height",
+    "floral architecture",
+    "orientation"
+  ],
+  "pollinator_title_phrases": [
+    "pollinator",
+    "pollinators",
+    "pollination",
+    "pollinating",
+    "flower visitor",
+    "floral visitor"
+  ],
+  "antagonist_title_phrases": [
+    "herbivore",
+    "herbivory",
+    "florivore",
+    "florivory",
+    "seed predator",
+    "seed predators",
+    "nectar robber",
+    "nectar robbing",
+    "antagonist",
+    "antagonists",
+    "parasite",
+    "parasites",
+    "oviposition",
+    "exploit"
+  ],
+  "claim_ceiling": [
+    "priority_changes_review_order_only",
+    "no_title_abstract_decision_is_generated",
+    "no_fulltext_decision_is_generated",
+    "no_ecological_outcome_sign_is_used",
+    "same_axis_common_outcome_and_estimand_rules_are_unchanged",
+    "priority_rule_is_frozen_before_next_title_abstract_screen"
+  ]
+}
