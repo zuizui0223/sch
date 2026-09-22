@@ -1,0 +1,32 @@
+{
+  "analysis": "sch_h2_estimand_recovery_title_abstract_queue_v1",
+  "frozen_denominator": 868,
+  "prior_title_abstract_screened": 405,
+  "title_abstract_unscreened": 463,
+  "priority_tier_counts": {
+    "TA0_SELECTION_DUAL_TRAIT": 15,
+    "TA1_PERFORMANCE_DUAL_CONTEXT": 1,
+    "TA2_SELECTION_TRAIT_CONTEXT": 4,
+    "TA4_OTHER": 443
+  },
+  "n_high_priority_total_selection_candidates": 20,
+  "n_repeated_dual_context_candidates": 0,
+  "rule_inputs": [
+    "title",
+    "year",
+    "venue",
+    "query_ids_for_provenance_only"
+  ],
+  "outcome_sign_used": false,
+  "abstract_outcome_used": false,
+  "inclusion_decision_written": false,
+  "status": "TA_ESTIMAND_RECOVERY_QUEUE_FROZEN_OUTCOME_BLIND",
+  "claim_ceiling": [
+    "priority_changes_review_order_not_inclusion",
+    "title_metadata_only_for_priority",
+    "no_ecological_outcome_sign_used_for_priority",
+    "candidate_estimand_family_is_unconfirmed_until_title_abstract_and_fulltext_adjudication",
+    "formal_prisma_decision_requires_separate_human_overlay",
+    "queue_must_not_be_retuned_after_screening_results"
+  ]
+}
