@@ -38,3 +38,28 @@ def test_lobelia_table2_freeze_has_all_12_trait_pollination_cells():
     idx={(r["trait"],r["pollination_context"]):r for r in rows}
     assert (float(idx[("flower_number","NATURAL")]["beta"]),float(idx[("flower_number","NATURAL")]["se"])) == (0.74,0.18)
     assert (float(idx[("median_flower_date","HAND_SUPPLEMENTED")]["beta"]),float(idx[("median_flower_date","HAND_SUPPLEMENTED")]["se"])) == (-0.40,0.07)
+
+
+def test_v7_builder_adds_two_independent_standardized_selection_clusters():
+    import importlib.util
+    script = ROOT / "scripts" / "build_sch_h2_selection_cluster_expansion_v7.py"
+    spec = importlib.util.spec_from_file_location("h2v7", script)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    rows, summary = mod.build(
+        ROOT / "data" / "SCH_MACROECOLOGY_H2_MEASUREMENT_LAYER_V6.csv",
+        BRASSICA,
+        LOBELIA,
+    )
+    assert summary["added_cases"] == 39
+    assert summary["added_axes"] == 15
+    assert summary["added_clusters"] == 2
+    assert summary["total_selection_effect"]["n_cases"] == 69
+    assert summary["total_selection_effect"]["n_axes"] == 23
+    assert summary["total_selection_effect"]["n_clusters"] == 5
+    assert summary["standardized_selection_gradient"]["n_cases"] == 51
+    assert summary["standardized_selection_gradient"]["n_axes"] == 19
+    assert summary["standardized_selection_gradient"]["n_clusters"] == 4
+    assert summary["h2_commensurate_estimand_gate"] == "FAIL"
+    assert summary["remaining_cluster_deficit"] == 3
