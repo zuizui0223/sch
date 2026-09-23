@@ -52,18 +52,19 @@ def test_v7_builder_adds_two_independent_standardized_selection_clusters():
         ROOT / "data" / "SCH_MACROECOLOGY_H2_MEASUREMENT_LAYER_V6.csv",
         BRASSICA,
         LOBELIA,
+        DALECHAMPIA,
     )
-    assert summary["added_cases"] == 39
-    assert summary["added_axes"] == 15
-    assert summary["added_clusters"] == 2
-    assert summary["total_selection_effect"]["n_cases"] == 69
-    assert summary["total_selection_effect"]["n_axes"] == 23
-    assert summary["total_selection_effect"]["n_clusters"] == 5
+    assert summary["added_cases"] == 43
+    assert summary["added_axes"] == 19
+    assert summary["added_clusters"] == 3
+    assert summary["total_selection_effect"]["n_cases"] == 73
+    assert summary["total_selection_effect"]["n_axes"] == 27
+    assert summary["total_selection_effect"]["n_clusters"] == 6
     assert summary["standardized_selection_gradient"]["n_cases"] == 51
     assert summary["standardized_selection_gradient"]["n_axes"] == 19
     assert summary["standardized_selection_gradient"]["n_clusters"] == 4
     assert summary["h2_commensurate_estimand_gate"] == "FAIL"
-    assert summary["remaining_cluster_deficit"] == 3
+    assert summary["remaining_cluster_deficit"] == 2
 
 
 def test_v22_fulltext_promotes_only_source_resolved_selection_studies():
