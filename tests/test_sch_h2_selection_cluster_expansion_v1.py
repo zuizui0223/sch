@@ -4,7 +4,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V21_ESTIMAND_PRIORITY_BATCH1.csv"
 BRASSICA = ROOT / "data" / "SCH_H2_BRASSICA_KNAUER_2017_SELECTION_GRADIENTS_V1.csv"
-LOBELIA = ROOT / "data" / "SCH_H2_LOBELIA_BARTKOWSKA_2012_SELECTION_GRADIENTS_V1.csv"\nDALECHAMPIA = ROOT / "data" / "SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv"
+LOBELIA = ROOT / "data" / "SCH_H2_LOBELIA_BARTKOWSKA_2012_SELECTION_GRADIENTS_V1.csv"
+DALECHAMPIA = ROOT / "data" / "SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv"
 
 def _rows(path):
     with path.open(encoding="utf-8", newline="") as h:
@@ -72,7 +73,6 @@ def test_v22_fulltext_promotes_only_source_resolved_selection_studies():
     assert {r["evidence_lanes"] for r in rows} == {"DIRECTIONAL_OR_NEAR_PASS"}
 
 
-DALECHAMPIA = ROOT / "data" / "SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv"
 
 def test_dalechampia_source_freeze_preserves_agent_and_net_gradients():
     rows = _rows(DALECHAMPIA)
