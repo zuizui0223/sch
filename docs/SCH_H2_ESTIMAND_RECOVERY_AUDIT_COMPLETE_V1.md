@@ -161,3 +161,25 @@ PRIORITY_RULE_RETUNED_AFTER_RESULTS = NO
 
 NEXT_SCREENING_FRONTIER = 463 TITLE_ABSTRACT_UNSCREENED
 ~~~
+
+
+## Frozen next-frontier queue
+
+The 463 title/abstract-unscreened records have now been assigned an outcome-blind review order.
+
+~~~text
+TA0 explicit selection    32
+TA1 final performance     25
+TA2 repeated context      20
+TA3 remainder            386
+~~~
+
+This queue changes review order only and does not alter any screening or estimand criterion.
+
+See:
+
+- `data/SCH_H2_UNSCREENED_TA_PRIORITY_QUEUE_V1.csv`
+- `data/SCH_H2_UNSCREENED_TA_PRIORITY_READOUT_V1.json`
+- `docs/SCH_H2_UNSCREENED_TA_PRIORITY_V1.md`
+
+The next adjudication frontier is the 32-record TA0 batch.
