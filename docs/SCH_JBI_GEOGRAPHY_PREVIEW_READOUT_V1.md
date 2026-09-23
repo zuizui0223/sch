@@ -49,10 +49,10 @@ Cumulative state:
 
 ```text
 frozen candidates:                     868
-title/abstract screened:               405
-retained for full text:                277
-title/abstract excluded:               128
-unscreened:                            463
+title/abstract screened:               437
+retained for full text:                297
+title/abstract excluded:               140
+unscreened:                            431
 
 primary full-text inclusions:          117
 formal full-text exclusions:           131
