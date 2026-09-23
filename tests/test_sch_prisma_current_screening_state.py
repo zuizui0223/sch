@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V20_BATCH4_REMAINDER_TITLE_ABSTRACT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V21_H2_ESTIMAND_TA0_TITLE_ABSTRACT.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 21))
+    assert [_version(path) for path in files] == list(range(1, 22))
     assert files[-1].name == LATEST
     return files
 
@@ -72,6 +72,7 @@ def test_stage_overlays_v12_to_v20_remain_distinct_and_complete() -> None:
         18: (57, "SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"),
         19: (46, "SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_FULLTEXT_V19_2026-09-02"),
         20: (41, "ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02"),
+        21: (32, "SOURCE_VERIFIED_H2_ESTIMAND_TA0_V21_2026-09-23"),
     }
     for version, (count, source) in expected.items():
         rows = _v(version)
@@ -96,13 +97,13 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 405
-    assert ta["RETAIN_FULLTEXT"] == 277
-    assert ta["EXCLUDE"] == 128
-    assert DENOMINATOR - len(rows) == 463
+    assert len(rows) == 437
+    assert ta["RETAIN_FULLTEXT"] == 297
+    assert ta["EXCLUDE"] == 140
+    assert DENOMINATOR - len(rows) == 431
 
 
-def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
+def test_v19_closes_v18_fulltexts_and_v20_v21_open_new_fulltext_frontiers() -> None:
     assert Counter(row["screen_fulltext"] for row in _v(19)) == {"INCLUDE": 28, "EXCLUDE": 18}
     v18_retained = {row["record_id"] for row in _v(18) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
     assert {row["record_id"] for row in _v(19)} == v18_retained
@@ -115,9 +116,10 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 117
     assert ft["EXCLUDE"] == 131
-    assert ft["UNSCREENED"] == 29
+    assert ft["UNSCREENED"] == 49
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == {row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+    expected_pending = {row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+    assert pending == expected_pending
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
@@ -172,7 +174,9 @@ def test_stage_provenance_uses_raw_overlays_not_latest_state_as_history() -> Non
     assert len(_v(18)) == 57
     assert len(_v(19)) == 46
     assert len(_v(20)) == 41
+    assert len(_v(21)) == 32
     merged_sources = Counter(row["decision_source"] for row in _rows())
     assert merged_sources["SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_TA_V18_2026-09-01"] == 11
     assert merged_sources["SOURCE_VERIFIED_BATCH4_HIGH_INFORMATION_FULLTEXT_V19_2026-09-02"] == 46
     assert merged_sources["ASSISTED_BATCH4_REMAINDER_TA_SCREEN_V20_2026-09-02"] == 41
+    assert merged_sources["SOURCE_VERIFIED_H2_ESTIMAND_TA0_V21_2026-09-23"] == 32
