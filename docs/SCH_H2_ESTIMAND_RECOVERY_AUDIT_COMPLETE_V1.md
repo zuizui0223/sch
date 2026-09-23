@@ -159,7 +159,7 @@ TOTAL_SELECTION_EFFECT_PROMOTIONS = 0
 FORMAL_PRISMA_INCLUSION_CHANGED_BY_AUDIT = NO
 PRIORITY_RULE_RETUNED_AFTER_RESULTS = NO
 
-NEXT_SCREENING_FRONTIER = 463 TITLE_ABSTRACT_UNSCREENED
+NEXT_SCREENING_FRONTIER = 20 V21 TA0 RETAINED FULLTEXT RECORDS
 ~~~
 
 
@@ -183,3 +183,19 @@ See:
 - `docs/SCH_H2_UNSCREENED_TA_PRIORITY_V1.md`
 
 The next adjudication frontier is the 32-record TA0 batch.
+
+
+## V21 TA0 outcome-blind screen
+
+The frozen 463-record queue has now advanced through its first priority tier.
+
+~~~text
+TA0 screened        32
+retained full text  20
+excluded            12
+remaining TA-unscreened 431
+~~~
+
+The exclusions are design/relevance exclusions only. No result sign or significance was used.
+
+The next estimand-recovery frontier is the 20 V21 TA0 records retained for full text.
