@@ -70,3 +70,15 @@ def test_v22_fulltext_promotes_only_source_resolved_selection_studies():
     assert {r["record_id"] for r in rows} == {"SCHPRISMA-000659","SCHPRISMA-000775"}
     assert {r["screen_fulltext"] for r in rows} == {"INCLUDE"}
     assert {r["evidence_lanes"] for r in rows} == {"DIRECTIONAL_OR_NEAR_PASS"}
+
+
+DALECHAMPIA = ROOT / "data" / "SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv"
+
+def test_dalechampia_source_freeze_preserves_agent_and_net_gradients():
+    rows = _rows(DALECHAMPIA)
+    assert {r["trait"] for r in rows} >= {"upper_bract_area","gland_area","gland_stigma_distance"}
+    assert {r["selection_component"] for r in rows} >= {"NET","POLLINATOR","SEED_PREDATOR"}
+    bract={r["selection_component"]:r for r in rows if r["trait"]=="upper_bract_area"}
+    assert float(bract["POLLINATOR"]["beta_percent_fitness"]) > 0
+    assert float(bract["SEED_PREDATOR"]["beta_percent_fitness"]) < 0
+    assert bract["NET"]["fitness_estimate"] == "relative_seeds_surviving_predation"
