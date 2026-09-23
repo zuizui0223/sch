@@ -14,16 +14,16 @@ Cross-domain comparison against abiotic multifunctionality is deferred to a sepa
 
 The frozen PRISMA V2 cohort contains 868 records identified by pollinator-antagonist search queries.
 
-At the current V20 screening state:
+At the current V21 screening state:
 
 ```text
 frozen denominator                868
-title/abstract screened           405
-retained for full text            277
+title/abstract screened           437
+retained for full text            297
 full-text included primary        117
 full-text excluded                131
-current full-text undecided        29
-title/abstract unscreened         463
+current full-text undecided        49
+title/abstract unscreened         431
 ```
 
 The 117 currently included primary studies form an **interim recoding queue**, not the final macroecology denominator.
