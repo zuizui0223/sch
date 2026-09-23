@@ -87,14 +87,14 @@ status: PRISMA_V2_IDENTIFICATION_COMPLETE
 
 A later identical live query returned `10,969 -> 2,108 -> 869`; this remains `LIVE_INDEX_DRIFT_DETECTED`, not a denominator update.
 
-## Current V20 screening state
+## Current V21 screening state
 
 ```text
 identified frozen cohort:        868
-title/abstract screened:         405
-retained for full text:          277
-title/abstract excluded:         128
-unscreened:                      463
+title/abstract screened:         437
+retained for full text:          297
+title/abstract excluded:         140
+unscreened:                      431
 
 full-text eligible:              277
 primary studies included:        117
@@ -204,7 +204,7 @@ The existing geography coding remains scientifically useful. Current full-text-c
 
 That result makes a geographic synthesis empirically plausible, but the route remains secondary because:
 
-- 463 frozen-cohort records remain title/abstract unscreened;
+- 431 frozen-cohort records remain title/abstract unscreened;
 - 29 current full-text decisions remain unresolved;
 - independence clustering across research programmes is incomplete;
 - no common geography-by-cue-overlap estimand has yet passed scale and independence checks.
