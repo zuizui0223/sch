@@ -63,3 +63,10 @@ def test_v7_builder_adds_two_independent_standardized_selection_clusters():
     assert summary["standardized_selection_gradient"]["n_clusters"] == 4
     assert summary["h2_commensurate_estimand_gate"] == "FAIL"
     assert summary["remaining_cluster_deficit"] == 3
+
+
+def test_v22_fulltext_promotes_only_source_resolved_selection_studies():
+    rows = _rows(ROOT / "empirical" / "prisma" / "SCH_PRISMA_V2_SCREENING_DECISIONS_V22_ESTIMAND_PRIORITY_FULLTEXT.csv")
+    assert {r["record_id"] for r in rows} == {"SCHPRISMA-000659","SCHPRISMA-000775"}
+    assert {r["screen_fulltext"] for r in rows} == {"INCLUDE"}
+    assert {r["evidence_lanes"] for r in rows} == {"DIRECTIONAL_OR_NEAR_PASS"}
