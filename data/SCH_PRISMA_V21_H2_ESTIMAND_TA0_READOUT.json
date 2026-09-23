@@ -1,0 +1,32 @@
+{
+  "analysis": "sch_prisma_v21_h2_estimand_ta0_title_abstract",
+  "source_priority_queue": "SCH_H2_UNSCREENED_TA_PRIORITY_QUEUE_V1",
+  "n_ta0_records": 32,
+  "n_retain_fulltext": 20,
+  "n_exclude": 12,
+  "exclusion_reason_counts": {
+    "TA_NOT_PRIMARY_OR_RELEVANT_SYNTHESIS": 3,
+    "TA_NO_POLLINATOR_COMPONENT": 3,
+    "TA_NO_ANTAGONIST_COMPONENT": 5,
+    "TA_NOT_FLORAL_SIGNAL": 1
+  },
+  "current_prisma_state_after_v21": {
+    "frozen_denominator": 868,
+    "title_abstract_screened": 437,
+    "retained_for_fulltext": 297,
+    "title_abstract_excluded": 140,
+    "title_abstract_unscreened": 431,
+    "fulltext_included_primary": 117,
+    "fulltext_decision_excluded": 131,
+    "fulltext_unscreened": 49
+  },
+  "next_estimand_recovery_frontier": "20_V21_TA0_RETAINED_FULLTEXT_RECORDS",
+  "status": "V21_TA0_SCREEN_COMPLETE_FULLTEXT_RECOVERY_PENDING",
+  "claim_ceiling": [
+    "priority_tier_did_not_determine_inclusion",
+    "negative_or_null_expected_results_were_not_exclusion_reasons",
+    "title_abstract_uncertainty_resolved_to_retain",
+    "formal_fulltext_inclusion_unchanged_at_117",
+    "estimand_family_unconfirmed_until_fulltext"
+  ]
+}
