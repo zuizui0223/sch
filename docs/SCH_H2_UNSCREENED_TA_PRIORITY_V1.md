@@ -224,3 +224,19 @@ TA3 = 386
 
 NEXT_ACTION = SCREEN_TA0_WITH_FROZEN_TITLE_ABSTRACT_RULES
 ~~~
+
+
+## V21 progress
+
+The queue itself remains frozen as the prospective 463-record review order.
+
+V21 has now adjudicated the first tier:
+
+~~~text
+TA0_EXPLICIT_SELECTION = 32 screened
+RETAIN_FULLTEXT = 20
+EXCLUDE = 12
+remaining title/abstract unscreened = 431
+~~~
+
+The next step is full-text/estimand adjudication of the 20 retained TA0 records. TA1–TA3 remain in their original frozen order.
