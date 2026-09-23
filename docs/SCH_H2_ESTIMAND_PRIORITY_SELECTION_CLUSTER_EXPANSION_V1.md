@@ -42,7 +42,7 @@ Herbivore-mediated paths are source-resolved in the same study, but herbivory wa
 
 ## H2 consequence
 
-The V7 builder adds:
+A source-level recovery of the previously included Dalechampia study additionally freezes Table 4 mean-standardized net selection gradients. The upper-bract axis is explicitly decomposed into pollinator-positive and seed-predator-negative components on the same predicted seed-survival fitness surface. This adds a third independent biological cluster without changing PRISMA inclusion counts.\n\nThe V7 builder now adds:
 
 ~~~text
 new exact cases                         39
@@ -54,7 +54,7 @@ For TOTAL_SELECTION_EFFECT:
 
 ~~~text
 before: 30 cases / 8 axes / 3 clusters
-after:  69 cases / 23 axes / 5 clusters
+after:  73 cases / 27 axes / 6 clusters
 ~~~
 
 For the stricter numeric pooling family STANDARDIZED_SELECTION_GRADIENT:
@@ -70,7 +70,7 @@ Therefore:
 
 ~~~text
 H2_COMMENSURATE_ESTIMAND_GATE = FAIL
-remaining TOTAL_SELECTION_EFFECT cluster deficit = 3
+remaining TOTAL_SELECTION_EFFECT cluster deficit = 2
 ~~~
 
 This is progress without retuning the gate.
@@ -87,6 +87,6 @@ Together they strengthen the comparative claim that realized multifunctional sel
 
 ## Next target
 
-Do not maximize cases per paper. Recover at least three additional independent biological clusters with commensurate standardized selection gradients.
+Do not maximize cases per paper. Recover at least two additional independent biological clusters with commensurate standardized selection gradients.
 
 Priority remains source-resolved, same-trait, repeated-context studies from the frozen V21 order.
