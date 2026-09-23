@@ -52,7 +52,7 @@ def _family(rows: list[dict[str,str]], field: str, key: str) -> dict[str,int]:
         "n_repeated_axes": len({r["canonical_trait_axis_id"] for r in selected if len(_case_ids(r)) >= 2}),
     }
 
-def build(base_path: Path, brassica_path: Path, lobelia_path: Path):
+def build(base_path: Path, brassica_path: Path, lobelia_path: Path, dalechampia_path: Path | None = None):
     rows=_read(base_path)
     base_axes={r["canonical_trait_axis_id"] for r in rows}
     base_clusters={r["cluster_id"] for r in rows}
@@ -79,13 +79,26 @@ def build(base_path: Path, brassica_path: Path, lobelia_path: Path):
             notes="Exact standardized directional selection gradients beta plus SE under natural versus supplemental hand pollination using relative seed number.",
         ))
 
+    if dalechampia_path is not None:
+        dalechampia=_read(dalechampia_path)
+        for trait in sorted({r["trait"] for r in dalechampia}):
+            net=[r for r in dalechampia if r["trait"] == trait and r["selection_component"] == "NET"]
+            if not net:
+                continue
+            rows.append(_measurement_row(
+                prefix="Dalechampia_000658", trait=trait, contexts=["NET_FITNESS_SURFACE"],
+                cluster="Dalechampia_scandens_Perez_Barrales_selection_program", source_id="SCHPRISMA-000658",
+                source_object="Perez_Barrales_2013_Table4",
+                notes="Mean-standardized net selection gradient on relative seeds surviving predation; source also decomposes pollinator and seed-predator selection for upper bract area.",
+            ))
+
     total=_family(rows,"estimand_family","TOTAL_SELECTION_EFFECT")
     standardized=_family(rows,"numeric_pooling_family","STANDARDIZED_SELECTION_GRADIENT")
     new_axes={r["canonical_trait_axis_id"] for r in rows}-base_axes
     new_clusters={r["cluster_id"] for r in rows}-base_clusters
     summary={
         "analysis":"sch_h2_selection_cluster_expansion_v7",
-        "added_cases": len(brassica)+len(lobelia),
+        "added_cases": len(brassica)+len(lobelia)+(sum(1 for r in _read(dalechampia_path) if r["selection_component"] == "NET") if dalechampia_path is not None else 0),
         "added_axes": len(new_axes),
         "added_clusters": len(new_clusters),
         "new_clusters": sorted(new_clusters),
@@ -110,9 +123,9 @@ def _write_csv(path: Path, rows: list[dict[str,str]]):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("base",type=Path); p.add_argument("brassica",type=Path); p.add_argument("lobelia",type=Path)
+    p.add_argument("base",type=Path); p.add_argument("brassica",type=Path); p.add_argument("lobelia",type=Path); p.add_argument("--dalechampia",type=Path)
     p.add_argument("--out-csv",type=Path,required=True); p.add_argument("--out-json",type=Path,required=True)
-    a=p.parse_args(); rows,summary=build(a.base,a.brassica,a.lobelia)
+    a=p.parse_args(); rows,summary=build(a.base,a.brassica,a.lobelia,a.dalechampia)
     _write_csv(a.out_csv,rows)
     a.out_json.write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n",encoding="utf-8")
 if __name__=="__main__": main()
