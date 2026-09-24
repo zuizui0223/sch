@@ -94,62 +94,101 @@ The literature synthesis is the primary empirical reality layer. The focal multi
 
 ## Parallel macroecology extension
 
-The Viewpoint package remains frozen and submission-ready, but SCH now has an active comparative macroecology extension.
+The Viewpoint package remains frozen and submission-ready, but SCH now also carries an active comparative macroecology programme.
 
 Current macroecology state:
 
 ~~~text
-primary-study inclusions                 117
-canonical trait axes                      48
+current primary-study inclusions             120
+canonical biological trait axes               50
 
-static resolved fixed-role axes           19
-independent clusters in static H1         13
-  conflict                                 9
-  reinforcement                            2
-  one-sided / null                         8
+static resolved fixed-role axes               19
+independent clusters in static H1             13
+  conflict                                      9
+  reinforcement                                 2
+  one-sided / null                              8
 
-H2 local context cases                    49
-H2 axes with local cases                  17
-H2 clusters with local cases              10
-  plant-performance cases                 42
-  visitor-role behavior cases              7
+broad materialized H2 local cases             49
+
+TOTAL_SELECTION_EFFECT family
+  cases                                        81
+  trait axes                                   31
+  independent programmes                       8
+  estimand-family breadth gate              PASS
+
+strict STANDARDIZED_SELECTION_GRADIENT
+  cases                                        61
+  trait axes                                   26
+  independent programmes                       6
+  strict numeric pooling gate        FAIL_CLOSED
 ~~~
 
-The macroecology result is currently descriptive rather than regression-based. The broad H2 ecological-breadth gate now passes, but the commensurate-estimand gate remains fail-closed: local geometry, total selection, antagonist pressure, reproductive-component effects and germination proxies are not one numeric estimand. H1 also remains fail-closed.
+The broad ecological-breadth and TOTAL_SELECTION_EFFECT estimand-family gates now pass. The remaining quantitative restriction is strict numeric commensurability and uncertainty coverage, not a shortage of raw rows.
 
-Current H2 promotion state:
+The scale-invariant directional layer is currently:
 
 ~~~text
-H2_BROAD_BREADTH_GATE = PASS
-H2_COMMENSURATE_ESTIMAND_GATE = FAIL
-H2_COMMENSURATE_NUMERIC_POOLING_GATE = FAIL
+repeated TOTAL_SELECTION_EFFECT axes           27
+no point reversal                              13
+point-estimate sign switches                   14
+  bidirectional uncertainty-supported           3
+  one-side supported                            5
+  both-sides unsupported                        5
+  uncertainty unresolved                        1
 ~~~
 
-The largest coherent estimand family is TOTAL_SELECTION_EFFECT with 30 cases across 8 axes but only 3 independent biological clusters.
+V11 classifies the context mechanisms behind these changes, but those mechanism cells are post-hoc and strongly programme-confounded. Mechanism-specific reversal rates are therefore descriptive only.
+
+V12 freezes the next ecological prediction prospectively. The current eight programmes are pilot-only, and the already frozen 463 title/abstract-unscreened records form the untouched holdout source. Design class must be assigned before selection sign or significance is extracted.
+
+~~~text
+V12 directional prediction:
+multiweight / consumer-turnover experiments
+>
+single-factor intensity experiments
+
+primary unit:
+independent biological programme
+
+primary score:
+within-programme fraction of eligible axes
+with bidirectionally supported reversal
+
+primary inference:
+FAIL_CLOSED until >=5 new programmes/class
+and >=2 new programmes with non-zero supported reversal
+~~~
+
+Observational spatial or landscape programmes are retained as external replication and are not pooled into the primary causal comparison.
 
 The current ecological synthesis is:
 
-> multifunctional geometry is assembled at trait axis × ecological context × consumer functional role, rather than being a fixed property of a species or interaction label.
+> Multifunctional geometry is assembled at trait axis x ecological context x consumer functional role. Context often reorganizes realized selection, but point crossings, asymmetric support and bidirectionally supported reversal are distinct outcomes. The next test is now prospectively frozen against untouched evidence rather than being tuned on the eight-programme pilot family.
 
-Publication strategy therefore remains two-stage:
+Publication strategy remains two-stage:
 
 ~~~text
 NOW:
 New Phytologist Viewpoint
 = submission-ready
 
-LATER UPGRADE:
-full comparative empirical/theory paper
-= only after systematic-screen completion
-  + frozen canonical denominator
-  + H1 or plant-performance H2 modelability PASS
+PARALLEL MACRO UPGRADE:
+TOTAL_SELECTION_EFFECT breadth       PASS
+directional-context analysis         READY
+V11 mechanism taxonomy               READY_DESCRIPTIVE_ONLY
+V12 prospective holdout              FROZEN
+strict numeric pooling               FAIL_CLOSED
+full frozen systematic screen        INCOMPLETE
 ~~~
 
 The macro extension should not delay the presubmission enquiry.
 
-Canonical macroecology status document:
+Canonical macroecology documents:
 
-`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
+- docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md
+- docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md
+- docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md
+- docs/SCH_H2_PROSPECTIVE_REVERSAL_HYPOTHESIS_V12.md
 
 ## Frozen literature-layer status
 
