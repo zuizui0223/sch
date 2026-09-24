@@ -1,0 +1,13 @@
+trait,pollination_context,beta,se,p_value,fitness_estimate,source_table,doi
+anther_nectary_distance,NATURAL,0.070,0.08,0.39,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+anther_nectary_distance,HAND_SUPPLEMENTED,-0.047,0.07,0.47,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+flower_size,NATURAL,-0.018,0.08,0.82,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+flower_size,HAND_SUPPLEMENTED,0.043,0.07,0.52,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+stem_diameter,NATURAL,0.22,0.11,0.059,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+stem_diameter,HAND_SUPPLEMENTED,0.11,0.09,0.24,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+flower_number,NATURAL,0.74,0.18,<0.0001,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+flower_number,HAND_SUPPLEMENTED,0.50,0.11,0.00024,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+daily_floral_display,NATURAL,-0.13,0.13,0.33,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+daily_floral_display,HAND_SUPPLEMENTED,0.046,0.08,0.57,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+median_flower_date,NATURAL,-0.43,0.08,<0.0001,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x
+median_flower_date,HAND_SUPPLEMENTED,-0.40,0.07,<0.0001,relative_seed_number,Table_2,10.1111/j.1469-8137.2011.04013.x

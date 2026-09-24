@@ -26,25 +26,25 @@ def _build():
 
 def test_complete_canonical_axis_denominator():
     built = _build()
-    assert built["n_source_axis_records"] == 57
-    assert built["n_model_axis_source_records"] == 50
+    assert built["n_source_axis_records"] == 59
+    assert built["n_model_axis_source_records"] == 52
     assert built["n_source_records_excluded_before_canonical_axis"] == 7
-    assert built["n_canonical_trait_axes"] == 48
+    assert built["n_canonical_trait_axes"] == 50
     assert built["n_axes_with_multiple_source_records"] == 2
 
 
 def test_complete_canonical_geometry():
     built = _build()
-    assert built["n_fixed_role_canonical_axes"] == 35
-    assert built["n_role_boundary_canonical_axes"] == 13
+    assert built["n_fixed_role_canonical_axes"] == 36
+    assert built["n_role_boundary_canonical_axes"] == 14
     assert built["n_fixed_role_resolved_canonical_axes"] == 20
     assert built["canonical_geometry_counts"] == {
         "ALIGNMENT_REINFORCEMENT": 2,
         "CONFLICT": 9,
         "CONTEXT_VARIABLE": 1,
         "ONE_SIDED_OR_NULL": 8,
-        "ROLE_BOUNDARY": 13,
-        "UNRESOLVED": 15,
+        "ROLE_BOUNDARY": 14,
+        "UNRESOLVED": 16,
     }
 
 

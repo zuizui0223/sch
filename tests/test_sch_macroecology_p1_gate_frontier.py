@@ -28,8 +28,8 @@ def _build():
 
 def test_all_machine_p1_records_are_manually_gated():
     built = _build()
-    assert built["n_machine_p1_records"] == 47
-    assert built["n_p1_manual_gated"] == 47
+    assert built["n_machine_p1_records"] == 49
+    assert built["n_p1_manual_gated"] == 49
     assert built["n_p1_missing_manual_gate"] == 0
     assert built["status"] == "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
 
@@ -38,19 +38,19 @@ def test_p1_gate_recovers_bounded_h1_candidate_frontier():
     built = _build()
     assert built["geometry_eligibility_counts"] == {
         "BOUNDARY_BENEFIT_COST_COUPLED": 1,
-        "ELIGIBLE_BOUNDED_COORDINATE": 22,
+        "ELIGIBLE_BOUNDED_COORDINATE": 24,
         "ELIGIBLE_SAME_COORDINATE": 10,
         "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 5,
         "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 7,
         "UNRESOLVED_SOURCE": 2,
     }
-    assert built["n_h1_geometry_candidate_records"] == 32
-    assert built["n_h2_context_candidate_records"] == 20
+    assert built["n_h1_geometry_candidate_records"] == 34
+    assert built["n_h2_context_candidate_records"] == 22
 
 
 def test_p1_gate_tracks_axis_decomposition_before_outcomes():
     built = _build()
-    assert built["n_trait_axis_split_required_records"] == 25
+    assert built["n_trait_axis_split_required_records"] == 27
     assert built["n_single_axis_records"] == 17
     assert "trait_axis_decomposition_required_before_ecological_model" in built["claim_ceiling"]
 

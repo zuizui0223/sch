@@ -19,9 +19,9 @@ def _build():
 
 def test_machine_pretriage_covers_all_current_primary_includes():
     rows, receipt = _build()
-    assert len(rows) == 117
-    assert receipt["n_current_primary_includes"] == 117
-    assert len({row["record_id"] for row in rows}) == 117
+    assert len(rows) == 119
+    assert receipt["n_current_primary_includes"] == 119
+    assert len({row["record_id"] for row in rows}) == 119
 
 
 def test_machine_pretriage_is_design_only():
@@ -31,20 +31,20 @@ def test_machine_pretriage_is_design_only():
     assert "does_not_equal_geometry_eligibility" in receipt["claim_ceiling"]
 
 
-def test_machine_pretriage_reproduces_full_117_design_funnel():
+def test_machine_pretriage_reproduces_full_119_design_funnel():
     _, receipt = _build()
     assert receipt["paired_response_status_counts"] == {
-        "P1_BOTH_RESPONSES_COMMON_FITNESS": 47,
+        "P1_BOTH_RESPONSES_COMMON_FITNESS": 49,
         "P2_BOTH_RESPONSES_NO_COMMON_FITNESS": 15,
         "P3_ANTAGONIST_ONLY": 15,
         "P3_POLLINATOR_ONLY": 29,
         "P4_UNSTRUCTURED_OR_NEITHER": 11,
     }
-    assert receipt["n_paired_response_records"] == 62
-    assert receipt["n_paired_response_with_common_fitness"] == 47
+    assert receipt["n_paired_response_records"] == 64
+    assert receipt["n_paired_response_with_common_fitness"] == 49
     assert receipt["n_paired_response_without_common_fitness"] == 15
     assert receipt["context_recode_priority_counts"] == {
-        "NO_OR_UNRESOLVED": 84,
+        "NO_OR_UNRESOLVED": 86,
         "YES": 33,
     }
 

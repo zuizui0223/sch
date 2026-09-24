@@ -25,10 +25,10 @@ def _build():
 
 def test_complete_source_axis_recode_structure():
     built = _build()
-    assert built["n_trait_axes"] == 57
-    assert built["n_source_records"] == 32
-    assert built["n_biological_clusters"] == 29
-    assert built["n_fixed_role_axes"] == 43
+    assert built["n_trait_axes"] == 59
+    assert built["n_source_records"] == 34
+    assert built["n_biological_clusters"] == 31
+    assert built["n_fixed_role_axes"] == 44
 
 
 def test_complete_source_axis_fixed_role_geometry():

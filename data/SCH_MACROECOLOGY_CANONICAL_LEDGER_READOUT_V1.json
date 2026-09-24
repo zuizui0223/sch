@@ -1,18 +1,18 @@
 {
   "analysis": "sch_macroecology_canonical_ledger_v1",
-  "n_source_axis_records": 57,
+  "n_source_axis_records": 59,
   "n_excluded_source_axis_records": 7,
-  "n_model_source_axis_records": 50,
-  "n_canonical_trait_axes": 48,
+  "n_model_source_axis_records": 52,
+  "n_canonical_trait_axes": 50,
   "canonical_geometry_counts": {
     "ALIGNMENT_REINFORCEMENT": 2,
     "CONFLICT": 9,
     "CONTEXT_VARIABLE": 1,
     "ONE_SIDED_OR_NULL": 8,
-    "ROLE_BOUNDARY": 13,
-    "UNRESOLVED": 15
+    "ROLE_BOUNDARY": 14,
+    "UNRESOLVED": 16
   },
-  "n_fixed_role_axes": 35,
+  "n_fixed_role_axes": 36,
   "n_static_resolved_fixed_role_axes": 19,
   "n_static_resolved_fixed_role_clusters": 13,
   "static_geometry_counts": {
