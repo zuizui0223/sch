@@ -1,0 +1,30 @@
+{
+  "analysis": "sch_h2_context_driver_decomposition_v11",
+  "n_repeated_axes": 27,
+  "n_repeated_programmes": 7,
+  "n_programmes_with_point_switch": 6,
+  "n_programmes_with_supported_switch": 2,
+  "n_point_switch_axes": 14,
+  "n_supported_switch_axes": 3,
+  "n_uncertainty_unresolved_switch_axes": 1,
+  "manipulated_biotic_programmes": {
+    "context_family": "BIOTIC_REGIME_MANIPULATION",
+    "n_programmes": 5,
+    "n_programmes_with_point_switch": 4,
+    "n_programmes_with_supported_switch": 1,
+    "n_repeated_axes": 22,
+    "n_point_switch_axes": 10,
+    "n_supported_switch_axes": 1,
+    "n_uncertainty_unresolved_switch_axes": 0
+  },
+  "status": "CONTEXT_DRIVER_DECOMPOSITION_READY_NO_FAMILY_COMPARISON",
+  "claim_ceiling": [
+    "programme_is_the_independent_biological_unit",
+    "context_family_is_design_metadata_not_an_outcome",
+    "family_counts_are_descriptive_not_prevalence_estimates",
+    "no_statistical_test_of_context_family_differences",
+    "spatial_mosaics_are_not_promoted_to_causal_driver_effects",
+    "point_sign_switch_is_not_uncertainty_supported_reversal",
+    "strict_cross_study_numeric_pooling_remains_fail_closed"
+  ]
+}
