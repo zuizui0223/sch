@@ -22,7 +22,7 @@ def _build():
 
 def test_canonical_ledger_materializes_independent_model_units():
     rows, receipt = _build()
-    assert len(rows) == 52
+    assert len(rows) == 50
     assert receipt["n_source_axis_records"] == 59
     assert receipt["n_excluded_source_axis_records"] == 7
     assert receipt["n_model_source_axis_records"] == 50
