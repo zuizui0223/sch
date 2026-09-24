@@ -96,60 +96,97 @@ The literature synthesis is the primary empirical reality layer. The focal multi
 
 The Viewpoint package remains frozen and submission-ready, but SCH now has an active comparative macroecology extension.
 
-Current macroecology state:
+Current systematic/macro state:
 
 ~~~text
-primary-study inclusions                 117
-canonical trait axes                      48
+current primary-study inclusions             120
+canonical biological trait axes               50
 
-static resolved fixed-role axes           19
-independent clusters in static H1         13
-  conflict                                 9
-  reinforcement                            2
-  one-sided / null                         8
+static fixed-role resolved axes               19
+  conflict                                      9
+  reinforcement                                 2
+  one-sided / null                              8
 
-H2 local context cases                    49
-H2 axes with local cases                  17
-H2 clusters with local cases              10
-  plant-performance cases                 42
-  visitor-role behavior cases              7
+broad materialized H2 local cases             49
+
+TOTAL_SELECTION_EFFECT family
+  cases                                        81
+  trait axes                                   31
+  independent programmes                       8
+  registered estimand-family gate           PASS
+
+strict STANDARDIZED_SELECTION_GRADIENT
+  cases                                        61
+  trait axes                                   26
+  independent programmes                       6
+  strict numeric pooling gate        FAIL_CLOSED
 ~~~
 
-The macroecology result is currently descriptive rather than regression-based. The broad H2 ecological-breadth gate now passes, but the commensurate-estimand gate remains fail-closed: local geometry, total selection, antagonist pressure, reproductive-component effects and germination proxies are not one numeric estimand. H1 also remains fail-closed.
+The H2 estimand-family breadth gate has therefore passed. The remaining restriction is no longer independent ecological breadth; it is strict numeric commensurability and uncertainty coverage.
 
-Current H2 promotion state:
+The scale-invariant directional analysis uses only within-axis sign information:
 
 ~~~text
-H2_BROAD_BREADTH_GATE = PASS
-H2_COMMENSURATE_ESTIMAND_GATE = FAIL
-H2_COMMENSURATE_NUMERIC_POOLING_GATE = FAIL
+repeated TOTAL_SELECTION_EFFECT axes           27
+point-estimate sign-switch axes                14
+uncertainty-supported sign-switch axes          3
+programmes with a point switch                6 / 8
+programmes with a supported switch            2 / 8
 ~~~
 
-The largest coherent estimand family is TOTAL_SELECTION_EFFECT with 30 cases across 8 axes but only 3 independent biological clusters.
+V11 then decomposes the repeated-context programmes by design metadata while keeping the biological programme as the independent unit:
+
+~~~text
+BIOTIC_REGIME_MANIPULATION
+  programmes                                    5
+  repeated axes                                22
+  point sign switches                          10
+  supported switches                            1
+
+NATURAL_SPATIAL_MOSAIC
+  programmes                                    1
+  repeated axes                                 4
+  point sign switches                           3
+  supported switches                            2
+
+ANTHROPOGENIC_PROXIMITY
+  programmes                                    1
+  repeated axes                                 1
+  point sign switches                           1
+  supported switches                            0
+  uncertainty unresolved                        1
+~~~
 
 The current ecological synthesis is:
 
-> multifunctional geometry is assembled at trait axis × ecological context × consumer functional role, rather than being a fixed property of a species or interaction label.
+> multifunctional selection is assembled at trait axis × ecological context × consumer functional role; directional reorganization occurs both under manipulated biotic regimes and across natural spatial mosaics, so the pattern is not reducible to geographic turnover alone.
 
-Publication strategy therefore remains two-stage:
+The family counts are descriptive. Seven repeated-context programmes are too few and too unbalanced for a context-family meta-regression or ranking.
+
+Publication strategy remains two-stage:
 
 ~~~text
 NOW:
 New Phytologist Viewpoint
 = submission-ready
 
-LATER UPGRADE:
+PARALLEL UPGRADE:
 full comparative empirical/theory paper
-= only after systematic-screen completion
-  + frozen canonical denominator
-  + H1 or plant-performance H2 modelability PASS
+= active development
+= H2 estimand breadth PASS
+= directional-context analysis READY
+= context-driver decomposition READY_DESCRIPTIVE
+= strict numeric pooling still FAIL_CLOSED
+= full frozen systematic screen still incomplete
 ~~~
 
 The macro extension should not delay the presubmission enquiry.
 
-Canonical macroecology status document:
+Canonical macroecology status documents:
 
-`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md`
+- \`docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md\`
+- \`docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md\`
+- \`docs/SCH_H2_CONTEXT_DRIVER_DECOMPOSITION_V11.md\`
 
 ## Frozen literature-layer status
 
