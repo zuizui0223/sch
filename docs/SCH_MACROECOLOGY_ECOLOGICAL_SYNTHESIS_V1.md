@@ -240,7 +240,7 @@ Design class is assigned from the study design before selection sign, significan
 
 Observational spatial and landscape programmes form an external-replication stratum rather than entering the primary causal contrast.
 
-Primary inference remains fail-closed until at least five new programmes qualify in each experimental class and at least two new programmes contain a non-zero supported-reversal fraction.
+Primary inference remains fail-closed until at least five new programmes qualify in each experimental class. This gate depends only on design breadth; zero observed supported reversals remains a valid confirmatory outcome.
 
 This turns the V11 pattern from an explanation fitted to the current eight programmes into a falsifiable prediction against untouched evidence.
 
