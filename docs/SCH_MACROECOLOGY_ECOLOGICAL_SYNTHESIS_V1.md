@@ -19,29 +19,29 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          117
-both pollinator + antagonist responses               62
-both responses + common reproductive outcome         47
-manual P1 source-design gates completed               47
-record-level H1 geometry candidates                   32
-source-axis evidence records                          57
-model-eligible / role-boundary source-axis records    50
-canonical biological trait axes                       48
+current full-text primary-study inclusions          120
+both pollinator + antagonist responses               65
+both responses + common reproductive outcome         50
+manual P1 source-design gates completed               50
+record-level H1 geometry candidates                   34
+source-axis evidence records                          59
+model-eligible / role-boundary source-axis records    52
+canonical biological trait axes                       50
 ~~~
 
 This funnel is sign-blind through the design gate. Null, aligned, one-sided, role-dependent and source-downgraded outcomes remain in the evidence architecture.
 
 ## Result 1 — multifunctional geometry is heterogeneous
 
-Across all 48 canonical axes:
+Across all 50 canonical axes:
 
 ~~~text
 CONFLICT / OPPOSITION              9
 ALIGNMENT / REINFORCEMENT         2
 ONE-SIDED / NULL                  8
 CONTEXT-VARIABLE                  1
-ROLE BOUNDARY                    13
-UNRESOLVED                       15
+ROLE BOUNDARY                    14
+UNRESOLVED                       16
 ~~~
 
 The primary static fixed-role subset contains 19 resolved canonical axes from 13 independent biological clusters: conflict 9, reinforcement 2, one-sided/null 8.
@@ -165,7 +165,11 @@ These additions bring the broad plant-performance layer to 42 cases across 14 ax
 
 They also expose a more important limitation: plant-performance is not a single estimand. Current cases include local two-function geometry, total-selection effects, realized net performance, antagonist pressure, reproductive-component effects and germination proxies.
 
-The largest coherent family, TOTAL_SELECTION_EFFECT, contains 30 cases across 8 axes but only 3 independent clusters. Therefore the numeric mixed model remains fail-closed.
+The largest coherent estimand family, TOTAL_SELECTION_EFFECT, has now been expanded prospectively to 81 cases across 31 axes and 8 independent programmes, so its registered breadth gate passes.
+
+The stricter numerical pooling family remains narrower: STANDARDIZED_SELECTION_GRADIENT contains 61 cases across 26 axes and 6 independent programmes. Helianthus adds an eighth estimand-family programme but does not enter that strict pooling family because numeric uncertainty for the published aggregate context means is not materialized.
+
+Therefore estimand-family breadth is now sufficient for scale-invariant comparative analysis, while cross-study inverse-variance pooling remains fail-closed.
 
 ## Current H2 modelability boundary
 
@@ -187,16 +191,41 @@ Role-behavior layer: 3 canonical axes, 2 clusters, and 3 axes with at least two 
 Frozen result:
 
 ~~~text
-plant-performance H2 breadth gate = PASS\ncommensurate estimand-family model = FAIL
+plant-performance H2 breadth gate = PASS
+TOTAL_SELECTION_EFFECT estimand-family gate = PASS
+strict STANDARDIZED_SELECTION_GRADIENT pooling gate = FAIL
 role-behavior H2 model = FAIL
-combined model = invalid estimand
+combined cross-estimand model = invalid
 ~~~
+
+## Directional-context result after estimand qualification
+
+The qualified TOTAL_SELECTION_EFFECT family contains 27 trait axes observed in at least two contexts.
+
+~~~text
+repeated axes                              27
+point-estimate sign switches               14
+programmes containing a point switch        6 / 8
+
+uncertainty-supported sign switches          3
+programmes containing a supported switch     2 / 8
+~~~
+
+The three uncertainty-supported reversals are Gymnadenia flowering phenology and Erysimum corolla tube width and corolla shape.
+
+Helianthus ray length changes average point direction from positive far from crop sunflowers to negative near crops, but uncertainty for those aggregate context means is not numerically materialized, so it is not promoted to an uncertainty-supported reversal.
+
+This separates two biological statements that should not be conflated:
+
+> context sensitivity of realized selection is widespread within the qualified family, but strongly supported directional reversal is concentrated in a smaller subset of systems.
+
+The 14/27 and 3/27 counts are bounded descriptions of an estimand-qualified subset. They are not literature-wide prevalence estimates.
 
 ## Current ecological synthesis
 
 The strongest current biological statement is:
 
-> Multifunctionality produces a family of ecological geometries rather than a universal compromise. Realized geometry is assembled by the focal trait axis, the local interaction regime and the functional role expressed by interacting consumers.
+> Multifunctionality produces a family of ecological geometries rather than a universal compromise. Ecological context often reorganizes the realized selection surface, but strong directional reversal is concentrated in a smaller subset of systems. Realized geometry is assembled by the focal trait axis, the local interaction regime and the functional role expressed by interacting consumers.
 
 A compact representation is:
 
@@ -249,25 +278,27 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. recover Gentiana S3 population selection table;
-2. recover Gymnadenia Appendix A Table A2;
-3. recover Pedicularis S1/S2/Appendix S1;
-4. decompose Primula farinosa population × manipulation × time sources;
-5. complete the frozen systematic screen;
-6. rerun H1/H2 modelability gates.
+1. complete the frozen systematic screen;
+2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
+3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
+4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
+5. rerun H1 and H2 denominators after systematic-screen completion;
+6. retain scale-invariant directional analysis as the current H2 comparative result until a strict pooling gate passes.
 
 ## Claim ceiling
 
 Current evidence supports recurrence of multiple ecological geometries, within-system trait-axis specificity, cancellation of opposing selection, context-dependent geometry and component weighting, context-dependent consumer roles, and empirical identification failures.
 
-It does not support natural prevalence of conflict, a general conflict probability, a stable multinomial moderator model, a mixed-effects H2 context-switch model, treating role-behavior cases as plant-fitness geometry, or a universal conflict budget.
+It does not support natural prevalence of conflict, a general conflict probability, a cross-scale pooled selection mean, treating point-estimate sign switches as uncertainty-supported reversals, treating role-behavior cases as plant-fitness geometry, or a universal conflict budget.
 
 ~~~text
 MACROECOLOGY_STATUS = ACTIVE_COMPARATIVE_EXTENSION
 H1_DESCRIPTIVE_PATTERN = READY
 H1_MODEL = FAIL_CLOSED
 H2_DESCRIPTIVE_PATTERN = READY
-H2_MODEL = FAIL_CLOSED
+H2_ESTIMAND_FAMILY_GATE = PASS
+H2_DIRECTIONAL_CONTEXT_ANALYSIS = READY
+H2_STRICT_NUMERIC_POOLING = FAIL_CLOSED
 
 NPH_VIEWPOINT_STATUS = REMAINS_SUBMISSION_READY
 MACRO_FULL_PAPER_UPGRADE = NOT_YET_TRIGGERED
