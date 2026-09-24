@@ -47,6 +47,7 @@ jobs:
             tests/test_sch_prisma_decision_overlay.py \
             tests/test_sch_prisma_prior_anchor_migration_preview.py \
             tests/test_sch_prisma_current_screening_state.py \
+            tests/test_sch_prisma_v25_ta0_holdout.py \
             tests/test_sch_jbi_geography_anchor_preview.py
 
       - name: Verify immutable 868-record cohort and apply all overlays
