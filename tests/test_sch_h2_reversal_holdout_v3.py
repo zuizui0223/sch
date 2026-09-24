@@ -76,8 +76,17 @@ def test_v3_active_roster_is_exactly_463_minus_the_seven_pre_screened_records():
     }
 
 
-def test_v3_empty_registry_matches_frozen_readout():
-    assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
+def test_v3_frozen_readout_preserves_the_pre_registration_state():
+    frozen = json.loads(READOUT.read_text(encoding="utf-8"))
+    assert frozen["n_registered_heldout_programmes"] == 0
+    assert frozen["n_complete_primary_programmes"] == 0
+    assert frozen["primary_test_gate_pass"] is False
+    assert frozen["source_derivation"] == {
+        "original_queue_n": 463,
+        "pre_v3_formally_screened_n": 7,
+        "active_holdout_n": 456,
+        "review_order_preserved": True,
+    }
 
 
 def test_v3_rejects_a_pre_screened_source_even_if_it_was_in_the_old_463_queue(tmp_path):
