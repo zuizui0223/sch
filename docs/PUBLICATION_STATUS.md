@@ -155,8 +155,8 @@ within-programme fraction of eligible axes
 with bidirectionally supported reversal
 
 primary inference:
-FAIL_CLOSED until >=5 new programmes/class
-and >=2 new programmes with non-zero supported reversal
+FAIL_CLOSED until >=5 new programmes/class;
+gate depends only on design breadth, not observed reversals
 ~~~
 
 Observational spatial or landscape programmes are retained as external replication and are not pooled into the primary causal comparison.
