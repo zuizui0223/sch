@@ -1,0 +1,40 @@
+name: test-sch-h2-context-driver-v11
+
+on:
+  pull_request:
+    paths:
+      - "scripts/analyze_sch_h2_total_selection_direction_v10.py"
+      - "scripts/analyze_sch_h2_context_driver_v11.py"
+      - "data/SCH_H2_TOTAL_SELECTION_DIRECTION_READOUT_V10.json"
+      - "data/SCH_H2_CONTEXT_DRIVER_READOUT_V11.json"
+      - "data/SCH_MACROECOLOGY_H2_CONTEXT_CASES_BATCH4_V1.csv"
+      - "data/SCH_MACROECOLOGY_H2_CONTEXT_CASES_BATCH6_V1.csv"
+      - "data/SCH_MACROECOLOGY_H2_CONTEXT_CASES_BATCH7_V1.csv"
+      - "data/SCH_H2_BRASSICA_KNAUER_2017_SELECTION_GRADIENTS_V1.csv"
+      - "data/SCH_H2_LOBELIA_BARTKOWSKA_2012_SELECTION_GRADIENTS_V1.csv"
+      - "data/SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv"
+      - "data/SCH_H2_LYTHRUM_THOMSEN_2017_SELECTION_GRADIENTS_V1.csv"
+      - "data/SCH_H2_HELIANTHUS_TEXANUS_SELECTION_GRADIENTS_V1.csv"
+      - "tests/test_sch_h2_total_selection_direction_v10.py"
+      - "tests/test_sch_h2_context_driver_v11.py"
+      - ".github/workflows/test-sch-h2-context-driver-v11.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  focused-h2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install --upgrade pytest
+      - name: Run V10 and V11 focused tests
+        run: >-
+          python -m pytest -q
+          tests/test_sch_h2_total_selection_direction_v10.py
+          tests/test_sch_h2_context_driver_v11.py
