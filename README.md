@@ -180,12 +180,16 @@ repeated TOTAL_SELECTION_EFFECT axes        27
 H1 modelability = FAIL_CLOSED
 H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
+H2 directional-context analysis = READY
+H2 context-driver decomposition = READY_DESCRIPTIVE
 H2 strict numeric-pooling gate = FAIL_CLOSED
 ~~~
 
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
+
+V11 partitions the 27 repeated TOTAL_SELECTION_EFFECT axes by design metadata while retaining programme as the independent unit. Five manipulated biotic programmes contribute 22 repeated axes and 10 point-direction switches across four programmes; Erysimum contributes a natural spatial mosaic with two uncertainty-supported reversals; Helianthus contributes a near/far crop point switch with unresolved uncertainty. No context-family ranking or meta-regression is claimed.
 
 The macroecology layer is an **active upgrade path**, not a reason to delay the frozen New Phytologist Viewpoint. It becomes a candidate full comparative paper only after the systematic denominator is completed and an H1 or plant-performance H2 modelability gate passes.
 
@@ -199,6 +203,7 @@ See:
 - `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`\n- `docs/SCH_H2_POLYGALA_TANACETUM_RECOVERY_V1.md`
 - `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
+- `docs/SCH_H2_CONTEXT_DRIVER_DECOMPOSITION_V11.md`
 
 ## Empirical execution strategy
 
