@@ -137,11 +137,11 @@ point-estimate sign switch                     14
 
 V11 mechanism classes are descriptive and hypothesis-generating.
 
-V2 is the active prospective holdout contract. It supersedes V1 before any held-out programme was registered.
+V3 is the active prospective holdout contract. V2's inferential design is retained, but the source pool is corrected from the V20-era 463-record queue to the 456 records still formally unscreened after V24. Seven records screened in V21/V23 are excluded from prospective admission.
 
 ~~~text
 development programmes excluded                 8
-frozen title/abstract holdout records          463
+frozen active holdout records                  456
 registered held-out programmes                  0
 primary experimental classes:
   MULTI_COMPONENT_OR_CONSUMER_TURNOVER
@@ -168,7 +168,7 @@ PARALLEL MACRO UPGRADE
 TOTAL_SELECTION_EFFECT breadth      PASS
 V10 directional analysis           READY
 V11 mechanism taxonomy             DESCRIPTIVE_ONLY
-V2 prospective holdout             FROZEN
+V3 prospective holdout             FROZEN
 strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
@@ -180,7 +180,7 @@ Canonical macroecology documents:
 - docs/SCH_MACROECOLOGY_ECOLOGICAL_SYNTHESIS_V1.md
 - docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md
 - docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md
-- docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md
+- docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md
 ## Frozen literature-layer status
 
 ```text
