@@ -221,6 +221,20 @@ This separates two biological statements that should not be conflated:
 
 The 14/27 and 3/27 counts are bounded descriptions of an estimand-qualified subset. They are not literature-wide prevalence estimates.
 
+## V26 methods-only programme registration
+
+The first four prospective programmes are now registered before numeric outcome extraction:
+
+~~~text
+SINGLE_REGISTERED_MODIFIER            3
+MULTI_COMPONENT_OR_CONSUMER_TURNOVER  1
+complete outcome adjudications        0
+~~~
+
+Their classes are frozen from experimental methods only. No selection sign, significance, eligible-axis count or reversal count is stored in the V26 registry state.
+
+This adds prospective design breadth without consuming the H2M1 outcome.
+
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -378,7 +392,7 @@ Current state:
 ~~~text
 development programmes excluded    8
 frozen active holdout records      456
-registered held-out programmes      0
+registered held-out programmes      4
 primary gate                   CLOSED
 ~~~
 
