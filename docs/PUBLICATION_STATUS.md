@@ -142,11 +142,12 @@ V3 is the active prospective holdout contract. V2's inferential design is retain
 ~~~text
 development programmes excluded                 8
 frozen active holdout records                  456
-registered held-out programmes                  0
+registered held-out programmes                  4
 primary experimental classes:
   MULTI_COMPONENT_OR_CONSUMER_TURNOVER
   SINGLE_REGISTERED_MODIFIER
 spatial / landscape programmes: EXTERNAL_REPLICATION
+registered design classes: 3 single-modifier / 1 multi-component
 opening gate: >=5 complete programmes per primary class
 outcome-dependent opening conditions: NONE
 primary test: programme-label permutation on q_j
@@ -181,6 +182,7 @@ Canonical macroecology documents:
 - docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md
 - docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md
 - docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md
+- docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md
 ## Frozen literature-layer status
 
 ```text
