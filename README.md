@@ -185,6 +185,11 @@ H1 modelability = FAIL_CLOSED
 H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
 H2 strict numeric-pooling gate = FAIL_CLOSED
+
+H2M1 prospective reversal holdout
+  development programmes excluded             8
+  held-out programmes registered              0
+  primary test                              CLOSED
 ~~~
 
 The current biological synthesis is:
@@ -204,6 +209,7 @@ See:
 - `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
 - `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`
+- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md`
 
 ## Empirical execution strategy
 
