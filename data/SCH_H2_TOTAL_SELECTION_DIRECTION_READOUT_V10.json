@@ -1,0 +1,28 @@
+{
+  "analysis": "sch_h2_total_selection_direction_v10",
+  "n_cases": 81,
+  "n_axes": 31,
+  "n_clusters": 8,
+  "n_repeated_axes": 27,
+  "n_point_estimate_sign_switch_axes": 14,
+  "n_same_sign_repeated_axes": 13,
+  "n_point_estimate_sign_switch_clusters": 6,
+  "n_uncertainty_supported_sign_switch_axes": 3,
+  "n_uncertainty_supported_sign_switch_clusters": 2,
+  "supported_switch_axes": [
+    "Erysimum_000008_corolla_shape",
+    "Erysimum_000008_corolla_tube_width",
+    "Gymnadenia_000030_phenology"
+  ],
+  "uncertainty_unresolved_switch_axes": [
+    "Helianthus_000673_ray_length"
+  ],
+  "status": "TOTAL_SELECTION_DIRECTIONAL_CONTEXT_ANALYSIS_READY_POOLING_FAIL_CLOSED",
+  "claim_ceiling": [
+    "directional_context_analysis_is_scale_invariant_within_trait_axis",
+    "point_sign_switch_is_not_uncertainty_supported_reversal",
+    "does_not_pool_incompatible_numeric_families",
+    "not_a_literature_prevalence_estimate",
+    "cluster_dependence_retained"
+  ]
+}
