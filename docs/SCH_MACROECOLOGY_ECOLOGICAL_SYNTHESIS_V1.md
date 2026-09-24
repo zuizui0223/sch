@@ -335,19 +335,13 @@ A post-hoc context-mechanism taxonomy shows point switches under mixed pollinati
 See `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`.
 
 
-## Prospective reversal holdout V2
+## Prospective reversal holdout V3
 
 The V11 mechanism pattern is hypothesis-generating rather than confirmatory.
 
 The eight programmes that produced V10-V11 are permanently excluded from the prospective primary test.
 
-V2 supersedes V1 before any held-out programme was registered and fixes three inferential problems:
-
-1. the opening gate no longer depends on seeing YES or NO reversal outcomes;
-2. observational spatial mosaics are external replication rather than members of the primary experimental comparison;
-3. programmes are compared through an axis-normalized programme score rather than an "any reversal" indicator that favors programmes measuring many traits.
-
-The only primary source pool is the already frozen 463-record title/abstract-unscreened queue.
+V3 retains the V2 inferential fixes but corrects the source-pool boundary before any held-out programme is registered. The V20-era 463-record queue included seven records that were formally TA-screened in V21/V23 before the prospective freeze. The active prospective source pool is therefore the 456 records still unscreened at V24 close.
 
 ~~~text
 formal PRISMA denominator            868
@@ -383,11 +377,11 @@ Current state:
 
 ~~~text
 development programmes excluded    8
-frozen holdout records            463
+frozen active holdout records      456
 registered held-out programmes      0
 primary gate                   CLOSED
 ~~~
 
 The immediate next operation is the frozen TA0 title/abstract screen, not further mining of the eight development programmes.
 
-See docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md.
+See docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md.

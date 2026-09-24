@@ -186,9 +186,9 @@ H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
 H2 strict numeric-pooling gate = FAIL_CLOSED
 
-H2M1-V2 prospective reversal holdout
+H2M1-V3 prospective reversal holdout
   development programmes excluded             8
-  frozen source pool                         463
+  frozen active source pool                  456
   held-out programmes registered              0
   primary test                              CLOSED
   spatial mosaics             EXTERNAL_REPLICATION
@@ -199,7 +199,7 @@ The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
 
-V2 freezes the untouched 463-record queue as the only primary holdout source. The eight V10-V11 programmes remain development-only; observational spatial mosaics are external replication; and the primary comparison uses equal-programme-weighted within-programme reversal fractions rather than treating trait axes as independent replicates.
+V3 corrects the prospective source boundary to the 456 records still formally unscreened at V24 close; seven records already screened in V21/V23 remain in the PRISMA denominator but are excluded from the prospective source pool.
 
 The macroecology layer is an **active upgrade path**, not a reason to delay the frozen New Phytologist Viewpoint. It becomes a candidate full comparative paper only after the systematic denominator is completed and an H1 or plant-performance H2 modelability gate passes.
 
@@ -215,7 +215,8 @@ See:
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
 - `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md` — superseded pre-data protocol provenance
-- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md` — active prospective contract
+- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md` — superseded source-pool boundary
+- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md` — active prospective contract
 
 ## Empirical execution strategy
 
