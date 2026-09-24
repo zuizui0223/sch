@@ -1,0 +1,104 @@
+{
+  "analysis": "sch_h2_switch_mechanisms_v11",
+  "n_cases": 81,
+  "n_axes": 31,
+  "n_repeated_axes": 27,
+  "n_point_switch_axes": 14,
+  "n_point_switch_clusters": 6,
+  "reversal_evidence_counts": {
+    "NO_POINT_REVERSAL": 13,
+    "POINT_REVERSAL_BOTH_SIDES_UNSUPPORTED": 5,
+    "POINT_REVERSAL_ONE_SIDE_SUPPORTED": 5,
+    "POINT_REVERSAL_BIDIRECTIONAL_SUPPORTED": 3,
+    "POINT_REVERSAL_UNCERTAINTY_UNRESOLVED": 1
+  },
+  "mechanism_rows": [
+    {
+      "mechanism": "MIXED_POLLINATION_X_HERBIVORY",
+      "n_repeated_axes": 2,
+      "n_point_switch_axes": 2,
+      "n_bidirectional_supported_axes": 1,
+      "n_one_side_supported_axes": 1,
+      "n_both_sides_unsupported_axes": 0,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 1,
+      "n_switch_clusters": 1
+    },
+    {
+      "mechanism": "POLLINATION_SUPPLEMENTATION",
+      "n_repeated_axes": 7,
+      "n_point_switch_axes": 4,
+      "n_bidirectional_supported_axes": 0,
+      "n_one_side_supported_axes": 1,
+      "n_both_sides_unsupported_axes": 3,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 2,
+      "n_switch_clusters": 2
+    },
+    {
+      "mechanism": "HERBIVORY_REDUCTION",
+      "n_repeated_axes": 1,
+      "n_point_switch_axes": 0,
+      "n_bidirectional_supported_axes": 0,
+      "n_one_side_supported_axes": 0,
+      "n_both_sides_unsupported_axes": 0,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 1,
+      "n_switch_clusters": 0
+    },
+    {
+      "mechanism": "SPATIAL_MULTI_AGENT_MOSAIC",
+      "n_repeated_axes": 4,
+      "n_point_switch_axes": 3,
+      "n_bidirectional_supported_axes": 2,
+      "n_one_side_supported_axes": 1,
+      "n_both_sides_unsupported_axes": 0,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 1,
+      "n_switch_clusters": 1
+    },
+    {
+      "mechanism": "CONSUMER_IDENTITY_COMPOSITION",
+      "n_repeated_axes": 9,
+      "n_point_switch_axes": 4,
+      "n_bidirectional_supported_axes": 0,
+      "n_one_side_supported_axes": 2,
+      "n_both_sides_unsupported_axes": 2,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 1,
+      "n_switch_clusters": 1
+    },
+    {
+      "mechanism": "ANTAGONIST_DAMAGE_MANIPULATION",
+      "n_repeated_axes": 3,
+      "n_point_switch_axes": 0,
+      "n_bidirectional_supported_axes": 0,
+      "n_one_side_supported_axes": 0,
+      "n_both_sides_unsupported_axes": 0,
+      "n_uncertainty_unresolved_switch_axes": 0,
+      "n_clusters": 1,
+      "n_switch_clusters": 0
+    },
+    {
+      "mechanism": "LANDSCAPE_CROP_PROXIMITY",
+      "n_repeated_axes": 1,
+      "n_point_switch_axes": 1,
+      "n_bidirectional_supported_axes": 0,
+      "n_one_side_supported_axes": 0,
+      "n_both_sides_unsupported_axes": 0,
+      "n_uncertainty_unresolved_switch_axes": 1,
+      "n_clusters": 1,
+      "n_switch_clusters": 1
+    }
+  ],
+  "status": "H2_SWITCH_MECHANISM_TAXONOMY_READY_DESCRIPTIVE_ONLY",
+  "claim_ceiling": [
+    "context_mechanism_taxonomy_is_post_hoc_descriptive",
+    "mechanism_cells_are_cluster_confounded",
+    "do_not_compare_mechanism_rates_inferentially",
+    "point_reversal_is_not_bidirectional_support",
+    "supported_reversal_requires_supported_opposite_directions",
+    "observational_spatial_mosaics_do_not_identify_one_causal_modifier",
+    "not_a_literature_prevalence_estimate"
+  ]
+}

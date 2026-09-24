@@ -303,3 +303,33 @@ H2_STRICT_NUMERIC_POOLING = FAIL_CLOSED
 NPH_VIEWPOINT_STATUS = REMAINS_SUBMISSION_READY
 MACRO_FULL_PAPER_UPGRADE = NOT_YET_TRIGGERED
 ~~~
+
+
+## Directional reversal evidence ladder
+
+The qualified TOTAL_SELECTION_EFFECT family now contains 81 cases across 31 axes and 8 programmes.
+
+Among 27 repeated axes:
+
+~~~text
+no point reversal                         13
+point-estimate sign switch                14
+
+within the 14:
+  bidirectional uncertainty-supported      3
+  one-side supported                       5
+  both-sides unsupported                   5
+  uncertainty unresolved                   1
+~~~
+
+Thus the macroecology result is not that 14 axes demonstrate true selection reversal.
+
+The stronger statement is:
+
+> Context frequently reorganizes the direction of realized point estimates, while uncertainty-supported reversal is concentrated in a smaller subset of axes.
+
+The three currently bidirectionally supported reversals are Gymnadenia flowering phenology and Erysimum corolla tube width / corolla shape.
+
+A post-hoc context-mechanism taxonomy shows point switches under mixed pollination-herbivory, pollination supplementation, spatial multi-agent mosaics, consumer-composition shifts and landscape context. Mechanism-specific switch ratios remain descriptive because the categories are strongly programme-confounded.
+
+See `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`.
