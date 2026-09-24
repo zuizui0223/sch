@@ -184,12 +184,16 @@ repeated TOTAL_SELECTION_EFFECT axes        27
 H1 modelability = FAIL_CLOSED
 H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
+H2 V11 mechanism taxonomy = READY_DESCRIPTIVE_ONLY
+H2 V12 prospective holdout = FROZEN
 H2 strict numeric-pooling gate = FAIL_CLOSED
 ~~~
 
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
+
+The V11 mechanism pattern is treated as hypothesis-generating. V12 prospectively excludes the eight pilot programmes and freezes the pre-existing 463-record unscreened queue as the holdout source for a programme-level test of multiweight/consumer-turnover versus single-factor biotic change.
 
 The macroecology layer is an **active upgrade path**, not a reason to delay the frozen New Phytologist Viewpoint. It becomes a candidate full comparative paper only after the systematic denominator is completed and an H1 or plant-performance H2 modelability gate passes.
 
@@ -204,6 +208,7 @@ See:
 - `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
 - `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`
+- `docs/SCH_H2_PROSPECTIVE_REVERSAL_HYPOTHESIS_V12.md`
 
 ## Empirical execution strategy
 
