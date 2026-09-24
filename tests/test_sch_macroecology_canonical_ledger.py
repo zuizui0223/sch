@@ -25,7 +25,7 @@ def test_canonical_ledger_materializes_independent_model_units():
     assert len(rows) == 50
     assert receipt["n_source_axis_records"] == 59
     assert receipt["n_excluded_source_axis_records"] == 7
-    assert receipt["n_model_source_axis_records"] == 50
+    assert receipt["n_model_source_axis_records"] == 52
     assert receipt["n_canonical_trait_axes"] == 50
 
 
