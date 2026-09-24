@@ -221,6 +221,31 @@ This separates two biological statements that should not be conflated:
 
 The 14/27 and 3/27 counts are bounded descriptions of an estimand-qualified subset. They are not literature-wide prevalence estimates.
 
+## Prospective V12 holdout test
+
+The V11 mechanism taxonomy is explicitly hypothesis-generating. SCH therefore freezes a new test before screening the remaining 463 title/abstract-unscreened records.
+
+The current eight TOTAL_SELECTION_EFFECT programmes are excluded from confirmation.
+
+The prospective prediction is:
+
+~~~text
+programme-level supported-reversal fraction
+MULTIWEIGHT_OR_CONSUMER_TURNOVER
+>
+SINGLE_FACTOR_INTENSITY
+~~~
+
+Design class is assigned from the study design before selection sign, significance or uncertainty is extracted. The inferential unit is the independent biological programme; trait axes remain nested measurements.
+
+Observational spatial and landscape programmes form an external-replication stratum rather than entering the primary causal contrast.
+
+Primary inference remains fail-closed until at least five new programmes qualify in each experimental class and at least two new programmes contain a non-zero supported-reversal fraction.
+
+This turns the V11 pattern from an explanation fitted to the current eight programmes into a falsifiable prediction against untouched evidence.
+
+See docs/SCH_H2_PROSPECTIVE_REVERSAL_HYPOTHESIS_V12.md.
+
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -298,6 +323,8 @@ H1_MODEL = FAIL_CLOSED
 H2_DESCRIPTIVE_PATTERN = READY
 H2_ESTIMAND_FAMILY_GATE = PASS
 H2_DIRECTIONAL_CONTEXT_ANALYSIS = READY
+H2_SWITCH_MECHANISM_TAXONOMY = READY_DESCRIPTIVE_ONLY
+H2_V12_PROSPECTIVE_HOLDOUT = FROZEN
 H2_STRICT_NUMERIC_POOLING = FAIL_CLOSED
 
 NPH_VIEWPOINT_STATUS = REMAINS_SUBMISSION_READY
