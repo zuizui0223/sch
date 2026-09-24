@@ -47,6 +47,7 @@ jobs:
             tests/test_sch_prisma_decision_overlay.py \
             tests/test_sch_prisma_prior_anchor_migration_preview.py \
             tests/test_sch_prisma_current_screening_state.py \
+            tests/test_sch_prisma_v25_ta0_holdout.py \
             tests/test_sch_jbi_geography_anchor_preview.py
 
       - name: Verify immutable 868-record cohort and apply all overlays
@@ -76,8 +77,8 @@ jobs:
           rx=re.compile(r'SCREENING_DECISIONS_V(\d+)')
           paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'),key=lambda p:int(rx.search(p.name).group(1)))
           versions=[int(rx.search(p.name).group(1)) for p in paths]
-          assert versions==list(range(1,25)),versions
-          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V24_HELIANTHUS_TEXANUS_FULLTEXT.csv',paths[-1]
+          assert versions==list(range(1,26)),versions
+          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V25_TA0_HOLDOUT.csv',paths[-1]
           PY
           for i in "${!overlays[@]}"; do
             n=$((i+1))
@@ -89,7 +90,7 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require Batch 4 title-abstract closure under V20
+      - name: Require TA0 holdout screening through V25
         run: |
           python - <<'PY'
           import json
@@ -97,15 +98,15 @@ jobs:
           d=json.loads(Path('artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json').read_text())
           assert d['analysis_id']=='sch_prisma_v2_screening_audit_v2',d
           assert d['identified_records']==868,d
-          assert d['title_abstract']['retained_for_fulltext']==284,d
-          assert d['title_abstract']['excluded']==128,d
-          assert d['title_abstract']['unscreened']==456,d
-          assert d['fulltext']['eligible_after_title_abstract']==284,d
+          assert d['title_abstract']['retained_for_fulltext']==304,d
+          assert d['title_abstract']['excluded']==136,d
+          assert d['title_abstract']['unscreened']==428,d
+          assert d['fulltext']['eligible_after_title_abstract']==304,d
           assert d['fulltext']['included']==120,d
           assert d['fulltext']['decision_excluded']==131,d
           assert d['fulltext']['assessed_excluded']==130,d
           assert d['fulltext']['unavailable']==1,d
-          assert d['fulltext']['unscreened']==33,d
+          assert d['fulltext']['unscreened']==53,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
           assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==107,d
           assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==39,d
@@ -113,8 +114,8 @@ jobs:
           assert d['geography']['geographic_contrast_positive']==26,d
           assert d['geography']['receiver_assemblage_contrast_positive']==25,d
           assert d['geography']['joint_geographic_receiver_positive']==23,d
-          assert d['prisma_flow']['records_screened_title_abstract']==412,d
-          assert d['prisma_flow']['reports_sought_for_retrieval']==284,d
+          assert d['prisma_flow']['records_screened_title_abstract']==440,d
+          assert d['prisma_flow']['reports_sought_for_retrieval']==304,d
           assert d['prisma_flow']['reports_not_retrieved']==1,d
           assert d['prisma_flow']['reports_assessed_for_eligibility']==250,d
           assert d['prisma_flow']['reports_excluded_fulltext']==130,d
