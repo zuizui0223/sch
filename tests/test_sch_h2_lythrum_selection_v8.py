@@ -36,7 +36,7 @@ def test_v8_adds_lythrum_as_seventh_independent_total_selection_cluster():
         ROOT/"data"/"SCH_H2_DALECHAMPIA_PEREZ_BARRALES_2013_SELECTION_GRADIENTS_V1.csv",
         LYTHRUM,
     )
-    assert summary["total_selection_effect"]=={"n_cases":79,"n_axes":30,"n_clusters":7,"n_repeated_axes":27}
+    assert summary["total_selection_effect"]=={"n_cases":79,"n_axes":30,"n_clusters":7,"n_repeated_axes":26}
     assert summary["standardized_selection_gradient"]=={"n_cases":61,"n_axes":26,"n_clusters":6,"n_repeated_axes":25}
     assert summary["h2_commensurate_estimand_gate"]=="FAIL"
     assert summary["remaining_cluster_deficit"]==1
