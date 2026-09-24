@@ -26,7 +26,6 @@ PRIMARY_CLASSES = (
 )
 
 MIN_NEW_PROGRAMMES_PER_PRIMARY_CLASS = 5
-MIN_PROGRAMMES_WITH_NONZERO_SUPPORTED_REVERSAL = 2
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -62,20 +61,14 @@ def confirmatory_gate(
     *,
     n_multiweight_programmes: int,
     n_single_factor_programmes: int,
-    n_programmes_with_nonzero_supported_reversal: int,
 ) -> dict[str, object]:
     class_gate = (
         n_multiweight_programmes >= MIN_NEW_PROGRAMMES_PER_PRIMARY_CLASS
         and n_single_factor_programmes >= MIN_NEW_PROGRAMMES_PER_PRIMARY_CLASS
     )
-    event_gate = (
-        n_programmes_with_nonzero_supported_reversal
-        >= MIN_PROGRAMMES_WITH_NONZERO_SUPPORTED_REVERSAL
-    )
     return {
         "class_breadth_pass": class_gate,
-        "supported_reversal_event_pass": event_gate,
-        "primary_inference_licensed": class_gate and event_gate,
+        "primary_inference_licensed": class_gate,
     }
 
 
@@ -132,7 +125,9 @@ def build(root: Path) -> dict[str, object]:
         "primary_unit": "INDEPENDENT_BIOLOGICAL_PROGRAMME",
         "axis_eligibility": (
             "same TOTAL_SELECTION_EFFECT trait axis observed in at least two "
-            "qualified contexts with usable uncertainty for the compared contexts"
+            "source-defined qualified contexts with usable uncertainty; all "
+            "uncertainty-resolved source-defined contexts are evaluated without "
+            "selecting a favorable pair after sign inspection"
         ),
         "axis_event": (
             "at least one supported-positive context and at least one "
@@ -150,12 +145,10 @@ def build(root: Path) -> dict[str, object]:
             "programme contains at least one bidirectionally supported reversal axis"
         ),
         "minimum_new_programmes_per_primary_class": MIN_NEW_PROGRAMMES_PER_PRIMARY_CLASS,
-        "minimum_programmes_with_nonzero_supported_reversal": (
-            MIN_PROGRAMMES_WITH_NONZERO_SUPPORTED_REVERSAL
-        ),
         "primary_inference": (
-            "exact programme-label permutation test for the difference in "
-            "equal-programme-weighted mean q_j, only after both gates pass"
+            "upper-tail exact programme-label permutation test for the difference in "
+            "equal-programme-weighted mean q_j, only after the design-breadth gate passes; "
+            "zero observed reversal is retained as a valid result"
         ),
         "before_gate_output": "DESCRIPTIVE_COUNTS_ONLY_FAIL_CLOSED",
         "spatial_rule": (
@@ -170,7 +163,7 @@ def build(root: Path) -> dict[str, object]:
             "design_class_is_frozen_before_selection_outcome_extraction",
             "programme_is_the_inferential_unit",
             "trait_axes_are_not_independent_replicates",
-            "no_primary_inference_before_registered_breadth_and_event_gates",
+            "no_primary_inference_before_registered_design_breadth_gate",
             "observational_spatial_programmes_are_external_replication_only",
             "a_failed_directional_prediction_is_a_valid_confirmatory_result",
         ],
