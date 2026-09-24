@@ -77,25 +77,22 @@ def test_v12_classification_is_design_first_and_spatial_is_external():
     ) == "UNCLASSIFIABLE_FAIL_CLOSED"
 
 
-def test_v12_primary_inference_remains_fail_closed_until_programme_gates_pass():
+def test_v12_primary_inference_gate_depends_only_on_design_breadth():
     gate = _mod().confirmatory_gate
 
     assert gate(
         n_multiweight_programmes=5,
         n_single_factor_programmes=4,
-        n_programmes_with_nonzero_supported_reversal=3,
+    )["primary_inference_licensed"] is False
+
+    assert gate(
+        n_multiweight_programmes=4,
+        n_single_factor_programmes=5,
     )["primary_inference_licensed"] is False
 
     assert gate(
         n_multiweight_programmes=5,
         n_single_factor_programmes=5,
-        n_programmes_with_nonzero_supported_reversal=1,
-    )["primary_inference_licensed"] is False
-
-    assert gate(
-        n_multiweight_programmes=5,
-        n_single_factor_programmes=5,
-        n_programmes_with_nonzero_supported_reversal=2,
     )["primary_inference_licensed"] is True
 
 
@@ -104,6 +101,7 @@ def test_v12_uses_programmes_not_axes_as_inferential_replicates():
     assert result["primary_unit"] == "INDEPENDENT_BIOLOGICAL_PROGRAMME"
     assert "mean(q_j" in result["primary_estimand"]
     assert "trait_axes_are_not_independent_replicates" in result["claim_ceiling"]
+    assert "zero observed reversal is retained as a valid result" in result["primary_inference"]
 
 
 def test_v12_frozen_receipt_matches_builder():
