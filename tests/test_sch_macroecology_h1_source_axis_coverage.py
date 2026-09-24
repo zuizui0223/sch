@@ -30,8 +30,8 @@ def _build():
 
 def test_all_record_level_h1_candidates_are_source_axis_recoded():
     built = _build()
-    assert built["n_record_level_h1_candidates"] == 32
-    assert built["n_h1_candidates_with_source_axis_record"] == 32
+    assert built["n_record_level_h1_candidates"] == 34
+    assert built["n_h1_candidates_with_source_axis_record"] == 34
     assert built["n_h1_candidates_missing_source_axis_record"] == 0
     assert built["missing_h1_record_ids"] == []
     assert built["status"] == "ALL_RECORD_LEVEL_H1_CANDIDATES_SOURCE_AXIS_RECODED"
