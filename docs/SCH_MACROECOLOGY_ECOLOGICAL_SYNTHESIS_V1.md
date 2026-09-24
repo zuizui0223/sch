@@ -221,6 +221,38 @@ This separates two biological statements that should not be conflated:
 
 The 14/27 and 3/27 counts are bounded descriptions of an estimand-qualified subset. They are not literature-wide prevalence estimates.
 
+## Context-driver decomposition after the directional result
+
+The 27 repeated TOTAL_SELECTION_EFFECT axes occur in seven independent repeated-context programmes. V11 assigns context families from design metadata rather than from the observed sign outcome.
+
+~~~text
+BIOTIC_REGIME_MANIPULATION
+  programmes                              5
+  repeated axes                          22
+  point-estimate sign switches           10
+  uncertainty-supported switches          1
+  programmes with >=1 point switch      4 / 5
+
+NATURAL_SPATIAL_MOSAIC
+  programmes                              1
+  repeated axes                           4
+  point-estimate sign switches            3
+  uncertainty-supported switches          2
+
+ANTHROPOGENIC_PROXIMITY
+  programmes                              1
+  repeated axes                           1
+  point-estimate sign switches            1
+  uncertainty-supported switches          0
+  uncertainty unresolved                  1
+~~~
+
+The ecological gain is specific: **the directional-context pattern is not solely a geographic-comparison artifact.** Four of five independent programmes with manipulated biotic regimes contain at least one point-direction switch, so experimentally changing pollination, herbivory/damage or consumer composition can be sufficient to reorganize the realized selection surface.
+
+The natural Erysimum mosaic contains the strongest replicated supported reversals, but its population contrasts do not isolate one causal driver. The Helianthus near/far crop contrast remains point-direction evidence because numeric uncertainty for the aggregate means is unavailable.
+
+No statistical comparison among context families is attempted. Seven programmes are too few, axes are nested within programmes, and the design classes are unbalanced.
+
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -283,7 +315,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
 5. rerun H1 and H2 denominators after systematic-screen completion;
-6. retain scale-invariant directional analysis as the current H2 comparative result until a strict pooling gate passes.
+6. retain scale-invariant directional analysis and programme-aware context-driver decomposition as the current H2 comparative result until a strict pooling gate passes.
 
 ## Claim ceiling
 
@@ -298,6 +330,7 @@ H1_MODEL = FAIL_CLOSED
 H2_DESCRIPTIVE_PATTERN = READY
 H2_ESTIMAND_FAMILY_GATE = PASS
 H2_DIRECTIONAL_CONTEXT_ANALYSIS = READY
+H2_CONTEXT_DRIVER_DECOMPOSITION = READY_DESCRIPTIVE
 H2_STRICT_NUMERIC_POOLING = FAIL_CLOSED
 
 NPH_VIEWPOINT_STATUS = REMAINS_SUBMISSION_READY
