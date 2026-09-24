@@ -87,7 +87,9 @@ An axis enters the V12 outcome only when it has:
 1. the same canonical trait coordinate across contexts;
 2. TOTAL_SELECTION_EFFECT as the estimand family;
 3. at least two qualified contexts;
-4. usable uncertainty for the contexts being compared.
+4. at least two source-defined qualified contexts with usable uncertainty.
+
+All uncertainty-resolved source-defined contexts are evaluated. No context pair is selected after inspecting the signs.
 
 A bidirectionally supported reversal requires at least one supported-positive and at least one supported-negative context on that same axis.
 
@@ -132,14 +134,15 @@ No inferential comparison is licensed until the future holdout yields at least:
 ~~~text
 new A programmes                       >= 5
 new B programmes                       >= 5
-programmes with non-zero q_j           >= 2
 ~~~
 
 Before that point:
 
 DESCRIPTIVE_COUNTS_ONLY_FAIL_CLOSED
 
-After the gate passes, the registered primary inference is an exact permutation test over programme labels for the equal-programme-weighted difference in mean q_j.
+After the gate passes, the registered primary inference is an upper-tail exact permutation test over programme labels for the equal-programme-weighted difference in mean q_j.
+
+The gate depends only on design breadth, not on the observed number of reversals. If every future programme has q_j = 0, that zero-event outcome is retained as a valid confirmatory result rather than being used to suppress the test.
 
 The gate is a minimum estimability requirement, not a promise that the eventual analysis will be highly powered.
 
