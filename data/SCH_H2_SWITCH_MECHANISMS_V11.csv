@@ -1,0 +1,8 @@
+mechanism,n_repeated_axes,n_point_switch_axes,n_bidirectional_supported_axes,n_one_side_supported_axes,n_both_sides_unsupported_axes,n_uncertainty_unresolved_switch_axes,n_clusters,n_switch_clusters
+MIXED_POLLINATION_X_HERBIVORY,2,2,1,1,0,0,1,1
+POLLINATION_SUPPLEMENTATION,7,4,0,1,3,0,2,2
+HERBIVORY_REDUCTION,1,0,0,0,0,0,1,0
+SPATIAL_MULTI_AGENT_MOSAIC,4,3,2,1,0,0,1,1
+CONSUMER_IDENTITY_COMPOSITION,9,4,0,2,2,0,1,1
+ANTAGONIST_DAMAGE_MANIPULATION,3,0,0,0,0,0,1,0
+LANDSCAPE_CROP_PROXIMITY,1,1,0,0,0,1,1,1
