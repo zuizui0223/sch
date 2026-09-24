@@ -18,9 +18,9 @@ def _module():
 
 def test_macro_candidate_universe_keeps_every_current_fulltext_include():
     rows, receipt = _module().build(FROZEN, PRISMA)
-    assert len(rows) == 119
-    assert len({row["record_id"] for row in rows}) == 119
-    assert receipt["n_primary_candidates"] == 119
+    assert len(rows) == 120
+    assert len({row["record_id"] for row in rows}) == 120
+    assert receipt["n_primary_candidates"] == 120
     assert receipt["candidate_rule"] == "all_current_fulltext_INCLUDE_records_no_outcome_sign_filter"
 
 
@@ -28,7 +28,7 @@ def test_macro_candidate_universe_does_not_filter_by_existing_evidence_lane():
     rows, receipt = _module().build(FROZEN, PRISMA)
     lane_counts = receipt["evidence_lane_counts"]
     assert lane_counts["STRICT_LINKED_EXPERIMENT"] == 2
-    assert lane_counts["DIRECTIONAL_OR_NEAR_PASS"] == 106
+    assert lane_counts["DIRECTIONAL_OR_NEAR_PASS"] == 107
     assert lane_counts["EVOLUTIONARY_OUTCOME"] == 39
     assert lane_counts["HISTORICAL_TRANSITION"] == 4
     assert all(row["geometry_eligibility"] == "PENDING_SOURCE_RECODE" for row in rows)
@@ -38,10 +38,10 @@ def test_macro_candidate_universe_does_not_filter_by_existing_evidence_lane():
 def test_macro_candidate_universe_preserves_existing_geography_without_using_it_as_eligibility():
     rows, receipt = _module().build(FROZEN, PRISMA)
     geo = receipt["existing_geography_coverage"]
-    assert geo["positive_geographic_contrast_records"] == 25
-    assert geo["positive_receiver_contrast_records"] == 24
-    assert geo["joint_positive_records"] == 22
-    assert len(rows) == 119
+    assert geo["positive_geographic_contrast_records"] == 26
+    assert geo["positive_receiver_contrast_records"] == 25
+    assert geo["joint_positive_records"] == 23
+    assert len(rows) == 120
 
 
 def test_macro_candidate_builder_populates_no_new_ecological_outcome():
@@ -58,7 +58,7 @@ def test_candidate_csv_roundtrip(tmp_path):
     mod._write_csv(out, rows)
     with out.open(encoding="utf-8", newline="") as handle:
         reread = list(csv.DictReader(handle))
-    assert len(reread) == 119
+    assert len(reread) == 120
     assert reread[0]["record_id"].startswith("SCHPRISMA-")
     assert reread[0]["geometry_eligibility"] == "PENDING_SOURCE_RECODE"
     assert reread[0]["design_audit_eligible"] == "YES_CURRENT_FULLTEXT_INCLUDE"
