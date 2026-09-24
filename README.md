@@ -151,20 +151,36 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         117
-canonical biological trait axes           48
+current primary-study inclusions         120
+canonical biological trait axes           50
 
 static fixed-role resolved axes            19
   conflict                                  9
   reinforcement                             2
   one-sided / null                          8
 
-materialized H2 local cases                49
-  plant-performance                        42
-  visitor-role behavior                     7
+broad materialized H2 local cases          49
+
+TOTAL_SELECTION_EFFECT family
+  cases                                    81
+  trait axes                               31
+  independent programmes                    8
+  registered estimand-family gate        PASS
+
+strict STANDARDIZED_SELECTION_GRADIENT family
+  cases                                    61
+  trait axes                               26
+  independent programmes                    6
+  strict numeric pooling gate            FAIL
+
+repeated TOTAL_SELECTION_EFFECT axes        27
+  point-estimate sign switch               14
+  uncertainty-supported sign switch         3
 
 H1 modelability = FAIL_CLOSED
-H2 breadth gate = PASS\nH2 estimand-family modelability = FAIL_CLOSED
+H2 breadth gate = PASS
+H2 estimand-family breadth gate = PASS
+H2 strict numeric-pooling gate = FAIL_CLOSED
 ~~~
 
 The current biological synthesis is:
@@ -181,6 +197,8 @@ See:
 - `docs/SCH_H2_GYMNADENIA_A2_RECOVERY_V1.md`
 - `docs/SCH_H2_TRIFOLIUM_RECOVERY_V1.md`
 - `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`\n- `docs/SCH_H2_POLYGALA_TANACETUM_RECOVERY_V1.md`
+- `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
+- `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
 
 ## Empirical execution strategy
 
