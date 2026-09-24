@@ -1,0 +1,79 @@
+{
+  "analysis": "sch_h2_reversal_holdout_protocol_v1",
+  "baseline_commit_sha": "18e63173560ef416f211b6184d8dc852e9740946",
+  "development_programmes": [
+    "Brassica_rapa_Knauer_selection_program",
+    "Dalechampia_scandens_Perez_Barrales_selection_program",
+    "Erysimum_mediohispanicum_selection_mosaic",
+    "Gymnadenia_conopsea_agent_selection",
+    "Helianthus_annuus_texanus_Mitchell_selection_program",
+    "Lobelia_cardinalis_Bartkowska_selection_program",
+    "Lythrum_salicaria_Thomsen_selection_program",
+    "Trifolium_repens_selection_program"
+  ],
+  "development_result_role": "HYPOTHESIS_GENERATION_ONLY",
+  "hypothesis": {
+    "id": "H2M1",
+    "statement": "Held-out TOTAL_SELECTION_EFFECT programmes classified prospectively as MULTI_COMPONENT_OR_ASSEMBLAGE will more often contain at least one bidirectionally uncertainty-supported sign reversal than programmes classified as SINGLE_REGISTERED_MODIFIER.",
+    "primary_unit": "INDEPENDENT_BIOLOGICAL_PROGRAMME",
+    "predictor": "CONTEXT_DIMENSIONALITY_CLASS",
+    "outcome": "ANY_BIDIRECTIONAL_SUPPORTED_REVERSAL"
+  },
+  "predictor_classes": {
+    "MULTI_COMPONENT_OR_ASSEMBLAGE": {
+      "rule": "Before outcome-sign inspection, the repeated-context design varies at least two registered ecological components in a crossed design, changes consumer identity/composition, or is a spatial mosaic with source-documented variation in at least two ecological components.",
+      "primary_eligible": true
+    },
+    "SINGLE_REGISTERED_MODIFIER": {
+      "rule": "Before outcome-sign inspection, one registered ecological modifier is experimentally manipulated or prospectively stratified while the focal total-selection estimand and trait axis are held comparable.",
+      "primary_eligible": true
+    },
+    "UNRESOLVED_CONTEXT_DIMENSIONALITY": {
+      "rule": "The context label is observational or composite and the source does not support assignment to one of the two primary predictor classes without inspecting outcome signs.",
+      "primary_eligible": false
+    }
+  },
+  "outcome_rule": {
+    "axis_level_strong_reversal": "At least one context has supported positive total selection and at least one context has supported negative total selection on the same canonical trait axis.",
+    "supported_direction_sources": [
+      "reported confidence interval excluding zero",
+      "reported SE with abs(beta/SE)>1.96",
+      "reported p<0.05 paired with the sign of the reported coefficient"
+    ],
+    "no_imputation": true,
+    "programme_level_outcome": "YES if at least one repeated canonical axis satisfies axis_level_strong_reversal; otherwise NO after all qualified repeated axes in the programme are adjudicated."
+  },
+  "admission_rules": [
+    "programme first qualifies for TOTAL_SELECTION_EFFECT after baseline_commit_sha",
+    "programme is independent of every development_programme",
+    "same-axis and common-outcome qualification rules remain unchanged",
+    "context predictor class is frozen before outcome-sign adjudication",
+    "at least one canonical trait axis has two or more comparable total-selection contexts"
+  ],
+  "primary_test_gate": {
+    "min_primary_eligible_programmes": 8,
+    "min_programmes_per_predictor_class": 3,
+    "min_programmes_with_outcome_yes": 2,
+    "min_programmes_with_outcome_no": 2
+  },
+  "primary_test": {
+    "method": "TWO_SIDED_FISHER_EXACT_AT_PROGRAMME_LEVEL",
+    "effect_summary": "ODDS_RATIO_MULTI_COMPONENT_OR_ASSEMBLAGE_VS_SINGLE_REGISTERED_MODIFIER",
+    "alpha": 0.05,
+    "no_axis_level_pseudoreplication": true
+  },
+  "secondary_outputs": [
+    "axis-level descriptive reversal evidence ladder",
+    "programme-level counts by predictor class",
+    "unresolved-dimensionality boundary cases"
+  ],
+  "status": "PROSPECTIVE_HOLDOUT_FROZEN_TEST_NOT_OPEN",
+  "claim_ceiling": [
+    "current_eight_programmes_are_never_used_in_primary_holdout_test",
+    "predictor_classification_must_precede_outcome_sign_adjudication",
+    "programme_is_primary_inference_unit",
+    "unresolved_context_dimensionality_is_excluded_from_primary_comparison",
+    "no_primary_test_before_registered_gate_passes",
+    "screening_and_estimand_qualification_remain_outcome_blind"
+  ]
+}

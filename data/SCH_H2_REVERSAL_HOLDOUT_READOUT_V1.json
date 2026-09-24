@@ -1,0 +1,23 @@
+{
+  "analysis": "sch_h2_reversal_holdout_v1",
+  "baseline_commit_sha": "18e63173560ef416f211b6184d8dc852e9740946",
+  "n_development_programmes_excluded": 8,
+  "n_registered_heldout_programmes": 0,
+  "n_primary_eligible_resolved_programmes": 0,
+  "resolved_predictor_class_counts": {},
+  "resolved_outcome_counts": {},
+  "primary_test_gate_pass": false,
+  "contingency_table": null,
+  "odds_ratio": null,
+  "fisher_two_sided_p": null,
+  "test_status": "PRIMARY_HOLDOUT_TEST_NOT_OPEN",
+  "status": "PROSPECTIVE_REVERSAL_HOLDOUT_FROZEN",
+  "claim_ceiling": [
+    "current_eight_programmes_are_never_used_in_primary_holdout_test",
+    "predictor_classification_must_precede_outcome_sign_adjudication",
+    "programme_is_primary_inference_unit",
+    "unresolved_context_dimensionality_is_excluded_from_primary_comparison",
+    "no_primary_test_before_registered_gate_passes",
+    "screening_and_estimand_qualification_remain_outcome_blind"
+  ]
+}

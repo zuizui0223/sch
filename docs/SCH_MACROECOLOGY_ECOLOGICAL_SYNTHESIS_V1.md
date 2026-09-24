@@ -333,3 +333,28 @@ The three currently bidirectionally supported reversals are Gymnadenia flowering
 A post-hoc context-mechanism taxonomy shows point switches under mixed pollination-herbivory, pollination supplementation, spatial multi-agent mosaics, consumer-composition shifts and landscape context. Mechanism-specific switch ratios remain descriptive because the categories are strongly programme-confounded.
 
 See `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`.
+
+
+## Prospective reversal holdout
+
+The V11 mechanism pattern is now treated as hypothesis-generating rather than confirmatory.
+
+The eight programmes that produced the current directional-context result are frozen as a development set and excluded from the prospective primary test.
+
+H2M1 predicts that future held-out TOTAL_SELECTION_EFFECT programmes classified before outcome inspection as multi-component / assemblage contexts will more often contain at least one bidirectionally uncertainty-supported reversal than held-out programmes with one registered ecological modifier.
+
+Primary inference unit:
+
+`independent biological programme`
+
+Current status:
+
+~~~text
+development programmes excluded   8
+held-out programmes registered    0
+primary test                       CLOSED
+~~~
+
+The test opens only after at least eight primary-eligible held-out programmes are available, with at least three programmes in each predictor class and at least two programmes in both outcome states.
+
+See `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md`.
