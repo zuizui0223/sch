@@ -39,7 +39,7 @@ def test_all_record_level_h1_candidates_are_source_axis_recoded():
 
 def test_source_audit_separates_full_from_partial_downgrades():
     built = _build()
-    assert built["n_h1_source_records_with_model_axis"] == 26
+    assert built["n_h1_source_records_with_model_axis"] == 28
     assert built["n_h1_source_records_fully_downgraded_after_source_audit"] == 6
     assert built["fully_downgraded_h1_record_ids"] == [
         "SCHPRISMA-000202",
