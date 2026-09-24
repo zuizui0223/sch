@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V24_HELIANTHUS_TEXANUS_FULLTEXT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V25_ESTIMAND_PRIORITY_BATCH2.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 25))
+    assert [_version(path) for path in files] == list(range(1, 26))
     assert files[-1].name == LATEST
     return files
 
@@ -96,10 +96,10 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 412
-    assert ta["RETAIN_FULLTEXT"] == 284
-    assert ta["EXCLUDE"] == 128
-    assert DENOMINATOR - len(rows) == 456
+    assert len(rows) == 418
+    assert ta["RETAIN_FULLTEXT"] == 289
+    assert ta["EXCLUDE"] == 129
+    assert DENOMINATOR - len(rows) == 450
 
 
 def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
@@ -115,9 +115,9 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 120
     assert ft["EXCLUDE"] == 131
-    assert ft["UNSCREENED"] == 33
+    assert ft["UNSCREENED"] == 38
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)}
+    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)}
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
