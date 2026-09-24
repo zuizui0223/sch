@@ -61,7 +61,7 @@ def test_v7_builder_adds_two_independent_standardized_selection_clusters():
     assert summary["total_selection_effect"]["n_axes"] == 27
     assert summary["total_selection_effect"]["n_clusters"] == 6
     assert summary["standardized_selection_gradient"]["n_cases"] == 55
-    assert summary["standardized_selection_gradient"]["n_axes"] == 19
+    assert summary["standardized_selection_gradient"]["n_axes"] == 23
     assert summary["standardized_selection_gradient"]["n_clusters"] == 4
     assert summary["h2_commensurate_estimand_gate"] == "FAIL"
     assert summary["remaining_cluster_deficit"] == 2
