@@ -1,0 +1,25 @@
+{
+  "analysis": "sch_h2_reversal_holdout_v2",
+  "protocol_status": "PROSPECTIVE_HOLDOUT_V2_FROZEN_TEST_NOT_OPEN",
+  "n_development_programmes_excluded": 8,
+  "n_registered_heldout_programmes": 0,
+  "n_complete_primary_programmes": 0,
+  "n_complete_external_spatial_programmes": 0,
+  "complete_primary_class_counts": {},
+  "complete_primary_any_supported_reversal_counts": {},
+  "primary_test_gate_pass": false,
+  "primary_test": null,
+  "test_status": "PRIMARY_HOLDOUT_TEST_NOT_OPEN",
+  "status": "PROSPECTIVE_REVERSAL_HOLDOUT_V2_FROZEN",
+  "claim_ceiling": [
+    "current_eight_programmes_are_never_used_in_primary_holdout_test",
+    "frozen_463_record_queue_is_the_only_primary_source_pool",
+    "predictor_classification_must_precede_outcome_sign_adjudication",
+    "programme_is_primary_inference_unit",
+    "axis_count_is_normalized_within_programme_before_cross_programme_comparison",
+    "spatial_observational_programmes_are_external_replication_only",
+    "primary_opening_gate_depends_only_on_design_breadth",
+    "zero_supported_reversals_is_a_valid_confirmatory_result",
+    "screening_order_and_estimand_qualification_remain_outcome_blind"
+  ]
+}

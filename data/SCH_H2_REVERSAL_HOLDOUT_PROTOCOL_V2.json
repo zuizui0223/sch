@@ -1,0 +1,117 @@
+{
+  "analysis": "sch_h2_reversal_holdout_protocol_v2",
+  "amendment_of": "SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1",
+  "amendment_timing": "BEFORE_FIRST_HELDOUT_PROGRAMME_REGISTRATION",
+  "v1_registered_heldout_programmes_at_amendment": 0,
+  "baseline_commit_sha": "b1c84ddfa0e537ae51f6cf182c90b2035879c257",
+  "development_baseline_commit_sha": "18e63173560ef416f211b6184d8dc852e9740946",
+  "development_programmes": [
+    "Brassica_rapa_Knauer_selection_program",
+    "Dalechampia_scandens_Perez_Barrales_selection_program",
+    "Erysimum_mediohispanicum_selection_mosaic",
+    "Gymnadenia_conopsea_agent_selection",
+    "Helianthus_annuus_texanus_Mitchell_selection_program",
+    "Lobelia_cardinalis_Bartkowska_selection_program",
+    "Lythrum_salicaria_Thomsen_selection_program",
+    "Trifolium_repens_selection_program"
+  ],
+  "development_result_role": "HYPOTHESIS_GENERATION_ONLY",
+  "holdout_source": {
+    "path": "data/SCH_H2_UNSCREENED_TA_PRIORITY_QUEUE_V1.csv",
+    "git_blob_sha": "1ffd1849b4381a43bb85b2d3473161caabdac510",
+    "n_records": 463,
+    "formal_prisma_denominator": 868,
+    "n_already_title_abstract_screened": 405,
+    "frozen_review_order_authoritative": true,
+    "v11_outcomes_must_not_reprioritize": true
+  },
+  "hypothesis": {
+    "id": "H2M1_V2",
+    "statement": "Among held-out experimental TOTAL_SELECTION_EFFECT programmes, programmes prospectively classified as MULTI_COMPONENT_OR_CONSUMER_TURNOVER will have a larger equal-programme-weighted fraction of eligible repeated trait axes with bidirectionally uncertainty-supported reversal than programmes classified as SINGLE_REGISTERED_MODIFIER.",
+    "primary_unit": "INDEPENDENT_BIOLOGICAL_PROGRAMME",
+    "predictor": "PROSPECTIVE_EXPERIMENTAL_CONTEXT_CLASS",
+    "outcome": "PROGRAMME_SUPPORTED_REVERSAL_FRACTION_Q"
+  },
+  "predictor_classes": {
+    "MULTI_COMPONENT_OR_CONSUMER_TURNOVER": {
+      "rule": "Before selection-sign inspection, the experiment independently varies at least two registered biotic dimensions or manipulates consumer identity/composition/assemblage while retaining a comparable plant-fitness total-selection estimand.",
+      "primary_eligible": true
+    },
+    "SINGLE_REGISTERED_MODIFIER": {
+      "rule": "Before selection-sign inspection, one registered biotic modifier is experimentally manipulated while consumer identity/composition is conceptually fixed and the focal total-selection estimand remains comparable.",
+      "primary_eligible": true
+    },
+    "EXTERNAL_SPATIAL_REPLICATION": {
+      "rule": "Population, landscape or geographic context varies observationally. These programmes may externally replicate the ecological pattern but are excluded from the primary experimental comparison.",
+      "primary_eligible": false
+    },
+    "UNRESOLVED_CONTEXT_DIMENSIONALITY": {
+      "rule": "The source design cannot be assigned to a primary class without interpretation that could depend on the observed selection outcome.",
+      "primary_eligible": false
+    }
+  },
+  "axis_eligibility": {
+    "estimand_family": "TOTAL_SELECTION_EFFECT",
+    "repeated_same_canonical_trait_axis": true,
+    "min_source_defined_contexts": 2,
+    "uncertainty_required_for_compared_contexts": true,
+    "all_uncertainty_resolved_source_defined_contexts_are_evaluated": true,
+    "no_posthoc_context_pair_selection": true
+  },
+  "axis_event": {
+    "definition": "At least one source-defined context has supported positive total selection and at least one has supported negative total selection on the same eligible canonical trait axis.",
+    "supported_direction_sources": [
+      "reported confidence interval excluding zero",
+      "reported SE with abs(beta/SE)>1.96",
+      "reported p<0.05 paired with coefficient sign"
+    ],
+    "no_missing_uncertainty_imputation": true
+  },
+  "programme_score": {
+    "symbol": "q_j",
+    "definition": "n_bidirectionally_supported_reversal_axes / n_eligible_repeated_axes",
+    "range": "0_TO_1",
+    "equal_programme_weight_in_primary_comparison": true
+  },
+  "admission_rules": [
+    "primary_source_id belongs to the frozen 463-record holdout queue",
+    "programme first qualifies after the V2 baseline commit",
+    "programme is independent of all eight development programmes",
+    "same-axis and TOTAL_SELECTION_EFFECT qualification rules remain unchanged",
+    "predictor class is frozen before selection-sign adjudication",
+    "at least one canonical trait axis has two or more source-defined comparable total-selection contexts"
+  ],
+  "primary_test_gate": {
+    "min_complete_programmes_per_primary_class": 5,
+    "outcome_dependent_conditions": [],
+    "zero_reversal_result_is_valid": true
+  },
+  "primary_test": {
+    "estimand": "mean(q_j | MULTI_COMPONENT_OR_CONSUMER_TURNOVER) - mean(q_j | SINGLE_REGISTERED_MODIFIER)",
+    "directional_prediction": "DELTA_GT_0",
+    "method": "UPPER_TAIL_PROGRAMME_LABEL_PERMUTATION",
+    "exact_if_assignments_lte": 200000,
+    "otherwise_monte_carlo_draws": 200000,
+    "monte_carlo_seed": 120926,
+    "alpha": 0.05,
+    "no_axis_level_pseudoreplication": true
+  },
+  "secondary_outputs": [
+    "programme-level any-supported-reversal indicator",
+    "axis-level reversal evidence ladder",
+    "external spatial replication summaries",
+    "unresolved-dimensionality boundary cases"
+  ],
+  "status": "PROSPECTIVE_HOLDOUT_V2_FROZEN_TEST_NOT_OPEN",
+  "claim_ceiling": [
+    "current_eight_programmes_are_never_used_in_primary_holdout_test",
+    "frozen_463_record_queue_is_the_only_primary_source_pool",
+    "predictor_classification_must_precede_outcome_sign_adjudication",
+    "programme_is_primary_inference_unit",
+    "axis_count_is_normalized_within_programme_before_cross_programme_comparison",
+    "spatial_observational_programmes_are_external_replication_only",
+    "primary_opening_gate_depends_only_on_design_breadth",
+    "zero_supported_reversals_is_a_valid_confirmatory_result",
+    "screening_order_and_estimand_qualification_remain_outcome_blind"
+  ]
+}

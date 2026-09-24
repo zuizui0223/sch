@@ -186,15 +186,20 @@ H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
 H2 strict numeric-pooling gate = FAIL_CLOSED
 
-H2M1 prospective reversal holdout
+H2M1-V2 prospective reversal holdout
   development programmes excluded             8
+  frozen source pool                         463
   held-out programmes registered              0
   primary test                              CLOSED
+  spatial mosaics             EXTERNAL_REPLICATION
+  opening gate                 DESIGN_BREADTH_ONLY
 ~~~
 
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
+
+V2 freezes the untouched 463-record queue as the only primary holdout source. The eight V10-V11 programmes remain development-only; observational spatial mosaics are external replication; and the primary comparison uses equal-programme-weighted within-programme reversal fractions rather than treating trait axes as independent replicates.
 
 The macroecology layer is an **active upgrade path**, not a reason to delay the frozen New Phytologist Viewpoint. It becomes a candidate full comparative paper only after the systematic denominator is completed and an H1 or plant-performance H2 modelability gate passes.
 
@@ -209,7 +214,8 @@ See:
 - `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
 - `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`
-- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md`
+- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md` — superseded pre-data protocol provenance
+- `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md` — active prospective contract
 
 ## Empirical execution strategy
 

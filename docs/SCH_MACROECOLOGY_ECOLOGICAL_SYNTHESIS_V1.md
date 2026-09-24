@@ -335,26 +335,59 @@ A post-hoc context-mechanism taxonomy shows point switches under mixed pollinati
 See `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`.
 
 
-## Prospective reversal holdout
+## Prospective reversal holdout V2
 
-The V11 mechanism pattern is now treated as hypothesis-generating rather than confirmatory.
+The V11 mechanism pattern is hypothesis-generating rather than confirmatory.
 
-The eight programmes that produced the current directional-context result are frozen as a development set and excluded from the prospective primary test.
+The eight programmes that produced V10-V11 are permanently excluded from the prospective primary test.
 
-H2M1 predicts that future held-out TOTAL_SELECTION_EFFECT programmes classified before outcome inspection as multi-component / assemblage contexts will more often contain at least one bidirectionally uncertainty-supported reversal than held-out programmes with one registered ecological modifier.
+V2 supersedes V1 before any held-out programme was registered and fixes three inferential problems:
 
-Primary inference unit:
+1. the opening gate no longer depends on seeing YES or NO reversal outcomes;
+2. observational spatial mosaics are external replication rather than members of the primary experimental comparison;
+3. programmes are compared through an axis-normalized programme score rather than an "any reversal" indicator that favors programmes measuring many traits.
 
-`independent biological programme`
-
-Current status:
+The only primary source pool is the already frozen 463-record title/abstract-unscreened queue.
 
 ~~~text
-development programmes excluded   8
-held-out programmes registered    0
-primary test                       CLOSED
+formal PRISMA denominator            868
+already screened                     405
+frozen untouched source pool         463
+held-out programmes registered         0
 ~~~
 
-The test opens only after at least eight primary-eligible held-out programmes are available, with at least three programmes in each predictor class and at least two programmes in both outcome states.
+For each held-out experimental programme j:
 
-See `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md`.
+~~~text
+q_j =
+bidirectionally supported reversal axes
+----------------------------------------
+eligible repeated TOTAL_SELECTION_EFFECT axes
+~~~
+
+Primary prediction:
+
+~~~text
+mean(q_j | MULTI_COMPONENT_OR_CONSUMER_TURNOVER)
+>
+mean(q_j | SINGLE_REGISTERED_MODIFIER)
+~~~
+
+The test opens only after at least five complete held-out programmes qualify in each experimental class. This opening rule depends only on design breadth. If all q_j values are zero, zero reversal is retained as a valid confirmatory result.
+
+Primary inference is an upper-tail programme-label permutation test. Trait axes are nested measurements, not independent inferential replicates.
+
+Observational population, landscape and geographic programmes accumulate separately as EXTERNAL_SPATIAL_REPLICATION.
+
+Current state:
+
+~~~text
+development programmes excluded    8
+frozen holdout records            463
+registered held-out programmes      0
+primary gate                   CLOSED
+~~~
+
+The immediate next operation is the frozen TA0 title/abstract screen, not further mining of the eight development programmes.
+
+See docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md.
