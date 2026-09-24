@@ -22,16 +22,16 @@ def _build():
 
 def test_canonical_ledger_materializes_independent_model_units():
     rows, receipt = _build()
-    assert len(rows) == 48
-    assert receipt["n_source_axis_records"] == 57
+    assert len(rows) == 52
+    assert receipt["n_source_axis_records"] == 59
     assert receipt["n_excluded_source_axis_records"] == 7
     assert receipt["n_model_source_axis_records"] == 50
-    assert receipt["n_canonical_trait_axes"] == 48
+    assert receipt["n_canonical_trait_axes"] == 50
 
 
 def test_canonical_ledger_static_h1_frontier():
     rows, receipt = _build()
-    assert receipt["n_fixed_role_axes"] == 35
+    assert receipt["n_fixed_role_axes"] == 36
     assert receipt["n_static_resolved_fixed_role_axes"] == 19
     assert receipt["n_static_resolved_fixed_role_clusters"] == 13
     assert receipt["static_geometry_counts"] == {
@@ -49,11 +49,11 @@ def test_canonical_ledger_keeps_context_variable_and_role_boundary_separate():
         "CONFLICT": 9,
         "CONTEXT_VARIABLE": 1,
         "ONE_SIDED_OR_NULL": 8,
-        "ROLE_BOUNDARY": 13,
-        "UNRESOLVED": 15,
+        "ROLE_BOUNDARY": 14,
+        "UNRESOLVED": 16,
     }
     assert sum(row["canonical_geometry"] == "CONTEXT_VARIABLE" for row in rows) == 1
-    assert sum(row["canonical_geometry"] == "ROLE_BOUNDARY" for row in rows) == 13
+    assert sum(row["canonical_geometry"] == "ROLE_BOUNDARY" for row in rows) == 14
 
 
 def test_canonical_ledger_readout_is_reproducible():
