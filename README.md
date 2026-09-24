@@ -174,8 +174,12 @@ strict STANDARDIZED_SELECTION_GRADIENT family
   strict numeric pooling gate            FAIL
 
 repeated TOTAL_SELECTION_EFFECT axes        27
-  point-estimate sign switch               14
-  uncertainty-supported sign switch         3
+  no point reversal                         13
+  point-estimate sign switch                14
+    bidirectional uncertainty-supported      3
+    one-side supported                       5
+    both-sides unsupported                   5
+    uncertainty unresolved                   1
 
 H1 modelability = FAIL_CLOSED
 H2 breadth gate = PASS
@@ -199,6 +203,7 @@ See:
 - `docs/SCH_H2_ERYSIMUM_TABLE5_RECOVERY_V1.md`\n- `docs/SCH_H2_POLYGALA_TANACETUM_RECOVERY_V1.md`
 - `docs/SCH_H2_ESTIMAND_GATE_PASS_V9.md`
 - `docs/SCH_H2_DIRECTIONAL_CONTEXT_ANALYSIS_V10.md`
+- `docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md`
 
 ## Empirical execution strategy
 
