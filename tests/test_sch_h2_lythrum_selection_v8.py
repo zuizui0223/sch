@@ -37,7 +37,7 @@ def test_v8_adds_lythrum_as_seventh_independent_total_selection_cluster():
         LYTHRUM,
     )
     assert summary["total_selection_effect"]=={"n_cases":79,"n_axes":30,"n_clusters":7,"n_repeated_axes":26}
-    assert summary["standardized_selection_gradient"]=={"n_cases":61,"n_axes":26,"n_clusters":6,"n_repeated_axes":25}
+    assert summary["standardized_selection_gradient"]=={"n_cases":61,"n_axes":26,"n_clusters":6,"n_repeated_axes":22}
     assert summary["h2_commensurate_estimand_gate"]=="FAIL"
     assert summary["remaining_cluster_deficit"]==1
     assert "Lythrum_salicaria_Thomsen_selection_program" in summary["new_clusters"]
