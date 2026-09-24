@@ -189,7 +189,7 @@ H2 strict numeric-pooling gate = FAIL_CLOSED
 H2M1-V3 prospective reversal holdout
   development programmes excluded             8
   frozen active source pool                  456
-  held-out programmes registered              0
+  held-out programmes registered              4
   primary test                              CLOSED
   spatial mosaics             EXTERNAL_REPLICATION
   opening gate                 DESIGN_BREADTH_ONLY
@@ -217,6 +217,7 @@ See:
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.md` — superseded pre-data protocol provenance
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md` — superseded source-pool boundary
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md` — active prospective contract
+- `docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md` — first four held-out programmes, design-only
 
 ## Empirical execution strategy
 
