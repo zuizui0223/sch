@@ -1,0 +1,4 @@
+record_id,decision,qualification_status,rationale,cluster_action
+SCHPRISMA-000806,RETAIN_FULLTEXT,BLOCKED_COMPONENT_IDENTITY_UNRESOLVED,"Competing selection is explicit, but current frozen/source metadata does not establish that the competing pressures are pollinator and antagonist effects on one common trait-fitness coefficient scale.",NO_PROMOTION
+SCHPRISMA-000812,RETAIN_FULLTEXT,BLOCKED_PRIMARY_THESIS_NUMERIC_OBJECT_NOT_MATERIALIZED,"The dissertation explicitly targets herbivore- and pollinator-mediated selection on floral display, but exact gradients/uncertainty are not materialized in SCH.",NO_PROMOTION
+SCHPRISMA-000434,RETAIN_FULLTEXT,DEPENDENT_BRASSICA_PROGRAMME_UNRESOLVED,"Brassica rapa herbivory-volatiles-pollinator-fitness study is biologically relevant, but independence from the existing Brassica 000775 selection programme is not established and the title does not itself provide a commensurate selection coefficient.",NO_PROMOTION
