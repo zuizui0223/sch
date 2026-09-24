@@ -31,10 +31,10 @@ def _parse_p(value: str) -> float | None:
             return float(t.removeprefix("P_LT_").replace("_", "."))
         except ValueError:
             return None
-    m = re.search(r"P\\s*<\\s*([0-9]+(?:\\.[0-9]+)?)", t)
+    m = re.search(r"P\s*<\s*([0-9]+(?:\.[0-9]+)?)", t)
     if m:
         return float(m.group(1)) / 2.0
-    m = re.search(r"P\\s*=\\s*([0-9]+(?:\\.[0-9]+)?)", t)
+    m = re.search(r"P\s*=\s*([0-9]+(?:\.[0-9]+)?)", t)
     if m:
         return float(m.group(1))
     try:
