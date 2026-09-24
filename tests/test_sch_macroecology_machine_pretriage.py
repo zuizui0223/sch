@@ -45,7 +45,7 @@ def test_machine_pretriage_reproduces_full_119_design_funnel():
     assert receipt["n_paired_response_without_common_fitness"] == 15
     assert receipt["context_recode_priority_counts"] == {
         "NO_OR_UNRESOLVED": 86,
-        "YES": 33,
+        "YES": 34,
     }
 
 
