@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         138
+current primary-study inclusions         142
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -209,6 +209,8 @@ V30 adds four more primary studies without adding an H1 trait geometry. Sesamum 
 
 V31 adds three primary studies plus one explicit duplicate-report exclusion. P1 rises to 67 while the H1 record frontier remains 39: Digitalis robbery, Lonicera aphid herbivory and Brassica ontogeny × herbivore treatments are interaction-context experiments rather than matched two-function response surfaces on one floral trait coordinate.
 
+V32 completes the TA1 full-text tier. Four more primary studies raise P1 to 71, but the H1 record frontier remains 39. Iris 000663 and Primula 000729 expand benefit-cost/role-boundary evidence, Salvia 000736 adds spatiotemporal robbery context, and Brassica incana 000839 adds a 15-population urbanization context without a matched same-trait two-function geometry.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -237,6 +239,7 @@ See:
 - `docs/SCH_PRISMA_V29_TA1_FULLTEXT_BATCH_B_READOUT.md` — second TA1 full-text batch
 - `docs/SCH_PRISMA_V30_TA1_FULLTEXT_BATCH_C_READOUT.md` — third TA1 full-text batch
 - `docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md` — fourth TA1 full-text batch
+- `docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md` — final TA1 full-text closure
 
 ## Empirical execution strategy
 
