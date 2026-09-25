@@ -336,6 +336,19 @@ Brassica incana adds 15 urbanization-gradient populations where pollinator commu
 The systematic result is now sharper:
 
 > ecological interaction richness is common, while identified functional conflict on one shared coordinate remains a much narrower evidential subset.
+## V33 TA2 screening frontier
+
+The entire frozen repeated-context title/abstract tier is now screened:
+
+~~~text
+TA2 records                 20
+retained for full text      14
+excluded                     6
+~~~
+
+The exclusions reinforce the identification boundary: repeated context or floral-trait variation alone is insufficient when the study lacks a measured plant antagonist, lacks a measured pollinator function, or concerns pollen-pistil sexual conflict rather than plant mutualist-antagonist geometry.
+
+The retained set is enriched for exactly the boundary cases SCH needs to adjudicate at full text: pollen-consuming pollinators, nursery pollinators with later antagonistic roles, pollinator-cheater mosaics, and pollination-defence comparative systems.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
