@@ -148,12 +148,17 @@ primary experimental classes:
   SINGLE_REGISTERED_MODIFIER
 spatial / landscape programmes: EXTERNAL_REPLICATION
 registered design classes: 3 single-modifier / 1 multi-component
+complete outcomes: 3 single-modifier / 0 multi-component
+single-modifier q_j: 0, 0, 2/3
+Impatiens multi-component outcome: PENDING
 opening gate: >=5 complete programmes per primary class
 outcome-dependent opening conditions: NONE
 primary test: programme-label permutation on q_j
 ~~~
 
-Four V26 held-out studies are now formally full-text included as DIRECTIONAL_OR_NEAR_PASS, but their numeric outcomes remain pending and the existing 50-axis canonical geometry ledger has not yet been expanded.
+Four V26 held-out studies are formally full-text included as DIRECTIONAL_OR_NEAR_PASS. V27 completes numeric outcomes for Dactylorhiza, Primula and Trillium; Impatiens remains pending. All four have source-axis coverage, while the canonical geometry ledger remains at 50 axes pending individual-axis canonicalization.
+
+Trillium already demonstrates that a prospectively frozen single-modifier programme can contain supported reversal under the registered all-context rule (q_j = 2/3); Dactylorhiza and Primula have q_j = 0. A secondary within-year diagnostic gives 0/3 Trillium reversals, so the result is not attributed to pollen supplementation alone. This remains descriptive because the class-comparison gate is closed.
 
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
@@ -185,6 +190,7 @@ Canonical macroecology documents:
 - docs/SCH_H2_SWITCH_MECHANISM_TAXONOMY_V11.md
 - docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md
 - docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md
+- docs/SCH_H2_HOLDOUT_V27_OUTCOME_READOUT.md
 ## Frozen literature-layer status
 
 ```text

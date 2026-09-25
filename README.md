@@ -190,12 +190,16 @@ H2M1-V3 prospective reversal holdout
   development programmes excluded             8
   frozen active source pool                  456
   held-out programmes registered              4
+  complete primary outcomes                    3
+    single modifier                            3
+    multi-component                            0 complete
+  single-modifier q_j                    0, 0, 2/3
   primary test                              CLOSED
   spatial mosaics             EXTERNAL_REPLICATION
   opening gate                 DESIGN_BREADTH_ONLY
 ~~~
 
-The four V26 full-text inclusions are not yet added to the canonical-axis ledger; the 50-axis geometry counts therefore remain the pre-V26 recoded state until outcome/canonical-axis adjudication.
+All four V26 studies now have source-axis coverage; three have V27 numeric outcome adjudication. The four new coverage rows remain composite, so the canonical geometry ledger stays at 50 axes until individual-axis canonicalization.
 
 The current biological synthesis is:
 
@@ -220,6 +224,7 @@ See:
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V2.md` — superseded source-pool boundary
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md` — active prospective contract
 - `docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md` — first four held-out programmes, design-only
+- `docs/SCH_H2_HOLDOUT_V27_OUTCOME_READOUT.md` — first three held-out outcomes
 
 ## Empirical execution strategy
 
