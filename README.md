@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         152
+current primary-study inclusions         153
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -219,6 +219,8 @@ V35 closes the second TA2 full-text batch. Sabatia becomes a P2 both-response/no
 
 V36 closes the third TA2 full-text batch. Anemone adds a benefit-cost role boundary, the leafflower study adds a 16-population pollinator-cheater mosaic, and Camissoniopsis adds spatial context to an already represented biological programme. Primary studies reach 152, P1=74 and H2-context=31 while H1 remains 39.
 
+V37 completes the TA2 full-text tier. The Mimulus dissertation is retained as composite P2 evidence because its pollinator and herbivore responses occur in separate experiments without a common reproductive endpoint; the BioScience synthesis is excluded from the primary count. Primary studies reach 153, P2=20, and H1 remains 39.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -252,6 +254,7 @@ See:
 - `docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md` — first TA2 full-text batch
 - `docs/SCH_PRISMA_V35_TA2_FULLTEXT_BATCH_B_READOUT.md` — second TA2 full-text batch
 - `docs/SCH_PRISMA_V36_TA2_FULLTEXT_BATCH_C_READOUT.md` — third TA2 full-text batch
+- `docs/SCH_PRISMA_V37_TA2_FULLTEXT_CLOSURE_READOUT.md` — complete TA2 full-text closure
 
 ## Empirical execution strategy
 
