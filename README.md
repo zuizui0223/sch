@@ -229,6 +229,8 @@ V40 closes the third deterministic TA3 batch, review orders 128–152: 25 record
 
 V41 closes the fourth deterministic TA3 batch, review orders 153–177: 25 records screened, 7 retained and 18 excluded. Formal title/abstract screening reaches 583/868; 285 remain unscreened. The retained set includes a two-factor pollinator × herbivore common-fitness experiment, trait-dependent legitimate/robbing hummingbird behaviour, fig mutualism top-down control and nectar-chemistry multi-consumer systems.
 
+V42 closes the fifth deterministic TA3 batch, review orders 178–202: 25 records screened, 19 retained and 6 excluded. Formal title/abstract screening reaches 608/868; 260 remain unscreened. The retained set is enriched for nectar chemistry, role-coupled pollinators, robbery systems and comparative pollination-herbivory studies.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -267,6 +269,7 @@ See:
 - `docs/SCH_PRISMA_V39_TA3_BATCH_B_READOUT.md` — second deterministic TA3 batch
 - `docs/SCH_PRISMA_V40_TA3_BATCH_C_READOUT.md` — third deterministic TA3 batch
 - `docs/SCH_PRISMA_V41_TA3_BATCH_D_READOUT.md` — fourth deterministic TA3 batch
+- `docs/SCH_PRISMA_V42_TA3_BATCH_E_READOUT.md` — fifth deterministic TA3 batch
 
 ## Empirical execution strategy
 

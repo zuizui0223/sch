@@ -188,6 +188,8 @@ V40 closes the third deterministic TA3 batch, review orders 128–152: 13 record
 
 V41 closes the fourth deterministic TA3 batch, review orders 153–177: 7 records are retained for full text and 18 excluded. Formal title/abstract screening reaches 583/868 records, leaving 285 unscreened.
 
+V42 closes the fifth deterministic TA3 batch, review orders 178–202: 19 records are retained for full text and 6 excluded. Formal title/abstract screening reaches 608/868 records, leaving 260 unscreened.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -209,7 +211,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is continued deterministic TA3 remainder screening/full-text closure; 285 title/abstract records remain unscreened after V41.
+The immediate macroecology operation is continued deterministic TA3 remainder screening/full-text closure; 260 title/abstract records remain unscreened after V42.
 
 Canonical macroecology documents:
 
@@ -233,6 +235,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V39_TA3_BATCH_B_READOUT.md
 - docs/SCH_PRISMA_V40_TA3_BATCH_C_READOUT.md
 - docs/SCH_PRISMA_V41_TA3_BATCH_D_READOUT.md
+- docs/SCH_PRISMA_V42_TA3_BATCH_E_READOUT.md
 ## Frozen literature-layer status
 
 ```text
