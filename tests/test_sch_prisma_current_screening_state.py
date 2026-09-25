@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V35_TA2_FULLTEXT_BATCH_B.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V36_TA2_FULLTEXT_BATCH_C.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 36))
+    assert [_version(path) for path in files] == list(range(1, 37))
     assert files[-1].name == LATEST
     return files
 
@@ -113,24 +113,24 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
         for row in rows
         if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
     )
-    assert ft["INCLUDE"] == 148
+    assert ft["INCLUDE"] == 152
     assert ft["EXCLUDE"] == 136
-    assert ft["UNSCREENED"] == 55
+    assert ft["UNSCREENED"] == 51
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(33) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)} - {row["record_id"] for row in _v(28)} - {row["record_id"] for row in _v(29)} - {row["record_id"] for row in _v(30)} - {row["record_id"] for row in _v(31)} - {row["record_id"] for row in _v(32)} - {row["record_id"] for row in _v(34)} - {row["record_id"] for row in _v(35)}
+    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(33) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)} - {row["record_id"] for row in _v(28)} - {row["record_id"] for row in _v(29)} - {row["record_id"] for row in _v(30)} - {row["record_id"] for row in _v(31)} - {row["record_id"] for row in _v(32)} - {row["record_id"] for row in _v(34)} - {row["record_id"] for row in _v(35)} - {row["record_id"] for row in _v(36)}
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
 
 def test_v26_adds_four_directional_holdout_studies_without_inflating_strict_lane() -> None:
     included = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(included) == 148
+    assert len(included) == 152
     lanes: Counter[str] = Counter()
     for row in included:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 2
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 133
-    assert lanes["EVOLUTIONARY_OUTCOME"] == 41
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 136
+    assert lanes["EVOLUTIONARY_OUTCOME"] == 42
     assert lanes["HISTORICAL_TRANSITION"] == 4
     strict = [row["record_id"] for row in included if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
     assert strict == ["SCHPRISMA-000031", "SCHPRISMA-000166"]
@@ -161,9 +161,9 @@ def test_geography_counts_are_record_level_and_not_independence_counts() -> None
     geo = [row["record_id"] for row in included if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in included if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
-    assert len(geo) == 31
-    assert len(receiver) == 27
-    assert len(joint) == 25
+    assert len(geo) == 34
+    assert len(receiver) == 28
+    assert len(joint) == 26
     for record_id in ["SCHPRISMA-000323", "SCHPRISMA-000334", "SCHPRISMA-000376", "SCHPRISMA-000379", "SCHPRISMA-000380"]:
         assert record_id in joint
 
@@ -377,4 +377,19 @@ def test_v35_closes_second_ta2_fulltext_batch_with_synthesis_exclusion() -> None
     assert by_id["SCHPRISMA-000628"]["evidence_lanes"] == "EVOLUTIONARY_OUTCOME"
     for rid in ("SCHPRISMA-000626", "SCHPRISMA-000721"):
         assert by_id[rid]["screen_fulltext"] == "INCLUDE"
+        assert by_id[rid]["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
+
+
+def test_v36_closes_third_ta2_fulltext_batch_without_new_h1_promotion() -> None:
+    rows = _v(36)
+    assert [row["record_id"] for row in rows] == [
+        "SCHPRISMA-000745",
+        "SCHPRISMA-000816",
+        "SCHPRISMA-000830",
+        "SCHPRISMA-000842",
+    ]
+    assert {row["screen_fulltext"] for row in rows} == {"INCLUDE"}
+    by_id = {row["record_id"]: row for row in rows}
+    assert by_id["SCHPRISMA-000830"]["evidence_lanes"] == "EVOLUTIONARY_OUTCOME"
+    for rid in ("SCHPRISMA-000745","SCHPRISMA-000816","SCHPRISMA-000842"):
         assert by_id[rid]["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
