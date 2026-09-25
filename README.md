@@ -223,6 +223,8 @@ V37 completes the TA2 full-text tier. The Mimulus dissertation is retained as co
 
 V38 begins the deterministic TA3 remainder with review orders 78–102: 25 records screened, 14 retained and 11 excluded. Formal title/abstract screening now covers 508/868 records; 360 remain unscreened.
 
+V39 closes the second deterministic TA3 batch, review orders 103–127: 25 records screened, 10 retained and 15 excluded. Formal title/abstract screening reaches 533/868; 335 remain unscreened.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -258,6 +260,7 @@ See:
 - `docs/SCH_PRISMA_V36_TA2_FULLTEXT_BATCH_C_READOUT.md` — third TA2 full-text batch
 - `docs/SCH_PRISMA_V37_TA2_FULLTEXT_CLOSURE_READOUT.md` — complete TA2 full-text closure
 - `docs/SCH_PRISMA_V38_TA3_BATCH_A_READOUT.md` — first deterministic TA3 batch
+- `docs/SCH_PRISMA_V39_TA3_BATCH_B_READOUT.md` — second deterministic TA3 batch
 
 ## Empirical execution strategy
 
