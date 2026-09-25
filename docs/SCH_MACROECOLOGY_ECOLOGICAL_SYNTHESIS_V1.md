@@ -248,11 +248,11 @@ Trillium discolor       q_j = 2/3
 Impatiens capensis      PENDING
 ~~~
 
-The two supported Trillium reversals occur on floral display height and petal size. These outcomes use all uncertainty-resolved source-defined contexts and were extracted only after the V26 design class was frozen.
+The two supported Trillium reversals occur on floral display height and petal size under the registered all-context primary rule. A secondary within-year diagnostic finds 0/3 supported reversals, so the primary Trillium result reflects cross-year/cross-stratum context turnover and is not attributed to pollen supplementation alone. Outcomes were extracted only after the V26 design class was frozen.
 
 This produces an important bounded ecological result:
 
-> bidirectionally supported selection reversal can occur under a single registered ecological modifier; multi-component change is therefore not a necessary condition for reversal.
+> bidirectionally supported selection reversal is not confined to programmes prospectively classified as multi-component; however, the current single-modifier example does not isolate the manipulated modifier as the cause of reversal.
 
 That statement does not test H2M1. H2M1 remains a comparative programme-level prediction about the mean reversal fraction across classes, and no multi-component programme is outcome-complete yet.
 
