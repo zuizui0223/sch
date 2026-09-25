@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          138
-both pollinator + antagonist responses               82
-both responses + common reproductive outcome         67
-manual P1 source-design gates completed               67
+current full-text primary-study inclusions          142
+both pollinator + antagonist responses               86
+both responses + common reproductive outcome         71
+manual P1 source-design gates completed               71
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -315,6 +315,27 @@ interaction treatment
 They do not identify two functions responding to one independently declared floral trait coordinate. Thus P1 rises from 64 to 67 while the H1 record frontier remains 39.
 
 The duplicate Digitalis preprint is removed explicitly at full text rather than being silently deduplicated after inclusion.
+## V32 complete TA1-tier identification result
+
+The frozen TA1 final-performance tier is now completely closed at full text.
+
+~~~text
+primary studies after TA1 closure          142
+P1 both-response/common-fitness records     71
+H1 record-level geometry candidates         39
+H2 multi-context candidates                 29
+benefit-cost / role-boundary records          5
+~~~
+
+The H1 frontier did not expand across the final TA1 batches even though ecological coverage did.
+
+Two new role-boundary systems sharpen the functional-sign result. In Iris bulleyana, florivory-created access holes cause Bombus friseanus to switch from legitimate pollination to nectar robbing. In Primula florindae, drier conditions and narrower flowers shift the dominant bumblebee toward robbing. In both cases, consumer identity is insufficient to assign a fixed sign.
+
+Brassica incana adds 15 urbanization-gradient populations where pollinator community, herbivory and reproductive success covary, but no one floral coordinate has matched pollinator and antagonist response surfaces. It therefore expands H2 context evidence rather than H1 conflict geometry.
+
+The systematic result is now sharper:
+
+> ecological interaction richness is common, while identified functional conflict on one shared coordinate remains a much narrower evidential subset.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -372,7 +393,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. complete the frozen systematic screen;
+1. continue the frozen systematic screen with the TA2 repeated-context tier;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
