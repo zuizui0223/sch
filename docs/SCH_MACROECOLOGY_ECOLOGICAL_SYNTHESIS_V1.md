@@ -19,8 +19,8 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          145
-both pollinator + antagonist responses               88
+current full-text primary-study inclusions          148
+both pollinator + antagonist responses               89
 both responses + common reproductive outcome         72
 manual P1 source-design gates completed               72
 record-level H1 geometry candidates                   39
@@ -363,6 +363,18 @@ Solanum published service-cost P2 boundary
 This batch adds three primary studies but leaves the H1 same-coordinate frontier at 39.
 
 The result strengthens an important methodological point: repeated ecological context is not a single estimand. Comparative divergence, pollination service, consumer cost and plant reproductive fitness cannot be collapsed into one conflict effect without violating the identification rules.
+## V35 TA2 batch B boundary result
+
+Three more primary records enter, but none expands H1.
+
+~~~text
+Sabatia         P2 paired responses / no common fitness
+Hakea           evolutionary outcome
+Silene-Hadena   focal-source antagonist side only
+scent synthesis excluded from primary count
+~~~
+
+This sharpens the distinction between biological role coupling and source-level identification. A nursery pollinator can have antagonistic life-history consequences in the system, yet a focal experiment that measures only oviposition-linked volatile induction does not identify a pollination-versus-antagonism geometry.
 ## Current ecological synthesis
 
 The strongest current biological statement is:

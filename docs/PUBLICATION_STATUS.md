@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             145
+current primary-study inclusions             148
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -174,6 +174,8 @@ The frozen TA2 repeated-context title/abstract tier is now closed: 20/20 records
 
 V34 closes the first retained TA2 full-text batch. Three primary studies enter, one duplicate report is excluded, P1 rises to 72 and P2 to 16 while the H1 record frontier remains 39. Tribulus is kept in EVOLUTIONARY_OUTCOME and the Solanum pollen-dispensing system is retained as a no-common-fitness service-cost boundary.
 
+V35 closes the second retained TA2 full-text batch. Three primary studies enter and one synthesis is excluded; P1 remains 72 while P2 rises to 17. Sabatia has paired pollination/seed-predation information without a common reproductive endpoint, Hakea remains comparative evolutionary-outcome evidence, and the focal Silene-Hadena source measures the oviposition/volatile side without pollination service.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -195,7 +197,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is continued frozen-order TA2 full-text closure; 10 retained TA2 records remain after V34.
+The immediate macroecology operation is continued frozen-order TA2 full-text closure; 6 retained TA2 records remain after V35.
 
 Canonical macroecology documents:
 
@@ -212,6 +214,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md
 - docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md
 - docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md
+- docs/SCH_PRISMA_V35_TA2_FULLTEXT_BATCH_B_READOUT.md
 ## Frozen literature-layer status
 
 ```text
