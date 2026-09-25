@@ -20,16 +20,16 @@ The second layer is an active macroecological/comparative extension. It strength
 
 ~~~text
 current full-text primary-study inclusions          124
-both pollinator + antagonist responses               65
-both responses + common reproductive outcome         50
-manual P1 source-design gates completed               50
-record-level H1 geometry candidates                   34
-source-axis evidence records                          59
-model-eligible / role-boundary source-axis records    52
+both pollinator + antagonist responses               69
+both responses + common reproductive outcome         54
+manual P1 source-design gates completed               54
+record-level H1 geometry candidates                   38
+source-axis evidence records                          63
+model-eligible / role-boundary source-axis records    56
 canonical biological trait axes                       50
 ~~~
 
-The four V26 additions are formally included but remain outside the current 50-axis canonical ledger until source-level outcome and axis adjudication; downstream recoded funnel counts are therefore not mechanically incremented yet.
+The four V26 additions are now source-axis covered; three are outcome-adjudicated in V27. Their source rows remain composite and therefore do not yet increase the 50-axis canonical ledger.
 
 This funnel is sign-blind through the design gate. Null, aligned, one-sided, role-dependent and source-downgraded outcomes remain in the evidence architecture.
 
@@ -237,6 +237,26 @@ Their classes are frozen from experimental methods only. No selection sign, sign
 
 This adds prospective design breadth without consuming the H2M1 outcome.
 
+## V27 first held-out outcomes
+
+Three prospectively classified SINGLE_REGISTERED_MODIFIER programmes now have numeric outcome adjudication:
+
+~~~text
+Dactylorhiza lapponica   q_j = 0/5 = 0
+Primula alpicola        q_j = 0/4 = 0
+Trillium discolor       q_j = 2/3
+Impatiens capensis      PENDING
+~~~
+
+The two supported Trillium reversals occur on floral display height and petal size. These outcomes use all uncertainty-resolved source-defined contexts and were extracted only after the V26 design class was frozen.
+
+This produces an important bounded ecological result:
+
+> bidirectionally supported selection reversal can occur under a single registered ecological modifier; multi-component change is therefore not a necessary condition for reversal.
+
+That statement does not test H2M1. H2M1 remains a comparative programme-level prediction about the mean reversal fraction across classes, and no multi-component programme is outcome-complete yet.
+
+The primary gate remains closed.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -395,9 +415,12 @@ Current state:
 development programmes excluded    8
 frozen active holdout records      456
 registered held-out programmes      4
+complete primary programmes         3
+  single modifier                    3
+  multi-component                    0 complete
 primary gate                   CLOSED
 ~~~
 
-The immediate next operation is the frozen TA0 title/abstract screen, not further mining of the eight development programmes.
+The immediate holdout operation is recovery of the Impatiens numeric uncertainty table plus admission of additional prospectively classified programmes; the primary class-comparison gate remains closed.
 
 See docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md.
