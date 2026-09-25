@@ -113,9 +113,9 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
         for row in rows
         if row["screen_title_abstract"] == "RETAIN_FULLTEXT"
     )
-    assert ft["INCLUDE"] == 141
+    assert ft["INCLUDE"] == 142
     assert ft["EXCLUDE"] == 134
-    assert ft["UNSCREENED"] == 50
+    assert ft["UNSCREENED"] == 49
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
     assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)} - {row["record_id"] for row in _v(28)} - {row["record_id"] for row in _v(29)} - {row["record_id"] for row in _v(30)} - {row["record_id"] for row in _v(31)} - {row["record_id"] for row in _v(32)}
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
@@ -124,12 +124,12 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
 
 def test_v26_adds_four_directional_holdout_studies_without_inflating_strict_lane() -> None:
     included = [row for row in _rows() if row["screen_fulltext"] == "INCLUDE"]
-    assert len(included) == 141
+    assert len(included) == 142
     lanes: Counter[str] = Counter()
     for row in included:
         lanes.update(part for part in row["evidence_lanes"].split(";") if part)
     assert lanes["STRICT_LINKED_EXPERIMENT"] == 2
-    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 128
+    assert lanes["DIRECTIONAL_OR_NEAR_PASS"] == 129
     assert lanes["EVOLUTIONARY_OUTCOME"] == 39
     assert lanes["HISTORICAL_TRANSITION"] == 4
     strict = [row["record_id"] for row in included if "STRICT_LINKED_EXPERIMENT" in row["evidence_lanes"]]
@@ -161,9 +161,9 @@ def test_geography_counts_are_record_level_and_not_independence_counts() -> None
     geo = [row["record_id"] for row in included if _positive_geo(row["geographic_contrast"])]
     receiver = [row["record_id"] for row in included if _positive_receiver(row["receiver_assemblage_contrast"])]
     joint = [record_id for record_id in geo if record_id in set(receiver)]
-    assert len(geo) == 29
-    assert len(receiver) == 26
-    assert len(joint) == 24
+    assert len(geo) == 30
+    assert len(receiver) == 27
+    assert len(joint) == 25
     for record_id in ["SCHPRISMA-000323", "SCHPRISMA-000334", "SCHPRISMA-000376", "SCHPRISMA-000379", "SCHPRISMA-000380"]:
         assert record_id in joint
 
@@ -311,10 +311,11 @@ def test_v32_closes_next_four_ta1_fulltexts_with_meta_analysis_exclusion() -> No
         "SCHPRISMA-000729",
         "SCHPRISMA-000736",
         "SCHPRISMA-000780",
+        "SCHPRISMA-000839",
     ]
     by_id = {row["record_id"]: row for row in rows}
     assert by_id["SCHPRISMA-000780"]["screen_fulltext"] == "EXCLUDE"
     assert by_id["SCHPRISMA-000780"]["screen_fulltext_reason"] == "FT_REVIEW_ONLY_NO_PRIMARY_ROLE"
-    for rid in ("SCHPRISMA-000663","SCHPRISMA-000729","SCHPRISMA-000736"):
+    for rid in ("SCHPRISMA-000663","SCHPRISMA-000729","SCHPRISMA-000736","SCHPRISMA-000839"):
         assert by_id[rid]["screen_fulltext"] == "INCLUDE"
         assert by_id[rid]["evidence_lanes"] == "DIRECTIONAL_OR_NEAR_PASS"
