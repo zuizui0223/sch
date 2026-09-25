@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             152
+current primary-study inclusions             153
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -178,6 +178,8 @@ V35 closes the second retained TA2 full-text batch. Three primary studies enter 
 
 V36 closes the third retained TA2 full-text batch. Four primary studies enter; P1 rises to 74, P2 to 19, H2 multi-context candidates to 31 and benefit-cost/role-boundary records to 6, while the H1 record frontier remains 39. Camissoniopsis 000842 is explicitly linked to the existing 000287 programme rather than double-counted as a new independent unit.
 
+V37 completes the retained TA2 full-text tier. One additional primary dissertation enters as P2 both-response/no-common-fitness evidence and one BioScience synthesis is excluded from the primary count. Primary studies reach 153 and P2 reaches 20 while the H1 record frontier remains 39.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -199,7 +201,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is closure of the final two retained TA2 records (000844 and 000863) after V36.
+The immediate macroecology operation is deterministic TA3 remainder screening. TA0, TA1 and TA2 are now closed.
 
 Canonical macroecology documents:
 
@@ -218,6 +220,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md
 - docs/SCH_PRISMA_V35_TA2_FULLTEXT_BATCH_B_READOUT.md
 - docs/SCH_PRISMA_V36_TA2_FULLTEXT_BATCH_C_READOUT.md
+- docs/SCH_PRISMA_V37_TA2_FULLTEXT_CLOSURE_READOUT.md
 ## Frozen literature-layer status
 
 ```text
