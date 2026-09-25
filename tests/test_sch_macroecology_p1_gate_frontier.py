@@ -16,6 +16,7 @@ V29_BATCH_B = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V29_TA1_BATCH_B.cs
 V30_BATCH_C = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V30_TA1_BATCH_C.csv"
 V31_BATCH_D = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V31_TA1_BATCH_D.csv"
 V32_BATCH_E = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V32_TA1_BATCH_E.csv"
+V34_BATCH_A = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V34_TA2_BATCH_A.csv"
 READOUT = ROOT / "data" / "SCH_MACROECOLOGY_P1_MANUAL_GATE_FRONTIER_V1.json"
 
 
@@ -28,14 +29,14 @@ def _build():
         FROZEN,
         PRISMA,
         MACHINE_SCRIPT,
-        [BATCH1, BATCH2, P1_REMAINDER, V26_HOLDOUT, V28_BATCH_A, V29_BATCH_B, V30_BATCH_C, V31_BATCH_D, V32_BATCH_E],
+        [BATCH1, BATCH2, P1_REMAINDER, V26_HOLDOUT, V28_BATCH_A, V29_BATCH_B, V30_BATCH_C, V31_BATCH_D, V32_BATCH_E, V34_BATCH_A],
     )
 
 
 def test_all_machine_p1_records_are_manually_gated():
     built = _build()
-    assert built["n_machine_p1_records"] == 71
-    assert built["n_p1_manual_gated"] == 71
+    assert built["n_machine_p1_records"] == 72
+    assert built["n_p1_manual_gated"] == 72
     assert built["n_p1_missing_manual_gate"] == 0
     assert built["status"] == "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
 
@@ -47,7 +48,7 @@ def test_p1_gate_recovers_bounded_h1_candidate_frontier():
         "ELIGIBLE_BOUNDED_COORDINATE": 28,
         "ELIGIBLE_SAME_COORDINATE": 11,
         "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 5,
-        "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 19,
+        "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 20,
         "UNRESOLVED_SOURCE": 3,
     }
     assert built["n_h1_geometry_candidate_records"] == 39
