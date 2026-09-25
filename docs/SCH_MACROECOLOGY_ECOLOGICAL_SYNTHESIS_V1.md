@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          135
-both pollinator + antagonist responses               79
-both responses + common reproductive outcome         64
-manual P1 source-design gates completed               64
+current full-text primary-study inclusions          138
+both pollinator + antagonist responses               82
+both responses + common reproductive outcome         67
+manual P1 source-design gates completed               67
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -298,6 +298,23 @@ Two bounded ecological patterns strengthen:
 Tirpitzia and Tecomella remain relevant near-pass systems but are rejected from H1 because the measured/manipulated object is robbery state or susceptibility rather than one independently declared floral trait coordinate with two matched functional response surfaces.
 
 The design funnel therefore expands from P1=60 to P1=64 while the H1 record frontier remains 39.
+## V31 TA1 batch D upstream-context result
+
+Three additional primary studies enter the broad P1 stratum, but none expands the H1 same-coordinate frontier.
+
+Digitalis experimentally imposes nectar robbery and recovers changed bumblebee behaviour and seed production. Lonicera aphid herbivory alters floral development, pollination and reproduction. Brassica herbivore identity and attack timing alter flowering phenotype, pollinator visitation, pollen-beetle colonization and seed fitness.
+
+All three are strong examples of ecological context propagation:
+
+~~~text
+interaction treatment
+-> floral phenotype / visitor behaviour
+-> reproductive outcome
+~~~
+
+They do not identify two functions responding to one independently declared floral trait coordinate. Thus P1 rises from 64 to 67 while the H1 record frontier remains 39.
+
+The duplicate Digitalis preprint is removed explicitly at full text rather than being silently deduplicated after inclusion.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
