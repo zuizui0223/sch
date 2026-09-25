@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          131
-both pollinator + antagonist responses               75
-both responses + common reproductive outcome         60
-manual P1 source-design gates completed               60
+current full-text primary-study inclusions          135
+both pollinator + antagonist responses               79
+both responses + common reproductive outcome         64
+manual P1 source-design gates completed               64
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -286,6 +286,18 @@ This is coded as BENEFIT_COST_COUPLED rather than conflict. The same consumer th
 Desfontainia and Ipomopsis are retained as ecologically relevant near-pass studies but are downgraded from H1 because robbery state/intensity is the imposed interaction context rather than an independently declared floral trait coordinate receiving two functional responses.
 
 Abronia is excluded at full text because the proposed herbivore cost of floral attraction is not measured as a focal antagonist channel in the source.
+## V30 TA1 batch C context and role result
+
+Four additional TA1 primary studies are included, but none adds a fixed-role H1 trait geometry.
+
+Two bounded ecological patterns strengthen:
+
+1. **consumer-role dependence** — in Sesamum radiatum, the same Xylocopa species can act as a nectar robber and a legitimate pollinator, so taxonomic identity does not map to one fixed functional sign;
+2. **spatial interaction turnover** — in Clinopodium alpinum, legitimate visitor assemblage and nectar-robbing pressure turn over along elevation and covary with seed production, adding another joint geographic × receiver-context record.
+
+Tirpitzia and Tecomella remain relevant near-pass systems but are rejected from H1 because the measured/manipulated object is robbery state or susceptibility rather than one independently declared floral trait coordinate with two matched functional response surfaces.
+
+The design funnel therefore expands from P1=60 to P1=64 while the H1 record frontier remains 39.
 ## Current ecological synthesis
 
 The strongest current biological statement is:

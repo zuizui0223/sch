@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         131
+current primary-study inclusions         135
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -205,6 +205,8 @@ V28 adds four more formal primary studies from the frozen TA1 tier. Design-only 
 
 V29 adds three more primary studies but no new H1 trait geometry. Lonicera 000540 becomes a second BENEFIT_COST_COUPLED role-boundary case because the same nectar robber both cross-pollinates and reduces legitimate visitation.
 
+V30 adds four more primary studies without adding an H1 trait geometry. Sesamum 000546 becomes a third BENEFIT_COST_COUPLED / role-dependent case, while Clinopodium 000549 adds joint elevational geographic and receiver-assemblage context. P1 rises to 64, but the H1 record frontier remains 39.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -231,6 +233,7 @@ See:
 - `docs/SCH_H2_HOLDOUT_V27_OUTCOME_READOUT.md` — first three held-out outcomes
 - `docs/SCH_PRISMA_V28_TA1_FULLTEXT_BATCH_A_READOUT.md` — first TA1 full-text batch
 - `docs/SCH_PRISMA_V29_TA1_FULLTEXT_BATCH_B_READOUT.md` — second TA1 full-text batch
+- `docs/SCH_PRISMA_V30_TA1_FULLTEXT_BATCH_C_READOUT.md` — third TA1 full-text batch
 
 ## Empirical execution strategy
 
