@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          142
-both pollinator + antagonist responses               86
-both responses + common reproductive outcome         71
-manual P1 source-design gates completed               71
+current full-text primary-study inclusions          145
+both pollinator + antagonist responses               88
+both responses + common reproductive outcome         72
+manual P1 source-design gates completed               72
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -349,6 +349,20 @@ excluded                     6
 The exclusions reinforce the identification boundary: repeated context or floral-trait variation alone is insufficient when the study lacks a measured plant antagonist, lacks a measured pollinator function, or concerns pollen-pistil sexual conflict rather than plant mutualist-antagonist geometry.
 
 The retained set is enriched for exactly the boundary cases SCH needs to adjudicate at full text: pollen-consuming pollinators, nursery pollinators with later antagonistic roles, pollinator-cheater mosaics, and pollination-defence comparative systems.
+## V34 TA2 batch A evidence-lane separation
+
+The first four retained repeated-context records split into four different inferential objects:
+
+~~~text
+Isoplexis      ecological near-pass / broad P1
+Tribulus       evolutionary outcome
+Solanum preprint  duplicate report
+Solanum published service-cost P2 boundary
+~~~
+
+This batch adds three primary studies but leaves the H1 same-coordinate frontier at 39.
+
+The result strengthens an important methodological point: repeated ecological context is not a single estimand. Comparative divergence, pollination service, consumer cost and plant reproductive fitness cannot be collapsed into one conflict effect without violating the identification rules.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
