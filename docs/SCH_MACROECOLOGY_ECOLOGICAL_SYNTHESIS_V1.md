@@ -19,8 +19,8 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          152
-both pollinator + antagonist responses               93
+current full-text primary-study inclusions          153
+both pollinator + antagonist responses               94
 both responses + common reproductive outcome         74
 manual P1 source-design gates completed               74
 record-level H1 geometry candidates                   39
@@ -384,6 +384,26 @@ Anemone coronaria is a sixth benefit-cost / role-boundary case: glaphyrid beetle
 The H1 record frontier therefore remains 39 while H2 multi-context coverage rises to 31.
 
 > consumer role can change sign within a taxon, and spatial mosaics can be strong, without yielding a new independent same-coordinate conflict geometry.
+## V37 complete TA2-tier result
+
+The repeated-context tier is now completely closed at full text.
+
+~~~text
+primary studies after TA2 closure          153
+P1 both-response/common-fitness             74
+P2 both-response/no-common-fitness          20
+H1 record-level geometry candidates         39
+H2 multi-context candidates                 31
+benefit-cost / role-boundary records          6
+~~~
+
+The final Mimulus dissertation adds paired pollinator/herbivore relevance across separate primary chapters, but not a common plant-fitness geometry. The final BioScience record is a synthesis and is removed from the independent primary count.
+
+Across TA0-TA2, the systematic pattern is now unusually clear:
+
+> ecological relevance, context turnover and consumer-role complexity expand rapidly with screening, whereas identified same-coordinate conflict geometry expands slowly.
+
+This is an empirical identification result, not just a methodological warning.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -441,7 +461,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the frozen systematic screen with the TA2 repeated-context tier;
+1. continue the frozen systematic screen with the deterministic TA3 remainder;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
