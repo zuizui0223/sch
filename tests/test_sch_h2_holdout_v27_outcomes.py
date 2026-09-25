@@ -36,6 +36,8 @@ def test_v27_programme_denominators_and_supported_reversals_are_frozen():
         "n_eligible_repeated_axes": 5,
         "n_bidirectionally_supported_reversal_axes": 0,
         "q_j": 0.0,
+        "n_within_year_supported_reversal_axes": 0,
+        "n_cross_year_or_cross_stratum_only_reversal_axes": 0,
         "reversal_axis_ids": [],
     }
     assert rows["Primula_alpicola_000651_selection_program"] == {
@@ -43,6 +45,8 @@ def test_v27_programme_denominators_and_supported_reversals_are_frozen():
         "n_eligible_repeated_axes": 4,
         "n_bidirectionally_supported_reversal_axes": 0,
         "q_j": 0.0,
+        "n_within_year_supported_reversal_axes": 0,
+        "n_cross_year_or_cross_stratum_only_reversal_axes": 0,
         "reversal_axis_ids": [],
     }
     assert rows["Trillium_discolor_000661_selection_program"] == {
@@ -50,6 +54,8 @@ def test_v27_programme_denominators_and_supported_reversals_are_frozen():
         "n_eligible_repeated_axes": 3,
         "n_bidirectionally_supported_reversal_axes": 2,
         "q_j": 2 / 3,
+        "n_within_year_supported_reversal_axes": 0,
+        "n_cross_year_or_cross_stratum_only_reversal_axes": 2,
         "reversal_axis_ids": [
             "Trillium_000661_display_height",
             "Trillium_000661_petal_size",
@@ -93,3 +99,15 @@ def test_v27_readout_summary_matches_builder():
         "claim_ceiling",
     ):
         assert built[key] == frozen[key]
+
+
+def test_v27_trillium_primary_reversals_are_cross_year_or_cross_stratum_only():
+    built = _build()
+    row = next(
+        r for r in built["programme_rows"]
+        if r["programme_id"] == "Trillium_discolor_000661_selection_program"
+    )
+    assert row["n_bidirectionally_supported_reversal_axes"] == 2
+    assert row["n_within_year_supported_reversal_axes"] == 0
+    assert row["n_cross_year_or_cross_stratum_only_reversal_axes"] == 2
+    assert "trillium_primary_reversals_are_not_attributed_to_pollination_modifier_alone" in built["claim_ceiling"]
