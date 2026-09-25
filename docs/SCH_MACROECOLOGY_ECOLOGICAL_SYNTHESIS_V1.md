@@ -419,6 +419,20 @@ formal TA unscreened      360 / 868
 ~~~
 
 This stage changes screening coverage only. No new full-text study, canonical axis, H1/H2 case or held-out programme is promoted in V38.
+## V39 deterministic TA3 batch B
+
+The second fixed TA3 batch advances formal screening without altering any ecological outcome denominator.
+
+~~~text
+review orders            103-127
+records screened              25
+retained                      10
+excluded                      15
+formal TA screened        533 / 868
+formal TA unscreened      335 / 868
+~~~
+
+The retained set includes direct herbivory-pollinator systems, comparative attractive/defensive chemistry, mutualist-antagonist trait matching and explicit report pairs. Duplicates are kept visible until full-text adjudication.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -476,7 +490,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 103 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder from review order 128 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
