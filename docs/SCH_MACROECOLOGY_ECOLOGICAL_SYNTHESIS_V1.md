@@ -19,7 +19,7 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          120
+current full-text primary-study inclusions          124
 both pollinator + antagonist responses               65
 both responses + common reproductive outcome         50
 manual P1 source-design gates completed               50
@@ -28,6 +28,8 @@ source-axis evidence records                          59
 model-eligible / role-boundary source-axis records    52
 canonical biological trait axes                       50
 ~~~
+
+The four V26 additions are formally included but remain outside the current 50-axis canonical ledger until source-level outcome and axis adjudication; downstream recoded funnel counts are therefore not mechanically incremented yet.
 
 This funnel is sign-blind through the design gate. Null, aligned, one-sided, role-dependent and source-downgraded outcomes remain in the evidence architecture.
 
