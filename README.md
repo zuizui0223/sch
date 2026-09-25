@@ -211,6 +211,8 @@ V31 adds three primary studies plus one explicit duplicate-report exclusion. P1 
 
 V32 completes the TA1 full-text tier. Four more primary studies raise P1 to 71, but the H1 record frontier remains 39. Iris 000663 and Primula 000729 expand benefit-cost/role-boundary evidence, Salvia 000736 adds spatiotemporal robbery context, and Brassica incana 000839 adds a 15-population urbanization context without a matched same-trait two-function geometry.
 
+V33 closes the complete frozen TA2 repeated-context title/abstract tier: 20 records screened, 14 retained for full text and 6 excluded. Formal title/abstract screening now covers 483/868 records; 385 remain unscreened.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -240,6 +242,7 @@ See:
 - `docs/SCH_PRISMA_V30_TA1_FULLTEXT_BATCH_C_READOUT.md` — third TA1 full-text batch
 - `docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md` — fourth TA1 full-text batch
 - `docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md` — final TA1 full-text closure
+- `docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md` — complete TA2 title/abstract screening
 
 ## Empirical execution strategy
 
