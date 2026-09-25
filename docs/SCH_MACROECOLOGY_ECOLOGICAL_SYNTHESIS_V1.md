@@ -19,17 +19,19 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          124
-both pollinator + antagonist responses               69
-both responses + common reproductive outcome         54
-manual P1 source-design gates completed               54
-record-level H1 geometry candidates                   38
-source-axis evidence records                          63
-model-eligible / role-boundary source-axis records    56
+current full-text primary-study inclusions          128
+both pollinator + antagonist responses               72
+both responses + common reproductive outcome         57
+manual P1 source-design gates completed               57
+record-level H1 geometry candidates                   39
+source-axis evidence records                          64
+model-eligible / role-boundary source-axis records    57
 canonical biological trait axes                       50
 ~~~
 
 The four V26 additions are now source-axis covered; three are outcome-adjudicated in V27. Their source rows remain composite and therefore do not yet increase the 50-axis canonical ledger.
+
+V28 adds four TA1 full-text primary studies. Three enter the broad P1 design stratum, but only Vaccinium 000429 survives the same-coordinate H1 gate; Solidago 000420 is downgraded because herbivory is upstream rather than a response to the floral VOC coordinate, and the 000449 dissertation remains unresolved pending chapter/axis decomposition.
 
 This funnel is sign-blind through the design gate. Null, aligned, one-sided, role-dependent and source-downgraded outcomes remain in the evidence architecture.
 
@@ -257,6 +259,20 @@ This produces an important bounded ecological result:
 That statement does not test H2M1. H2M1 remains a comparative programme-level prediction about the mean reversal fraction across classes, and no multi-component programme is outcome-complete yet.
 
 The primary gate remains closed.
+## V28 TA1 batch A identification result
+
+The first four retained TA1 records were closed at full text in frozen review order.
+
+~~~text
+formal primary inclusions              +4
+new broad P1 records                   +3
+new H1 same-coordinate candidates      +1
+new STRICT_LINKED_EXPERIMENT records    0
+~~~
+
+This is itself informative: increasing ecological relevance does not mechanically increase identified functional conflict.
+
+Vaccinium hirtum flowering phenology is retained as a same-coordinate, multi-context H1 source axis. Solidago floral VOCs are downgraded because herbivory is an antecedent context rather than a second receiver response to the VOC coordinate. The dissertation record remains source-unresolved rather than being split post hoc into favorable examples.
 ## Current ecological synthesis
 
 The strongest current biological statement is:

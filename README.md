@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         124
+current primary-study inclusions         128
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -201,6 +201,8 @@ H2M1-V3 prospective reversal holdout
 
 All four V26 studies now have source-axis coverage; three have V27 numeric outcome adjudication. The four new coverage rows remain composite, so the canonical geometry ledger stays at 50 axes until individual-axis canonicalization.
 
+V28 adds four more formal primary studies from the frozen TA1 tier. Design-only recoding yields 57 P1 records, 39 H1 record-level candidates and 64 source-axis evidence rows; only Vaccinium 000429 adds a new same-coordinate H1 source axis. The canonical ledger remains at 50 axes.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -225,6 +227,7 @@ See:
 - `docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md` — active prospective contract
 - `docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md` — first four held-out programmes, design-only
 - `docs/SCH_H2_HOLDOUT_V27_OUTCOME_READOUT.md` — first three held-out outcomes
+- `docs/SCH_PRISMA_V28_TA1_FULLTEXT_BATCH_A_READOUT.md` — first TA1 full-text batch
 
 ## Empirical execution strategy
 

@@ -11,6 +11,7 @@ BATCH1 = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH1_V1.csv"
 BATCH2 = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH2_V1.csv"
 P1_REMAINDER = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_P1_REMAINDER_V1.csv"
 V26_HOLDOUT = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V26_HOLDOUT_V1.csv"
+V28_BATCH_A = ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V28_TA1_BATCH_A.csv"
 READOUT = ROOT / "data" / "SCH_MACROECOLOGY_P1_MANUAL_GATE_FRONTIER_V1.json"
 
 
@@ -23,14 +24,14 @@ def _build():
         FROZEN,
         PRISMA,
         MACHINE_SCRIPT,
-        [BATCH1, BATCH2, P1_REMAINDER, V26_HOLDOUT],
+        [BATCH1, BATCH2, P1_REMAINDER, V26_HOLDOUT, V28_BATCH_A],
     )
 
 
 def test_all_machine_p1_records_are_manually_gated():
     built = _build()
-    assert built["n_machine_p1_records"] == 54
-    assert built["n_p1_manual_gated"] == 54
+    assert built["n_machine_p1_records"] == 57
+    assert built["n_p1_manual_gated"] == 57
     assert built["n_p1_missing_manual_gate"] == 0
     assert built["status"] == "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
 
@@ -40,19 +41,19 @@ def test_p1_gate_recovers_bounded_h1_candidate_frontier():
     assert built["geometry_eligibility_counts"] == {
         "BOUNDARY_BENEFIT_COST_COUPLED": 1,
         "ELIGIBLE_BOUNDED_COORDINATE": 28,
-        "ELIGIBLE_SAME_COORDINATE": 10,
+        "ELIGIBLE_SAME_COORDINATE": 11,
         "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 5,
-        "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 8,
-        "UNRESOLVED_SOURCE": 2,
+        "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 9,
+        "UNRESOLVED_SOURCE": 3,
     }
-    assert built["n_h1_geometry_candidate_records"] == 38
-    assert built["n_h2_context_candidate_records"] == 27
+    assert built["n_h1_geometry_candidate_records"] == 39
+    assert built["n_h2_context_candidate_records"] == 28
 
 
 def test_p1_gate_tracks_axis_decomposition_before_outcomes():
     built = _build()
-    assert built["n_trait_axis_split_required_records"] == 32
-    assert built["n_single_axis_records"] == 17
+    assert built["n_trait_axis_split_required_records"] == 33
+    assert built["n_single_axis_records"] == 18
     assert "trait_axis_decomposition_required_before_ecological_model" in built["claim_ceiling"]
 
 

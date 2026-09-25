@@ -16,13 +16,13 @@
   ],
   "missing_h1_record_ids": [],
   "n_h1_candidates_missing_source_axis_record": 0,
-  "n_h1_candidates_with_source_axis_record": 38,
+  "n_h1_candidates_with_source_axis_record": 39,
   "n_h1_source_records_fully_downgraded_after_source_audit": 6,
   "n_h1_source_records_partially_downgraded": 1,
-  "n_h1_source_records_with_model_axis": 32,
-  "n_record_level_h1_candidates": 38,
-  "n_source_axis_records_from_h1_candidate_records": 63,
-  "n_source_axis_records_total": 63,
+  "n_h1_source_records_with_model_axis": 33,
+  "n_record_level_h1_candidates": 39,
+  "n_source_axis_records_from_h1_candidate_records": 64,
+  "n_source_axis_records_total": 64,
   "partially_downgraded_h1_record_ids": [
     "SCHPRISMA-000353"
   ],

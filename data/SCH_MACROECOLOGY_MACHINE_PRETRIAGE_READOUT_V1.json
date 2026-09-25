@@ -8,30 +8,30 @@
     "source_recode_required_before_H1_H4"
   ],
   "context_recode_priority_counts": {
-    "NO_OR_UNRESOLVED": 90,
-    "YES": 34
+    "NO_OR_UNRESOLVED": 93,
+    "YES": 35
   },
   "evidence_lane_counts": {
-    "DIRECTIONAL_OR_NEAR_PASS": 111,
+    "DIRECTIONAL_OR_NEAR_PASS": 115,
     "EVOLUTIONARY_OUTCOME": 39,
     "HISTORICAL_TRANSITION": 4,
     "STRICT_LINKED_EXPERIMENT": 2
   },
-  "n_current_primary_includes": 124,
-  "n_paired_response_records": 69,
-  "n_paired_response_with_common_fitness": 54,
+  "n_current_primary_includes": 128,
+  "n_paired_response_records": 72,
+  "n_paired_response_with_common_fitness": 57,
   "n_paired_response_without_common_fitness": 15,
   "paired_response_status_counts": {
-    "P1_BOTH_RESPONSES_COMMON_FITNESS": 54,
+    "P1_BOTH_RESPONSES_COMMON_FITNESS": 57,
     "P2_BOTH_RESPONSES_NO_COMMON_FITNESS": 15,
-    "P3_ANTAGONIST_ONLY": 15,
+    "P3_ANTAGONIST_ONLY": 16,
     "P3_POLLINATOR_ONLY": 29,
     "P4_UNSTRUCTURED_OR_NEITHER": 11
   },
   "status": "MACHINE_PRETRIAGE_READY_HUMAN_SOURCE_RECODE_REQUIRED",
   "trait_manipulation_status_counts": {
     "DIRECT_TRAIT_MANIPULATION_REPORTED": 26,
-    "NON_DIRECT_OR_OBSERVATIONAL_TRAIT_STATE": 89,
+    "NON_DIRECT_OR_OBSERVATIONAL_TRAIT_STATE": 93,
     "NOT_REPORTED": 9
   }
 }
