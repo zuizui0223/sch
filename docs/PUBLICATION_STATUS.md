@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             120
+current primary-study inclusions             124
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -153,11 +153,13 @@ outcome-dependent opening conditions: NONE
 primary test: programme-label permutation on q_j
 ~~~
 
+Four V26 held-out studies are now formally full-text included as DIRECTIONAL_OR_NEAR_PASS, but their numeric outcomes remain pending and the existing 50-axis canonical geometry ledger has not yet been expanded.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
 
-> Multifunctional geometry is assembled at trait axis x ecological context x consumer functional role. Context can alter magnitude, cross zero without strong support, or generate bidirectionally supported reversal. The next mechanism claim is now frozen prospectively against an untouched 463-record source pool.
+> Multifunctional geometry is assembled at trait axis x ecological context x consumer functional role. Context can alter magnitude, cross zero without strong support, or generate bidirectionally supported reversal. The next mechanism claim is now frozen prospectively against the frozen 456-record active source roster.
 
 Publication strategy remains two-stage:
 
