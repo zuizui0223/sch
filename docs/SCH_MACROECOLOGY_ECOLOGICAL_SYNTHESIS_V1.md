@@ -449,6 +449,22 @@ formal TA unscreened      310 / 868
 The retained set contains several consumer-role and indirect-effect systems: a native pollinating seed predator in invasive Silene, bird pollination versus bee nectar robbing in Erica, herbivory-induced pollinator-mediated fitness costs, a pollinating-herbivore life cycle, exploitative low-efficiency bees, and bee-pollination / ant-seed-predation crop systems.
 
 The exclusions continue to enforce the same boundary: inferred ecological functions, pollinator-only studies, commentary/editorial records and non-plant response endpoints do not enter merely because flowers or insects appear in the title.
+## V41 deterministic TA3 batch D
+
+The fourth fixed TA3 batch continues formal screening without changing any ecological outcome denominator.
+
+~~~text
+review orders            153-177
+records screened              25
+retained                       7
+excluded                      18
+formal TA screened        583 / 868
+formal TA unscreened      285 / 868
+~~~
+
+The retained set includes a rare strong experimental boundary: Paeonia broteroi crosses pollinator and herbivore presence/exclusion on one maternal seed-production endpoint. Other retained systems add trait-dependent consumer-role switching and top-down changes in mutualism benefit balance.
+
+V41 remains a screening-only advance. Those systems do not enter H1/H2 denominators until full-text/source-design adjudication.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -506,7 +522,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 153 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder from review order 178 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
