@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         120
+current primary-study inclusions         124
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -194,6 +194,8 @@ H2M1-V3 prospective reversal holdout
   spatial mosaics             EXTERNAL_REPLICATION
   opening gate                 DESIGN_BREADTH_ONLY
 ~~~
+
+The four V26 full-text inclusions are not yet added to the canonical-axis ledger; the 50-axis geometry counts therefore remain the pre-V26 recoded state until outcome/canonical-axis adjudication.
 
 The current biological synthesis is:
 
