@@ -78,8 +78,8 @@ jobs:
           rx=re.compile(r'SCREENING_DECISIONS_V(\d+)')
           paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'),key=lambda p:int(rx.search(p.name).group(1)))
           versions=[int(rx.search(p.name).group(1)) for p in paths]
-          assert versions==list(range(1,29)),versions
-          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V28_TA1_FULLTEXT_BATCH_A.csv',paths[-1]
+          assert versions==list(range(1,30)),versions
+          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V29_TA1_FULLTEXT_BATCH_B.csv',paths[-1]
           PY
           for i in "${!overlays[@]}"; do
             n=$((i+1))
@@ -91,7 +91,7 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require TA1 fulltext batch A through V28
+      - name: Require TA1 fulltext batch B through V29
         run: |
           python - <<'PY'
           import json
@@ -103,13 +103,13 @@ jobs:
           assert d['title_abstract']['excluded']==138,d
           assert d['title_abstract']['unscreened']==405,d
           assert d['fulltext']['eligible_after_title_abstract']==325,d
-          assert d['fulltext']['included']==128,d
-          assert d['fulltext']['decision_excluded']==131,d
-          assert d['fulltext']['assessed_excluded']==130,d
+          assert d['fulltext']['included']==131,d
+          assert d['fulltext']['decision_excluded']==132,d
+          assert d['fulltext']['assessed_excluded']==131,d
           assert d['fulltext']['unavailable']==1,d
-          assert d['fulltext']['unscreened']==66,d
+          assert d['fulltext']['unscreened']==62,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
-          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==115,d
+          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==118,d
           assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==39,d
           assert d['evidence_lane_counts']['HISTORICAL_TRANSITION']==4,d
           assert d['geography']['geographic_contrast_positive']==27,d
@@ -118,9 +118,9 @@ jobs:
           assert d['prisma_flow']['records_screened_title_abstract']==463,d
           assert d['prisma_flow']['reports_sought_for_retrieval']==325,d
           assert d['prisma_flow']['reports_not_retrieved']==1,d
-          assert d['prisma_flow']['reports_assessed_for_eligibility']==258,d
-          assert d['prisma_flow']['reports_excluded_fulltext']==130,d
-          assert d['prisma_flow']['studies_included']==128,d
+          assert d['prisma_flow']['reports_assessed_for_eligibility']==262,d
+          assert d['prisma_flow']['reports_excluded_fulltext']==131,d
+          assert d['prisma_flow']['studies_included']==131,d
           PY
 
       - name: Verify V18-V20 stage provenance without live refetch
