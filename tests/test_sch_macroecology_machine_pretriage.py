@@ -19,9 +19,9 @@ def _build():
 
 def test_machine_pretriage_covers_all_current_primary_includes():
     rows, receipt = _build()
-    assert len(rows) == 152
-    assert receipt["n_current_primary_includes"] == 152
-    assert len({row["record_id"] for row in rows}) == 152
+    assert len(rows) == 153
+    assert receipt["n_current_primary_includes"] == 153
+    assert len({row["record_id"] for row in rows}) == 153
 
 
 def test_machine_pretriage_is_design_only():
@@ -35,16 +35,16 @@ def test_machine_pretriage_reproduces_current_design_funnel():
     _, receipt = _build()
     assert receipt["paired_response_status_counts"] == {
         "P1_BOTH_RESPONSES_COMMON_FITNESS": 74,
-        "P2_BOTH_RESPONSES_NO_COMMON_FITNESS": 19,
+        "P2_BOTH_RESPONSES_NO_COMMON_FITNESS": 20,
         "P3_ANTAGONIST_ONLY": 17,
         "P3_POLLINATOR_ONLY": 29,
         "P4_UNSTRUCTURED_OR_NEITHER": 13,
     }
-    assert receipt["n_paired_response_records"] == 93
+    assert receipt["n_paired_response_records"] == 94
     assert receipt["n_paired_response_with_common_fitness"] == 74
-    assert receipt["n_paired_response_without_common_fitness"] == 19
+    assert receipt["n_paired_response_without_common_fitness"] == 20
     assert receipt["context_recode_priority_counts"] == {
-        "NO_OR_UNRESOLVED": 110,
+        "NO_OR_UNRESOLVED": 111,
         "YES": 42,
     }
 
