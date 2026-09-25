@@ -9,19 +9,19 @@
   ],
   "geometry_eligibility_counts": {
     "BOUNDARY_BENEFIT_COST_COUPLED": 1,
-    "ELIGIBLE_BOUNDED_COORDINATE": 24,
+    "ELIGIBLE_BOUNDED_COORDINATE": 28,
     "ELIGIBLE_SAME_COORDINATE": 10,
     "INELIGIBLE_MULTIVARIATE_UNRESOLVED": 5,
     "INELIGIBLE_NO_TWO_FUNCTION_GEOMETRY": 8,
     "UNRESOLVED_SOURCE": 2
   },
   "n_benefit_cost_coupled_boundary_records": 1,
-  "n_h1_geometry_candidate_records": 34,
-  "n_h2_context_candidate_records": 23,
-  "n_machine_p1_records": 50,
-  "n_p1_manual_gated": 50,
+  "n_h1_geometry_candidate_records": 38,
+  "n_h2_context_candidate_records": 27,
+  "n_machine_p1_records": 54,
+  "n_p1_manual_gated": 54,
   "n_p1_missing_manual_gate": 0,
   "n_single_axis_records": 17,
-  "n_trait_axis_split_required_records": 28,
+  "n_trait_axis_split_required_records": 32,
   "status": "ALL_CURRENT_P1_RECORDS_MANUALLY_GATED"
 }
