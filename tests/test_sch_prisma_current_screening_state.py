@@ -117,7 +117,15 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     assert ft["EXCLUDE"] == 137
     assert ft["UNSCREENED"] == 63
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(33) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(38) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)} - {row["record_id"] for row in _v(28)} - {row["record_id"] for row in _v(29)} - {row["record_id"] for row in _v(30)} - {row["record_id"] for row in _v(31)} - {row["record_id"] for row in _v(32)} - {row["record_id"] for row in _v(34)} - {row["record_id"] for row in _v(35)} - {row["record_id"] for row in _v(36)} - {row["record_id"] for row in _v(37)}
+    retained_ta_ids = set().union(*[
+        {row["record_id"] for row in _v(version) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+        for version in (20, 21, 23, 25, 27, 33, 38)
+    ])
+    fulltext_decided_ids = set().union(*[
+        {row["record_id"] for row in _v(version)}
+        for version in (22, 24, 26, 28, 29, 30, 31, 32, 34, 35, 36, 37)
+    ])
+    assert pending == retained_ta_ids - fulltext_decided_ids
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
