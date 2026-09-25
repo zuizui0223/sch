@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          148
-both pollinator + antagonist responses               89
-both responses + common reproductive outcome         72
-manual P1 source-design gates completed               72
+current full-text primary-study inclusions          152
+both pollinator + antagonist responses               93
+both responses + common reproductive outcome         74
+manual P1 source-design gates completed               74
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -375,6 +375,15 @@ scent synthesis excluded from primary count
 ~~~
 
 This sharpens the distinction between biological role coupling and source-level identification. A nursery pollinator can have antagonistic life-history consequences in the system, yet a focal experiment that measures only oviposition-linked volatile induction does not identify a pollination-versus-antagonism geometry.
+## V36 TA2 batch C role and dependence result
+
+Four additional TA2 primary studies enter without expanding H1.
+
+Anemone coronaria is a sixth benefit-cost / role-boundary case: glaphyrid beetles both pollinate red flowers and cause petal scratch damage. The leafflower system adds a 16-population pollinator-cheater geographic mosaic. Camissoniopsis adds pollen-limitation/parasitism context to the existing 000287 biological programme rather than a new independent programme.
+
+The H1 record frontier therefore remains 39 while H2 multi-context coverage rises to 31.
+
+> consumer role can change sign within a taxon, and spatial mosaics can be strong, without yielding a new independent same-coordinate conflict geometry.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
