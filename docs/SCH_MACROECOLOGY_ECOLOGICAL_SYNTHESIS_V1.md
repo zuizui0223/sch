@@ -433,6 +433,22 @@ formal TA unscreened      335 / 868
 ~~~
 
 The retained set includes direct herbivory-pollinator systems, comparative attractive/defensive chemistry, mutualist-antagonist trait matching and explicit report pairs. Duplicates are kept visible until full-text adjudication.
+## V40 deterministic TA3 batch C
+
+The third fixed TA3 batch advances formal screening without changing any ecological outcome denominator.
+
+~~~text
+review orders            128-152
+records screened              25
+retained                      13
+excluded                      12
+formal TA screened        558 / 868
+formal TA unscreened      310 / 868
+~~~
+
+The retained set contains several consumer-role and indirect-effect systems: a native pollinating seed predator in invasive Silene, bird pollination versus bee nectar robbing in Erica, herbivory-induced pollinator-mediated fitness costs, a pollinating-herbivore life cycle, exploitative low-efficiency bees, and bee-pollination / ant-seed-predation crop systems.
+
+The exclusions continue to enforce the same boundary: inferred ecological functions, pollinator-only studies, commentary/editorial records and non-plant response endpoints do not enter merely because flowers or insects appear in the title.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -490,7 +506,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 128 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder from review order 153 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
