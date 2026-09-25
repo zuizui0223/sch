@@ -7,6 +7,7 @@ DESIGN = [
     ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH1_V1.csv",
     ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_BATCH2_V1.csv",
     ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_P1_REMAINDER_V1.csv",
+    ROOT / "data" / "SCH_MACROECOLOGY_DESIGN_RECODE_V26_HOLDOUT_V1.csv",
 ]
 AXES = [
     ROOT / "data" / "SCH_MACROECOLOGY_TRAIT_AXIS_RECODE_BATCH1_V1.csv",
@@ -30,11 +31,16 @@ def _build():
 
 def test_all_record_level_h1_candidates_are_source_axis_recoded():
     built = _build()
-    assert built["n_record_level_h1_candidates"] == 34
+    assert built["n_record_level_h1_candidates"] == 38
     assert built["n_h1_candidates_with_source_axis_record"] == 34
-    assert built["n_h1_candidates_missing_source_axis_record"] == 0
-    assert built["missing_h1_record_ids"] == []
-    assert built["status"] == "ALL_RECORD_LEVEL_H1_CANDIDATES_SOURCE_AXIS_RECODED"
+    assert built["n_h1_candidates_missing_source_axis_record"] == 4
+    assert built["missing_h1_record_ids"] == [
+        "SCHPRISMA-000649",
+        "SCHPRISMA-000651",
+        "SCHPRISMA-000661",
+        "SCHPRISMA-000723",
+    ]
+    assert built["status"] == "H1_SOURCE_AXIS_RECODE_INCOMPLETE"
 
 
 def test_source_audit_separates_full_from_partial_downgrades():
