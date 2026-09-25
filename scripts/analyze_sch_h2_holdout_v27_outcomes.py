@@ -64,6 +64,14 @@ def build(source_path: Path) -> dict[str, object]:
         supported_negative = any(
             row["support_status"] == "SUPPORTED_NEGATIVE" for row in axis_contexts
         )
+        by_year: dict[str, list[dict[str, object]]] = defaultdict(list)
+        for context_row in axis_contexts:
+            by_year[str(context_row["year"])].append(context_row)
+        within_year_reversal = any(
+            any(r["support_status"] == "SUPPORTED_POSITIVE" for r in year_rows)
+            and any(r["support_status"] == "SUPPORTED_NEGATIVE" for r in year_rows)
+            for year_rows in by_year.values()
+        )
         axis_rows.append(
             {
                 "programme_id": programme,
@@ -74,6 +82,7 @@ def build(source_path: Path) -> dict[str, object]:
                 "bidirectionally_supported_reversal": (
                     supported_positive and supported_negative
                 ),
+                "within_year_bidirectionally_supported_reversal": within_year_reversal,
                 "support_statuses": sorted(
                     {row["support_status"] for row in axis_contexts}
                 ),
@@ -86,12 +95,20 @@ def build(source_path: Path) -> dict[str, object]:
         axes = [row for row in axis_rows if row["programme_id"] == programme]
         n_axes = len(axes)
         n_reversal = sum(row["bidirectionally_supported_reversal"] for row in axes)
+        n_within_year = sum(
+            row["within_year_bidirectionally_supported_reversal"]
+            for row in axes
+        )
         programmes.append(
             {
                 "programme_id": programme,
                 "n_eligible_repeated_axes": n_axes,
                 "n_bidirectionally_supported_reversal_axes": n_reversal,
                 "q_j": n_reversal / n_axes,
+                "n_within_year_supported_reversal_axes": n_within_year,
+                "n_cross_year_or_cross_stratum_only_reversal_axes": (
+                    n_reversal - n_within_year
+                ),
                 "reversal_axis_ids": sorted(
                     row["canonical_axis"]
                     for row in axes
@@ -120,6 +137,9 @@ def build(source_path: Path) -> dict[str, object]:
             "categorical_or_nonfloral_rows_do_not_enter_denominator",
             "programme_is_primary_inference_unit",
             "impatiens_remains_pending_without_numeric_uncertainty_table",
+            "primary_q_uses_all_registered_source_defined_contexts_including_year",
+            "within_year_reversal_diagnostic_is_secondary_not_primary",
+            "trillium_primary_reversals_are_not_attributed_to_pollination_modifier_alone",
         ],
     }
 
