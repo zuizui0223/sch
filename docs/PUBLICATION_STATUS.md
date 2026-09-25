@@ -170,6 +170,8 @@ V31 adds three more primary studies and explicitly removes the duplicate Digital
 
 The TA1 full-text tier is now fully closed. Across that expansion, P1 reaches 71 while the H1 record-level geometry frontier remains 39. Benefit-cost/role-boundary records rise to 5 and H2 multi-context candidates to 29. This shows that systematic ecological relevance expands faster than identified same-coordinate conflict geometry.
 
+The frozen TA2 repeated-context title/abstract tier is now closed: 20/20 records screened, 14 retained for full text and 6 excluded. Formal title/abstract screening has reached 483/868 records, with 385 still unscreened.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -191,7 +193,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is the frozen TA2 repeated-context title/abstract tier; TA0 and TA1 are now closed.
+The immediate macroecology operation is full-text closure of the 14 retained TA2 repeated-context records; TA0/TA1 are closed and TA2 title/abstract screening is complete.
 
 Canonical macroecology documents:
 
@@ -206,6 +208,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V30_TA1_FULLTEXT_BATCH_C_READOUT.md
 - docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md
 - docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md
+- docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md
 ## Frozen literature-layer status
 
 ```text
