@@ -19,10 +19,10 @@ The second layer is an active macroecological/comparative extension. It strength
 ## Current evidence funnel
 
 ~~~text
-current full-text primary-study inclusions          128
-both pollinator + antagonist responses               72
-both responses + common reproductive outcome         57
-manual P1 source-design gates completed               57
+current full-text primary-study inclusions          131
+both pollinator + antagonist responses               75
+both responses + common reproductive outcome         60
+manual P1 source-design gates completed               60
 record-level H1 geometry candidates                   39
 source-axis evidence records                          64
 model-eligible / role-boundary source-axis records    57
@@ -273,6 +273,19 @@ new STRICT_LINKED_EXPERIMENT records    0
 This is itself informative: increasing ecological relevance does not mechanically increase identified functional conflict.
 
 Vaccinium hirtum flowering phenology is retained as a same-coordinate, multi-context H1 source axis. Solidago floral VOCs are downgraded because herbivory is an antecedent context rather than a second receiver response to the VOC coordinate. The dissertation record remains source-unresolved rather than being split post hoc into favorable examples.
+## V29 TA1 batch B role-boundary result
+
+Three additional TA1 primary studies are included, but none adds a fixed-role H1 trait geometry.
+
+The strongest new identification result is Lonicera etrusca:
+
+> nectar robbers can be direct pollinators while simultaneously reducing legitimate visitor rates.
+
+This is coded as BENEFIT_COST_COUPLED rather than conflict. The same consumer therefore carries both positive and negative pathways, reinforcing the SCH rule that consumer identity or a label such as "nectar robber" cannot be assigned a fixed functional sign.
+
+Desfontainia and Ipomopsis are retained as ecologically relevant near-pass studies but are downgraded from H1 because robbery state/intensity is the imposed interaction context rather than an independently declared floral trait coordinate receiving two functional responses.
+
+Abronia is excluded at full text because the proposed herbivore cost of floral attraction is not measured as a focal antagonist channel in the source.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
