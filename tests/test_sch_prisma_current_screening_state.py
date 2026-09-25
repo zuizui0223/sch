@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V26_H2_HOLDOUT_FULLTEXT.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V27_TA1_HOLDOUT.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 27))
+    assert [_version(path) for path in files] == list(range(1, 28))
     assert files[-1].name == LATEST
     return files
 
@@ -96,10 +96,10 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 440
-    assert ta["RETAIN_FULLTEXT"] == 304
-    assert ta["EXCLUDE"] == 136
-    assert DENOMINATOR - len(rows) == 428
+    assert len(rows) == 463
+    assert ta["RETAIN_FULLTEXT"] == 325
+    assert ta["EXCLUDE"] == 138
+    assert DENOMINATOR - len(rows) == 405
 
 
 def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
@@ -115,9 +115,9 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 124
     assert ft["EXCLUDE"] == 131
-    assert ft["UNSCREENED"] == 49
+    assert ft["UNSCREENED"] == 70
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)}
+    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)}
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
@@ -216,4 +216,25 @@ def test_v26_formally_includes_first_four_holdout_programmes_before_outcome_adju
     assert {row["evidence_lanes"] for row in rows} == {"DIRECTIONAL_OR_NEAR_PASS"}
     assert {row["decision_source"] for row in rows} == {
         "SOURCE_VERIFIED_H2_HOLDOUT_FULLTEXT_V26_2026-09-25"
+    }
+
+
+def test_v27_closes_the_frozen_ta1_performance_tier_in_review_order() -> None:
+    rows = _v(27)
+    assert len(rows) == 23
+    assert Counter(row["screen_title_abstract"] for row in rows) == {
+        "RETAIN_FULLTEXT": 21,
+        "EXCLUDE": 2,
+    }
+    assert {row["decision_source"] for row in rows} == {
+        "SOURCE_VERIFIED_TA1_HOLDOUT_SCREEN_V27_2026-09-25"
+    }
+    excluded = {
+        row["record_id"]: row["screen_title_abstract_reason"]
+        for row in rows
+        if row["screen_title_abstract"] == "EXCLUDE"
+    }
+    assert excluded == {
+        "SCHPRISMA-000800": "TA_NO_ANTAGONIST_COMPONENT",
+        "SCHPRISMA-000801": "TA_NO_POLLINATOR_COMPONENT",
     }
