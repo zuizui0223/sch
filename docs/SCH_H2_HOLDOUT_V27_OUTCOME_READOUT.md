@@ -54,12 +54,14 @@ Trillium petal colour is excluded from the numeric direction denominator because
 
 ## Trillium supported reversals
 
-Two Trillium axes contain uncertainty-supported positive and negative source-defined contexts:
+Two Trillium axes contain uncertainty-supported positive and negative source-defined contexts under the registered all-context primary rule:
 
 - floral display height;
 - petal size.
 
 Flowering date does not meet the bidirectional support criterion.
+
+A secondary within-year diagnostic finds **0/3** Trillium axes with bidirectionally supported reversal inside a single year. The two primary reversals therefore arise across the full year × pollination context set and are not attributed to pollen supplementation alone.
 
 ## Current prospective state
 
@@ -82,9 +84,9 @@ primary H2M1 test                       NOT RUN
 
 The first held-out outcomes already rule out an overly strong reading of the V11 pattern:
 
-> supported directional reversal does not require a multi-component ecological manipulation.
+> supported directional reversal is not confined to programmes prospectively classified as multi-component.
 
-Trillium produces two supported reversals under a prospectively frozen SINGLE_REGISTERED_MODIFIER design class.
+Trillium contains two supported reversals while prospectively frozen in the SINGLE_REGISTERED_MODIFIER class. Because both are cross-year/cross-stratum under the primary all-context rule, this is not evidence that the single manipulated pollination modifier itself caused the reversal.
 
 This does **not** test the registered directional H2M1 prediction. The primary prediction is comparative and programme-level: multi-component / consumer-turnover programmes are predicted to have a higher mean q_j than single-modifier programmes. No multi-component programme has a completed outcome yet, and the opening gate requires at least five complete programmes in each class.
 
@@ -107,7 +109,7 @@ The four new coverage rows are composite source records. They do not automatical
 
 V27 supports:
 
-- supported reversals can occur under a single registered ecological modifier;
+- a programme prospectively classified as single-modifier can contain supported reversals across its full registered context set;
 - zero-reversal outcomes are real holdout outcomes rather than screening failures;
 - source-defined context turnover can reverse supported total-selection direction within a programme.
 
