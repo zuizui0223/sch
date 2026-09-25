@@ -497,6 +497,22 @@ formal TA unscreened      235 / 868
 Dalechampia is retained despite finding little evidence that seed predators constrain pollinator-mediated floral evolution, and Erythronium pollen colour is retained despite a null predation effect. Brood-pollination and fig-parasite systems remain for role/context adjudication.
 
 This helps keep later geometry frequencies interpretable: the screening layer does not discard null or one-sided ecological outcomes.
+## V44 deterministic TA3 batch G
+
+The seventh fixed TA3 batch adds several high-information selection/context sources while preserving the frozen order:
+
+~~~text
+review orders            228-252
+records screened              25
+retained                      10
+excluded                      15
+formal TA screened        658 / 868
+formal TA unscreened      210 / 868
+~~~
+
+The retained set includes tripartite phenotypic selection, Arabidopsis pollinator/herbivore selection, Yucca pollinating-seed-predator behaviour, ozone-mediated biotic/reproductive change, and herbivory-dependent pollinator contributions.
+
+Preprint/version-of-record pairs remain visible until full-text adjudication, and commentary/Peer Review artifacts are excluded rather than treated as independent evidence.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -554,7 +570,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 228 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder from review order 253 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
