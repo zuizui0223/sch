@@ -221,6 +221,8 @@ V36 closes the third TA2 full-text batch. Anemone adds a benefit-cost role bound
 
 V37 completes the TA2 full-text tier. The Mimulus dissertation is retained as composite P2 evidence because its pollinator and herbivore responses occur in separate experiments without a common reproductive endpoint; the BioScience synthesis is excluded from the primary count. Primary studies reach 153, P2=20, and H1 remains 39.
 
+V38 begins the deterministic TA3 remainder with review orders 78–102: 25 records screened, 14 retained and 11 excluded. Formal title/abstract screening now covers 508/868 records; 360 remain unscreened.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -255,6 +257,7 @@ See:
 - `docs/SCH_PRISMA_V35_TA2_FULLTEXT_BATCH_B_READOUT.md` — second TA2 full-text batch
 - `docs/SCH_PRISMA_V36_TA2_FULLTEXT_BATCH_C_READOUT.md` — third TA2 full-text batch
 - `docs/SCH_PRISMA_V37_TA2_FULLTEXT_CLOSURE_READOUT.md` — complete TA2 full-text closure
+- `docs/SCH_PRISMA_V38_TA3_BATCH_A_READOUT.md` — first deterministic TA3 batch
 
 ## Empirical execution strategy
 

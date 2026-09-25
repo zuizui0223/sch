@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V37_TA2_FULLTEXT_CLOSURE.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V38_TA3_BATCH_A.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 38))
+    assert [_version(path) for path in files] == list(range(1, 39))
     assert files[-1].name == LATEST
     return files
 
@@ -96,10 +96,10 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 483
-    assert ta["RETAIN_FULLTEXT"] == 339
-    assert ta["EXCLUDE"] == 144
-    assert DENOMINATOR - len(rows) == 385
+    assert len(rows) == 508
+    assert ta["RETAIN_FULLTEXT"] == 353
+    assert ta["EXCLUDE"] == 155
+    assert DENOMINATOR - len(rows) == 360
 
 
 def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
@@ -115,9 +115,17 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 153
     assert ft["EXCLUDE"] == 137
-    assert ft["UNSCREENED"] == 49
+    assert ft["UNSCREENED"] == 63
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
-    assert pending == ({row["record_id"] for row in _v(20) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(21) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(23) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(25) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(27) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"} | {row["record_id"] for row in _v(33) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}) - {row["record_id"] for row in _v(22)} - {row["record_id"] for row in _v(24)} - {row["record_id"] for row in _v(26)} - {row["record_id"] for row in _v(28)} - {row["record_id"] for row in _v(29)} - {row["record_id"] for row in _v(30)} - {row["record_id"] for row in _v(31)} - {row["record_id"] for row in _v(32)} - {row["record_id"] for row in _v(34)} - {row["record_id"] for row in _v(35)} - {row["record_id"] for row in _v(36)} - {row["record_id"] for row in _v(37)}
+    retained_ta_ids = set().union(*[
+        {row["record_id"] for row in _v(version) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
+        for version in (20, 21, 23, 25, 27, 33, 38)
+    ])
+    fulltext_decided_ids = set().union(*[
+        {row["record_id"] for row in _v(version)}
+        for version in (22, 24, 26, 28, 29, 30, 31, 32, 34, 35, 36, 37)
+    ])
+    assert pending == retained_ta_ids - fulltext_decided_ids
     unavailable = [row for row in rows if row["fulltext_status"] == "UNAVAILABLE"]
     assert [row["record_id"] for row in unavailable] == ["SCHPRISMA-000194"]
 
@@ -407,3 +415,15 @@ def test_v37_closes_final_ta2_fulltexts_and_completes_ta2_tier() -> None:
     assert by_id["SCHPRISMA-000844"]["common_reproductive_outcome"] == "NO_COMMON_REPRODUCTIVE_OUTCOME"
     assert by_id["SCHPRISMA-000863"]["screen_fulltext"] == "EXCLUDE"
     assert by_id["SCHPRISMA-000863"]["screen_fulltext_reason"] == "FT_REVIEW_ONLY_NO_PRIMARY_ROLE"
+
+
+def test_v38_closes_first_deterministic_ta3_batch() -> None:
+    rows = _v(38)
+    assert len(rows) == 25
+    assert Counter(row["screen_title_abstract"] for row in rows) == {
+        "RETAIN_FULLTEXT": 14,
+        "EXCLUDE": 11,
+    }
+    assert {row["decision_source"] for row in rows} == {
+        "SOURCE_VERIFIED_TA3_BATCH_A_SCREEN_V38_2026-09-25"
+    }
