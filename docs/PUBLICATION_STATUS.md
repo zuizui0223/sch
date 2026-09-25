@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             124
+current primary-study inclusions             128
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -160,6 +160,8 @@ Four V26 held-out studies are formally full-text included as DIRECTIONAL_OR_NEAR
 
 Trillium already demonstrates that a prospectively frozen single-modifier programme can contain supported reversal under the registered all-context rule (q_j = 2/3); Dactylorhiza and Primula have q_j = 0. A secondary within-year diagnostic gives 0/3 Trillium reversals, so the result is not attributed to pollen supplementation alone. This remains descriptive because the class-comparison gate is closed.
 
+V28 adds four additional full-text primary studies from the frozen TA1 tier. Machine P1 rises to 57, the manually gated H1 record frontier to 39, and source-axis evidence to 64. Only Vaccinium 000429 adds a new same-coordinate H1 source axis; no new strict linked experiment is identified.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -181,7 +183,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is the frozen TA0 screen; further post-hoc mining of the eight development programmes is not a priority.
+The immediate macroecology operation is continued frozen-order TA1 full-text closure; further post-hoc mining of the eight development programmes is not a priority.
 
 Canonical macroecology documents:
 
@@ -191,6 +193,7 @@ Canonical macroecology documents:
 - docs/SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V3.md
 - docs/SCH_H2_HOLDOUT_V26_DESIGN_FREEZE.md
 - docs/SCH_H2_HOLDOUT_V27_OUTCOME_READOUT.md
+- docs/SCH_PRISMA_V28_TA1_FULLTEXT_BATCH_A_READOUT.md
 ## Frozen literature-layer status
 
 ```text
