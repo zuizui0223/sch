@@ -35,9 +35,9 @@ def test_priority_queue_covers_exact_current_unscreened_denominator_and_generate
     rows, receipt = _mod().build(FROZEN, PRISMA)
 
     assert receipt["n_frozen_candidates"] == 868
-    assert receipt["n_formally_ta_screened"] == 508
-    assert receipt["n_unscreened_priority_queue"] == 360
-    assert len(rows) == 360
+    assert receipt["n_formally_ta_screened"] == 533
+    assert receipt["n_unscreened_priority_queue"] == 335
+    assert len(rows) == 335
     assert receipt["n_formal_decisions_generated"] == 0
     assert all(row["formal_title_abstract_decision"] == "" for row in rows)
     assert all(row["priority_status"] == "OUTCOME_BLIND_REVIEW_ORDER_ONLY" for row in rows)
@@ -46,8 +46,8 @@ def test_priority_queue_covers_exact_current_unscreened_denominator_and_generate
 def test_priority_queue_has_unique_records_and_deterministic_order():
     mod = _mod()
     rows, _ = mod.build(FROZEN, PRISMA)
-    assert len({row["record_id"] for row in rows}) == 360
-    assert [int(row["review_order"]) for row in rows] == list(range(1, 361))
+    assert len({row["record_id"] for row in rows}) == 335
+    assert [int(row["review_order"]) for row in rows] == list(range(1, 336))
     tiers = [mod.TIER_RANK[row["priority_tier"]] for row in rows]
     assert tiers == sorted(tiers)
 
