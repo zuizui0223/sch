@@ -158,7 +158,7 @@ primary test: programme-label permutation on q_j
 
 Four V26 held-out studies are formally full-text included as DIRECTIONAL_OR_NEAR_PASS. V27 completes numeric outcomes for Dactylorhiza, Primula and Trillium; Impatiens remains pending. All four have source-axis coverage, while the canonical geometry ledger remains at 50 axes pending individual-axis canonicalization.
 
-Trillium already demonstrates that a prospectively frozen single-modifier programme can contain supported reversal (q_j = 2/3); Dactylorhiza and Primula have q_j = 0. This is descriptive holdout evidence only because the class-comparison gate remains closed.
+Trillium already demonstrates that a prospectively frozen single-modifier programme can contain supported reversal under the registered all-context rule (q_j = 2/3); Dactylorhiza and Primula have q_j = 0. A secondary within-year diagnostic gives 0/3 Trillium reversals, so the result is not attributed to pollen supplementation alone. This remains descriptive because the class-comparison gate is closed.
 
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
