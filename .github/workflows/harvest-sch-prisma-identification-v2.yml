@@ -79,8 +79,8 @@ jobs:
           rx=re.compile(r'SCREENING_DECISIONS_V(\d+)')
           paths=sorted(Path('empirical/prisma').glob('SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv'),key=lambda p:int(rx.search(p.name).group(1)))
           versions=[int(rx.search(p.name).group(1)) for p in paths]
-          assert versions==list(range(1,34)),versions
-          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V33_TA2_HOLDOUT.csv',paths[-1]
+          assert versions==list(range(1,35)),versions
+          assert paths[-1].name=='SCH_PRISMA_V2_SCREENING_DECISIONS_V34_TA2_FULLTEXT_BATCH_A.csv',paths[-1]
           PY
           for i in "${!overlays[@]}"; do
             n=$((i+1))
@@ -92,7 +92,7 @@ jobs:
           cp -a "$SRC" artifacts/sch_prisma_v2/screening_active
           python scripts/audit_sch_prisma_screening.py "$SRC" artifacts/sch_prisma_v2/SCH_PRISMA_V2_SCREENING_AUDIT_CURRENT.json --expected-denominator 868
 
-      - name: Require TA2 holdout screening through V33
+      - name: Require TA2 fulltext batch A through V34
         run: |
           python - <<'PY'
           import json
@@ -104,24 +104,24 @@ jobs:
           assert d['title_abstract']['excluded']==144,d
           assert d['title_abstract']['unscreened']==385,d
           assert d['fulltext']['eligible_after_title_abstract']==339,d
-          assert d['fulltext']['included']==142,d
-          assert d['fulltext']['decision_excluded']==134,d
-          assert d['fulltext']['assessed_excluded']==133,d
+          assert d['fulltext']['included']==145,d
+          assert d['fulltext']['decision_excluded']==135,d
+          assert d['fulltext']['assessed_excluded']==134,d
           assert d['fulltext']['unavailable']==1,d
-          assert d['fulltext']['unscreened']==63,d
+          assert d['fulltext']['unscreened']==59,d
           assert d['evidence_lane_counts']['STRICT_LINKED_EXPERIMENT']==2,d
-          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==129,d
-          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==39,d
+          assert d['evidence_lane_counts']['DIRECTIONAL_OR_NEAR_PASS']==131,d
+          assert d['evidence_lane_counts']['EVOLUTIONARY_OUTCOME']==40,d
           assert d['evidence_lane_counts']['HISTORICAL_TRANSITION']==4,d
-          assert d['geography']['geographic_contrast_positive']==30,d
+          assert d['geography']['geographic_contrast_positive']==31,d
           assert d['geography']['receiver_assemblage_contrast_positive']==27,d
           assert d['geography']['joint_geographic_receiver_positive']==25,d
           assert d['prisma_flow']['records_screened_title_abstract']==483,d
           assert d['prisma_flow']['reports_sought_for_retrieval']==339,d
           assert d['prisma_flow']['reports_not_retrieved']==1,d
-          assert d['prisma_flow']['reports_assessed_for_eligibility']==275,d
-          assert d['prisma_flow']['reports_excluded_fulltext']==133,d
-          assert d['prisma_flow']['studies_included']==142,d
+          assert d['prisma_flow']['reports_assessed_for_eligibility']==279,d
+          assert d['prisma_flow']['reports_excluded_fulltext']==134,d
+          assert d['prisma_flow']['studies_included']==145,d
           PY
 
       - name: Verify V18-V20 stage provenance without live refetch

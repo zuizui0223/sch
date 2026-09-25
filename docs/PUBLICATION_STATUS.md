@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             142
+current primary-study inclusions             145
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -172,6 +172,8 @@ The TA1 full-text tier is now fully closed. Across that expansion, P1 reaches 71
 
 The frozen TA2 repeated-context title/abstract tier is now closed: 20/20 records screened, 14 retained for full text and 6 excluded. Formal title/abstract screening has reached 483/868 records, with 385 still unscreened.
 
+V34 closes the first retained TA2 full-text batch. Three primary studies enter, one duplicate report is excluded, P1 rises to 72 and P2 to 16 while the H1 record frontier remains 39. Tribulus is kept in EVOLUTIONARY_OUTCOME and the Solanum pollen-dispensing system is retained as a no-common-fitness service-cost boundary.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -193,7 +195,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is full-text closure of the 14 retained TA2 repeated-context records; TA0/TA1 are closed and TA2 title/abstract screening is complete.
+The immediate macroecology operation is continued frozen-order TA2 full-text closure; 10 retained TA2 records remain after V34.
 
 Canonical macroecology documents:
 
@@ -209,6 +211,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md
 - docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md
 - docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md
+- docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md
 ## Frozen literature-layer status
 
 ```text

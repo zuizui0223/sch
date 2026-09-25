@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         142
+current primary-study inclusions         145
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -213,6 +213,8 @@ V32 completes the TA1 full-text tier. Four more primary studies raise P1 to 71, 
 
 V33 closes the complete frozen TA2 repeated-context title/abstract tier: 20 records screened, 14 retained for full text and 6 excluded. Formal title/abstract screening now covers 483/868 records; 385 remain unscreened.
 
+V34 closes the first TA2 full-text batch: Isoplexis enters broad P1 but not H1, Tribulus enters EVOLUTIONARY_OUTCOME, the Solanum preprint is removed as a duplicate, and the published Solanum study becomes a P2 pollination-service/pollen-consumption boundary. Primary studies rise to 145 while the H1 frontier remains 39.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -243,6 +245,7 @@ See:
 - `docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md` — fourth TA1 full-text batch
 - `docs/SCH_PRISMA_V32_TA1_FULLTEXT_CLOSURE_READOUT.md` — final TA1 full-text closure
 - `docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md` — complete TA2 title/abstract screening
+- `docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md` — first TA2 full-text batch
 
 ## Empirical execution strategy
 
