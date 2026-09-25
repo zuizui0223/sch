@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V38_TA3_BATCH_A.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V39_TA3_BATCH_B.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 39))
+    assert [_version(path) for path in files] == list(range(1, 40))
     assert files[-1].name == LATEST
     return files
 
@@ -96,10 +96,10 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 508
-    assert ta["RETAIN_FULLTEXT"] == 353
-    assert ta["EXCLUDE"] == 155
-    assert DENOMINATOR - len(rows) == 360
+    assert len(rows) == 533
+    assert ta["RETAIN_FULLTEXT"] == 363
+    assert ta["EXCLUDE"] == 170
+    assert DENOMINATOR - len(rows) == 335
 
 
 def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
@@ -115,11 +115,11 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 153
     assert ft["EXCLUDE"] == 137
-    assert ft["UNSCREENED"] == 63
+    assert ft["UNSCREENED"] == 73
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
     retained_ta_ids = set().union(*[
         {row["record_id"] for row in _v(version) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
-        for version in (20, 21, 23, 25, 27, 33, 38)
+        for version in (20, 21, 23, 25, 27, 33, 38, 39)
     ])
     fulltext_decided_ids = set().union(*[
         {row["record_id"] for row in _v(version)}
@@ -426,4 +426,16 @@ def test_v38_closes_first_deterministic_ta3_batch() -> None:
     }
     assert {row["decision_source"] for row in rows} == {
         "SOURCE_VERIFIED_TA3_BATCH_A_SCREEN_V38_2026-09-25"
+    }
+
+
+def test_v39_closes_second_deterministic_ta3_batch() -> None:
+    rows = _v(39)
+    assert len(rows) == 25
+    assert Counter(row["screen_title_abstract"] for row in rows) == {
+        "RETAIN_FULLTEXT": 10,
+        "EXCLUDE": 15,
+    }
+    assert {row["decision_source"] for row in rows} == {
+        "SOURCE_VERIFIED_TA3_BATCH_B_SCREEN_V39_2026-09-25"
     }
