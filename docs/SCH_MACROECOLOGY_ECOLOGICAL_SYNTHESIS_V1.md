@@ -404,6 +404,21 @@ Across TA0-TA2, the systematic pattern is now unusually clear:
 > ecological relevance, context turnover and consumer-role complexity expand rapidly with screening, whereas identified same-coordinate conflict geometry expands slowly.
 
 This is an empirical identification result, not just a methodological warning.
+## V38 deterministic TA3 screening
+
+After complete TA0-TA2 closure, SCH has entered the general TA3 remainder without changing the outcome-blind review order.
+
+The first fixed batch contains review orders 78-102:
+
+~~~text
+TA3 batch A records        25
+retained                   14
+excluded                   11
+formal TA screened        508 / 868
+formal TA unscreened      360 / 868
+~~~
+
+This stage changes screening coverage only. No new full-text study, canonical axis, H1/H2 case or held-out programme is promoted in V38.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -461,7 +476,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the frozen systematic screen with the deterministic TA3 remainder;
+1. continue the deterministic TA3 remainder from review order 103 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
