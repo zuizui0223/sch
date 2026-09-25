@@ -1,0 +1,37 @@
+{
+  "analysis": "sch_h2_reversal_holdout_v3",
+  "protocol_status": "PROSPECTIVE_HOLDOUT_V3_FROZEN_TEST_NOT_OPEN",
+  "n_development_programmes_excluded": 8,
+  "n_registered_heldout_programmes": 4,
+  "n_complete_primary_programmes": 3,
+  "n_complete_external_spatial_programmes": 0,
+  "complete_primary_class_counts": {
+    "SINGLE_REGISTERED_MODIFIER": 3
+  },
+  "complete_primary_any_supported_reversal_counts": {
+    "NO": 2,
+    "YES": 1
+  },
+  "primary_test_gate_pass": false,
+  "primary_test": null,
+  "test_status": "PRIMARY_HOLDOUT_TEST_NOT_OPEN",
+  "status": "PROSPECTIVE_REVERSAL_HOLDOUT_V3_FROZEN",
+  "claim_ceiling": [
+    "current_eight_programmes_are_never_used_in_primary_holdout_test",
+    "frozen_456_record_active_roster_is_the_only_primary_source_pool",
+    "predictor_classification_must_precede_outcome_sign_adjudication",
+    "programme_is_primary_inference_unit",
+    "axis_count_is_normalized_within_programme_before_cross_programme_comparison",
+    "spatial_observational_programmes_are_external_replication_only",
+    "primary_opening_gate_depends_only_on_design_breadth",
+    "zero_supported_reversals_is_a_valid_confirmatory_result",
+    "screening_order_and_estimand_qualification_remain_outcome_blind",
+    "seven_records_formally_screened_before_v3_are_excluded_from_primary_source_pool"
+  ],
+  "source_derivation": {
+    "original_queue_n": 463,
+    "pre_v3_formally_screened_n": 7,
+    "active_holdout_n": 456,
+    "review_order_preserved": true
+  }
+}
