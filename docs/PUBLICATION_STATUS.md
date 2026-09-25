@@ -99,7 +99,7 @@ The Viewpoint package remains frozen and submission-ready, while SCH carries an 
 Current state:
 
 ~~~text
-current primary-study inclusions             135
+current primary-study inclusions             138
 canonical biological trait axes               50
 
 static fixed-role resolved axes               19
@@ -166,6 +166,8 @@ V29 adds three further primary studies from the frozen TA1 full-text queue, but 
 
 V30 adds four more primary studies, again without expanding the H1 trait frontier. Sesamum 000546 is a third BENEFIT_COST_COUPLED / role-dependent consumer case, and Clinopodium 000549 increases joint geographic × receiver-assemblage contrast coverage. Machine P1 is now 64 while H1 record candidates remain 39.
 
+V31 adds three more primary studies and explicitly removes the duplicate Digitalis preprint. Machine P1 rises to 67 while H1 candidates remain 39; the new studies strengthen upstream interaction-context evidence rather than same-coordinate functional geometry.
+
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
@@ -200,6 +202,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V28_TA1_FULLTEXT_BATCH_A_READOUT.md
 - docs/SCH_PRISMA_V29_TA1_FULLTEXT_BATCH_B_READOUT.md
 - docs/SCH_PRISMA_V30_TA1_FULLTEXT_BATCH_C_READOUT.md
+- docs/SCH_PRISMA_V31_TA1_FULLTEXT_BATCH_D_READOUT.md
 ## Frozen literature-layer status
 
 ```text
