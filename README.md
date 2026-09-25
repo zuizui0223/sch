@@ -151,7 +151,7 @@ SCH now also carries an active comparative ecological layer built from the same 
 Current bounded state:
 
 ~~~text
-current primary-study inclusions         148
+current primary-study inclusions         152
 canonical biological trait axes           50
 
 static fixed-role resolved axes            19
@@ -217,6 +217,8 @@ V34 closes the first TA2 full-text batch: Isoplexis enters broad P1 but not H1, 
 
 V35 closes the second TA2 full-text batch. Sabatia becomes a P2 both-response/no-common-fitness case, Hakea enters EVOLUTIONARY_OUTCOME, Silene-Hadena is antagonist-side only in the focal source, and the scent synthesis is excluded from the primary count. Primary studies reach 148 while H1 remains 39.
 
+V36 closes the third TA2 full-text batch. Anemone adds a benefit-cost role boundary, the leafflower study adds a 16-population pollinator-cheater mosaic, and Camissoniopsis adds spatial context to an already represented biological programme. Primary studies reach 152, P1=74 and H2-context=31 while H1 remains 39.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -249,6 +251,7 @@ See:
 - `docs/SCH_PRISMA_V33_TA2_HOLDOUT_READOUT.md` — complete TA2 title/abstract screening
 - `docs/SCH_PRISMA_V34_TA2_FULLTEXT_BATCH_A_READOUT.md` — first TA2 full-text batch
 - `docs/SCH_PRISMA_V35_TA2_FULLTEXT_BATCH_B_READOUT.md` — second TA2 full-text batch
+- `docs/SCH_PRISMA_V36_TA2_FULLTEXT_BATCH_C_READOUT.md` — third TA2 full-text batch
 
 ## Empirical execution strategy
 
