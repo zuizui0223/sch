@@ -233,6 +233,8 @@ V42 closes the fifth deterministic TA3 batch, review orders 178–202: 25 record
 
 V43 closes the sixth deterministic TA3 batch, review orders 203–227: 25 records screened, 10 retained and 15 excluded. Formal title/abstract screening reaches 633/868; 235 remain unscreened. Negative controls such as Dalechampia seed-predator non-constraint and Erythronium pollen-colour one-sided effects remain in the retained set.
 
+V44 closes the seventh deterministic TA3 batch, review orders 228–252: 25 records screened, 10 retained and 15 excluded. Formal title/abstract screening reaches 658/868; 210 remain unscreened. The retained set includes tripartite selection, brood-pollination, ozone-mediated biotic context and herbivory-dependent pollinator selection.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -273,6 +275,7 @@ See:
 - `docs/SCH_PRISMA_V41_TA3_BATCH_D_READOUT.md` — fourth deterministic TA3 batch
 - `docs/SCH_PRISMA_V42_TA3_BATCH_E_READOUT.md` — fifth deterministic TA3 batch
 - `docs/SCH_PRISMA_V43_TA3_BATCH_F_READOUT.md` — sixth deterministic TA3 batch
+- `docs/SCH_PRISMA_V44_TA3_BATCH_G_READOUT.md` — seventh deterministic TA3 batch
 
 ## Empirical execution strategy
 
