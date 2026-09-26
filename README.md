@@ -241,6 +241,8 @@ V46 closes the ninth deterministic TA3 batch: 25 records screened, 6 retained an
 
 V47 closes the tenth deterministic TA3 batch, review orders 304–328: 25 records screened, 6 retained and 19 excluded. Formal title/abstract screening reaches 733/868; 135 remain unscreened.
 
+V48 closes the eleventh deterministic TA3 batch, review orders 329–353: 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 758/868; 110 remain unscreened. Retains include fig chemical conflict, sequential conflicting selection, nursery-pollinator systems and slippery-flower ant defence.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -285,6 +287,7 @@ See:
 - `docs/SCH_PRISMA_V45_TA3_BATCH_H_READOUT.md` — eighth deterministic TA3 batch
 - `docs/SCH_PRISMA_V46_TA3_BATCH_I_READOUT.md` — ninth deterministic TA3 batch
 - `docs/SCH_PRISMA_V47_TA3_BATCH_J_READOUT.md` — tenth deterministic TA3 batch
+- `docs/SCH_PRISMA_V48_TA3_BATCH_K_READOUT.md` — eleventh deterministic TA3 batch
 
 ## Empirical execution strategy
 
