@@ -206,7 +206,7 @@ V49 closes the twelfth deterministic TA3 batch: 25 records screened, 9 retained 
 
 V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868, leaving 60 unscreened.
 
-The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
+V51 closes the fourteenth deterministic TA3 batch: 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 833/868, leaving 35 unscreened.\n\nThe programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
 The current ecological synthesis is:
 
@@ -227,7 +227,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is continued deterministic TA3 remainder screening/full-text closure; 60 title/abstract records remain unscreened after V50.
+The immediate macroecology operation is completion of the final 35 deterministic TA3 title/abstract records, followed by full-text closure.
 
 Canonical macroecology documents:
 

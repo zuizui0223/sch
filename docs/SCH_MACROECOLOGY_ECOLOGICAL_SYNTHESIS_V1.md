@@ -581,6 +581,10 @@ The retained set includes unusually direct boundary systems: field manipulation 
 
 The thirteenth fixed TA3 batch screens 25 more records: 15 retained and 10 excluded. Formal title/abstract screening now covers 808/868 records, leaving only 60 unscreened. The retained set is enriched for true role-boundary and multi-agent systems rather than generic pollination records.
 
+## V51 deterministic TA3 batch N
+
+The fourteenth fixed TA3 batch leaves only 35 title/abstract records unscreened. Nine records are retained, including strong multi-agent systems and a deliberate null/one-sided negative control in Veratrum, where pollination success is independent of floral density while herbivory and seed predation vary.
+
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -638,7 +642,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. complete the final 60 deterministic TA3 title/abstract records;
+1. complete the final 35 deterministic TA3 title/abstract records;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;

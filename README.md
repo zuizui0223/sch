@@ -247,7 +247,7 @@ V49 closes the twelfth deterministic TA3 batch, review orders 354–378: 25 reco
 
 V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868; only 60 remain unscreened.
 
-The current biological synthesis is:
+V51 closes the fourteenth deterministic TA3 batch: 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 833/868; only 35 remain unscreened. Null multi-agent outcomes such as Veratrum are explicitly retained rather than filtered out.\n\nThe current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
 
@@ -380,3 +380,5 @@ SCH is not a paper about calculating `L` for its own sake. Its contribution is t
 > a trait serving two functions is not yet a conflicted trait, and a consumer-specific reproductive optimum is not yet a pure functional optimum.
 
 That narrower ownership keeps SCH independent from SLK and complementary to BITA.
+
+- `docs/SCH_PRISMA_V51_TA3_BATCH_N_READOUT.md` — fourteenth deterministic TA3 batch
