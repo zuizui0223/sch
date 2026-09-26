@@ -235,6 +235,8 @@ V43 closes the sixth deterministic TA3 batch, review orders 203–227: 25 record
 
 V44 closes the seventh deterministic TA3 batch, review orders 228–252: 25 records screened, 10 retained and 15 excluded. Formal title/abstract screening reaches 658/868; 210 remain unscreened. The retained set includes tripartite selection, brood-pollination, ozone-mediated biotic context and herbivory-dependent pollinator selection.
 
+V45 closes the eighth deterministic TA3 batch, review orders 253–277: 25 records screened, 11 retained and 14 excluded. Formal title/abstract screening reaches 683/868; 185 remain unscreened. Strong retains include Primula farinosa scape length, nursery-pollination systems, orchid ant-protection, and Cucurbita shared floral volatiles.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -276,6 +278,7 @@ See:
 - `docs/SCH_PRISMA_V42_TA3_BATCH_E_READOUT.md` — fifth deterministic TA3 batch
 - `docs/SCH_PRISMA_V43_TA3_BATCH_F_READOUT.md` — sixth deterministic TA3 batch
 - `docs/SCH_PRISMA_V44_TA3_BATCH_G_READOUT.md` — seventh deterministic TA3 batch
+- `docs/SCH_PRISMA_V45_TA3_BATCH_H_READOUT.md` — eighth deterministic TA3 batch
 
 ## Empirical execution strategy
 
