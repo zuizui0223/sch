@@ -553,6 +553,18 @@ formal TA unscreened      135 / 868
 ~~~
 
 The retained records again concentrate in true multi-agent systems: pollination plus herbivory under fire disturbance, ant defence versus pollination, root-herbivory effects on pollinator visitation and performance, and landscape-scale pollination/frugivory/seed-predation context.
+## V48 deterministic TA3 batch K
+
+The eleventh fixed TA3 batch screens 25 additional records:
+
+~~~text
+retained                       9
+excluded                      16
+formal TA screened        758 / 868
+formal TA unscreened      110 / 868
+~~~
+
+The retained set contains direct conflict- and boundary-relevant systems: fig chemical communication shaped by pollinator attraction and antagonist avoidance, sequential conflicting selection, nursery-pollination benefit-cost interactions, and slippery floral surfaces excluding nectar-thieving ants.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -610,7 +622,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder with the eleventh frozen 25-record slice;
+1. continue the deterministic TA3 remainder with the twelfth frozen 25-record slice;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
