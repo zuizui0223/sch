@@ -1,0 +1,1 @@
+population_id,season_id,calibration_dataset_id,plant_id,flower_id,calibration_arm,timepoint_id,hours_since_baseline,water_depth_mm,bract_height_mm,rainfall_since_last_mm,external_water_added,mechanical_damage,notes
