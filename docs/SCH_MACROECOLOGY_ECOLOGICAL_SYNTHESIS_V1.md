@@ -513,6 +513,20 @@ formal TA unscreened      210 / 868
 The retained set includes tripartite phenotypic selection, Arabidopsis pollinator/herbivore selection, Yucca pollinating-seed-predator behaviour, ozone-mediated biotic/reproductive change, and herbivory-dependent pollinator contributions.
 
 Preprint/version-of-record pairs remain visible until full-text adjudication, and commentary/Peer Review artifacts are excluded rather than treated as independent evidence.
+## V45 deterministic TA3 batch H
+
+The eighth fixed TA3 batch advances formal screening without changing ecological outcome denominators.
+
+~~~text
+review orders            253-277
+records screened              25
+retained                      11
+excluded                      14
+formal TA screened        683 / 868
+formal TA unscreened      185 / 868
+~~~
+
+The retained set is rich in the boundary systems SCH needs to distinguish rather than collapse: a same-trait Primula pollination/predation candidate, nursery pollination, fig parasitism, orchid ant protection, nectar robbing and shared floral volatile responses of pollinators and herbivores.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -570,7 +584,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 253 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder from review order 278 onward and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
