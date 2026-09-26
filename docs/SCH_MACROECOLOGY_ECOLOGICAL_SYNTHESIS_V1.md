@@ -527,6 +527,20 @@ formal TA unscreened      185 / 868
 ~~~
 
 The retained set is rich in the boundary systems SCH needs to distinguish rather than collapse: a same-trait Primula pollination/predation candidate, nursery pollination, fig parasitism, orchid ant protection, nectar robbing and shared floral volatile responses of pollinators and herbivores.
+## V46 deterministic TA3 batch I
+
+The ninth fixed TA3 batch screens 25 more records:
+
+~~~text
+retained                       6
+excluded                      19
+formal TA screened        708 / 868
+formal TA unscreened      160 / 868
+~~~
+
+The retained records are concentrated in genuine multi-agent systems rather than generic pollination studies: pollinator decline × herbivory selection in Impatiens, pollinator/herbivore selection in Arabidopsis lyrata, nursery-pollinator seed-predator systems, Geranium pollinator/herbivore preferences, and the Pedicularis rex bract-defence experiment.
+
+This batch also reinforces a useful exclusion rule: a factor acting on pollinators, such as a pollinator parasite, is not automatically a plant antagonist channel.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -584,7 +598,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder from review order 278 onward and close retained records at full text;
+1. continue the deterministic TA3 remainder with the tenth frozen 25-record slice and close retained records at full text;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
