@@ -565,6 +565,18 @@ formal TA unscreened      110 / 868
 ~~~
 
 The retained set contains direct conflict- and boundary-relevant systems: fig chemical communication shaped by pollinator attraction and antagonist avoidance, sequential conflicting selection, nursery-pollination benefit-cost interactions, and slippery floral surfaces excluding nectar-thieving ants.
+## V49 deterministic TA3 batch L
+
+The twelfth fixed TA3 batch screens another 25 records:
+
+~~~text
+retained                       9
+excluded                      16
+formal TA screened        783 / 868
+formal TA unscreened       85 / 868
+~~~
+
+The retained set includes unusually direct boundary systems: field manipulation of ant-pollinator conflict, post-florivory loss of pollinator service, a bract-removal experiment changing legitimate visitation into nectar robbery, and floral volatiles that attract both pollinators and florivores.
 ## Current ecological synthesis
 
 The strongest current biological statement is:
@@ -622,7 +634,7 @@ Until then, forcing a macro regression would weaken the paper rather than streng
 
 ## Immediate priorities
 
-1. continue the deterministic TA3 remainder with the twelfth frozen 25-record slice;
+1. continue the deterministic TA3 remainder with the thirteenth frozen 25-record slice;
 2. recover uncertainty-bearing source objects that can expand the strict STANDARDIZED_SELECTION_GRADIENT family beyond 6 independent programmes;
 3. recover Gentiana S3 and Primula farinosa source objects where they add new independent numeric information;
 4. preserve Pedicularis pressure evidence separately from selection-gradient estimands;
