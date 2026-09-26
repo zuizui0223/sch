@@ -239,6 +239,8 @@ V45 closes the eighth deterministic TA3 batch, review orders 253–277: 25 recor
 
 V46 closes the ninth deterministic TA3 batch: 25 records screened, 6 retained and 19 excluded. Formal title/abstract screening reaches 708/868; 160 remain unscreened. Retains include Impatiens, Arabidopsis lyrata, Geranium, Silene–Hadena and Pedicularis rex multi-agent systems.
 
+V47 closes the tenth deterministic TA3 batch, review orders 304–328: 25 records screened, 6 retained and 19 excluded. Formal title/abstract screening reaches 733/868; 135 remain unscreened.
+
 The current biological synthesis is:
 
 > realized multifunctional geometry depends on trait axis × ecological context × consumer functional role.
@@ -282,6 +284,7 @@ See:
 - `docs/SCH_PRISMA_V44_TA3_BATCH_G_READOUT.md` — seventh deterministic TA3 batch
 - `docs/SCH_PRISMA_V45_TA3_BATCH_H_READOUT.md` — eighth deterministic TA3 batch
 - `docs/SCH_PRISMA_V46_TA3_BATCH_I_READOUT.md` — ninth deterministic TA3 batch
+- `docs/SCH_PRISMA_V47_TA3_BATCH_J_READOUT.md` — tenth deterministic TA3 batch
 
 ## Empirical execution strategy
 
