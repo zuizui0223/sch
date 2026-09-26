@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PRISMA = ROOT / "empirical" / "prisma"
 DENOMINATOR = 868
-LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V46_TA3_BATCH_I.csv"
+LATEST = "SCH_PRISMA_V2_SCREENING_DECISIONS_V47_TA3_BATCH_J.csv"
 
 
 def _version(path: Path) -> int:
@@ -19,7 +19,7 @@ def _version(path: Path) -> int:
 
 def _decision_files() -> list[Path]:
     files = sorted(PRISMA.glob("SCH_PRISMA_V2_SCREENING_DECISIONS_V*.csv"), key=_version)
-    assert [_version(path) for path in files] == list(range(1, 47))
+    assert [_version(path) for path in files] == list(range(1, 48))
     assert files[-1].name == LATEST
     return files
 
@@ -96,10 +96,10 @@ def test_batch2_batch3_and_batch4_title_abstract_are_closed_without_double_scree
     assert len(v18_ids | v20_ids | {"SCHPRISMA-000329", "SCHPRISMA-000339"}) == 100
 
     ta = Counter(row["screen_title_abstract"] for row in rows)
-    assert len(rows) == 708
-    assert ta["RETAIN_FULLTEXT"] == 439
-    assert ta["EXCLUDE"] == 269
-    assert DENOMINATOR - len(rows) == 160
+    assert len(rows) == 733
+    assert ta["RETAIN_FULLTEXT"] == 445
+    assert ta["EXCLUDE"] == 288
+    assert DENOMINATOR - len(rows) == 135
 
 
 def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> None:
@@ -115,11 +115,11 @@ def test_v19_closes_v18_fulltexts_and_v20_opens_only_new_batch4_fulltexts() -> N
     )
     assert ft["INCLUDE"] == 153
     assert ft["EXCLUDE"] == 137
-    assert ft["UNSCREENED"] == 149
+    assert ft["UNSCREENED"] == 155
     pending = {row["record_id"] for row in rows if row["screen_title_abstract"] == "RETAIN_FULLTEXT" and not row["screen_fulltext"]}
     retained_ta_ids = set().union(*[
         {row["record_id"] for row in _v(version) if row["screen_title_abstract"] == "RETAIN_FULLTEXT"}
-        for version in (20, 21, 23, 25, 27, 33, 38, 39, 40, 41, 42, 43, 44, 45, 46)
+        for version in (20, 21, 23, 25, 27, 33, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47)
     ])
     fulltext_decided_ids = set().union(*[
         {row["record_id"] for row in _v(version)}
@@ -522,4 +522,16 @@ def test_v46_closes_ninth_deterministic_ta3_batch() -> None:
     }
     assert {row["decision_source"] for row in rows} == {
         "SOURCE_VERIFIED_TA3_BATCH_I_SCREEN_V46_2026-09-26"
+    }
+
+
+def test_v47_closes_tenth_deterministic_ta3_batch() -> None:
+    rows = _v(47)
+    assert len(rows) == 25
+    assert Counter(row["screen_title_abstract"] for row in rows) == {
+        "RETAIN_FULLTEXT": 6,
+        "EXCLUDE": 19,
+    }
+    assert {row["decision_source"] for row in rows} == {
+        "SOURCE_VERIFIED_TA3_BATCH_J_SCREEN_V47_2026-09-26"
     }
