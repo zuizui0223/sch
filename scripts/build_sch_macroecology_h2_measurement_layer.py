@@ -3,8 +3,9 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
+
 
 LAYERS = {
     "CONTEXT_STRUCTURE_ONLY": 0,
@@ -45,6 +46,45 @@ def _is_role_behavior_case(row: dict[str, str]) -> bool:
     return True
 
 
+def _case_n(row: dict[str, str]) -> int:
+    return sum(
+        int(row.get(field, "0") or "0")
+        for field in (
+            "local_geometry_cases_materialized",
+            "local_net_selection_cases_materialized",
+            "local_antagonist_pressure_cases_materialized",
+        )
+    )
+
+
+def _summarize_family(
+    rows: list[dict[str, str]], field: str
+) -> dict[str, dict[str, int]]:
+    out = defaultdict(
+        lambda: {"n_cases": 0, "axes": set(), "clusters": set(), "records": 0}
+    )
+    for row in rows:
+        n = _case_n(row)
+        if n <= 0:
+            continue
+        key = row.get(field, "")
+        if not key:
+            continue
+        out[key]["n_cases"] += n
+        out[key]["axes"].add(row["canonical_trait_axis_id"])
+        out[key]["clusters"].add(row["cluster_id"])
+        out[key]["records"] += 1
+    return {
+        key: {
+            "n_cases": value["n_cases"],
+            "n_axes": len(value["axes"]),
+            "n_clusters": len(value["clusters"]),
+            "n_measurement_records": value["records"],
+        }
+        for key, value in sorted(out.items())
+    }
+
+
 def build(
     measurement_path: Path,
     source_registry_path: Path,
@@ -71,6 +111,8 @@ def build(
         raise ValueError("context case_id must be unique")
     all_case_ids = set(case_ids)
 
+    tracked_case_ids: set[str] = set()
+
     for row in measurements:
         supported = row["highest_source_supported_layer"]
         materialized = row["highest_materialized_layer"]
@@ -85,35 +127,30 @@ def build(
                 f"{row['measurement_record_id']}"
             )
 
-        referenced = _split_ids(row["source_object_ids"])
-        unknown = sorted(set(referenced) - source_object_set)
-        if unknown:
+        unknown_objects = sorted(
+            set(_split_ids(row["source_object_ids"])) - source_object_set
+        )
+        if unknown_objects:
             raise ValueError(
                 f"unknown source object(s) for {row['measurement_record_id']}: "
-                + ", ".join(unknown)
+                + ", ".join(unknown_objects)
             )
 
-        if row["case_id"] and row["case_id"] not in all_case_ids:
+        referenced_cases = _split_ids(row.get("case_ids", row.get("case_id", "")))
+        unknown_cases = sorted(set(referenced_cases) - all_case_ids)
+        if unknown_cases:
             raise ValueError(
-                f"measurement record points to missing context case: "
-                f"{row['measurement_record_id']} -> {row['case_id']}"
+                f"measurement record points to missing context case(s): "
+                f"{row['measurement_record_id']} -> {', '.join(unknown_cases)}"
             )
+        tracked_case_ids.update(referenced_cases)
 
-    tracked_case_ids = {row["case_id"] for row in measurements if row["case_id"]}
-    if not tracked_case_ids <= all_case_ids:
-        raise ValueError("measurement case IDs must be a subset of H2 local cases")
-
-    expected_plant_performance_cases = sum(
-        int(row["local_geometry_cases_materialized"])
-        + int(row["local_net_selection_cases_materialized"])
-        + int(row["local_antagonist_pressure_cases_materialized"])
-        for row in measurements
-    )
-    if expected_plant_performance_cases != len(tracked_case_ids):
-        raise ValueError(
-            f"measurement registry declares {expected_plant_performance_cases} "
-            f"plant-performance cases but references {len(tracked_case_ids)} case IDs"
-        )
+        declared = _case_n(row)
+        if declared != len(referenced_cases):
+            raise ValueError(
+                f"{row['measurement_record_id']} declares {declared} materialized "
+                f"plant-performance cases but references {len(referenced_cases)} case IDs"
+            )
 
     role_behavior_cases = [
         row for row in cases if row["case_id"] not in tracked_case_ids
@@ -133,23 +170,10 @@ def build(
     materialized_counts = Counter(
         row["highest_materialized_layer"] for row in measurements
     )
-
     source_status = Counter(row["route_status"] for row in source_objects)
-    binary_materialized = sum(
-        row["binary_materialized"] == "YES" for row in source_objects
-    )
-    exact_extracted = sum(
-        row["exact_local_values_extracted"] == "YES" for row in source_objects
-    )
 
-    pedicularis = next(
-        row
-        for row in measurements
-        if row["measurement_record_id"] == "Pedicularis_exsertion_geography"
-    )
-
-    return {
-        "analysis": "sch_macroecology_h2_measurement_layer_v2",
+    result = {
+        "analysis": "sch_macroecology_h2_measurement_layer",
         "n_measurement_records": len(measurements),
         "n_canonical_axes": len(
             {row["canonical_trait_axis_id"] for row in measurements}
@@ -161,7 +185,9 @@ def build(
         "n_plant_performance_measurement_cases": len(tracked_case_ids),
         "plant_performance_case_ids": sorted(tracked_case_ids),
         "n_role_behavior_cases_separate": len(role_behavior_cases),
-        "role_behavior_case_ids": sorted(row["case_id"] for row in role_behavior_cases),
+        "role_behavior_case_ids": sorted(
+            row["case_id"] for row in role_behavior_cases
+        ),
         "n_canonical_axes_with_plant_performance_cases": len(
             {
                 row["canonical_trait_axis_id"]
@@ -174,7 +200,8 @@ def build(
         ),
         "materialized_plant_performance_layer_counts": {
             "LOCAL_GEOMETRY": sum(
-                int(row["local_geometry_cases_materialized"]) for row in measurements
+                int(row["local_geometry_cases_materialized"])
+                for row in measurements
             ),
             "LOCAL_NET_SELECTION": sum(
                 int(row["local_net_selection_cases_materialized"])
@@ -192,9 +219,38 @@ def build(
         ),
         "n_source_objects": len(source_objects),
         "source_object_route_status_counts": dict(sorted(source_status.items())),
-        "n_source_objects_binary_materialized": binary_materialized,
-        "n_source_objects_exact_local_values_extracted": exact_extracted,
-        "pedicularis_context_structure": {
+        "n_source_objects_binary_materialized": sum(
+            row["binary_materialized"] == "YES" for row in source_objects
+        ),
+        "n_source_objects_exact_local_values_extracted": sum(
+            row["exact_local_values_extracted"] == "YES" for row in source_objects
+        ),
+        "h2_model_ready": False,
+        "status": "H2_MEASUREMENT_LAYER_CURRENT_FAIL_CLOSED",
+        "claim_ceiling": [
+            "measurement_layer_is_not_geometry_class",
+            "source_supported_layer_can_exceed_materialized_layer",
+            "local_antagonist_pressure_is_not_local_two_function_geometry",
+            "local_net_selection_is_not_local_two_function_geometry",
+            "plant_performance_cases_and_role_behavior_cases_are_separate_H2_layers",
+            "estimand_family_must_be_preserved_before_numeric_pooling",
+            "reproductive_component_effect_is_not_final_fitness_selection",
+            "germination_proxy_is_not_seed_set_or_selection_gradient",
+            "only_materialized_plant_performance_rows_count_as_current_plant_performance_H2_N",
+            "pending_source_objects_do_not_create_pseudo_cases",
+        ],
+    }
+
+    pedicularis = next(
+        (
+            row
+            for row in measurements
+            if row["measurement_record_id"] == "Pedicularis_exsertion_geography"
+        ),
+        None,
+    )
+    if pedicularis is not None:
+        result["pedicularis_context_structure"] = {
             "pollination_contexts_reported": int(
                 pedicularis["n_contexts_function1_reported"]
             ),
@@ -207,19 +263,60 @@ def build(
             "population_specific_geometry_cases_materialized": int(
                 pedicularis["local_geometry_cases_materialized"]
             ),
-        },
-        "h2_model_ready": False,
-        "status": "H2_MEASUREMENT_LAYER_V2_RECONCILED_ROLE_BEHAVIOR_SEPARATE",
-        "claim_ceiling": [
-            "measurement_layer_is_not_geometry_class",
-            "source_supported_layer_can_exceed_materialized_layer",
-            "local_antagonist_pressure_is_not_local_two_function_geometry",
-            "local_net_selection_is_not_local_two_function_geometry",
-            "plant_performance_cases_and_role_behavior_cases_are_separate_H2_layers",
-            "only_materialized_plant_performance_rows_count_as_current_plant_performance_H2_N",
-            "pending_source_objects_do_not_create_pseudo_cases",
-        ],
+        }
+
+    expected_prefix_counts = {
+        "Pedicularis_": 4,
+        "Trifolium_": 4,
+        "Erysimum_": 18,
+        "Polygala_": 3,
+        "Tanacetum_": 2,
     }
+    for prefix, expected in expected_prefix_counts.items():
+        observed = sum(case_id.startswith(prefix) for case_id in tracked_case_ids)
+        if observed and observed != expected:
+            raise ValueError(
+                f"expected {expected} tracked cases with prefix {prefix}, found {observed}"
+            )
+
+    trifolium_ids = sorted(
+        case_id for case_id in tracked_case_ids if case_id.startswith("Trifolium_")
+    )
+    if trifolium_ids:
+        result["n_trifolium_local_net_selection_cases"] = len(trifolium_ids)
+        result["trifolium_case_ids"] = trifolium_ids
+
+    erysimum_ids = sorted(
+        case_id for case_id in tracked_case_ids if case_id.startswith("Erysimum_")
+    )
+    if erysimum_ids:
+        result["n_erysimum_local_net_selection_cases"] = len(erysimum_ids)
+        result["erysimum_case_ids"] = erysimum_ids
+
+    polygala_ids = sorted(
+        case_id for case_id in tracked_case_ids if case_id.startswith("Polygala_")
+    )
+    if polygala_ids:
+        result["n_polygala_reproductive_component_cases"] = len(polygala_ids)
+
+    tanacetum_ids = sorted(
+        case_id for case_id in tracked_case_ids if case_id.startswith("Tanacetum_")
+    )
+    if tanacetum_ids:
+        result["n_tanacetum_reproductive_performance_proxy_cases"] = len(tanacetum_ids)
+
+    if measurements and {
+        "estimand_family",
+        "numeric_pooling_family",
+    } <= set(measurements[0]):
+        result["estimand_family_materialized_counts"] = _summarize_family(
+            measurements, "estimand_family"
+        )
+        result["numeric_pooling_family_materialized_counts"] = _summarize_family(
+            measurements, "numeric_pooling_family"
+        )
+
+    return result
 
 
 def main() -> None:

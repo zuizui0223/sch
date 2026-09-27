@@ -55,7 +55,7 @@ Dalechampia remains first only when a conflict-active population and a selective
 
 ## Rank 2 — Pedicularis rex
 
-Pedicularis now outranks Castilleja because one of the hardest SCH requirements — selective manipulation of the antagonist-facing functional weight — is already experimentally demonstrated.
+Pedicularis remains a high-leverage same-system candidate because the shared exsertion conflict, short seed-predator-to-fitness path, and a causal water-defence precedent are already recovered. The water experiment does **not** satisfy the registered SCH antagonist intervention: the active V2 contract holds water-y fixed and requires independent seed-predator exclusion/exposure.
 
 ### Shared-conflict evidence
 
@@ -77,9 +77,9 @@ seed predation range = 0.80% to 27.42%
 
 while the pollinator-facing direction is comparatively stable.
 
-### Selective functional-weight intervention
+### Antagonist-related causal precedent, not the registered SCH G
 
-The 2015 bract-water experiment provides an unusually strong C6 result.
+The 2015 bract-water experiment provides strong causal evidence that the water-bearing bract defence changes seed-predator damage while leaving the measured pollinator-visitation endpoint approximately unchanged.
 
 Draining the water-bearing bracts:
 
@@ -99,11 +99,12 @@ beta = 0.025, P < 0.0001.
 
 The source states that drainage increased seed predation; the treatment effect on predation was significant in 5/6 populations.
 
-This is close to a selective G-weight manipulation:
+This establishes biological plausibility for the later BITA water-y axis, but it must not be reused as the SCH G intervention. The registered SCH contrast is:
 
 ```text
-strong antagonist effect
-+ negligible detected pollinator-visitation effect.
+G0 = seed predator independently excluded
+G1 = seed predator exposed
+water-y = held fixed.
 ```
 
 ### Current score
@@ -114,7 +115,7 @@ C2 >=3-level z manipulation:    MAIN BOTTLENECK
 C3 separate functions:          STRONG
 C4 opposing geometry:           STRONG OBSERVATIONAL SUPPORT
 C5 common fitness:              STRONG
-C6 selective function weights:  STRONG FOR WATER-DEFENCE AXIS
+C6 selective SCH G:             NOT YET EXECUTED; water-defence is BITA-y precedent
 C7 short paths:                 STRONG
 C8 context extension:           STRONG GEOGRAPHIC MOSAIC
 C9 focal conflict active:       LIKELY BUT MUST BE SCREENED.
@@ -123,7 +124,7 @@ C9 focal conflict active:       LIKELY BUT MUST BE SCREENED.
 Current status:
 
 ```text
-BEST_SELECTIVE_WEIGHT_MANIPULATION_CANDIDATE
+HIGH_LEVERAGE_SAME_SYSTEM_CAUSAL_CANDIDATE
 BEST_SHARED_CONFLICT_TO_SECOND_AXIS_REALITY_BRIDGE
 ```
 
@@ -234,8 +235,10 @@ Dalechampia
 ```text
 Pedicularis
 -> qualify conflict-active population
--> develop multi-level exsertion manipulation
--> reuse / adapt validated water-defence manipulation
+-> validate multi-level exsertion manipulation
+-> validate pollination-weight supplementation
+-> validate independent predator exclusion/exposure with water-y fixed
+-> assemble same-population/season V3 readiness
 -> cross z x P x G
 -> test geographic movement of compromise as antagonist weight changes.
 ```
@@ -264,10 +267,10 @@ The ranking is now:
 
 ```text
 1  Dalechampia   strongest existing compromise geometry, conditional on focal context / G control
-2  Pedicularis   strongest selective functional-weight manipulation + shared-conflict bridge
+2  Pedicularis   shared-conflict bridge + explicit independent-G validation route
 3  Castilleja    strongest short G -> seed pathway after manipulation development
 4  Polemonium    broad non-antagonist conflict
 5  Nicotiana     strongest local shared-cue / BITA attraction-defence continuity.
 ```
 
-The important change is that **Pedicularis is no longer just an external validation case**. Its water-bract experiment solves a major intervention problem and makes it a serious causal-compromise execution candidate once the exsertion coordinate can be manipulated over multiple levels.
+The important change is that **Pedicularis is no longer just an external validation case**. Its water-bract experiment establishes an antagonist-related causal precedent and a later BITA-y axis, while the SCH route is now deliberately stricter: a serious causal-compromise execution requires both a multi-level exsertion manipulation and an independently qualified seed-predator G intervention with water-y fixed.

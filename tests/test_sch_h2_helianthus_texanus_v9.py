@@ -23,7 +23,7 @@ def test_helianthus_maintext_freeze_has_exact_two_context_ray_length_gradients()
     assert {r["numeric_pooling_family"] for r in rows}=={"MEAN_STANDARDIZED_SELECTION_GRADIENT_NO_SE"}
 
 def test_v9_opens_estimand_gate_but_keeps_strict_numeric_pooling_fail_closed():
-    script=ROOT/"scripts"/"build_sch_h2_selection_cluster_expansion_v9.py"
+    script=ROOT/"scripts"/"build_sch_h2_selection_cluster_expansion.py"
     spec=importlib.util.spec_from_file_location("h2v9",script)
     mod=importlib.util.module_from_spec(spec)
     assert spec.loader is not None

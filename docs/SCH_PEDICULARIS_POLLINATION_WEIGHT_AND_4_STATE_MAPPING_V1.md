@@ -248,7 +248,7 @@ receipt = SCH_PEDICULARIS_POLLINATION_WEIGHT_V1.
 Independent antagonist method:
 
 ```text
-scripts/evaluate_pedicularis_predator_method_v3.py
+scripts/evaluate_pedicularis_predator_method.py
 receipt = SCH_PEDICULARIS_PREDATOR_METHOD_V3.
 ```
 

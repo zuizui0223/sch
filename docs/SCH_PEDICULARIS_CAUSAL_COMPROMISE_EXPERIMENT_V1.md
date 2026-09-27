@@ -131,7 +131,7 @@ Use:
 
 ```text
 docs/SCH_PEDICULARIS_STAGE_G_FIELD_PILOT_V1.md
-scripts/evaluate_pedicularis_predator_method_v3.py
+scripts/evaluate_pedicularis_predator_method.py
 ```
 
 The required receipt is:
@@ -215,7 +215,7 @@ mechanical damage.
 Run:
 
 ```text
-scripts/analyze_pedicularis_full_surface_v2.py
+scripts/analyze_pedicularis_full_surface.py
 ```
 
 The returned core SCH estimands are:

@@ -19,21 +19,22 @@ RAW_FIELDS = (
     "assigned_z_level",
     "realized_exsertion",
     "pollination_treatment",
-    "water_treatment",
+    "predator_treatment",
+    "exclusion_method",
+    "water_depth",
     "ovule_count",
     "undamaged_seed_count",
     "damaged_seed_count",
     "pollen_grains",
     "early_predator_attack_present",
-    "water_depth",
     "mechanical_damage",
 )
 
 POLLINATION_MAP = {"SUPPLEMENTED": 0, "NATURAL": 1}
-ANTAGONIST_MAP = {"PROTECTED": 0, "DRAINED": 1}
-READINESS_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V1"
+PREDATOR_MAP = {"EXCLUDED": 0, "EXPOSED": 1}
+READINESS_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3"
 READINESS_STATUS = "PEDICULARIS_FULL_SURFACE_READY"
-SYSTEM_WRAPPER_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V1"
+SYSTEM_WRAPPER_SCHEMA = "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2"
 
 
 def _num(row: dict[str, str], field: str) -> float:
@@ -49,7 +50,7 @@ def _num(row: dict[str, str], field: str) -> float:
 def _binary(row: dict[str, str], field: str) -> int:
     raw = row[field].strip()
     if raw not in {"0", "1"}:
-        raise ValueError(f"{field} must be coded 0/1, got {raw!r}")
+        raise ValueError(f"{field} must be coded 0/1")
     return int(raw)
 
 
@@ -75,15 +76,15 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         seen.add(row["flower_id"])
         if row["pollination_treatment"] not in POLLINATION_MAP:
             raise ValueError("pollination_treatment must be NATURAL or SUPPLEMENTED")
-        if row["water_treatment"] not in ANTAGONIST_MAP:
-            raise ValueError("water_treatment must be PROTECTED or DRAINED")
+        if row["predator_treatment"] not in PREDATOR_MAP:
+            raise ValueError("predator_treatment must be EXPOSED or EXCLUDED")
         for field in (
             "realized_exsertion",
+            "water_depth",
             "ovule_count",
             "undamaged_seed_count",
             "damaged_seed_count",
             "pollen_grains",
-            "water_depth",
         ):
             _num(row, field)
         _binary(row, "early_predator_attack_present")
@@ -104,17 +105,45 @@ def _context(rows: list[dict[str, str]]) -> tuple[str, str]:
     populations = {row["population_id"] for row in rows}
     seasons = {row["season_id"] for row in rows}
     if len(populations) != 1 or len(seasons) != 1:
-        raise ValueError("one Pedicularis full-surface package must contain exactly one population and season")
+        raise ValueError("one Pedicularis V2 surface package must contain exactly one population and season")
     return next(iter(populations)), next(iter(seasons))
 
 
 def _validate_readiness(readiness: dict, population: str, season: str) -> None:
     if readiness.get("receipt_schema_version") != READINESS_SCHEMA:
-        raise ValueError("Pedicularis full-surface analysis requires the registered readiness receipt schema")
+        raise ValueError("Pedicularis V2 analysis requires SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3")
     if readiness.get("status") != READINESS_STATUS:
-        raise ValueError("Pedicularis full-surface readiness status is not positive")
+        raise ValueError("Pedicularis V2 full-surface readiness status is not positive")
     if readiness.get("population_id") != population or readiness.get("season_id") != season:
-        raise ValueError("raw full-surface data must match the population and season in the readiness receipt")
+        raise ValueError("raw V2 surface data must match the readiness population and season")
+    if readiness.get("water_y_requirement") != "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE":
+        raise ValueError("V2 readiness receipt does not require water-y to remain fixed")
+    if readiness.get("predator_method_requirement") != "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED":
+        raise ValueError("V2 readiness receipt lacks the timed predator-method qualification requirement")
+    source_g = readiness.get("source_receipts", {}).get("g", {})
+    if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V3":
+        raise ValueError("V2 readiness must be grounded in the timed independent predator-method V3 receipt")
+
+
+def _system_checks(rows: list[dict[str, str]], config: dict) -> dict:
+    checks = config.get("system_checks")
+    if not isinstance(checks, dict):
+        raise ValueError("config must contain system_checks")
+    water = [_num(row, "water_depth") for row in rows]
+    damage = mean(_binary(row, "mechanical_damage") for row in rows)
+    water_range = max(water) - min(water)
+    max_water_range = float(checks["max_water_depth_range"])
+    max_damage = float(checks["max_mechanical_damage_rate"])
+    decisions = {
+        "water_y_held_fixed": water_range <= max_water_range,
+        "mechanical_damage_low": damage <= max_damage,
+    }
+    return {
+        "observed_water_depth_range": water_range,
+        "observed_mechanical_damage_rate": damage,
+        "decisions": decisions,
+        "status": "PEDICULARIS_V2_SYSTEM_CHECKS_PASS" if all(decisions.values()) else "PEDICULARIS_V2_SYSTEM_CHECKS_FAIL",
+    }
 
 
 def to_sch_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -127,7 +156,7 @@ def to_sch_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 "z_level": row["assigned_z_level"],
                 "z_measured": row["realized_exsertion"],
                 "pollinator_state": str(POLLINATION_MAP[row["pollination_treatment"]]),
-                "antagonist_state": str(ANTAGONIST_MAP[row["water_treatment"]]),
+                "antagonist_state": str(PREDATOR_MAP[row["predator_treatment"]]),
                 "fitness_value": row["undamaged_seed_count"],
             }
         )
@@ -151,9 +180,8 @@ def _secondary_summary(rows: list[dict[str, str]]) -> dict:
     groups: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
         p = POLLINATION_MAP[row["pollination_treatment"]]
-        g = ANTAGONIST_MAP[row["water_treatment"]]
+        g = PREDATOR_MAP[row["predator_treatment"]]
         groups[f"P{p}G{g}"].append(row)
-
     out = {}
     for state, group in sorted(groups.items()):
         out[state] = {
@@ -165,6 +193,7 @@ def _secondary_summary(rows: list[dict[str, str]]) -> dict:
             "early_predator_attack_rate": mean(_binary(row, "early_predator_attack_present") for row in group),
             "mean_water_depth": mean(_num(row, "water_depth") for row in group),
             "mechanical_damage_rate": mean(_binary(row, "mechanical_damage") for row in group),
+            "exclusion_methods": sorted({row["exclusion_method"] for row in group}),
         }
     return out
 
@@ -172,6 +201,9 @@ def _secondary_summary(rows: list[dict[str, str]]) -> dict:
 def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     population, season = _context(rows)
     _validate_readiness(readiness, population, season)
+    checks = _system_checks(rows, config)
+    if checks["status"] != "PEDICULARIS_V2_SYSTEM_CHECKS_PASS":
+        raise ValueError("Pedicularis V2 system checks failed; water-y or handling was not held fixed")
     sch_config = config.get("sch_surface")
     if not isinstance(sch_config, dict):
         raise ValueError("config must contain a sch_surface object with frozen SCH thresholds")
@@ -184,20 +216,25 @@ def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     result["pedicularis_state_mapping"] = {
         "P0": "SUPPLEMENTED_OPEN_POLLINATION_DEPENDENCE_NEUTRALIZED",
         "P1": "NATURAL_OPEN_POLLINATION_DEPENDENCE_ACTIVE",
-        "G0": "PROTECTED_WATER_RETAINED_ANTAGONIST_PRESSURE_SUPPRESSED",
-        "G1": "DRAINED_ANTAGONIST_PRESSURE_ACTIVE",
+        "G0": "SEED_PREDATOR_INDEPENDENTLY_EXCLUDED",
+        "G1": "SEED_PREDATOR_EXPOSED",
+        "water_y": "HELD_FIXED_ACROSS_ALL_SCH_CELLS",
         "fitness_value": "UNDAMAGED_MATURE_SEED_COUNT_PER_FOCAL_FLOWER",
-        "interpretation": "P0 is functional-weight neutralization by saturating pollen, not pollinator absence; all flowers remain open to the antagonist pathway",
+        "interpretation": "Chapter-1 antagonist intervention is independent of the Chapter-2 water-defence y; this prevents circular definition of the BITA release reference",
     }
     result["readiness_reference"] = {
         "schema": readiness["receipt_schema_version"],
         "status": readiness["status"],
         "population_id": readiness["population_id"],
         "season_id": readiness["season_id"],
+        "g_schema": readiness["source_receipts"]["g"]["schema"],
+        "predator_method_requirement": readiness["predator_method_requirement"],
     }
+    result["pedicularis_system_checks"] = checks
     result["pedicularis_secondary_outcomes"] = _secondary_summary(rows)
     result["pedicularis_claim_ceiling"] = (
-        "contemporary_state_specific_causal_compromise_only; "
+        "contemporary_state_specific_causal_compromise_with_independent_predator_G; "
+        "water_defence_y_not_used_to_define_the_SCH_reference; "
         "pure_function_optima_require_the_registered_component-stability_upgrade; "
         "historical_modularization_not_identified"
     )
@@ -205,7 +242,7 @@ def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the Pedicularis full z x P x G surface through the registered SCH analyzer")
+    parser = argparse.ArgumentParser(description="Run the non-circular Pedicularis V2 z x P x independent-predator-G surface")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("readiness_receipt", type=Path)
     parser.add_argument("config_path", type=Path)

@@ -24,7 +24,7 @@ def test_lythrum_table2_freezes_all_total_and_contrast_coefficients():
     assert {r["trait_standardization"] for r in totals}=={"WITHIN_TREATMENT_Z_SCORE"}
 
 def test_v8_adds_lythrum_as_seventh_independent_total_selection_cluster():
-    script=ROOT/"scripts"/"build_sch_h2_selection_cluster_expansion_v8.py"
+    script=ROOT/"scripts"/"build_sch_h2_selection_cluster_expansion.py"
     spec=importlib.util.spec_from_file_location("h2v8",script)
     mod=importlib.util.module_from_spec(spec)
     assert spec.loader is not None

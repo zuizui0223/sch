@@ -17,10 +17,10 @@ MEASUREMENT_READOUT = ROOT / "data" / "SCH_MACROECOLOGY_H2_MEASUREMENT_LAYER_REA
 CHANGE_READOUT = ROOT / "data" / "SCH_MACROECOLOGY_H2_CHANGE_TYPE_SEED_READOUT_V6.json"
 MODELABILITY_READOUT = ROOT / "data" / "SCH_MACROECOLOGY_H2_MODELABILITY_V6.json"
 
-CUMULATIVE_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_context_cases_cumulative_v7.py"
-MEASUREMENT_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_measurement_layer_v7.py"
-CHANGE_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_change_type_seed_v7.py"
-MODELABILITY_SCRIPT = ROOT / "scripts" / "diagnose_sch_macroecology_h2_modelability_v6.py"
+CUMULATIVE_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_context_cases_cumulative.py"
+MEASUREMENT_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_measurement_layer.py"
+CHANGE_SCRIPT = ROOT / "scripts" / "build_sch_macroecology_h2_change_type_seed.py"
+MODELABILITY_SCRIPT = ROOT / "scripts" / "diagnose_sch_macroecology_h2_modelability.py"
 
 EVIDENCE = [
     ROOT / "data" / f"SCH_MACROECOLOGY_H2_CONTEXT_EVIDENCE_BATCH{i}_V1.csv"

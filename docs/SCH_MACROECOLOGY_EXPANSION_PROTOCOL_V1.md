@@ -52,16 +52,22 @@ function_pair_family
 antagonist_guild
 pollinator_guild
 shared_coordinate_status
-context_axes_present
+antagonist_role_status
+interaction_timing
 conflict_detected
 alignment_detected
+one_sided_or_null_detected
 context_shift_detected
 compromise_detected
 cancellation_detected
-macro_design_eligible
-macro_eligibility_reason
+geometry_eligibility
+context_switch_eligibility
+cancellation_eligibility
+design_audit_eligible
+eligibility_reason
+source_verification_state
 coding_status
-coding_note
+notes
 ```
 
 ## Stage B — blind design eligibility

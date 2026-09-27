@@ -43,7 +43,7 @@ def test_lobelia_table2_freeze_has_all_12_trait_pollination_cells():
 
 def test_v7_builder_adds_two_independent_standardized_selection_clusters():
     import importlib.util
-    script = ROOT / "scripts" / "build_sch_h2_selection_cluster_expansion_v7.py"
+    script = ROOT / "scripts" / "build_sch_h2_selection_cluster_expansion.py"
     spec = importlib.util.spec_from_file_location("h2v7", script)
     mod = importlib.util.module_from_spec(spec)
     assert spec.loader is not None

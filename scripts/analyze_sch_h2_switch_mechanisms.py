@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-V10 = ROOT / "scripts" / "analyze_sch_h2_total_selection_direction_v10.py"
+V10 = ROOT / "scripts" / "analyze_sch_h2_total_selection_direction.py"
 
 MECHANISM_ORDER = (
     "MIXED_POLLINATION_X_HERBIVORY",

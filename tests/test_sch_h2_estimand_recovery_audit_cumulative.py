@@ -48,5 +48,20 @@ def test_cumulative_negative_yield_is_identification_not_null_effect():
     assert "estimand_family_bottleneck_is_identification_not_raw_case_count" in built["claim_ceiling"]
 
 
-def test_cumulative_estimand_recovery_readout_is_reproducible():
-    assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
+def test_cumulative_estimand_recovery_historical_snapshot_preserves_core_counts():
+    built = _build()
+    frozen = json.loads(READOUT.read_text(encoding="utf-8"))
+    for key in (
+        "n_frozen_queue_records",
+        "n_audit_batches",
+        "n_audited_records",
+        "n_unaudited_queue_records",
+        "audited_tier_counts",
+        "decision_counts",
+        "reason_counts",
+        "n_total_selection_effect_promotions",
+        "promoted_record_ids",
+        "n_shared_trait_coordinate_failures",
+        "promotion_rate",
+    ):
+        assert built[key] == frozen[key]

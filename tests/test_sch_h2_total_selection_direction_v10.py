@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-SCRIPT=ROOT/"scripts"/"analyze_sch_h2_total_selection_direction_v10.py"
+SCRIPT=ROOT/"scripts"/"analyze_sch_h2_total_selection_direction.py"
 
 def _build():
     spec=importlib.util.spec_from_file_location("h2dirv10",SCRIPT)
