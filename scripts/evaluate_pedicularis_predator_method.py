@@ -7,6 +7,10 @@ import math
 from pathlib import Path
 
 from scripts.evaluate_pedicularis_predator_weight import evaluate as evaluate_predator_weight
+from scripts.pedicularis_config_freeze import (
+    validate_freeze_context,
+    validate_prospective_freeze,
+)
 
 
 REQUIRED_FIELDS = (
@@ -171,7 +175,9 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
 
 
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
+    freeze = validate_prospective_freeze(config, "G")
     population, season = _context(rows)
+    validate_freeze_context(freeze, population, season)
     method_gates, method_summary = _method_gates(rows, config)
     predator_result = evaluate_predator_weight(rows, config)
 
@@ -187,6 +193,7 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "analysis": "pedicularis_independent_seed_predator_method_qualification",
         "population_id": population,
         "season_id": season,
+        "config_freeze": freeze,
         "method_summary": method_summary,
         "gates": gates,
         "predator_weight_receipt": predator_result,
