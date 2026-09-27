@@ -10,7 +10,7 @@ AUDITS = [
     ROOT / "data" / "SCH_H2_ESTIMAND_RECOVERY_AUDIT_BATCH3_V1.csv",
 ]
 READOUT = ROOT / "data" / "SCH_H2_ESTIMAND_RECOVERY_AUDIT_CUMULATIVE_V2.json"
-SCRIPT = ROOT / "scripts" / "build_sch_h2_estimand_recovery_audit_cumulative_v2.py"
+SCRIPT = ROOT / "scripts" / "build_sch_h2_estimand_recovery_audit_cumulative.py"
 
 
 def _build():
