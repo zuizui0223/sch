@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import math
 from typing import Any
 
 
@@ -82,7 +83,7 @@ def _is_concrete_gate_value(value: Any) -> bool:
     if isinstance(value, bool):
         return True
     if isinstance(value, (int, float)):
-        return True
+        return math.isfinite(float(value))
     return False
 
 
@@ -90,10 +91,10 @@ def _valid_timestamp(value: Any) -> bool:
     if not isinstance(value, str) or not value.strip() or value == PLACEHOLDER:
         return False
     try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return False
-    return True
+    return parsed.tzinfo is not None
 
 
 def inspect_prospective_freeze(config: dict, lane: str) -> dict:
