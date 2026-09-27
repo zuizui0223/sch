@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts" / "analyze_sch_h2_switch_mechanisms_v11.py"
+SCRIPT = ROOT / "scripts" / "analyze_sch_h2_switch_mechanisms.py"
 READOUT = ROOT / "data" / "SCH_H2_SWITCH_MECHANISM_READOUT_V11.json"
 
 
