@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.analyze_pedicularis_full_surface_v2 import RAW_FIELDS, analyze, to_sch_rows
+from scripts.analyze_pedicularis_full_surface import RAW_FIELDS, analyze, to_sch_rows
 
 
 ROOT = Path(__file__).resolve().parents[1]
