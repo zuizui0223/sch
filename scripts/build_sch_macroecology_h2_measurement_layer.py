@@ -265,6 +265,20 @@ def build(
             ),
         }
 
+    expected_prefix_counts = {
+        "Pedicularis_": 4,
+        "Trifolium_": 4,
+        "Erysimum_": 18,
+        "Polygala_": 3,
+        "Tanacetum_": 2,
+    }
+    for prefix, expected in expected_prefix_counts.items():
+        observed = sum(case_id.startswith(prefix) for case_id in tracked_case_ids)
+        if observed and observed != expected:
+            raise ValueError(
+                f"expected {expected} tracked cases with prefix {prefix}, found {observed}"
+            )
+
     trifolium_ids = sorted(
         case_id for case_id in tracked_case_ids if case_id.startswith("Trifolium_")
     )
