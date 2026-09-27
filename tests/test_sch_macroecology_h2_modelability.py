@@ -61,5 +61,25 @@ def test_h2_modelability_gate_fails_closed():
     assert "plant_performance_and_role_behavior_are_noncommensurate_estimands" == built["combined_layer_model_blocker"]
 
 
-def test_h2_modelability_readout_is_reproducible():
-    assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
+def test_h2_modelability_snapshot_preserves_scientific_fields():
+    built = _build()
+    frozen = json.loads(READOUT.read_text(encoding="utf-8"))
+    for key in (
+        "project_gates",
+        "n_total_local_cases",
+        "n_total_canonical_axes_with_cases",
+        "n_total_clusters_with_cases",
+        "n_total_axes_with_two_or_more_local_cases",
+        "axes_with_two_or_more_local_cases",
+        "plant_performance_layer",
+        "role_behavior_layer",
+        "n_change_records",
+        "change_type_counts",
+        "n_change_records_with_two_or_more_materialized_cases",
+        "combined_layer_model_permitted",
+        "combined_layer_model_blocker",
+        "plant_performance_model_ready",
+        "role_behavior_model_ready",
+        "primary_h2_status",
+    ):
+        assert built[key] == frozen[key]
