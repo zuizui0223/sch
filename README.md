@@ -148,11 +148,16 @@ PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 
 The repository is now **empirical-gate limited, not literature-screen limited**.
 
+The machine-readable current Pedicularis blocker is
+`PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
+`python scripts/audit_pedicularis_execution_frontier.py` to verify it.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
 ```text
 same population + same season
+Stage F0  freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
 Stage P0  validate >=5 realized exsertion levels
 Stage P1  validate selective pollination-weight supplementation
 Stage G   validate independent seed-predator exclusion with water-y fixed
