@@ -146,6 +146,23 @@ def build(evidence_paths: list[Path], case_paths: list[Path]) -> dict:
         ],
     }
 
+    expected_source_counts = {
+        "SCHPRISMA-000376": 4,
+        "SCHPRISMA-000391": 4,
+        "SCHPRISMA-000008": 18,
+        "SCHPRISMA-000334": 3,
+        "SCHPRISMA-000352": 2,
+    }
+    present_source_ids = {row["source_id"] for row in cases}
+    for source_id, expected in expected_source_counts.items():
+        if source_id not in present_source_ids:
+            continue
+        observed = sum(row["source_id"] == source_id for row in cases)
+        if observed != expected:
+            raise ValueError(
+                f"expected {expected} materialized cases for {source_id}, found {observed}"
+            )
+
     pedicularis = [
         row
         for row in cases
