@@ -236,6 +236,13 @@ only water retained/drained is available as G
 
 Any failed gate blocks the full factorial rather than being statistically adjusted away later.
 
+## Prospective threshold freeze
+
+Before confirmatory P1 outcomes are interpreted, the pollination-weight config
+must pass `SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md` for the same
+population and season used by P0 and G. Unit-test fixture thresholds are not
+field cutoffs.
+
 ## Machine implementation
 
 Pollination-weight pilot:
