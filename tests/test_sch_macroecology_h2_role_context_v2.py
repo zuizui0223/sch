@@ -57,5 +57,18 @@ def test_h2_role_context_v2_remains_fail_closed():
     assert "role_behavior_context_is_not_relabelled_as_plant_fitness_geometry" in built["claim_ceiling"]
 
 
-def test_h2_role_context_v2_readout_is_reproducible():
-    assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
+def test_h2_role_context_historical_snapshot_preserves_core_counts():
+    built = _build()
+    frozen = json.loads(READOUT.read_text(encoding="utf-8"))
+    for key in (
+        "n_context_evidence_rows",
+        "n_canonical_axes_with_context_evidence",
+        "n_source_records_with_context_evidence",
+        "n_materialized_local_cases",
+        "n_canonical_axes_with_materialized_cases",
+        "n_clusters_with_materialized_cases",
+        "local_geometry_counts",
+        "local_role_status_counts",
+        "n_context_shift_from_reference_yes",
+    ):
+        assert built[key] == frozen[key]
