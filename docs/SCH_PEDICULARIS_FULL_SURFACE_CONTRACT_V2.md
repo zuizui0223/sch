@@ -191,7 +191,7 @@ handling / mechanical damage.
 Run:
 
 ```bash
-python scripts/analyze_pedicularis_full_surface_v2.py \
+python scripts/analyze_pedicularis_full_surface.py \
   <pedicularis_surface_v2.csv> \
   <pedicularis_readiness_v3.json> \
   <frozen_config_v2.json> \
