@@ -14,5 +14,28 @@
     "max_flower_orientation_change_deg": "REQUIRED_BEFORE_USE",
     "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
   },
-  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN"
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN",
+  "prospective_freeze": {
+    "schema": "SCH_PEDICULARIS_THRESHOLD_FREEZE_V1",
+    "status": "REQUIRED_BEFORE_USE",
+    "lane": "P0",
+    "population_id": "REQUIRED_BEFORE_USE",
+    "season_id": "REQUIRED_BEFORE_USE",
+    "frozen_before_confirmatory_data": "REQUIRED_BEFORE_USE",
+    "frozen_at_utc": "REQUIRED_BEFORE_USE",
+    "basis_document": "REQUIRED_BEFORE_USE",
+    "threshold_basis": {
+      "stage_p0.min_z_levels": "REQUIRED_BEFORE_USE",
+      "stage_p0.min_flowers_per_level": "REQUIRED_BEFORE_USE",
+      "stage_p0.min_plants": "REQUIRED_BEFORE_USE",
+      "stage_p0.min_adjacent_exsertion_gap": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_opening_width_relative_change": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_tube_diameter_relative_change": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_bract_height_relative_change": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_lower_lip_angle_change_deg": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_water_depth_change": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_flower_orientation_change_deg": "REQUIRED_BEFORE_USE",
+      "stage_p0.max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+    }
+  }
 }
