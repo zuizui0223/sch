@@ -215,7 +215,7 @@ mechanical damage.
 Run:
 
 ```text
-scripts/analyze_pedicularis_full_surface_v2.py
+scripts/analyze_pedicularis_full_surface.py
 ```
 
 The returned core SCH estimands are:
