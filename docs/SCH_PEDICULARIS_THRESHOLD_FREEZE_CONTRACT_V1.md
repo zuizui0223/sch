@@ -92,6 +92,30 @@ must not be promoted to field thresholds merely because a unit test passes with
 them. They have no empirical standing unless independently justified and frozen
 under this contract.
 
+## Threshold-basis ledger
+
+The resolution state for all 40 gate fields is tracked in:
+
+```text
+empirical/architecture/PEDICULARIS_THRESHOLD_BASIS_LEDGER_V1.csv
+```
+
+Current bounded state:
+
+```text
+40 total gate fields
+ 5 RESOLVED_FROM_REGISTERED_CONTRACT
+35 still require independent justification
+```
+
+The five already resolved values are the registered minimum of five realized z
+levels and four boolean G-method requirements. No unresolved numeric cutoff is
+filled from a unit-test fixture.
+
+The remaining rows specify the required resolution route rather than a guessed
+value: power/precision, measurement-equivalence calibration, effect-size
+justification, method-feasibility calibration, or a separate G timing pilot.
+
 ## Machine enforcement
 
 Shared validation is implemented in:

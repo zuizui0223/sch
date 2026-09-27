@@ -325,7 +325,7 @@ If component optima shift materially across the other ecological state, retain a
 shared conflict reality in P. rex:                      RECOVERED
 water-defence causal function / BITA-y precedent:       RECOVERED
 congeneric non-destructive z-manipulation precedent:    RECOVERED
-prospective P0/P1/G threshold freeze (same context):     NOT YET EXECUTED
+prospective P0/P1/G threshold freeze (same context):     5/40 CONTRACT-RESOLVED; 35 PENDING
 P. rex multi-level z validation:                        NOT YET EXECUTED
 P. rex pollination-weight validation:                   NOT YET EXECUTED
 independent predator-method V3 validation:               NOT YET EXECUTED

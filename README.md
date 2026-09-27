@@ -151,6 +151,9 @@ The repository is now **empirical-gate limited, not literature-screen limited**.
 The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
+The threshold-basis ledger currently resolves 5/40 gate values directly from
+registered contracts; the remaining 35 require independent calibration,
+precision/power work, effect-size justification, or method-pilot evidence.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
