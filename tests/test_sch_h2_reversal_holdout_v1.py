@@ -10,7 +10,7 @@ PROTOCOL = ROOT / "data" / "SCH_H2_REVERSAL_HOLDOUT_PROTOCOL_V1.json"
 REGISTRY = ROOT / "data" / "SCH_H2_REVERSAL_HOLDOUT_REGISTRY_V1.csv"
 READOUT = ROOT / "data" / "SCH_H2_REVERSAL_HOLDOUT_READOUT_V1.json"
 SCRIPT = ROOT / "scripts" / "evaluate_sch_h2_reversal_holdout_v1.py"
-V10 = ROOT / "scripts" / "analyze_sch_h2_total_selection_direction_v10.py"
+V10 = ROOT / "scripts" / "analyze_sch_h2_total_selection_direction.py"
 
 FIELDS = [
     "programme_id",
