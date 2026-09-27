@@ -144,6 +144,33 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Execution priority
+
+The repository is now **empirical-gate limited, not literature-screen limited**.
+
+The next primary objective is to close one same-system causal chain. The active
+Pedicularis route is:
+
+```text
+same population + same season
+Stage P0  validate >=5 realized exsertion levels
+Stage P1  validate selective pollination-weight supplementation
+Stage G   validate independent seed-predator exclusion with water-y fixed
+readiness -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
+Stage P2  run the z x P x G surface
+Stage P3  test context-stable component optima
+Stage P4  export the fitness-scale conflict budget L
+```
+
+Until that chain produces a valid full-surface receipt (or fails a preregistered
+stop rule), additional TA3 remainder screening is secondary. Screening records
+already recovered remain part of the systematic denominator, but adding further
+screening batches does not substitute for executing the missing SCH estimands.
+
+For implementation files, Git history is the version record. New runtime code
+should use canonical unversioned entrypoints; version suffixes are reserved for
+scientifically distinct frozen protocols, schemas, and provenance snapshots.
+
 ## Comparative macroecology extension
 
 SCH now also carries an active comparative ecological layer built from the same identification rules.
