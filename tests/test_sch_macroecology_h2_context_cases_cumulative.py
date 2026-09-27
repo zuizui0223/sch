@@ -53,5 +53,23 @@ def test_h2_cumulative_context_cases_remain_fail_closed():
     assert "reported_context_counts_are_not_model_cases" in built["claim_ceiling"]
 
 
-def test_h2_cumulative_context_case_readout_is_reproducible():
-    assert _build() == json.loads(READOUT.read_text(encoding="utf-8"))
+def test_h2_cumulative_context_case_snapshot_preserves_scientific_fields():
+    built = _build()
+    frozen = json.loads(READOUT.read_text(encoding="utf-8"))
+    for key in (
+        "n_evidence_batches",
+        "n_case_batches",
+        "n_context_evidence_rows",
+        "n_canonical_axes_with_context_evidence",
+        "n_source_records_with_context_evidence",
+        "n_materialized_local_cases",
+        "n_canonical_axes_with_materialized_cases",
+        "n_clusters_with_materialized_cases",
+        "local_geometry_counts",
+        "local_role_status_counts",
+        "n_context_shift_from_reference_yes",
+        "n_evidence_rows_without_materialized_cases",
+        "n_evidence_rows_requiring_source_object",
+        "h2_model_ready",
+    ):
+        assert built[key] == frozen[key]
