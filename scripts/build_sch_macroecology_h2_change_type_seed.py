@@ -6,12 +6,15 @@ import json
 from collections import Counter
 from pathlib import Path
 
+
 ALLOWED_CHANGE_TYPES = {
     "GEOMETRY_CLASS_SWITCH",
     "GEOMETRY_DISAPPEARANCE",
     "COMPONENT_WEIGHT_SHIFT",
     "COMPONENT_WEIGHT_SHIFT_WITH_EVOLUTIONARY_RESPONSE",
     "CONSUMER_ROLE_BEHAVIOR_SHIFT",
+    "NET_SELECTION_CONTEXT_SHIFT",
+    "REPRODUCTIVE_COMPONENT_CONTEXT_SHIFT",
 }
 
 
@@ -32,11 +35,13 @@ def build(path: Path) -> dict:
     if len(ids) != len(set(ids)):
         raise ValueError("change_record_id must be unique")
 
-    invalid = sorted({
-        row["change_type"]
-        for row in rows
-        if row["change_type"] not in ALLOWED_CHANGE_TYPES
-    })
+    invalid = sorted(
+        {
+            row["change_type"]
+            for row in rows
+            if row["change_type"] not in ALLOWED_CHANGE_TYPES
+        }
+    )
     if invalid:
         raise ValueError("invalid H2 change type(s): " + ", ".join(invalid))
 
@@ -44,24 +49,33 @@ def build(path: Path) -> dict:
     local_cases = sum(int(row["local_cases_materialized"]) for row in rows)
 
     return {
-        "analysis": "sch_macroecology_h2_change_type_seed_v2",
+        "analysis": "sch_macroecology_h2_change_type_seed",
         "n_change_records": len(rows),
-        "n_canonical_axes": len({row["canonical_trait_axis_id"] for row in rows}),
+        "n_canonical_axes": len(
+            {row["canonical_trait_axis_id"] for row in rows}
+        ),
         "change_type_counts": dict(sorted(type_counts.items())),
         "n_change_records_with_materialized_local_cases": sum(
             int(row["local_cases_materialized"]) > 0 for row in rows
+        ),
+        "n_change_records_with_two_or_more_materialized_cases": sum(
+            int(row["local_cases_materialized"]) >= 2 for row in rows
         ),
         "n_materialized_local_cases_represented": local_cases,
         "n_change_records_without_materialized_local_cases": sum(
             int(row["local_cases_materialized"]) == 0 for row in rows
         ),
-        "status": "H2_CHANGE_TYPE_SEED_V2_DESCRIPTIVE_ONLY",
+        "status": "H2_CHANGE_TYPE_CURRENT_DESCRIPTIVE_ONLY",
         "claim_ceiling": [
             "change_types_are_mechanistic_descriptive_classes_not_frequencies",
             "source_level_change_can_exist_without_materialized_local_cases",
             "geometry_class_switch_is_not_equivalent_to_component_weight_shift",
             "geometry_disappearance_is_not_equivalent_to_static_null_geometry",
             "consumer_role_behavior_shift_is_not_plant_fitness_geometry",
+            "net_selection_context_shift_is_not_local_agent_geometry",
+            "antagonist_pressure_cases_do_not_identify_local_geometry",
+            "reproductive_component_context_shift_is_not_final_fitness_selection_shift",
+            "tanacetum_single_performance_snapshots_are_not_change_records",
             "H2_change_type_model_not_ready",
         ],
     }
