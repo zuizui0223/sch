@@ -133,7 +133,7 @@ Use:
 ```text
 empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V3.csv
 empirical/architecture/PEDICULARIS_PREDATOR_METHOD_CONFIG_V3.json
-scripts/evaluate_pedicularis_predator_method_v3.py
+scripts/evaluate_pedicularis_predator_method.py
 ```
 
 The output must be:
