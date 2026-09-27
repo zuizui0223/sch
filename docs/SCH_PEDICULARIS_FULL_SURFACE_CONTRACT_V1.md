@@ -116,15 +116,16 @@ water_treatment       = PROTECTED | DRAINED.
 
 ## Analysis
 
-Run:
+## Runtime status
 
-```bash
-python scripts/analyze_pedicularis_full_surface.py \
-  <pedicularis_surface.csv> \
-  <pedicularis_readiness_receipt.json> \
-  <frozen_config.json> \
-  --output <sch_pedicularis_receipt.json>
-```
+This V1 contract is retained for provenance only. Its water-treatment antagonist
+mapping is deprecated for the active same-species SCH -> BITA chain, and its
+former runtime implementation is recoverable from Git history.
+
+Do **not** run the current canonical
+`scripts/analyze_pedicularis_full_surface.py` on V1 data. The canonical
+runtime implements the active V2 surface with independent seed-predator
+exclusion/exposure and water-y held fixed.
 
 The wrapper validates the system-specific contract, maps the raw treatments onto the generic SCH state coding, and calls:
 
