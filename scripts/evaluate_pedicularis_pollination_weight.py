@@ -11,6 +11,10 @@ from statistics import mean
 from typing import Callable
 
 from scripts.scale_free_relative import relative_change
+from scripts.pedicularis_config_freeze import (
+    validate_freeze_context,
+    validate_prospective_freeze,
+)
 
 
 REQUIRED_FIELDS = (
@@ -212,7 +216,9 @@ def _bootstrap_paired(rows: list[dict[str, str]], statistic: Callable[[list[dict
 
 
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
+    freeze = validate_prospective_freeze(config, "P1")
     population_id, season_id = _check_context(rows)
+    validate_freeze_context(freeze, population_id, season_id)
     groups = _groups(rows)
     plants = _paired_plants(rows)
     cfg = config["pollination_weight"]
@@ -257,6 +263,7 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "analysis": "pedicularis_pollination_weight_supplementation_pilot",
         "population_id": population_id,
         "season_id": season_id,
+        "config_freeze": freeze,
         "n_rows": len(rows),
         "n_paired_plants": len(plants),
         "n_by_treatment": {t: len(groups[t]) for t in TREATMENTS},

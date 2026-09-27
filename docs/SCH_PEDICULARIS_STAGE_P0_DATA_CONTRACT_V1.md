@@ -24,6 +24,11 @@ Config template:
 empirical/architecture/PEDICULARIS_STAGE_P0_CONFIG_TEMPLATE_V1.json
 ```
 
+Before confirmatory Stage P0 data are interpreted, the config must pass
+`docs/SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md`. The evaluator rejects
+unfrozen placeholders, missing per-gate basis notes, or a population/season
+that differs from the data package.
+
 ## Biological basis
 
 A congeneric Pedicularis field experiment shortened corolla tubes by bending them and fixing them with clear sticky tape rather than cutting tissue. This establishes a manipulation precedent, not validation in `P. rex`.

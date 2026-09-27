@@ -20,6 +20,15 @@ y = water-defence state / water-retention phenotype.
 
 This separation makes the Chapter-2 release test non-circular.
 
+## Threshold provenance gate
+
+Every P0, P1 and G receipt entering V3 readiness must carry positive
+`SCH_PEDICULARIS_THRESHOLD_FREEZE_V1` provenance for the same population and
+season. The canonical full-surface analyzer rechecks those freeze statuses and
+rejects a hand-written READY receipt that omits them.
+
+See `docs/SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md`.
+
 ## Required readiness receipt
 
 The full surface may run only after the same population and season produce:

@@ -23,9 +23,21 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
         "season_id": season,
         "status": "PEDICULARIS_FULL_SURFACE_READY",
         "source_receipts": {
-            "z": {"schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1", "status": "PEDICULARIS_Z_MANIPULATION_VALIDATED"},
-            "p": {"schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1", "status": "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED"},
-            "g": {"schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V3", "status": "PEDICULARIS_PREDATOR_METHOD_VALIDATED"},
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "status": "PEDICULARIS_Z_MANIPULATION_VALIDATED",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "status": "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V3",
+                "status": "PEDICULARIS_PREDATOR_METHOD_VALIDATED",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+            },
         },
         "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
         "predator_method_requirement": "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED",
@@ -162,3 +174,10 @@ def test_v2_contract_separates_independent_G_from_bita_y() -> None:
     assert "water defence is held fixed" in text
     assert "non-circular" in text
     assert "R_state = |x0* - z_P*| - |x1* - z_P*|" in text
+
+
+def test_v2_rejects_readiness_without_threshold_freeze_provenance() -> None:
+    receipt = _readiness()
+    receipt["source_receipts"]["p"].pop("threshold_freeze_status")
+    with pytest.raises(ValueError, match="threshold-freeze provenance"):
+        analyze(_rows(), receipt, _config())

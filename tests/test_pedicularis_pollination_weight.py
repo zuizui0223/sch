@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from scripts.evaluate_pedicularis_pollination_weight import REQUIRED_FIELDS, evaluate
+from scripts.pedicularis_config_freeze import required_gate_paths
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,8 +14,26 @@ CONFIG_TEMPLATE = ROOT / "empirical" / "architecture" / "PEDICULARIS_POLLINATION
 CONTRACT = ROOT / "docs" / "SCH_PEDICULARIS_POLLINATION_WEIGHT_AND_4_STATE_MAPPING_V1.md"
 
 
+def _freeze(lane: str) -> dict:
+    return {
+        "schema": "SCH_PEDICULARIS_THRESHOLD_FREEZE_V1",
+        "status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+        "lane": lane,
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "frozen_before_confirmatory_data": True,
+        "frozen_at_utc": "2026-09-27T00:00:00Z",
+        "basis_document": "UNIT_TEST_SYNTHETIC_FIXTURE_ONLY",
+        "threshold_basis": {
+            path: "UNIT_TEST_SYNTHETIC_FIXTURE_ONLY"
+            for path in required_gate_paths(lane)
+        },
+    }
+
+
 def _config() -> dict:
     return {
+        "prospective_freeze": _freeze("P1"),
         "bootstrap_reps": 300,
         "random_seed": 31,
         "pollination_weight": {

@@ -11,6 +11,10 @@ from statistics import mean
 from typing import Callable
 
 from scripts.scale_free_relative import relative_change
+from scripts.pedicularis_config_freeze import (
+    validate_freeze_context,
+    validate_prospective_freeze,
+)
 
 
 REQUIRED_FIELDS = (
@@ -259,7 +263,9 @@ def _maximum_damage(rows: list[dict[str, str]]) -> float:
 
 
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
+    freeze = validate_prospective_freeze(config, "P0")
     population_id, season_id = _check_single_context(rows)
+    validate_freeze_context(freeze, population_id, season_id)
     groups = _group_by_rank(rows)
     sham = _sham_rows(rows)
     cfg = config["stage_p0"]
@@ -315,6 +321,7 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "analysis": "pedicularis_stage_p0_exsertion_manipulation",
         "population_id": population_id,
         "season_id": season_id,
+        "config_freeze": freeze,
         "n_rows": len(rows),
         "n_plants": n_plants,
         "z_levels": [groups[rank][0]["assigned_z_level"] for rank in groups],

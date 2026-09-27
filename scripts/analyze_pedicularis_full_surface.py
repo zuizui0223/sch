@@ -9,6 +9,7 @@ from pathlib import Path
 from statistics import mean
 
 from scripts.analyze_sch_compromise_surface import analyze as analyze_sch_surface
+from scripts.pedicularis_config_freeze import FREEZE_STATUS
 
 
 RAW_FIELDS = (
@@ -120,9 +121,17 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
         raise ValueError("V2 readiness receipt does not require water-y to remain fixed")
     if readiness.get("predator_method_requirement") != "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED":
         raise ValueError("V2 readiness receipt lacks the timed predator-method qualification requirement")
-    source_g = readiness.get("source_receipts", {}).get("g", {})
+    source_receipts = readiness.get("source_receipts", {})
+    source_g = source_receipts.get("g", {})
     if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V3":
         raise ValueError("V2 readiness must be grounded in the timed independent predator-method V3 receipt")
+    for lane in ("z", "p", "g"):
+        source = source_receipts.get(lane, {})
+        if source.get("threshold_freeze_status") != FREEZE_STATUS:
+            raise ValueError(
+                "V2 readiness lacks positive prospective threshold-freeze provenance "
+                f"for lane {lane}"
+            )
 
 
 def _system_checks(rows: list[dict[str, str]], config: dict) -> dict:

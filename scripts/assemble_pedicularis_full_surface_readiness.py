@@ -4,6 +4,8 @@ import argparse
 import json
 from pathlib import Path
 
+from scripts.pedicularis_config_freeze import FREEZE_SCHEMA, FREEZE_STATUS
+
 
 EXPECTED = {
     "z": {"schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1", "status": "PEDICULARIS_Z_MANIPULATION_VALIDATED"},
@@ -33,6 +35,15 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         checks[f"{lane}_context_present"] = (
             isinstance(population, str) and bool(population) and isinstance(season, str) and bool(season)
         )
+        freeze = receipt.get("config_freeze")
+        checks[f"{lane}_threshold_freeze"] = (
+            isinstance(freeze, dict)
+            and freeze.get("schema") == FREEZE_SCHEMA
+            and freeze.get("status") == FREEZE_STATUS
+            and freeze.get("lane") == {"z": "P0", "p": "P1", "g": "G"}[lane]
+            and freeze.get("population_id") == population
+            and freeze.get("season_id") == season
+        )
         contexts.append((population, season))
 
     same_context = len(set(contexts)) == 1
@@ -57,6 +68,11 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
             lane: {
                 "schema": receipt.get("receipt_schema_version"),
                 "status": receipt.get("status"),
+                "threshold_freeze_status": (
+                    receipt.get("config_freeze", {}).get("status")
+                    if isinstance(receipt.get("config_freeze"), dict)
+                    else None
+                ),
             }
             for lane, receipt in receipts.items()
         },
