@@ -4,7 +4,7 @@ import csv
 import json
 from pathlib import Path
 
-from scripts.evaluate_pedicularis_predator_method_v3 import REQUIRED_FIELDS, evaluate
+from scripts.evaluate_pedicularis_predator_method import REQUIRED_FIELDS, evaluate
 
 
 ROOT = Path(__file__).resolve().parents[1]
