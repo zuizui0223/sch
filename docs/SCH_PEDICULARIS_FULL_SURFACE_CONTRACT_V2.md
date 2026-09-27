@@ -124,7 +124,7 @@ docs/SCH_PEDICULARIS_PREDATOR_EXCLUSION_METHOD_AUDIT_V1.md
 and the timing/selectivity evaluator is:
 
 ```text
-scripts/evaluate_pedicularis_predator_method_v3.py
+scripts/evaluate_pedicularis_predator_method.py
 ```
 
 The preferred first pilot is a post-pollination lower-flower / fruit shield. A lower-corolla ovipositor barrier during anthesis remains a second-choice unvalidated method and must independently pass the same pollinator-access and pollen-receipt gates.
