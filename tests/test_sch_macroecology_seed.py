@@ -66,9 +66,13 @@ def test_trait_axis_template_prevents_multivariate_collapse():
         "trait_coordinate",
         "conflict_detected",
         "alignment_detected",
-        "macro_design_eligible",
+        "geometry_eligibility",
+        "context_switch_eligibility",
+        "cancellation_eligibility",
+        "design_audit_eligible",
     ):
         assert required in fields
+    assert "macro_design_eligible" not in fields
 
 
 def test_context_case_template_preserves_nested_contexts():
@@ -89,9 +93,13 @@ def test_context_case_template_preserves_nested_contexts():
         "effect_covariance",
         "latitude",
         "longitude",
-        "macro_design_eligible",
+        "geometry_eligibility",
+        "context_switch_eligibility",
+        "cancellation_eligibility",
+        "design_audit_eligible",
     ):
         assert required in fields
+    assert "macro_design_eligible" not in fields
 
 
 def test_schema_freezes_sign_independent_eligibility_and_four_hypotheses():
