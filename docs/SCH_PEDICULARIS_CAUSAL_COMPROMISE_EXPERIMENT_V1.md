@@ -325,6 +325,7 @@ If component optima shift materially across the other ecological state, retain a
 shared conflict reality in P. rex:                      RECOVERED
 water-defence causal function / BITA-y precedent:       RECOVERED
 congeneric non-destructive z-manipulation precedent:    RECOVERED
+prospective P0/P1/G threshold freeze (same context):     NOT YET EXECUTED
 P. rex multi-level z validation:                        NOT YET EXECUTED
 P. rex pollination-weight validation:                   NOT YET EXECUTED
 independent predator-method V3 validation:               NOT YET EXECUTED
@@ -334,4 +335,4 @@ biological fitness-scale L receipt:                     NOT YET EXECUTED.
 
 ## Bottom line
 
-Pedicularis remains the highest-leverage same-system route because a successful V2 programme can connect SCH conflict identification to BALANCE/BITA without changing species. Its decisive uncertainty is now explicit: **can an independent seed-predator intervention be qualified while water defence remains fixed?** The published water experiment supports the biological plausibility of the downstream y axis but no longer substitutes for that gate.
+Pedicularis remains the highest-leverage same-system route because a successful V2 programme can connect SCH conflict identification to BALANCE/BITA without changing species. The immediate operational blocker is now explicit: **freeze the P0/P1/G decision rules prospectively for one population and season before reading confirmatory outcomes.** After that administrative/measurement gate is closed, the decisive biological uncertainty remains whether an independent seed-predator intervention can be qualified while water defence stays fixed. The published water experiment supports the downstream y axis but does not substitute for that G gate.
