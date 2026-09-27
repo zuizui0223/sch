@@ -126,6 +126,14 @@ mechanical damage.
 
 If exclusion changes water retention, that method is rejected even if predation falls.
 
+## Prospective threshold freeze
+
+Method-development information may be used to choose the final method and
+support threshold rationale, but the confirmatory G decision rules must be
+frozen before the confirmatory outcome data are read. Use
+`SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md`, including one basis note
+for every timing, sample-size, effectiveness, and selectivity gate.
+
 ## Machine evaluation
 
 Use:
