@@ -88,6 +88,17 @@ def _g_rows(season: str = "S1") -> list[dict[str, str]]:
                         if exposed
                         else "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
                     ),
+                    "barrier_material_class": (
+                        "SHAM_MATCHED" if exposed else "SOFT_POROUS_TUBING"
+                    ),
+                    "barrier_material_specification": (
+                        "SHAM_DIALYSIS_LIKE_V1"
+                        if exposed
+                        else "DIALYSIS_LIKE_TUBING_V1"
+                    ),
+                    "barrier_contacts_bract_water": "0",
+                    "barrier_sagging_or_displaced": "0",
+                    "visible_barrier_puncture_or_oviposition": "0",
                     "sham_device_applied": "1" if exposed else "0",
                     "anthesis_time_hours": "0",
                     "barrier_application_time_hours": "12",
