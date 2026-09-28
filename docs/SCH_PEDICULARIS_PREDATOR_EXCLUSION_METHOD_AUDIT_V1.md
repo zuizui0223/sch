@@ -20,11 +20,30 @@ C3  whole-flower bagging would also perturb bumblebee access and therefore is no
 
 `P. rex` is almost entirely dependent on bumblebees for reproduction, so preserving the pollination lane is not optional.
 
-## External method precedents
+## Pedicularis timing precedent
 
 A direct P. rex seed-predator exclusion protocol was not recovered.
 
-However, other plant systems demonstrate that the seed-predator lane can be isolated after pollination:
+However, Menges, Waller & Gawler (1986; doi `10.2307/2443796`) provide a
+within-genus timing precedent in `Pedicularis furbishiae`. Aluminum-mesh cages
+were placed over groups of 3-6 immature scapes for an unrelated spittlebug
+experiment and removed **before flowers opened** so pollination could proceed.
+Those previously caged scapes later experienced the same lepidopteran seed
+predation as other plants. The authors therefore inferred that the plume-moth
+seed predator `Amblyptilia pica` attacked after pollination.
+
+Across that study, `Amblyptilia` infested 39% of maturable capsules and seed
+predation reduced mean seed yield from 25.4 to 2.8 seeds per capsule
+(`N=224`, `P<0.001`).
+
+This does **not** demonstrate that a post-pollination mesh sleeve excludes a
+Pedicularis seed predator: the cages had already been removed. It does,
+however, strengthen the temporal premise of G-A by showing within the genus
+that a lepidopteran seed predator can arrive after the pollination phase.
+
+## External method precedents
+
+Other plant systems demonstrate that the seed-predator lane can be isolated after pollination:
 
 - in `Cypripedium candidum`, flowers were allowed an open-pollination phase, and developing fruits were later enclosed in dialysis tubing to exclude insect damage while fruit/seed development continued;
 - in other predispersal seed-predator systems, mesh sleeves / fruit-stage barriers are used to prevent later oviposition or larval access.
@@ -153,12 +172,13 @@ Do not rescue the system by reusing water drainage as `G`; that would restore th
 
 ```text
 predator natural-history route:          RECOVERED
+Pedicularis post-pollination attack timing: RECOVERED
 whole-flower exclusion as selective G:   REJECTED
-post-pollination shielding precedent:    RECOVERED OUTSIDE PEDICULARIS
+post-pollination shielding effectiveness: RECOVERED OUTSIDE PEDICULARIS ONLY
 lower-corolla local barrier:             BIOLOGICALLY PLAUSIBLE, UNVALIDATED
-Pedicularis selective independent G:     NOT YET EXECUTED
+P. rex selective independent G:          NOT YET EXECUTED
 ```
 
 ## Bottom line
 
-The independent-G problem is narrower than before but not solved. The most defensible next experiment is a **small post-pollination shielding pilot**, not the full `z x P x G` factorial. Pedicularis remains first-choice only conditionally on that Stage-G gate.
+The independent-G problem is narrower than before but not solved. The within-genus timing evidence makes a **small post-pollination shielding pilot** more defensible than before, but shielding effectiveness and selectivity still require focal P. rex validation before the full `z x P x G` factorial.
