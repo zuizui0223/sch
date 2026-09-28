@@ -92,6 +92,19 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "Sun2015 water manipulation must remain a wrong-axis G precedent"
         )
 
+    furbishiae = next(
+        row for row in rows
+        if row["gap_id"] == "G_FURBISHIAE1986"
+    )
+    if (
+        furbishiae["qualification_status"]
+        != "CONGENERIC_POSTPOLLINATION_ATTACK_TIMING_RECOVERED_NO_EXCLUSION_EFFECT"
+    ):
+        raise ValueError(
+            "P. furbishiae must remain a timing precedent rather than "
+            "predator-exclusion validation"
+        )
+
     return {
         "analysis": "pedicularis_focal_direct_evidence_search_audit_v1",
         "n_search_rows": len(rows),
@@ -101,6 +114,9 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "n_p0_direct_sources_checked": len(p0),
         "direct_registered_p1_recovered": bool(direct_p1),
         "direct_registered_g_recovered": bool(direct_g),
+        "pedicularis_postpollination_attack_timing_recovered": True,
+        "focal_p_rex_barrier_effectiveness_recovered": False,
+        "focal_p_rex_g_timing_qualification_recovered": False,
         "direct_same_flower_repeatability_recovered": bool(
             direct_repeatability
         ),
@@ -113,7 +129,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "P_rex_same_flower_repeatability",
             "P_rex_registered_pollination_supplementation_effect",
             "P_rex_independent_seed_predator_exclusion",
-            "P_rex_independent_G_timing_window",
+            "P_rex_postpollination_barrier_effectiveness_and_selectivity",
+            "P_rex_independent_G_timing_qualification",
         ],
         "status": (
             "FOCAL_DIRECT_EVIDENCE_SEARCHED_"
@@ -123,6 +140,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "absence_of_recovery_is_not_proof_of_absence",
             "hand_pollination_is_not_relabelled_as_supplementation_without_primary_methods",
             "water_drainage_is_not_independent_G",
+            "within_genus_postpollination_attack_timing_is_not_barrier_effectiveness",
+            "congeneric_timing_is_not_focal_P_rex_timing_qualification",
             "different_flowers_per_plant_are_not_same_flower_repeatability",
             "congeneric_manipulation_is_not_focal_P0_validation",
         ],

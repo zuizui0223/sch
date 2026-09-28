@@ -22,9 +22,11 @@ python scripts/audit_pedicularis_focal_direct_evidence_search.py
 
 ```text
 registered P1 supplementation effect       NOT RECOVERED
-registered independent G                   NOT RECOVERED
-same-flower CAL-A repeatability            NOT RECOVERED
-focal >=5-level P0 manipulation            NOT RECOVERED.
+Pedicularis post-pollination attack timing  RECOVERED
+P. rex post-pollination barrier validation  NOT RECOVERED
+registered independent G                    NOT RECOVERED
+same-flower CAL-A repeatability             NOT RECOVERED
+focal >=5-level P0 manipulation             NOT RECOVERED.
 ```
 
 `NOT RECOVERED` means no qualifying estimand was recovered from the searched
@@ -102,6 +104,27 @@ Later focal papers cite the thesis for predator natural history and oviposition
 timing. The full text has not been ingested, so no predator-exclusion
 experiment is currently verified from it.
 
+### Menges, Waller & Gawler 1986 — P. furbishiae timing precedent
+
+A within-genus timing experiment now narrows the G gap further. Immature
+`P. furbishiae` scapes were covered with aluminum mesh and the cages were
+removed before flowers opened so pollination could proceed. Previously caged
+scapes later suffered the same lepidopteran seed predation as other plants, and
+the authors inferred that seed-predator attack occurred after pollination.
+
+This changes the evidence frontier:
+
+```text
+Pedicularis post-pollination attack timing      RECOVERED
+P. rex barrier effectiveness/selectivity        NOT RECOVERED
+P. rex timing qualification for the chosen barrier  NOT RECOVERED
+registered independent G                        NOT RECOVERED
+```
+
+The precedent supports temporal plausibility only. Because the mesh was removed
+before flowering, it did not test whether leaving a barrier on after pollination
+would selectively exclude the predator.
+
 ## CAL-A repeatability
 
 Sun et al. 2016 measured two different flowers from different whorls on each
@@ -125,13 +148,13 @@ off-target checks was recovered.
 1. Primary full methods for Jing et al. 2013 to classify the hand-pollination
    treatment exactly.
 2. Tang 2011 thesis full text to check for any focal predator-access
-   manipulation.
-3. Dryad `10.5061/dryad.6cv06/raw data.xlsx` for raw focal seed-outcome
+   manipulation beyond the already recovered timing natural history.
+3. A focal P. rex post-pollination barrier pilot: the literature now supports
+   timing plausibility more strongly than barrier effectiveness.
+4. Dryad `10.5061/dryad.6cv06/raw data.xlsx` for raw focal seed-outcome
    distributions.
-4. 2016 `mcw097` supplements for population-level trait/pollination/seed
-   aggregates.
-5. Wang 1998 611-KB PDF for any bagging/seed-set table not present in the
-   searchable abstract.
+5. 2016 `mcw097` supplements and Wang 1998 PDF for remaining focal context
+   and any treatment details unavailable in searchable abstracts.
 
 ## Claim ceiling
 
