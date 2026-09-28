@@ -175,6 +175,21 @@ def build(
                 "pollination plus initial/final seed set and predation"
             ),
         },
+        "long_term_p_state_raw_recovery": {
+            "source_id": "PRX2024_BUMBLEBEE_NETWORK",
+            "dataset_doi": "10.6084/m9.figshare.25139777.v1",
+            "study_span": "2018-2022",
+            "focal_species_code": "Pere",
+            "reason": (
+                "public five-year plant-bumblebee dataset includes P. rex and "
+                "can recover annual natural visitation partners/counts if the "
+                "raw Figshare files are ingested"
+            ),
+            "current_limitation": (
+                "dataset DOI and focal membership verified; binary file list "
+                "not retrievable in the current environment"
+            ),
+        },
         "remaining_direct_empirical_gaps": missing_direct_systems,
         "status": "PUBLISHED_EMPIRICAL_PRIORS_RECOVERED_CALIBRATION_STILL_REQUIRED",
         "claim_ceiling": [
