@@ -152,7 +152,7 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 
-Published-data recovery now tracks 8 Pedicularis sources and 66 quantitative
+Published-data recovery now tracks 9 Pedicularis sources and 69 quantitative
 measurement/design rows. The strongest external resources are the public Dryad
 dataset `10.5061/dryad.6cv06` (`raw data.xlsx`) and the 2016 `mcw097`
 supplements. These historical data can inform variance, effect scale and field
@@ -170,6 +170,11 @@ volume is 1.13±0.68 uL SD and sugar concentration 33±5% SD, with individual
 table rows spanning 0.23–2.50 uL and 26–41% sugar. A separate 2007 study reports
 a P. rex subsp. rex pollen–ovule ratio of 11222.04±4887.18 SD. These are focal
 natural-state measurements, not supplementation effects.
+
+A separate focal morphology dataset provides exact P. rex natural-scale means
+(±SEM): corolla tube 23.43±0.498 mm, lower-lip width 12.71±0.382 mm, and
+pollen-grain volume 4448±89.28 um3. These help bound natural P0/P1 trait scale
+but are not same-flower repeatability estimates.
 
 A focal P. rex mating-system study adds another strong natural-state constraint:
 multilocus outcrossing was high in both sparse and dense patches
