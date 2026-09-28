@@ -9,6 +9,9 @@ from datetime import datetime
 from pathlib import Path
 
 
+from scripts.freeze_pedicularis_p1_design import (
+    validate as validate_p1_design,
+)
 from scripts.pedicularis_config_freeze import (
     FREEZE_SCHEMA,
     FREEZE_STATUS,
@@ -245,6 +248,7 @@ def assemble(
     cal_a_receipt: dict,
     cal_b_receipt: dict,
     cal_c_plan: dict,
+    p1_design_receipt: dict,
     assembly_config: dict,
     templates: dict[str, dict],
 ) -> tuple[dict[str, dict], dict]:
@@ -261,19 +265,43 @@ def assemble(
         label="CAL-B",
     )
     cal_c_values, cal_c_basis, cal_c_context = _validate_cal_c(cal_c_plan)
+    p1_design = validate_p1_design(p1_design_receipt)
+    p1_design_context = (
+        p1_design["population_id"],
+        p1_design["season_id"],
+    )
     assembly_context = _validate_assembly_config(assembly_config)
 
     contexts = {
         cal_a_context,
         cal_b_context,
         cal_c_context,
+        p1_design_context,
         assembly_context,
     }
     if len(contexts) != 1:
         raise ValueError(
-            "CAL-A, CAL-B, CAL-C and F0 assembly contexts must match exactly"
+            "CAL-A, CAL-B, CAL-C, P1 design and F0 assembly contexts "
+            "must match exactly"
         )
     population_id, season_id = next(iter(contexts))
+
+    cal_c_p1_design = cal_c_plan.get("p1_design_unit")
+    if cal_c_p1_design != p1_design["design_unit"]:
+        raise ValueError(
+            "CAL-C P1 design_unit does not match the prospectively frozen "
+            "P1 design receipt"
+        )
+    cal_c_lane_p1 = (
+        cal_c_plan.get("lane_plans", {})
+        .get("P1", {})
+        .get("design_unit")
+    )
+    if cal_c_lane_p1 != p1_design["design_unit"]:
+        raise ValueError(
+            "CAL-C P1 lane plan design_unit does not match the frozen "
+            "P1 design receipt"
+        )
 
     registered_basis = {
         gate: "REGISTERED_CONTRACT_VALUE: "
@@ -355,6 +383,8 @@ def assemble(
                 for gate in lane_gates
             },
         }
+        if lane == "P1":
+            config["pollination_design"] = deepcopy(p1_design)
         config["status"] = lane_status[lane]
 
         freeze_receipt = validate_prospective_freeze(config, lane)
@@ -386,6 +416,9 @@ def assemble(
             for lane in ("P0", "P1", "G")
         },
         "gate_sources": dict(sorted(source_by_gate.items())),
+        "p1_design_unit": p1_design["design_unit"],
+        "p1_estimand_family": p1_design["estimand_family"],
+        "p1_design_basis_document": p1_design["basis_document"],
         "assembled_config_status": {
             lane: outputs[lane]["status"]
             for lane in ("P0", "P1", "G")
@@ -422,6 +455,7 @@ def main() -> None:
     parser.add_argument("cal_a_receipt", type=Path)
     parser.add_argument("cal_b_receipt", type=Path)
     parser.add_argument("cal_c_plan", type=Path)
+    parser.add_argument("p1_design_receipt", type=Path)
     parser.add_argument("assembly_config", type=Path)
     parser.add_argument("--p0-template", type=Path, default=DEFAULT_TEMPLATES["P0"])
     parser.add_argument("--p1-template", type=Path, default=DEFAULT_TEMPLATES["P1"])
@@ -436,6 +470,7 @@ def main() -> None:
         cal_a_receipt=_load_json(args.cal_a_receipt),
         cal_b_receipt=_load_json(args.cal_b_receipt),
         cal_c_plan=_load_json(args.cal_c_plan),
+        p1_design_receipt=_load_json(args.p1_design_receipt),
         assembly_config=_load_json(args.assembly_config),
         templates={
             "P0": _load_json(args.p0_template),
