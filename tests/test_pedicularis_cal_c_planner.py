@@ -62,8 +62,9 @@ def _config(
     *,
     familywise_power: float = 0.80,
     design_effect: float = 1.0,
+    p1_design_unit: str = "WITHIN_PLANT_PAIRED_FLOWERS",
 ) -> dict:
-    return {
+    config = {
         "confidence_level": 0.95,
         "familywise_target_power": familywise_power,
         "familywise_target_power_basis": "UNIT_TEST_SYNTHETIC_PLANNING_INPUT",
@@ -84,6 +85,11 @@ def _config(
             for lane in ("P0", "P1", "G")
         },
     }
+    config["lane_design"]["P1"]["design_unit"] = p1_design_unit
+    config["lane_design"]["P1"]["design_unit_basis"] = (
+        "UNIT_TEST_SYNTHETIC_P1_DESIGN_BASIS"
+    )
+    return config
 
 
 def test_cal_c_templates_are_fail_closed_and_cover_25_criteria() -> None:
@@ -100,6 +106,10 @@ def test_cal_c_templates_are_fail_closed_and_cover_25_criteria() -> None:
     config = json.loads(CONFIG_TEMPLATE.read_text(encoding="utf-8"))
     assert config["confidence_level"] == 0.95
     assert config["familywise_target_power"] == "REQUIRED_BEFORE_USE"
+    assert (
+        config["lane_design"]["P1"]["design_unit"]
+        == "REQUIRED_BEFORE_USE"
+    )
     assert "DO_NOT_RUN" in config["status"]
 
     with pytest.raises(ValueError, match="familywise_target_power"):
@@ -137,6 +147,13 @@ def test_complete_cal_c_plan_populates_all_eight_sample_size_fields() -> None:
     )
     assert result["lane_plans"]["P0"]["design_effect_basis"] == (
         "UNIT_TEST_SYNTHETIC_PLANNING_INPUT"
+    )
+    assert result["p1_design_unit"] == "WITHIN_PLANT_PAIRED_FLOWERS"
+    assert result["lane_plans"]["P1"]["design_unit"] == (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
+    assert result["lane_plans"]["P1"]["design_unit_basis"] == (
+        "UNIT_TEST_SYNTHETIC_P1_DESIGN_BASIS"
     )
 
     gates = result["sample_size_gate_values"]
@@ -206,3 +223,22 @@ def test_cal_c_output_does_not_claim_empirical_validation() -> None:
     assert "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED" not in payload
     assert "PEDICULARIS_PREDATOR_METHOD_VALIDATED" not in payload
     assert "prospective_planning_only" in result["claim_ceiling"]
+
+
+def test_cal_c_retains_whole_plant_p1_design_unit() -> None:
+    result = build_plan(
+        _criteria(),
+        _config(p1_design_unit="WHOLE_PLANT_RANDOMIZED"),
+    )
+    assert result["p1_design_unit"] == "WHOLE_PLANT_RANDOMIZED"
+    assert result["lane_plans"]["P1"]["design_unit"] == (
+        "WHOLE_PLANT_RANDOMIZED"
+    )
+
+
+def test_cal_c_rejects_unregistered_p1_design_unit() -> None:
+    with pytest.raises(ValueError, match="design_unit must be"):
+        build_plan(
+            _criteria(),
+            _config(p1_design_unit="MIXED_UNREGISTERED_DESIGN"),
+        )
