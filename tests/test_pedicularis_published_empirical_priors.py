@@ -15,10 +15,10 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_nine_sources_and_69_measurements() -> None:
+def test_published_empirical_recovery_has_ten_sources_and_71_measurements() -> None:
     result = build()
-    assert result["n_published_sources"] == 9
-    assert result["n_published_measurement_rows"] == 69
+    assert result["n_published_sources"] == 10
+    assert result["n_published_measurement_rows"] == 71
     assert result["measurement_rows_by_source"] == {
         "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
@@ -28,6 +28,7 @@ def test_published_empirical_recovery_has_nine_sources_and_69_measurements() -> 
         "PRX2015_WATER": 15,
         "PRX2016_NECTAR_DYNAMICS": 28,
         "PRX2016_SELECTION": 10,
+        "PRX2024_BUMBLEBEE_NETWORK": 2,
     }
 
 
@@ -37,7 +38,10 @@ def test_dryad_raw_data_is_the_highest_priority_recovery_target() -> None:
     assert raw["source_id"] == "PRX2013_ALLEE"
     assert raw["dataset_doi"] == "10.5061/dryad.6cv06"
     assert raw["file"] == "raw data.xlsx"
-    assert result["public_raw_data_sources"] == ["PRX2013_ALLEE"]
+    assert result["public_raw_data_sources"] == [
+        "PRX2013_ALLEE",
+        "PRX2024_BUMBLEBEE_NETWORK",
+    ]
 
 
 def test_2016_supplement_files_are_explicitly_tracked() -> None:
@@ -211,3 +215,28 @@ def test_focal_p_rex_buzz_pollination_morphology_keeps_sem_separate() -> None:
     assert pollen["sample_n"] == "20 plants"
 
     assert {tube["direct_freeze_eligible"], lip["direct_freeze_eligible"], pollen["direct_freeze_eligible"]} == {"NO"}
+
+
+def test_five_year_network_is_a_raw_recovery_target_not_a_p1_effect() -> None:
+    datasets = {
+        row["source_id"]: row
+        for row in _rows(DEFAULT_DATASETS)
+    }
+    source = datasets["PRX2024_BUMBLEBEE_NETWORK"]
+    assert source["direct_F0_freeze_eligible"] == "NO"
+    assert source["public_data_status"] == (
+        "PUBLIC_RAW_DATASET_CITED_BINARY_RETRIEVAL_BLOCKED"
+    )
+
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+    scale = priors["PRX2024_NETWORK_STUDY_SCALE"]
+    membership = priors["PRX2024_NETWORK_P_REX_MEMBERSHIP"]
+
+    assert scale["estimate"] == "10598"
+    assert "not a P. rex-specific visitation count" in scale["notes"]
+    assert membership["estimate"] == "Pere"
+    assert "does not provide interaction frequency" in membership["notes"]
+    assert membership["direct_freeze_eligible"] == "NO"
