@@ -161,6 +161,9 @@ CAL-B  exploratory P/G effects + G timing                  7 gates
 CAL-C  prospective power / precision planning              8 gates
 ```
 
+CAL-A repeatability infrastructure is implemented; its same-flower calibration
+data are not yet collected.
+
 Use `scripts/summarize_pedicularis_calibration_pilots.py` for threshold-free
 pilot summaries and `scripts/validate_pedicularis_cohort_registry.py` to keep
 calibration flowers separate from confirmatory/full-surface rows.
