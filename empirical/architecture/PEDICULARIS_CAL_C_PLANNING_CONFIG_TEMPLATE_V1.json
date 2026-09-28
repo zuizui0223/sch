@@ -1,0 +1,26 @@
+{
+  "confidence_level": 0.95,
+  "familywise_target_power": "REQUIRED_BEFORE_USE",
+  "planning_provenance": {
+    "status": "REQUIRED_BEFORE_USE",
+    "population_id": "REQUIRED_BEFORE_USE",
+    "season_id": "REQUIRED_BEFORE_USE",
+    "frozen_before_confirmatory_data": "REQUIRED_BEFORE_USE",
+    "basis_document": "REQUIRED_BEFORE_USE"
+  },
+  "lane_design": {
+    "P0": {
+      "design_effect": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+    },
+    "P1": {
+      "design_effect": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+    },
+    "G": {
+      "design_effect": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+    }
+  },
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_CAL_A_CAL_B_TARGETS_AND_ASSUMPTIONS_ARE_PROSPECTIVELY_FROZEN"
+}
