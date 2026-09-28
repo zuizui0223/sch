@@ -41,14 +41,43 @@ Pedicularis seed predator: the cages had already been removed. It does,
 however, strengthen the temporal premise of G-A by showing within the genus
 that a lepidopteran seed predator can arrive after the pollination phase.
 
-## External method precedents
+## External barrier-material precedents
 
-Other plant systems demonstrate that the seed-predator lane can be isolated after pollination:
+Other plant systems make two physical barrier classes concrete.
 
-- in `Cypripedium candidum`, flowers were allowed an open-pollination phase, and developing fruits were later enclosed in dialysis tubing to exclude insect damage while fruit/seed development continued;
-- in other predispersal seed-predator systems, mesh sleeves / fruit-stage barriers are used to prevent later oviposition or larval access.
+Walsh, Arnold & Michaels (2014; doi `10.1093/aobpla/plu031`) allowed
+`Cypripedium candidum` pollination to finish, removed floral pollinator-
+exclusion bags after dehiscence, scored initial fruit set two weeks later, and
+then covered each developing fruit with **dialysis tubing secured at both
+ends** to exclude insect damage while later fruit abortion and seed outcomes
+were followed. This is a strong material-class precedent for soft porous
+tubing, but the timing is much later than the P. rex oviposition window.
 
-These precedents establish method feasibility at the class level only. They do not validate a Pedicularis-specific device.
+Baker-Méio et al. (2012; doi
+`10.1111/j.1365-2745.2011.01892.x`) covered developing
+`Chamaecrista desvauxii` fruits with mesh bags to reduce seed-predator
+access. Their experiment records important failure modes: very young fruits
+were difficult to manipulate, thin peduncles could snap under wet bag weight,
+and sucking insects could still attack through the mesh holes.
+
+These results yield three material constraints for P. rex:
+
+```text
+M1  barrier mass / water loading can create mechanical damage;
+M2  aperture size matters because piercing/ovipositing enemies can bypass mesh;
+M3  porous barriers can coexist with later fruit development, but focal water-y
+    and floral geometry still require direct equivalence checks.
+```
+
+Machine ledger:
+
+```text
+empirical/architecture/PEDICULARIS_G_BARRIER_MATERIAL_PRECEDENTS_V1.csv
+scripts/audit_pedicularis_g_barrier_material_precedents.py
+```
+
+These precedents establish method feasibility and failure modes only. They do
+not validate a Pedicularis-specific device.
 
 ## Candidate methods ranked
 
@@ -64,13 +93,18 @@ Preferred first pilot.
 5  compare later early-attack evidence, seed predation and final intact seed set.
 ```
 
-Potential materials to pilot:
+Primary material classes to pilot:
 
 ```text
-fine inert mesh sleeve
-soft dialysis / porous tubing
-custom lower-flower sleeve fixed below the pollinator-contact zone.
+A1  soft porous / dialysis-like tubing
+A2  fine inert mesh sleeve
 ```
+
+Do not preregister either as superior. Record material mass when wet, aperture
+or porosity class, attachment geometry and any contact with bract water. A
+custom lower-flower sleeve becomes a second-round engineering option only if
+neither A1 nor A2 can preserve water-y and floral geometry while reducing
+attack.
 
 This is the strongest route because it exploits sequence rather than trying to make one barrier simultaneously transparent to pollinators and opaque to predators.
 
