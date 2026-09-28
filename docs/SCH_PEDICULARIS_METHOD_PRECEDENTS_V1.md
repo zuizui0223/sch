@@ -71,26 +71,40 @@ production, while hand self/outcross treatments differed in seed production.
 This demonstrates that supplemental-pollen and bagged hand-pollination
 treatments are established field methods in the genus.
 
-### Dai et al. 2017
+### Dai et al. 2017 — two distinct studies
 
-Pedicularis siphonantha was studied across four large populations spanning
-3200-4300 m.
+Keep two same-year papers separate.
 
-The full-text indexed version describes a within-plant design with 20 randomly
-selected individuals per population and three marked flowers assigned to
-natural/self/outcross pollination treatments.
+The Journal of Systematics and Evolution paper (doi
+`10.1111/jse.12240`) studied four large P. siphonantha populations spanning
+3200-4300 m. Outcross supplementation significantly increased seed production
+per capsule in high-altitude populations but not lower-altitude populations.
+This is the **effect-heterogeneity precedent**.
 
-Outcross supplementation significantly increased seed production per capsule
-in high-altitude populations but not lower-altitude populations.
+The Journal of Mountain Science paper (doi
+`10.1007/s11629-017-4481-1`) provides the detailed **protocol precedent**:
+three natural plus two transplanted populations; 20 randomly selected
+individuals per population; three marked flowers per individual assigned to
+supplemental self pollen, supplemental outcross pollen, or open pollination.
+It defines
 
-This is especially useful for SCH because it demonstrates two things:
+```text
+PL_S = (F_IS - F_IN) / F_IN
+PL_X = (F_IX - F_IN) / F_IN
+```
+
+using seed production per capsule and harvests treated flowers at fruit
+maturity.
+
+Together these demonstrate:
 
 ```text
 paired/within-plant supplementation is feasible in Pedicularis
 the supplementation effect itself can be strongly context-dependent.
 ```
 
-Therefore the method may transfer, but its effect size must not.
+The protocol may transfer, but neither published effect may be treated as a
+P. rex effect.
 
 ## Handling and exclusion precedent
 
