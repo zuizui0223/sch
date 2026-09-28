@@ -90,6 +90,8 @@ def test_cal_c_templates_are_fail_closed_and_cover_25_criteria() -> None:
     assert sum(row["lane"] == "P0" for row in rows) == 8
     assert sum(row["lane"] == "P1" for row in rows) == 8
     assert sum(row["lane"] == "G" for row in rows) == 9
+    assert {row["criterion_type"] for row in rows} == {"NORMAL_BOUND"}
+    assert {row["unit_type"] for row in rows} == {"PLANT"}
     assert all(row["boundary"] == "REQUIRED_BEFORE_USE" for row in rows)
 
     config = json.loads(CONFIG_TEMPLATE.read_text(encoding="utf-8"))
