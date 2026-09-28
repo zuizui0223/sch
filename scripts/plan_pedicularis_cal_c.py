@@ -563,7 +563,8 @@ def build_plan(
         "claim_ceiling": [
             "prospective_planning_only",
             "normal_bound_rows_use_normal_approximation_to_registered_95pct_CI_gate",
-            "binomial_damage_rows_use_exact_probability_of_Wilson_upper_bound_success",
+            "current_registered_criteria_are_plant_level_normal_bound_planning_approximations",
+            "optional_BINOMIAL_UPPER_rows_if_registered_use_exact_Wilson_upper_bound_success_probability",
             "design_effect_is_explicit_planning_inflation_not_estimated_by_this_script",
             "familywise_target_uses_union_bound_not_independence_assumption",
             "pilot_sd_and_assumed_true_values_are_planning_inputs_not_guarantees",
