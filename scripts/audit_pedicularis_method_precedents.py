@@ -63,6 +63,40 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         for row in rows
         if "supplement" in row["manipulation"].lower()
     )
+    p1_whole_plant_supplementation = sorted(
+        row["precedent_id"]
+        for row in rows
+        if "whole-plant" in row["manipulation"].lower()
+        or "whole plant" in row["manipulation"].lower()
+    )
+    p1_with_exact_treatment_n = sorted(
+        row["precedent_id"]
+        for row in rows
+        if (
+            "P1" in row["target_stage"]
+            and any(token in row["design_or_sample"].lower() for token in (
+                "n=20",
+                "n=12",
+                "20 randomly selected",
+                "10 pedicularis plants",
+                "10 plants",
+            ))
+        )
+    )
+    p1_quantitative_effect_precedents = sorted(
+        row["precedent_id"]
+        for row in rows
+        if (
+            "P1" in row["target_stage"]
+            and any(token in row["key_result"] for token in (
+                "F1,304",
+                "2.1×",
+                "+36%",
+                "0.45±",
+                "0.48±",
+            ))
+        )
+    )
     cal_a = sorted(
         row["precedent_id"]
         for row in rows
@@ -89,6 +123,11 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "p0_method_precedents": p0,
         "p1_method_precedents": p1,
         "p1_supplementation_precedents": p1_supplementation,
+        "p1_whole_plant_supplementation_precedents": p1_whole_plant_supplementation,
+        "p1_with_exact_treatment_sample_sizes": p1_with_exact_treatment_n,
+        "p1_quantitative_effect_precedents": p1_quantitative_effect_precedents,
+        "n_p1_supplementation_precedents": len(p1_supplementation),
+        "n_p1_whole_plant_supplementation_precedents": len(p1_whole_plant_supplementation),
         "cal_a_method_precedents": cal_a,
         "cal_b_method_precedents": cal_b,
         "same_species_precedents": same_species,
@@ -104,6 +143,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "claim_ceiling": [
             "method_feasibility_and_design_precedent_only",
             "congeneric_effects_are_not_P_rex_effects",
+            "whole_plant_and_within_plant_supplementation_are_alternative_design_precedents_not_interchangeable_estimands",
+            "resource_reallocation_bias_must_be_considered_when_selecting_the_P1_unit_of_manipulation",
             "same_species_water_drainage_is_not_independent_G",
             "no_method_precedent_directly_freezes_F0",
         ],
