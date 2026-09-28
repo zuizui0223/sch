@@ -174,6 +174,13 @@ whole-plant P. monbeigiana experiment with an exact treatment effect
 These remain method/effect-scale precedents only: focal P. rex manipulation,
 repeatability, supplementation and independent-G effects remain unmeasured in
 the registered form. Run `python scripts/audit_pedicularis_method_precedents.py`.
+
+A separate congeneric quantitative ledger now contains 19 numerical/design
+rows from four Pedicularis species. It makes the P1 uncertainty concrete:
+published supplementation spans an effectively null response in P. monbeigiana
+to a reported 2.1x seed-set response in another ecological context. These
+values are external CAL-B/C sensitivity priors, not portable P. rex targets.
+Run `python scripts/audit_pedicularis_congeneric_quantitative_priors.py`.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
