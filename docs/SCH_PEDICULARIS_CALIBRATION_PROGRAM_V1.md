@@ -1,0 +1,228 @@
+# SCH Pedicularis calibration programme v1
+
+## Purpose
+
+The Pedicularis causal programme has 40 threshold-freeze gate fields.
+
+Five are already fixed by registered contracts. The remaining 35 are not
+thirty-five separate experiments. They are grouped into three nonconfirmatory
+calibration modules:
+
+```text
+CAL-A  measurement / equivalence / handling calibration     20 gates
+CAL-B  exploratory effect + G timing calibration             7 gates
+CAL-C  prospective power / precision planning                8 gates
+
+registered contract values                                   5 gates
+                                                             --------
+total                                                        40 gates
+```
+
+The calibration programme exists only to support prospective F0 threshold
+freezing. It does not generate a positive P0, P1 or G receipt.
+
+## Order of operations
+
+```text
+registered-contract values
+        |
+        v
+CAL-A measurement/equivalence
+        |
+        v
+CAL-B exploratory intervention/timing
+        |
+        v
+freeze biologically meaningful effect/margin targets
+        |
+        v
+CAL-C prospective power/precision
+        |
+        v
+freeze all P0/P1/G configs for one population + season
+        |
+        v
+confirmatory P0 / P1 / G on rows not used for threshold basis
+        |
+        v
+SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
+```
+
+CAL-C must not be run conceptually before the effect/margin targets it is meant
+to power have been frozen.
+
+## CAL-A — measurement, equivalence and handling
+
+CAL-A supplies basis evidence for 20 gate fields:
+
+- P0 realized-z separation calibration;
+- P0 off-target morphology / water-state equivalence;
+- P0 handling-damage tolerance;
+- P1 selectivity-equivalence margins;
+- P1 handling-damage tolerance;
+- G selectivity-equivalence margins.
+
+The aim is not to set every margin equal to observed pilot noise. CAL-A
+describes measurement repeatability, within-context variation, sham-handling
+variation and exploratory contamination so that a prospective margin can be
+justified.
+
+No CAL-A row may later be reclassified as a confirmatory row.
+
+## CAL-B — exploratory P/G effect and G timing
+
+CAL-B supplies basis evidence for seven gate fields.
+
+P1 exploratory evidence:
+
+```text
+minimum pollen-receipt increase
+minimum initial-seed-set / pollen-limitation relief
+```
+
+G exploratory evidence:
+
+```text
+minimum early-attack reduction
+minimum predation-fraction reduction
+minimum final intact-seed gain
+earliest usable post-anthesis barrier time
+latest usable pre-swelling barrier time
+```
+
+Pilot-observed means are evidence about plausibility, not automatically the
+confirmatory cutoff. The minimum effect must still have a biological rationale
+and be frozen before confirmatory outcomes are read.
+
+The G timing pilot must remain separate from the confirmatory method-qualified
+G receipt.
+
+## CAL-C — prospective sample size / precision
+
+CAL-C covers eight sample-size fields.
+
+It is downstream of CAL-A/CAL-B because a power or precision calculation needs:
+
+```text
+variance / repeatability information
++ a prospectively selected minimum effect or equivalence target
++ the registered clustered / paired design.
+```
+
+CAL-C produces sample-size minima only. It must not revise the selected effect
+or equivalence target merely to make the required sample size smaller.
+
+## Threshold-free pilot summarizer
+
+Before thresholds are frozen, pilot data can be summarized with:
+
+```bash
+python scripts/summarize_pedicularis_calibration_pilots.py \
+  --p0 <p0_exploratory.csv> \
+  --p1 <p1_exploratory.csv> \
+  --g  <g_method_exploratory.csv> \
+  --output <calibration_summary.json>
+```
+
+The script reuses the registered raw-data contracts but **does not invoke the
+confirmatory decision rules**.
+
+Its output status is:
+
+```text
+CALIBRATION_SUMMARY_ONLY_NO_THRESHOLD_DECISION
+```
+
+and it explicitly reports:
+
+```text
+thresholds_selected = false
+confirmatory_receipt_generated = false.
+```
+
+It is therefore safe to use before F0 freezing, provided the pilot rows are
+kept separate from confirmatory rows.
+
+## Cohort separation
+
+Use:
+
+```text
+empirical/architecture/PEDICULARIS_CALIBRATION_COHORT_TEMPLATE_V1.csv
+scripts/validate_pedicularis_cohort_registry.py
+```
+
+Registered roles are:
+
+```text
+CAL_A
+CAL_B_P1
+CAL_B_G
+CONFIRMATORY_P0
+CONFIRMATORY_P1
+CONFIRMATORY_G
+FULL_SURFACE
+```
+
+A flower ID may appear only once across the entire execution registry.
+
+Calibration rows are:
+
+```text
+threshold_basis_eligible = YES
+confirmatory_eligible    = NO
+```
+
+Confirmatory/full-surface rows are the reverse.
+
+Plant-level overlap between calibration and confirmatory phases is reported.
+It does not silently convert calibration rows into confirmatory evidence.
+Where feasible, plant-level disjointness is cleaner; flower-level data reuse is
+prohibited.
+
+## Machine ledgers
+
+Gate-to-basis state:
+
+```text
+empirical/architecture/PEDICULARIS_THRESHOLD_BASIS_LEDGER_V1.csv
+```
+
+Gate-to-calibration-module mapping:
+
+```text
+empirical/architecture/PEDICULARIS_CALIBRATION_MODULE_LEDGER_V1.csv
+```
+
+The module mapping is exhaustive:
+
+```text
+REGISTERED_CONTRACT   5
+CAL_A                20
+CAL_B                 7
+CAL_C                 8
+```
+
+## What calibration may not do
+
+Calibration must not:
+
+- generate `PEDICULARIS_Z_MANIPULATION_VALIDATED`;
+- generate `PEDICULARIS_POLLINATION_WEIGHT_VALIDATED`;
+- generate `PEDICULARIS_PREDATOR_METHOD_VALIDATED`;
+- generate `PEDICULARIS_FULL_SURFACE_READY`;
+- choose a cutoff merely because it makes the pilot pass;
+- reuse the same flower-level outcome as both threshold basis and confirmatory
+  evidence;
+- turn unit-test values into field thresholds.
+
+## Claim ceiling
+
+A completed calibration programme supports only:
+
+```text
+the empirical and design inputs needed to prospectively freeze F0 thresholds.
+```
+
+It does not establish functional conflict, causal compromise, pure-function
+optima, conflict budget L, dimensional release or architecture value.
