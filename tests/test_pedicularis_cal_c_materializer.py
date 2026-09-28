@@ -63,8 +63,8 @@ def test_materializer_fills_only_pilot_sd_and_provenance() -> None:
     rows, receipt = build(_summary(template), template)
 
     assert receipt["n_criteria"] == 25
-    assert receipt["n_continuous_criteria_with_pilot_sd"] == 23
-    assert receipt["n_binomial_criteria_without_sd"] == 2
+    assert receipt["n_continuous_criteria_with_pilot_sd"] == 25
+    assert receipt["n_binomial_criteria_without_sd"] == 0
     assert receipt["boundaries_selected"] == 0
     assert receipt["assumed_true_values_selected"] == 0
     assert receipt["status"] == (
@@ -72,21 +72,11 @@ def test_materializer_fills_only_pilot_sd_and_provenance() -> None:
     )
 
     normal = [row for row in rows if row["criterion_type"] == "NORMAL_BOUND"]
-    assert len(normal) == 23
+    assert len(normal) == 25
     assert all(float(row["pilot_sd"]) == pytest.approx(0.5) for row in normal)
     assert all(row["pilot_sd_source"].endswith(".sd") for row in normal)
 
-    binomial = [
-        row for row in rows
-        if row["criterion_type"] == "BINOMIAL_UPPER"
-    ]
-    assert len(binomial) == 2
-    assert {
-        row["pilot_sd"] for row in binomial
-    } == {"NOT_APPLICABLE"}
-    assert {
-        row["pilot_sd_source"] for row in binomial
-    } == {"NOT_APPLICABLE"}
+    assert all(row["criterion_type"] == "NORMAL_BOUND" for row in rows)
 
     assert all(row["boundary"] == PLACEHOLDER for row in rows)
     assert all(row["assumed_true_value"] == PLACEHOLDER for row in rows)
