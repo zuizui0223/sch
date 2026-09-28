@@ -213,11 +213,14 @@ Run `python scripts/audit_pedicularis_congeneric_quantitative_priors.py`.
 A focal direct-evidence search audit is also frozen. It currently recovers
 natural pollinator dependence, high outcrossing, reward variation, seed-
 predation baselines, a wrong-axis focal antagonist experiment, and congeneric
-method precedents, but **not** the registered focal P1 supplementation effect,
-independent G, same-flower repeatability, or >=5-level P0 manipulation. The
-2013 focal mating-system paper explicitly reports hand versus natural
-pollination, but the accessible primary abstract does not identify the hand
-treatment precisely enough to promote it to P1. Run
+method precedents. A within-genus P. furbishiae experiment now also establishes
+that a Pedicularis lepidopteran seed predator can attack after pollination.
+What remains unresolved is **barrier effectiveness/selectivity and timing
+qualification in focal P. rex**, plus the registered focal P1 supplementation
+effect, same-flower repeatability, and >=5-level P0 manipulation. The 2013
+focal mating-system paper explicitly reports hand versus natural pollination,
+but the accessible primary abstract does not identify the hand treatment
+precisely enough to promote it to P1. Run
 `python scripts/audit_pedicularis_focal_direct_evidence_search.py`.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
