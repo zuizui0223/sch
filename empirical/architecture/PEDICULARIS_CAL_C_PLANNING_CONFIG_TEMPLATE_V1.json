@@ -11,16 +11,23 @@
   "lane_design": {
     "P0": {
       "design_effect": "REQUIRED_BEFORE_USE",
-      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE",
+      "design_effect_basis": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell_basis": "REQUIRED_BEFORE_USE"
     },
     "P1": {
       "design_effect": "REQUIRED_BEFORE_USE",
-      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE",
+      "design_effect_basis": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell_basis": "REQUIRED_BEFORE_USE"
     },
     "G": {
       "design_effect": "REQUIRED_BEFORE_USE",
-      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE"
+      "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE",
+      "design_effect_basis": "REQUIRED_BEFORE_USE",
+      "flowers_per_plant_per_cell_basis": "REQUIRED_BEFORE_USE"
     }
   },
-  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_CAL_A_CAL_B_TARGETS_AND_ASSUMPTIONS_ARE_PROSPECTIVELY_FROZEN"
+  "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_CAL_A_CAL_B_TARGETS_AND_ASSUMPTIONS_ARE_PROSPECTIVELY_FROZEN",
+  "familywise_target_power_basis": "REQUIRED_BEFORE_USE"
 }
