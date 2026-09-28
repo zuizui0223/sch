@@ -190,6 +190,10 @@ ovules / flower        mean 25.96, SD 6.33
                       n=120
 
 capsules / plant       mean 12.51, SD 5.60.
+
+linked-population GLM inputs:
+pollen load             mean 12.28, SD 5.30
+seed predation rate     mean 0.127, SD 0.120.
 ```
 
 Across 12 populations:
@@ -276,7 +280,7 @@ Current recovery result:
 
 ```text
 published source records          5
-published measurement rows       32
+published measurement rows       34
 direct F0 gate values recovered   0.
 ```
 
