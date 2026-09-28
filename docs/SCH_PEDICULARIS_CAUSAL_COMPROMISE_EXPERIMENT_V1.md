@@ -47,6 +47,21 @@ seed-protection-facing optimum shifted toward lower exsertion.
 
 This remains an expectation until causal multi-level manipulation is completed.
 
+## Stage CAL-A/B/C — nonconfirmatory threshold-basis programme
+
+Before confirmatory P0/P1/G outcomes are interpreted, resolve the remaining
+35 F0 fields through:
+
+```text
+CAL-A  measurement / equivalence / handling calibration   20 gates
+CAL-B  exploratory P/G effects + G timing                  7 gates
+CAL-C  prospective power / precision planning              8 gates
+```
+
+Use `docs/SCH_PEDICULARIS_CALIBRATION_PROGRAM_V1.md`. CAL-A/B rows are
+threshold-basis evidence only and must not be reused as confirmatory flower-level
+rows. CAL-C is downstream of the effect/margin targets supported by CAL-A/B.
+
 ## Stage P0 — non-destructive z-manipulation pilot
 
 A congeneric Pedicularis field experiment shortened corolla tubes by bending the tube and fixing it with clear sticky tape rather than cutting tissue. This establishes a manipulation precedent, not validation in `P. rex`.
@@ -326,6 +341,9 @@ shared conflict reality in P. rex:                      RECOVERED
 water-defence causal function / BITA-y precedent:       RECOVERED
 congeneric non-destructive z-manipulation precedent:    RECOVERED
 prospective P0/P1/G threshold freeze (same context):     5/40 CONTRACT-RESOLVED; 35 PENDING
+CAL-A measurement/equivalence calibration:                NOT YET EXECUTED
+CAL-B exploratory P/G effect + G timing calibration:      NOT YET EXECUTED
+CAL-C prospective power/precision planning:               NOT YET EXECUTED
 P. rex multi-level z validation:                        NOT YET EXECUTED
 P. rex pollination-weight validation:                   NOT YET EXECUTED
 independent predator-method V3 validation:               NOT YET EXECUTED
@@ -335,4 +353,4 @@ biological fitness-scale L receipt:                     NOT YET EXECUTED.
 
 ## Bottom line
 
-Pedicularis remains the highest-leverage same-system route because a successful V2 programme can connect SCH conflict identification to BALANCE/BITA without changing species. The immediate operational blocker is now explicit: **freeze the P0/P1/G decision rules prospectively for one population and season before reading confirmatory outcomes.** After that administrative/measurement gate is closed, the decisive biological uncertainty remains whether an independent seed-predator intervention can be qualified while water defence stays fixed. The published water experiment supports the downstream y axis but does not substitute for that G gate.
+Pedicularis remains the highest-leverage same-system route because a successful V2 programme can connect SCH conflict identification to BALANCE/BITA without changing species. The immediate operational blocker is now explicit: **complete CAL-A, CAL-B and CAL-C, then freeze the P0/P1/G decision rules prospectively for one population and season before reading confirmatory outcomes.** After that gate is closed, the decisive biological uncertainty remains whether an independent seed-predator intervention can be qualified while water defence stays fixed. The published water experiment supports the downstream y axis but does not substitute for that G gate.
