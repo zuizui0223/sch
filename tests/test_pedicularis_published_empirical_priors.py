@@ -15,14 +15,15 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_seven_sources_and_63_measurements() -> None:
+def test_published_empirical_recovery_has_eight_sources_and_66_measurements() -> None:
     result = build()
-    assert result["n_published_sources"] == 7
-    assert result["n_published_measurement_rows"] == 63
+    assert result["n_published_sources"] == 8
+    assert result["n_published_measurement_rows"] == 66
     assert result["measurement_rows_by_source"] == {
         "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
         "PRX2013_ALLEE": 8,
+        "PRX2013_OUTCROSSING": 3,
         "PRX2015_WATER": 15,
         "PRX2016_NECTAR_DYNAMICS": 28,
         "PRX2016_SELECTION": 10,
@@ -143,3 +144,37 @@ def test_focal_p_rex_pollen_ovule_ratio_is_external_context_not_p1_effect() -> N
     assert po["uncertainty_type"] == "SD"
     assert po["uncertainty_value"] == "4887.18"
     assert po["direct_freeze_eligible"] == "NO"
+
+
+def test_focal_p_rex_outcrossing_is_high_in_both_density_contexts() -> None:
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+    sparse = priors["PRX2013_OUTCROSS_SPARSE"]
+    dense = priors["PRX2013_OUTCROSS_DENSE"]
+
+    assert sparse["estimate"] == "1.151"
+    assert dense["estimate"] == "0.924"
+    assert sparse["uncertainty_value"] == "0.108"
+    assert dense["uncertainty_value"] == "0.042"
+    assert sparse["uncertainty_type"] == (
+        "SECONDARY_REPORTED_UNCERTAINTY_TYPE_UNVERIFIED"
+    )
+    assert dense["uncertainty_type"] == (
+        "SECONDARY_REPORTED_UNCERTAINTY_TYPE_UNVERIFIED"
+    )
+    assert sparse["direct_freeze_eligible"] == "NO"
+    assert dense["direct_freeze_eligible"] == "NO"
+
+
+def test_focal_outcrossing_source_does_not_become_supplementation_effect() -> None:
+    datasets = {
+        row["source_id"]: row
+        for row in _rows(DEFAULT_DATASETS)
+    }
+    source = datasets["PRX2013_OUTCROSSING"]
+    assert source["direct_F0_freeze_eligible"] == "NO"
+    assert "NO_MANIPULATED_REGISTERED_P1_OR_G" in (
+        source["current_independent_G_evidence"]
+    )
