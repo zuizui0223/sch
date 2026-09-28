@@ -167,7 +167,7 @@ def _validate_cal_c(plan: dict) -> tuple[dict[str, int], dict[str, str], tuple[s
     gate_lane = {
         "stage_p0.min_plants": "P0",
         "stage_p0.min_flowers_per_level": "P0",
-        "pollination_weight.min_paired_plants": "P1",
+        "pollination_weight.min_plant_units_per_treatment": "P1",
         "pollination_weight.min_flowers_per_treatment": "P1",
         "method_gate.min_paired_plants": "G",
         "method_gate.min_flowers_per_treatment": "G",
