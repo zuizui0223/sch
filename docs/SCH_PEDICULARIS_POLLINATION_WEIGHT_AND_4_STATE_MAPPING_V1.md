@@ -34,9 +34,42 @@ control flower. Seed production per capsule was the outcome, with
 PL_X=(F_IX-F_IN)/F_IN.
 
 A separate 2017 JSE study (doi:10.1111/jse.12240) showed that the outcross
-supplementation effect itself varied among altitude populations. Together,
-these studies justify the **treatment family and paired-within-plant design**,
-not a borrowed P. rex effect size or sample-size threshold.
+supplementation effect itself varied among altitude populations.
+
+Two P. monbeigiana studies add an important design constraint. A 2005
+experiment included open control (n=20), bagged, hand-geitonogamous and
+supplemental-outcross treatments (n=12 each); supplementation did not exceed
+the open control in seed set. In 2011, a whole-plant supplementation design
+used 10 supplemented and 10 control plants per plot, applying donor-mixed
+outcross pollen every two days through anthesis. The whole-plant treatment had
+a strong seed-set effect (F1,304=113.27, P<=0.001) but the magnitude varied
+strongly among plot contexts (2.1x, 1.1x, +36%, +35% relative to controls).
+
+The 2011 design explicitly used whole-plant supplementation to reduce
+within-plant resource-reallocation bias. The literature therefore justifies
+the **supplementation treatment family**, but not one universally preferred
+experimental unit.
+
+Before F0, the P1 basis document must prospectively choose between:
+
+```text
+WITHIN_PLANT_PAIRED_FLOWERS
+or
+WHOLE_PLANT_SUPPLEMENTATION
+```
+
+and justify the choice with respect to:
+
+```text
+individual-level blocking
+resource-reallocation bias
+donor-pollen demand
+ability to measure early predator contamination
+and compatibility with the final reproductive endpoint.
+```
+
+No congeneric effect size or sample-size threshold is borrowed as a P. rex
+effect.
 
 ## Pollination-weight states
 

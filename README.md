@@ -167,10 +167,13 @@ remain scenario priors, not observed CAL-C pilot SDs.
 Method recovery also shows that the P0/P1 treatment families do not need to be
 invented from scratch. Pedicularis field studies already demonstrate
 non-destructive corolla shortening by bending + clear tape, flower-level
-blocking/bagging controls, and self/outcross pollen supplementation. These are
-method-feasibility precedents only: focal P. rex manipulation, repeatability,
-supplementation and independent-G effects remain unmeasured in the registered
-form. Run `python scripts/audit_pedicularis_method_precedents.py`.
+blocking/bagging controls, and self/outcross pollen supplementation. The P1
+recovery now includes five supplementation precedents, including a
+whole-plant P. monbeigiana experiment with an exact treatment effect
+(F1,304=113.27 for seed set) and explicit resource-reallocation rationale.
+These remain method/effect-scale precedents only: focal P. rex manipulation,
+repeatability, supplementation and independent-G effects remain unmeasured in
+the registered form. Run `python scripts/audit_pedicularis_method_precedents.py`.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
