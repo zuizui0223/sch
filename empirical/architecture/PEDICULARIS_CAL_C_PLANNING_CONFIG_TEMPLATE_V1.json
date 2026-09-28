@@ -19,7 +19,9 @@
       "design_effect": "REQUIRED_BEFORE_USE",
       "flowers_per_plant_per_cell": "REQUIRED_BEFORE_USE",
       "design_effect_basis": "REQUIRED_BEFORE_USE",
-      "flowers_per_plant_per_cell_basis": "REQUIRED_BEFORE_USE"
+      "flowers_per_plant_per_cell_basis": "REQUIRED_BEFORE_USE",
+      "design_unit": "REQUIRED_BEFORE_USE",
+      "design_unit_basis": "REQUIRED_BEFORE_USE"
     },
     "G": {
       "design_effect": "REQUIRED_BEFORE_USE",
