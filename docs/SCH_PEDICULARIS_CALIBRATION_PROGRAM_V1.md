@@ -64,6 +64,25 @@ docs/SCH_PEDICULARIS_CAL_A_REPEATABILITY_V1.md
 This separates measurement noise from flower-to-flower biological variation
 before any equivalence margin or minimum realized-z separation is frozen.
 
+CAL-A supplies basis evidence for 20 gate fields.
+
+Machine target-freeze implementation:
+
+```text
+empirical/architecture/PEDICULARIS_CAL_A_TARGET_TEMPLATE_V1.csv
+scripts/materialize_pedicularis_cal_a_observed.py
+scripts/freeze_pedicularis_cal_a_targets.py
+scripts/apply_pedicularis_cal_a_to_cal_c.py
+docs/SCH_PEDICULARIS_CAL_A_TARGET_FREEZE_V1.md
+```
+
+The materializer puts pilot descriptors and, for 13 matched metrics,
+same-flower measurement-noise q95 in the same decision table while leaving the
+target unresolved. A positive CAL-A target must exceed its measurement-noise
+q95 when a matched repeatability metric exists. CAL-A and CAL-B bridges then
+populate all 25 CAL-C boundaries while keeping all 25 assumed true values
+unresolved.
+
 CAL-A supplies basis evidence for 20 gate fields:
 
 - P0 realized-z separation calibration;
