@@ -15,8 +15,6 @@ from scripts.build_pedicularis_published_cal_c_sd_scenarios import (
 ROOT = Path(__file__).resolve().parents[1]
 READOUT = ROOT / "empirical" / "architecture" / "PEDICULARIS_PUBLISHED_CAL_C_SD_SCENARIOS_V1.json"
 
-)
-
 
 def test_paired_difference_sd_formula_known_cases() -> None:
     assert paired_difference_sd(5.30, 0.50) == pytest.approx(5.30)
