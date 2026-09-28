@@ -152,7 +152,7 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 
-Published-data recovery now tracks 7 Pedicularis sources and 63 quantitative
+Published-data recovery now tracks 8 Pedicularis sources and 66 quantitative
 measurement/design rows. The strongest external resources are the public Dryad
 dataset `10.5061/dryad.6cv06` (`raw data.xlsx`) and the 2016 `mcw097`
 supplements. These historical data can inform variance, effect scale and field
@@ -170,6 +170,12 @@ volume is 1.13±0.68 uL SD and sugar concentration 33±5% SD, with individual
 table rows spanning 0.23–2.50 uL and 26–41% sugar. A separate 2007 study reports
 a P. rex subsp. rex pollen–ovule ratio of 11222.04±4887.18 SD. These are focal
 natural-state measurements, not supplementation effects.
+
+A focal P. rex mating-system study adds another strong natural-state constraint:
+multilocus outcrossing was high in both sparse and dense patches
+(`t_m=1.151` and `0.924`, respectively). Secondary citation reproduces
+uncertainties of ±0.108 and ±0.042, but their SD/SE interpretation remains
+unverified in the primary full text, so they are not used as CAL-C variance.
 
 Method recovery also shows that the P0/P1 treatment families do not need to be
 invented from scratch. Pedicularis field studies already demonstrate
