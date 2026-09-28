@@ -19,6 +19,13 @@ through sepals or corolla tube.
 
 `P. rex` reproduction depends strongly on bumblebee pollination, so any method that blocks the pollinator-entry zone during the relevant open-flower period is invalid for SCH.
 
+A within-genus timing precedent now strengthens the sequence assumption. In
+`P. furbishiae`, immature scapes were enclosed by mesh and the cages were
+removed before flowers opened; later lepidopteran seed predation was unchanged,
+which the authors interpreted as attack occurring after pollination. This
+supports a Pedicularis post-pollination attack window, but does **not** show
+that leaving a barrier in place after pollination is effective or selective.
+
 ## Candidate methods
 
 ### Method A — post-pollination lower-flower / fruit sleeve
@@ -85,7 +92,7 @@ barrier removal time if removed
 exclusion_method identifier.
 ```
 
-Do not invent the final pollination-window duration in advance from unrelated species. Estimate it in the pilot and freeze it before confirmatory Stage G.
+Do not infer an hour-scale window from the congeneric timing precedent. It supports the ordering of events only. Estimate the earliest post-pollination application time and latest effective pre-swelling application time in focal P. rex, then freeze those bounds before confirmatory Stage G.
 
 ## Pollination checks
 
@@ -191,6 +198,7 @@ one method passes V3
 -> only then unlock the full z x P x G surface.
 
 no method passes V3
+-> the failure is specifically barrier effectiveness/selectivity or focal timing qualification, not generic post-pollination timing plausibility
 -> Pedicularis is demoted as first-choice causal SCH system
 -> move to Dalechampia / Castilleja rather than reusing water as G.
 ```
