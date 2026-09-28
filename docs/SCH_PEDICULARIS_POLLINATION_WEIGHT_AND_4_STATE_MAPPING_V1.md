@@ -23,6 +23,21 @@ The P manipulation therefore changes **dependence on pollinator-mediated pollen 
 
 The seed-predator natural-history window overlaps open flowering: eggs are laid on ovaries after flowers open and before ovaries swell. This makes temporal pollinator exclusion a potentially contaminated default intervention.
 
+The supplementation method itself has strong congeneric precedent. Yang, Sun &
+Guo (2005; doi:10.1111/j.1095-8339.2005.00363.x) applied supplemental self and
+outcross pollen in natural populations of P. siphonantha and P. longiflora.
+A later P. siphonantha field experiment (Dai et al. 2017,
+doi:10.1007/s11629-017-4481-1) used a particularly relevant paired design:
+20 randomly selected individuals per population, three marked flowers per
+individual, with one self-supplemented, one outcross-supplemented and one open
+control flower. Seed production per capsule was the outcome, with
+PL_X=(F_IX-F_IN)/F_IN.
+
+A separate 2017 JSE study (doi:10.1111/jse.12240) showed that the outcross
+supplementation effect itself varied among altitude populations. Together,
+these studies justify the **treatment family and paired-within-plant design**,
+not a borrowed P. rex effect size or sample-size threshold.
+
 ## Pollination-weight states
 
 ### P1 — natural pollination weight active
