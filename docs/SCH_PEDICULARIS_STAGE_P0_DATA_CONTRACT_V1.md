@@ -31,9 +31,21 @@ that differs from the data package.
 
 ## Biological basis
 
-A congeneric Pedicularis field experiment shortened corolla tubes by bending them and fixing them with clear sticky tape rather than cutting tissue. This establishes a manipulation precedent, not validation in `P. rex`.
+A congeneric Pedicularis field experiment shortened corolla tubes by bending
+them and fixing them with clear sticky tape rather than cutting tissue (Huang,
+Wang & Sun 2016, doi:10.1111/jipb.12460). In P. tricolor, the experiment
+observed 72 shortened and 72 unmanipulated flowers across 12 flowering
+individuals. Bumblebee visits per census were 2.70 +/- 0.34 SE for shortened
+flowers versus 2.61 +/- 0.37 for controls (P=0.857), and seed set was
+0.45 +/- 0.022 versus 0.48 +/- 0.018 (P=0.262).
 
-The Stage-P0 experiment therefore tests an adapted bending / fixation design in the focal species.
+This is unusually useful as a manipulation/handling precedent because the
+physical treatment itself did not produce a detected visitor or seed-set
+penalty in that congener. It still does **not** validate the P. rex realized-z
+coordinate, five-level ordering, off-target geometry or water-defence gates.
+
+The Stage-P0 experiment therefore tests an adapted bending / fixation design in
+the focal species rather than inventing a new manipulation family.
 
 ## Blocking and sham design
 
@@ -181,7 +193,7 @@ If P0 passes:
 
 ```text
 validate pollination-weight intervention
-replicate selective bract-water antagonist-weight manipulation
+validate independent seed-predator exposure/exclusion with water-y fixed
 -> run multi-level z x P x G surface
 -> analyze with scripts/analyze_sch_compromise_surface.py
 -> optionally test component-optimum stability with scripts/identify_sch_pure_function_optima.py.
