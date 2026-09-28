@@ -36,6 +36,17 @@ def test_committed_repository_frontier_stops_before_data_collection() -> None:
     assert result["n_lanes_frozen"] == 0
     assert result["all_three_lane_configs_frozen"] is False
     assert result["current_blocker"] == "PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED"
+    assert result["threshold_gate_module_counts"] == {
+        "CAL_A": 20,
+        "CAL_B": 7,
+        "CAL_C": 8,
+        "REGISTERED_CONTRACT": 5,
+    }
+    assert result["unresolved_calibration_gate_count"] == 35
+    assert result["calibration_program_sequence"] == ["CAL_A", "CAL_B", "CAL_C"]
+    assert "CAL-A" in result["next_action"]
+    assert "CAL-B" in result["next_action"]
+    assert "CAL-C" in result["next_action"]
     assert "before reading confirmatory outcomes" in result["next_action"]
 
 
