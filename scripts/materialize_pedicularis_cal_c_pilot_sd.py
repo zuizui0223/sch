@@ -114,23 +114,30 @@ def build(
                 row["lane"],
                 row["metric_source"],
             )
-            sd = metric.get("sd")
+            sd_field = (
+                "planning_sd"
+                if metric.get("planning_sd") is not None
+                else "sd"
+            )
+            sd = metric.get(sd_field)
             if sd is None:
                 raise ValueError(
-                    f"pilot SD is unavailable for {row['criterion_id']}"
+                    f"pilot planning SD is unavailable for {row['criterion_id']}"
                 )
             try:
                 sd_value = float(sd)
             except (TypeError, ValueError) as exc:
                 raise ValueError(
-                    f"pilot SD is not numeric for {row['criterion_id']}"
+                    f"pilot planning SD is not numeric for {row['criterion_id']}"
                 ) from exc
             if sd_value <= 0:
                 raise ValueError(
-                    f"pilot SD must be > 0 for {row['criterion_id']}"
+                    f"pilot planning SD must be > 0 for {row['criterion_id']}"
                 )
             row["pilot_sd"] = repr(sd_value)
-            row["pilot_sd_source"] = source_path + ".sd"
+            row["pilot_sd_source"] = (
+                source_path + "." + sd_field
+            )
             n_sd += 1
         elif criterion_type == "BINOMIAL_UPPER":
             row["pilot_sd"] = NOT_APPLICABLE
@@ -157,6 +164,16 @@ def build(
         "n_criteria": len(out),
         "n_continuous_criteria_with_pilot_sd": n_sd,
         "n_binomial_criteria_without_sd": n_binomial,
+        "p1_design_unit": (
+            calibration_summary.get("pilot_summaries", {})
+            .get("P1", {})
+            .get("design_unit")
+        ),
+        "p1_estimand_family": (
+            calibration_summary.get("pilot_summaries", {})
+            .get("P1", {})
+            .get("estimand_family")
+        ),
         "boundaries_selected": 0,
         "assumed_true_values_selected": 0,
         "status": "CAL_C_PILOT_SD_MATERIALIZED_TARGETS_STILL_UNFROZEN",
