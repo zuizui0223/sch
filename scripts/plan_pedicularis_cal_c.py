@@ -8,6 +8,8 @@ from collections import Counter
 from pathlib import Path
 from statistics import NormalDist
 
+from scripts.freeze_pedicularis_p1_design import DESIGNS as P1_DESIGNS
+
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
 NOT_APPLICABLE = "NOT_APPLICABLE"
@@ -172,6 +174,26 @@ def _validate_planning_config(config: dict) -> dict:
             "flowers_per_plant_per_cell": flowers,
             "flowers_per_plant_per_cell_basis": flowers_basis,
         }
+        if lane == "P1":
+            design_unit = design.get("design_unit")
+            design_unit_basis = design.get("design_unit_basis")
+            if design_unit not in P1_DESIGNS:
+                raise ValueError(
+                    "lane_design.P1.design_unit must be "
+                    "WITHIN_PLANT_PAIRED_FLOWERS or WHOLE_PLANT_RANDOMIZED"
+                )
+            if (
+                not isinstance(design_unit_basis, str)
+                or not design_unit_basis.strip()
+                or design_unit_basis == PLACEHOLDER
+            ):
+                raise ValueError(
+                    "lane_design.P1.design_unit_basis is not prospectively specified"
+                )
+            normalized_design[lane]["design_unit"] = design_unit
+            normalized_design[lane]["design_unit_basis"] = (
+                design_unit_basis.strip()
+            )
 
     return {
         "confidence_level": confidence,
@@ -546,6 +568,13 @@ def build_plan(
             "required_flowers_per_cell": flowers_per_cell,
             "driving_criteria": driving,
         }
+        if lane == "P1":
+            lane_results[lane]["design_unit"] = design[
+                "design_unit"
+            ]
+            lane_results[lane]["design_unit_basis"] = design[
+                "design_unit_basis"
+            ]
         all_criterion_rows.extend(planned)
 
     p0 = lane_results["P0"]
@@ -588,6 +617,8 @@ def build_plan(
         "familywise_method": (
             "union_bound_failure_allocation_no_independence_assumption"
         ),
+        "p1_design_unit": lane_results["P1"]["design_unit"],
+        "p1_design_unit_basis": lane_results["P1"]["design_unit_basis"],
         "lane_plans": lane_results,
         "criterion_plans": sorted(
             all_criterion_rows,
