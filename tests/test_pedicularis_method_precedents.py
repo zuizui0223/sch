@@ -1,10 +1,10 @@
 from scripts.audit_pedicularis_method_precedents import build
 
 
-def test_method_precedent_ledger_has_eight_bounded_precedents() -> None:
+def test_method_precedent_ledger_has_nine_bounded_precedents() -> None:
     result = build()
-    assert result["n_method_precedents"] == 8
-    assert result["n_unique_dois"] == 8
+    assert result["n_method_precedents"] == 9
+    assert result["n_unique_dois"] == 9
     assert result["n_direct_f0_values"] == 0
     assert result["status"] == (
         "PEDICULARIS_METHOD_PRECEDENTS_RECOVERED_FOCAL_VALIDATION_STILL_REQUIRED"
@@ -68,3 +68,14 @@ def test_monbeigiana_2005_has_exact_treatment_sample_sizes() -> None:
     assert "PEDMETH_P1_MONBEIGIANA2005" in result[
         "p1_with_exact_treatment_sample_sizes"
     ]
+
+
+def test_g_has_post_pollination_timing_negative_control_precedent() -> None:
+    result = build()
+    assert "PEDMETH_G_FURBISHIAE1986" in result["g_method_precedents"]
+    assert result["g_timing_negative_controls"] == [
+        "PEDMETH_G_FURBISHIAE1986"
+    ]
+    assert "preflowering_mesh_negative_control_is_not_successful_seed_predator_exclusion" in (
+        result["claim_ceiling"]
+    )
