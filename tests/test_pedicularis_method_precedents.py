@@ -19,10 +19,11 @@ def test_p0_has_direct_congeneric_manipulation_precedent() -> None:
 
 def test_p1_has_two_independent_congeneric_supplementation_precedents() -> None:
     result = build()
-    assert set(result["p1_method_precedents"]) == {
+    assert set(result["p1_supplementation_precedents"]) == {
         "PEDMETH_P1_DAI2017",
         "PEDMETH_P1_YANG2005",
     }
+    assert "PEDMETH_HANDLING_HUANG2013" in result["p1_method_precedents"]
 
 
 def test_same_species_water_experiment_is_not_promoted_to_independent_g() -> None:
