@@ -260,6 +260,9 @@ def _p1_plant_metrics(rows: list[dict[str, str]]) -> list[dict[str, float | str]
                 m(supplemented, lambda r: p1._num(r, "water_depth"))
                 - m(natural, lambda r: p1._num(r, "water_depth"))
             ),
+            "maximum_mechanical_damage_rate": max(
+                sup_damage, nat_damage
+            ),
             "mechanical_damage_abs_difference": abs(sup_damage - nat_damage),
         })
     return out
@@ -279,6 +282,7 @@ def _summarize_p1(path: Path) -> tuple[dict, tuple[str, str]]:
         "bract_height_relative_change",
         "opening_width_relative_change",
         "water_depth_abs_difference",
+        "maximum_mechanical_damage_rate",
         "mechanical_damage_abs_difference",
     ]
     return {
