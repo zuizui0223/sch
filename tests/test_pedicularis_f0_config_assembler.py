@@ -98,6 +98,13 @@ def _cal_c_plan(
             "flowers_per_plant_per_cell": 2 if lane != "P0" else 5,
             "flowers_per_plant_per_cell_basis": "UNIT_TEST_FLOWER_COUNT_BASIS",
         }
+        if lane == "P1":
+            lane_plans[lane]["design_unit"] = (
+                "WITHIN_PLANT_PAIRED_FLOWERS"
+            )
+            lane_plans[lane]["design_unit_basis"] = (
+                "UNIT_TEST_P1_DESIGN_BASIS"
+            )
 
     return {
         "analysis": "pedicularis_cal_c_sample_size_plan_v1",
@@ -110,6 +117,8 @@ def _cal_c_plan(
         },
         "familywise_target_power": 0.80,
         "familywise_target_power_basis": "UNIT_TEST_FAMILYWISE_POWER_BASIS",
+        "p1_design_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+        "p1_design_unit_basis": "UNIT_TEST_P1_DESIGN_BASIS",
         "lane_plans": lane_plans,
         "sample_size_gate_values": {
             "stage_p0.min_plants": 24,
@@ -122,6 +131,42 @@ def _cal_c_plan(
             "predator_weight.min_flowers_per_treatment": 72,
         },
         "status": "PEDICULARIS_CAL_C_SAMPLE_SIZE_PLAN_READY",
+    }
+
+
+def _p1_design_receipt(
+    population: str = "P_REX_TEST",
+    season: str = "S1",
+    design_unit: str = "WITHIN_PLANT_PAIRED_FLOWERS",
+) -> dict:
+    paired = design_unit == "WITHIN_PLANT_PAIRED_FLOWERS"
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_P1_DESIGN_FREEZE_V1",
+        "status": "PEDICULARIS_P1_DESIGN_PROSPECTIVELY_FROZEN",
+        "population_id": population,
+        "season_id": season,
+        "design_unit": design_unit,
+        "treatment_assignment": (
+            "PAIRED_WITHIN_PLANT"
+            if paired
+            else "RANDOMIZED_BETWEEN_PLANTS"
+        ),
+        "resource_reallocation_strategy": (
+            "paired flowers retain individual blocking while acknowledging "
+            "within-plant resource reallocation"
+            if paired
+            else "whole-plant supplementation treats the whole flowering plant "
+            "to reduce within-plant resource-reallocation bias"
+        ),
+        "donor_protocol": "UNIT_TEST_DONOR_PROTOCOL",
+        "randomization_or_matching_protocol": (
+            "paired within-plant treatment assignment"
+            if paired
+            else "randomized between-plant treatment assignment"
+        ),
+        "frozen_before_confirmatory_data": True,
+        "frozen_at_utc": "2026-09-28T00:00:00Z",
+        "basis_document": "UNIT_TEST_P1_DESIGN_BASIS",
     }
 
 
@@ -152,6 +197,7 @@ def test_f0_assembler_closes_exactly_40_gate_fields() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        p1_design_receipt=_p1_design_receipt(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -166,6 +212,10 @@ def test_f0_assembler_closes_exactly_40_gate_fields() -> None:
     }
     assert receipt["lane_gate_counts"] == {"P0": 11, "P1": 10, "G": 19}
     assert len(receipt["gate_sources"]) == 40
+    assert receipt["p1_design_unit"] == "WITHIN_PLANT_PAIRED_FLOWERS"
+    assert outputs["P1"]["pollination_design"]["design_unit"] == (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
 
     for lane in ("P0", "P1", "G"):
         freeze = validate_prospective_freeze(outputs[lane], lane)
@@ -183,6 +233,7 @@ def test_registered_contract_values_are_not_overwritten_by_calibration() -> None
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        p1_design_receipt=_p1_design_receipt(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -208,6 +259,7 @@ def test_cal_a_cal_b_and_cal_c_values_land_in_correct_lane_configs() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        p1_design_receipt=_p1_design_receipt(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -218,7 +270,7 @@ def test_cal_a_cal_b_and_cal_c_values_land_in_correct_lane_configs() -> None:
     assert outputs["G"]["method_gate"]["max_hours_after_anthesis_before_barrier"] == pytest.approx(24.0)
 
     assert outputs["P0"]["stage_p0"]["min_plants"] == 24
-    assert outputs["P1"]["pollination_weight"]["min_paired_plants"] == 30
+    assert outputs["P1"]["pollination_weight"]["min_plant_units_per_treatment"] == 30
     assert outputs["G"]["method_gate"]["min_paired_plants"] == 36
     assert outputs["G"]["predator_weight"]["min_paired_plants"] == 36
 
@@ -228,6 +280,7 @@ def test_every_threshold_basis_records_its_source_layer() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        p1_design_receipt=_p1_design_receipt(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -250,6 +303,7 @@ def test_context_mismatch_between_sources_fails_closed() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(season="S2"),
             cal_c_plan=_cal_c_plan(),
+            p1_design_receipt=_p1_design_receipt(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -268,6 +322,7 @@ def test_missing_cal_a_gate_fails_40_gate_coverage() -> None:
             cal_a_receipt=receipt,
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=_cal_c_plan(),
+            p1_design_receipt=_p1_design_receipt(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -281,6 +336,7 @@ def test_cal_c_must_supply_exactly_eight_sample_size_gates() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=plan,
+            p1_design_receipt=_p1_design_receipt(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -294,6 +350,45 @@ def test_assembly_freeze_timestamp_must_be_timezone_aware() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=_cal_c_plan(),
+            p1_design_receipt=_p1_design_receipt(),
             assembly_config=config,
             templates=_templates(),
         )
+
+
+def test_f0_rejects_cal_c_and_p1_design_unit_mismatch() -> None:
+    with pytest.raises(ValueError, match="design_unit does not match"):
+        assemble(
+            cal_a_receipt=_cal_a_receipt(),
+            cal_b_receipt=_cal_b_receipt(),
+            cal_c_plan=_cal_c_plan(),
+            p1_design_receipt=_p1_design_receipt(
+                design_unit="WHOLE_PLANT_RANDOMIZED"
+            ),
+            assembly_config=_assembly_config(),
+            templates=_templates(),
+        )
+
+
+def test_f0_accepts_whole_plant_design_when_cal_c_matches() -> None:
+    plan = _cal_c_plan()
+    plan["p1_design_unit"] = "WHOLE_PLANT_RANDOMIZED"
+    plan["lane_plans"]["P1"]["design_unit"] = (
+        "WHOLE_PLANT_RANDOMIZED"
+    )
+
+    outputs, receipt = assemble(
+        cal_a_receipt=_cal_a_receipt(),
+        cal_b_receipt=_cal_b_receipt(),
+        cal_c_plan=plan,
+        p1_design_receipt=_p1_design_receipt(
+            design_unit="WHOLE_PLANT_RANDOMIZED"
+        ),
+        assembly_config=_assembly_config(),
+        templates=_templates(),
+    )
+
+    assert receipt["p1_design_unit"] == "WHOLE_PLANT_RANDOMIZED"
+    assert outputs["P1"]["pollination_design"]["design_unit"] == (
+        "WHOLE_PLANT_RANDOMIZED"
+    )
