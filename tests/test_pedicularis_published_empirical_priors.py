@@ -240,3 +240,13 @@ def test_five_year_network_is_a_raw_recovery_target_not_a_p1_effect() -> None:
     assert membership["estimate"] == "Pere"
     assert "does not provide interaction frequency" in membership["notes"]
     assert membership["direct_freeze_eligible"] == "NO"
+
+
+def test_audit_exposes_five_year_network_as_long_term_p_state_recovery() -> None:
+    result = build()
+    target = result["long_term_p_state_raw_recovery"]
+    assert target["source_id"] == "PRX2024_BUMBLEBEE_NETWORK"
+    assert target["dataset_doi"] == "10.6084/m9.figshare.25139777.v1"
+    assert target["study_span"] == "2018-2022"
+    assert target["focal_species_code"] == "Pere"
+    assert "not retrievable" in target["current_limitation"]
