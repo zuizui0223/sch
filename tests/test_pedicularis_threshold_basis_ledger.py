@@ -87,4 +87,10 @@ def test_g_timing_bounds_remain_explicitly_pilot_dependent() -> None:
         row = rows[("G", path)]
         assert row["basis_status"] == "NEEDS_METHOD_PILOT"
         assert row["registered_value"] == ""
-        assert "separate method-development pilot" in row["resolution_action"]
+        assert row["basis_route"] == (
+            "GENUS_TIMING_PRECEDENT_PLUS_FOCAL_METHOD_PILOT"
+        )
+        assert "METHOD_PRECEDENTS" in row["basis_source"]
+        assert "focal P. rex method-development pilot" in row[
+            "resolution_action"
+        ]
