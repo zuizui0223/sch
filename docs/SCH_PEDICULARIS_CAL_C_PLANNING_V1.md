@@ -88,12 +88,20 @@ confirmatory data are read:
 
 ```text
 familywise_target_power
+familywise_target_power_basis
+
 lane-specific design_effect
-flowers_per_plant_per_cell
+lane-specific design_effect_basis
+
+lane-specific flowers_per_plant_per_cell
+lane-specific flowers_per_plant_per_cell_basis
+
 population_id
 season_id
 basis_document.
 ```
+
+A numeric power/design value without its corresponding basis note is rejected.
 
 The planning provenance status is:
 
