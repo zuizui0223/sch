@@ -172,6 +172,12 @@ pilot SD provenance can be materialized separately from biological targets,
 then a familywise P0/P1/G plan can generate the eight sample-size gates once
 CAL-A/B targets and planning assumptions are prospectively frozen.
 
+F0 assembly infrastructure is also implemented. A positive CAL-A receipt,
+positive CAL-B receipt and positive CAL-C plan are combined with the five
+registered contract values as an exact 5 + 20 + 7 + 8 = 40 source partition;
+all three output configs are revalidated by the shared prospective-freeze
+validator before confirmatory collection is unlocked.
+
 Use `scripts/summarize_pedicularis_calibration_pilots.py` for threshold-free
 pilot summaries and `scripts/validate_pedicularis_cohort_registry.py` to keep
 calibration flowers separate from confirmatory/full-surface rows.

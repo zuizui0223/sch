@@ -266,6 +266,22 @@ CAL_B                 7
 CAL_C                 8
 ```
 
+## F0 handoff
+
+After CAL-A, CAL-B and CAL-C are positive, do not manually construct the three
+confirmatory configs. Use:
+
+```text
+empirical/architecture/PEDICULARIS_F0_ASSEMBLY_CONFIG_TEMPLATE_V1.json
+scripts/assemble_pedicularis_f0_configs.py
+docs/SCH_PEDICULARIS_F0_CONFIG_ASSEMBLY_V1.md
+```
+
+The assembler imports five registered contract values, 20 CAL-A values, seven
+CAL-B values and eight CAL-C sample-size values, checks for overlap/missing
+fields, records source provenance for every gate, and reruns the shared freeze
+validator.
+
 ## What calibration may not do
 
 Calibration must not:

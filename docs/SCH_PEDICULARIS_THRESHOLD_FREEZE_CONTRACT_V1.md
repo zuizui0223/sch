@@ -129,6 +129,32 @@ CAL-A/B pilot rows are descriptive threshold-basis evidence only. They are not
 confirmatory rows and may be summarized before F0 with
 `scripts/summarize_pedicularis_calibration_pilots.py`.
 
+## Final F0 assembly
+
+Once positive CAL-A and CAL-B target receipts and a positive CAL-C plan exist,
+assemble the three field configs with:
+
+```text
+scripts/assemble_pedicularis_f0_configs.py
+docs/SCH_PEDICULARIS_F0_CONFIG_ASSEMBLY_V1.md
+```
+
+The assembler requires an exact nonoverlapping source partition:
+
+```text
+REGISTERED_CONTRACT   5
+CAL_A                20
+CAL_B                 7
+CAL_C                 8
+total                 40
+```
+
+and then reruns the shared freeze validator on P0, P1 and G.
+
+A positive F0 assembly is therefore the machine transition from calibration
+and planning to confirmatory data collection. It remains a decision-rule
+receipt, not an empirical P0/P1/G result.
+
 ## Machine enforcement
 
 Shared validation is implemented in:
