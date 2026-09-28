@@ -194,6 +194,26 @@ def _plant_treatment_sets(
     return dict(by_plant)
 
 
+def _infer_design_unit(rows: list[dict[str, str]]) -> str:
+    treatment_sets = list(_plant_treatment_sets(rows).values())
+    if treatment_sets and all(
+        treatments == set(TREATMENTS)
+        for treatments in treatment_sets
+    ):
+        return PAIRED
+    if treatment_sets and all(
+        len(treatments) == 1
+        for treatments in treatment_sets
+    ):
+        observed = set().union(*treatment_sets)
+        if observed == set(TREATMENTS):
+            return WHOLE
+    raise ValueError(
+        "P1 calibration rows are neither a complete within-plant paired "
+        "design nor a complete whole-plant between-arm design"
+    )
+
+
 def _paired_plants(rows: list[dict[str, str]]) -> list[str]:
     return sorted(
         plant
