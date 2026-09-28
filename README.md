@@ -178,9 +178,11 @@ registered contract values as an exact 5 + 20 + 7 + 8 = 40 source partition;
 all three output configs are revalidated by the shared prospective-freeze
 validator before confirmatory collection is unlocked.
 
-Use `scripts/summarize_pedicularis_calibration_pilots.py` for threshold-free
-pilot summaries and `scripts/validate_pedicularis_cohort_registry.py` to keep
-calibration flowers separate from confirmatory/full-surface rows.
+Use `scripts/build_pedicularis_calibration_package.py` to validate the
+cohort registry against the four nonconfirmatory data bundles and generate the
+repeatability + threshold-free calibration summaries together. The package
+allows same-flower repeatability within CAL-A P0 but rejects other cross-lane
+flower reuse. Lower-level summarizer/registry tools remain available for audit.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:

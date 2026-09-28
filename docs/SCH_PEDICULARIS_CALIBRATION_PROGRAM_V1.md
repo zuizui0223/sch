@@ -175,6 +175,20 @@ The planner then allocates lane-level familywise failure probability by a
 union bound across 8 P0, 8 P1 and 9 G criteria and returns the eight registered
 sample-size fields.
 
+## Calibration package entrypoint
+
+For field execution, prefer the package-level entrypoint:
+
+```text
+scripts/build_pedicularis_calibration_package.py
+docs/SCH_PEDICULARIS_CALIBRATION_PACKAGE_V1.md
+```
+
+It jointly validates the cohort registry plus repeatability/P0/P1/G
+nonconfirmatory data, permits repeatability flowers only within the CAL-A P0
+set, rejects other cross-lane flower reuse, and emits both calibration
+summaries needed downstream.
+
 ## Threshold-free pilot summarizer
 
 Before thresholds are frozen, pilot data can be summarized with:
