@@ -234,6 +234,7 @@ def _validate_criteria(
             )
 
         pilot_sd = None
+        pilot_sd_source = row.get("pilot_sd_source", "")
         if criterion_type == "NORMAL_BOUND":
             pilot_sd = _number(
                 row.get("pilot_sd"),
@@ -243,10 +244,23 @@ def _validate_criteria(
                 raise ValueError(
                     f"{row['criterion_id']}.pilot_sd must be > 0"
                 )
-        elif row.get("pilot_sd") != NOT_APPLICABLE:
-            raise ValueError(
-                f"{row['criterion_id']}.pilot_sd must be {NOT_APPLICABLE}"
-            )
+            if (
+                not pilot_sd_source
+                or pilot_sd_source == PLACEHOLDER
+                or pilot_sd_source == NOT_APPLICABLE
+            ):
+                raise ValueError(
+                    f"{row['criterion_id']}.pilot_sd_source is not specified"
+                )
+        else:
+            if row.get("pilot_sd") != NOT_APPLICABLE:
+                raise ValueError(
+                    f"{row['criterion_id']}.pilot_sd must be {NOT_APPLICABLE}"
+                )
+            if pilot_sd_source != NOT_APPLICABLE:
+                raise ValueError(
+                    f"{row['criterion_id']}.pilot_sd_source must be {NOT_APPLICABLE}"
+                )
 
         if direction == "LOWER":
             distance = assumed_true - boundary
@@ -275,6 +289,7 @@ def _validate_criteria(
                 "boundary": boundary,
                 "assumed_true_value": assumed_true,
                 "pilot_sd": pilot_sd,
+                "pilot_sd_source": pilot_sd_source,
                 "distance_to_boundary": distance,
             }
         )
@@ -432,6 +447,7 @@ def _criterion_plan(
         "boundary": row["boundary"],
         "assumed_true_value": row["assumed_true_value"],
         "pilot_sd": row["pilot_sd"],
+        "pilot_sd_source": row["pilot_sd_source"],
         "distance_to_boundary": row["distance_to_boundary"],
         "per_criterion_target_power": target_power,
         "raw_required_units": raw_units,
