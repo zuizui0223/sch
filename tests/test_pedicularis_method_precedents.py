@@ -1,10 +1,10 @@
 from scripts.audit_pedicularis_method_precedents import build
 
 
-def test_method_precedent_ledger_has_six_bounded_precedents() -> None:
+def test_method_precedent_ledger_has_eight_bounded_precedents() -> None:
     result = build()
-    assert result["n_method_precedents"] == 6
-    assert result["n_unique_dois"] == 6
+    assert result["n_method_precedents"] == 8
+    assert result["n_unique_dois"] == 8
     assert result["n_direct_f0_values"] == 0
     assert result["status"] == (
         "PEDICULARIS_METHOD_PRECEDENTS_RECOVERED_FOCAL_VALIDATION_STILL_REQUIRED"
@@ -22,8 +22,11 @@ def test_p1_has_two_independent_congeneric_supplementation_precedents() -> None:
     assert set(result["p1_supplementation_precedents"]) == {
         "PEDMETH_P1_DAI2017_JMS",
         "PEDMETH_P1_DAI2017_JSE",
+        "PEDMETH_P1_MONBEIGIANA2005",
+        "PEDMETH_P1_MONBEIGIANA2011",
         "PEDMETH_P1_YANG2005",
     }
+    assert result["n_p1_supplementation_precedents"] == 5
     assert "PEDMETH_HANDLING_HUANG2013" in result["p1_method_precedents"]
 
 
@@ -44,3 +47,24 @@ def test_method_precedents_leave_focal_direct_empirical_gaps_open() -> None:
         "P_rex_independent_seed_predator_exclusion",
         "P_rex_independent_G_timing_window",
     }
+
+
+def test_p1_has_whole_plant_resource_reallocation_aware_precedent() -> None:
+    result = build()
+    assert result["p1_whole_plant_supplementation_precedents"] == [
+        "PEDMETH_P1_MONBEIGIANA2011"
+    ]
+    assert result["n_p1_whole_plant_supplementation_precedents"] == 1
+    assert "PEDMETH_P1_MONBEIGIANA2011" in result[
+        "p1_with_exact_treatment_sample_sizes"
+    ]
+    assert "PEDMETH_P1_MONBEIGIANA2011" in result[
+        "p1_quantitative_effect_precedents"
+    ]
+
+
+def test_monbeigiana_2005_has_exact_treatment_sample_sizes() -> None:
+    result = build()
+    assert "PEDMETH_P1_MONBEIGIANA2005" in result[
+        "p1_with_exact_treatment_sample_sizes"
+    ]
