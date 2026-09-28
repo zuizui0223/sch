@@ -187,7 +187,7 @@ A successful plan returns exactly these F0 sample-size fields:
 stage_p0.min_plants
 stage_p0.min_flowers_per_level
 
-pollination_weight.min_paired_plants
+pollination_weight.min_plant_units_per_treatment
 pollination_weight.min_flowers_per_treatment
 
 method_gate.min_paired_plants
