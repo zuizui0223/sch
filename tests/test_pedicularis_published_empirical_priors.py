@@ -15,14 +15,15 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_eight_sources_and_66_measurements() -> None:
+def test_published_empirical_recovery_has_nine_sources_and_69_measurements() -> None:
     result = build()
-    assert result["n_published_sources"] == 8
-    assert result["n_published_measurement_rows"] == 66
+    assert result["n_published_sources"] == 9
+    assert result["n_published_measurement_rows"] == 69
     assert result["measurement_rows_by_source"] == {
         "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
         "PRX2013_ALLEE": 8,
+        "PRX2014_BUZZ_MORPHOLOGY": 3,
         "PRX2013_OUTCROSSING": 3,
         "PRX2015_WATER": 15,
         "PRX2016_NECTAR_DYNAMICS": 28,
@@ -67,6 +68,12 @@ def test_reported_uncertainty_is_preserved_without_inventing_raw_variance() -> N
         "PRX2016_PREDATION_GLM_POOL",
     }
     assert result["n_rows_with_reported_se"] == 12
+    assert result["n_rows_with_reported_sem"] == 3
+    assert set(result["rows_with_reported_sem"]) == {
+        "PRX2014_COROLLA_TUBE",
+        "PRX2014_LOWER_LIP_WIDTH",
+        "PRX2014_POLLEN_GRAIN_VOL",
+    }
 
 
 def test_historical_measurements_do_not_directly_freeze_f0() -> None:
@@ -178,3 +185,29 @@ def test_focal_outcrossing_source_does_not_become_supplementation_effect() -> No
     assert "NO_MANIPULATED_REGISTERED_P1_OR_G" in (
         source["current_independent_G_evidence"]
     )
+
+
+def test_focal_p_rex_buzz_pollination_morphology_keeps_sem_separate() -> None:
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+    tube = priors["PRX2014_COROLLA_TUBE"]
+    lip = priors["PRX2014_LOWER_LIP_WIDTH"]
+    pollen = priors["PRX2014_POLLEN_GRAIN_VOL"]
+
+    assert tube["estimate"] == "23.43"
+    assert tube["uncertainty_type"] == "SEM"
+    assert tube["uncertainty_value"] == "0.498"
+    assert tube["sample_n"] == "20 specimens"
+
+    assert lip["estimate"] == "12.71"
+    assert lip["uncertainty_type"] == "SEM"
+    assert lip["uncertainty_value"] == "0.382"
+
+    assert pollen["estimate"] == "4448"
+    assert pollen["uncertainty_type"] == "SEM"
+    assert pollen["uncertainty_value"] == "89.28"
+    assert pollen["sample_n"] == "20 plants"
+
+    assert {tube["direct_freeze_eligible"], lip["direct_freeze_eligible"], pollen["direct_freeze_eligible"]} == {"NO"}
