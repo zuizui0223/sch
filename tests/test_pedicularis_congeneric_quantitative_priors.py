@@ -1,16 +1,16 @@
 from scripts.audit_pedicularis_congeneric_quantitative_priors import build
 
 
-def test_congeneric_quantitative_ledger_has_19_rows_across_five_species() -> None:
+def test_congeneric_quantitative_ledger_has_19_rows_across_four_species() -> None:
     result = build()
     assert result["n_quantitative_prior_rows"] == 19
-    assert result["n_species"] == 5
+    assert result["n_species"] == 4
     assert result["species_counts"] == {
         "Pedicularis densispica": 3,
         "Pedicularis monbeigiana": 10,
         "Pedicularis siphonantha": 1,
         "Pedicularis tricolor": 5,
-    } or result["n_species"] == 4
+    }
 
 
 def test_congeneric_quantitative_priors_never_become_direct_p_rex_or_f0() -> None:
