@@ -557,7 +557,7 @@ def build_plan(
         "stage_p0.min_flowers_per_level": p0[
             "required_flowers_per_cell"
         ],
-        "pollination_weight.min_paired_plants": p1[
+        "pollination_weight.min_plant_units_per_treatment": p1[
             "required_plants"
         ],
         "pollination_weight.min_flowers_per_treatment": p1[
