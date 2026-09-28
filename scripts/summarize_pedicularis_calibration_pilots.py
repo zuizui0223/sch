@@ -75,12 +75,116 @@ def _p0_plant_gap_distributions(rows: list[dict[str, str]]) -> dict[str, dict]:
     }
 
 
+def _p0_plant_gate_metrics(rows: list[dict[str, str]]) -> list[dict[str, float | str]]:
+    by_plant: dict[str, dict[int, list[dict[str, str]]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    rank_labels: dict[int, str] = {}
+    sham_rows = p0._sham_rows(rows)
+    sham_rank = int(sham_rows[0]["assigned_z_rank"])
+
+    for row in rows:
+        rank = int(row["assigned_z_rank"])
+        by_plant[row["plant_id"]][rank].append(row)
+        rank_labels[rank] = row["assigned_z_level"]
+
+    all_ranks = sorted(rank_labels)
+    out: list[dict[str, float | str]] = []
+
+    def group_mean(group: list[dict[str, str]], field: str) -> float:
+        return mean(float(row[field]) for row in group)
+
+    def group_binary_mean(group: list[dict[str, str]], field: str) -> float:
+        return mean(float(int(row[field])) for row in group)
+
+    for plant_id, rank_rows in sorted(by_plant.items()):
+        if not all(rank in rank_rows for rank in all_ranks):
+            continue
+        sham = rank_rows[sham_rank]
+        sham_means = {
+            field: group_mean(sham, field)
+            for field in (
+                "corolla_opening_width",
+                "tube_diameter",
+                "bract_height",
+                "lower_lip_angle_deg",
+                "water_depth",
+                "flower_orientation_deg",
+            )
+        }
+        exsertion_means = {
+            rank: group_mean(rank_rows[rank], "realized_exsertion")
+            for rank in all_ranks
+        }
+        adjacent = [
+            exsertion_means[right] - exsertion_means[left]
+            for left, right in zip(all_ranks, all_ranks[1:])
+        ]
+
+        def max_relative(field: str) -> float:
+            ref = sham_means[field]
+            return max(
+                relative_change(group_mean(rank_rows[rank], field), ref)
+                for rank in all_ranks
+            )
+
+        def max_absolute(field: str) -> float:
+            ref = sham_means[field]
+            return max(
+                abs(group_mean(rank_rows[rank], field) - ref)
+                for rank in all_ranks
+            )
+
+        out.append(
+            {
+                "plant_id": plant_id,
+                "minimum_adjacent_exsertion_gap": min(adjacent),
+                "opening_width_relative_change": max_relative(
+                    "corolla_opening_width"
+                ),
+                "tube_diameter_relative_change": max_relative(
+                    "tube_diameter"
+                ),
+                "bract_height_relative_change": max_relative(
+                    "bract_height"
+                ),
+                "lower_lip_angle_abs_change": max_absolute(
+                    "lower_lip_angle_deg"
+                ),
+                "water_depth_abs_change": max_absolute("water_depth"),
+                "flower_orientation_abs_change": max_absolute(
+                    "flower_orientation_deg"
+                ),
+                "maximum_mechanical_damage_rate": max(
+                    group_binary_mean(rank_rows[rank], "mechanical_damage")
+                    for rank in all_ranks
+                ),
+            }
+        )
+    return out
+
+
 def _summarize_p0(path: Path) -> tuple[dict, tuple[str, str]]:
     rows = p0._read_csv(path)
     context = _context_from_rows(rows)
     rank_metrics = p0._rank_metrics(rows)
     off_target = p0._offtarget_metrics(rows)
     groups = p0._group_by_rank(rows)
+    plant_gate_metrics = _p0_plant_gate_metrics(rows)
+    if len(plant_gate_metrics) < 2:
+        raise ValueError(
+            "CAL-A P0 summary requires at least two plants with complete z-rank profiles"
+        )
+    plant_gate_fields = [
+        "minimum_adjacent_exsertion_gap",
+        "opening_width_relative_change",
+        "tube_diameter_relative_change",
+        "bract_height_relative_change",
+        "lower_lip_angle_abs_change",
+        "water_depth_abs_change",
+        "flower_orientation_abs_change",
+        "maximum_mechanical_damage_rate",
+    ]
     return {
         "n_rows": len(rows),
         "n_plants": len({row["plant_id"] for row in rows}),
@@ -91,6 +195,13 @@ def _summarize_p0(path: Path) -> tuple[dict, tuple[str, str]]:
         "observed_adjacent_gaps": rank_metrics["adjacent_gaps"],
         "observed_minimum_adjacent_gap": rank_metrics["minimum_adjacent_gap"],
         "plant_level_adjacent_gap_distributions": _p0_plant_gap_distributions(rows),
+        "n_complete_profile_plants": len(plant_gate_metrics),
+        "plant_level_gate_metric_distributions": {
+            field: _summary(
+                [float(row[field]) for row in plant_gate_metrics]
+            )
+            for field in plant_gate_fields
+        },
         "off_target_observed": off_target,
         "pollinator_visits_mean_by_rank": {
             str(rank): p0._mean_field(group, "pollinator_visits")
@@ -149,6 +260,9 @@ def _p1_plant_metrics(rows: list[dict[str, str]]) -> list[dict[str, float | str]
                 m(supplemented, lambda r: p1._num(r, "water_depth"))
                 - m(natural, lambda r: p1._num(r, "water_depth"))
             ),
+            "maximum_mechanical_damage_rate": max(
+                sup_damage, nat_damage
+            ),
             "mechanical_damage_abs_difference": abs(sup_damage - nat_damage),
         })
     return out
@@ -168,6 +282,7 @@ def _summarize_p1(path: Path) -> tuple[dict, tuple[str, str]]:
         "bract_height_relative_change",
         "opening_width_relative_change",
         "water_depth_abs_difference",
+        "maximum_mechanical_damage_rate",
         "mechanical_damage_abs_difference",
     ]
     return {

@@ -128,6 +128,12 @@ def test_all_three_calibration_lanes_are_summarized_without_threshold_decisions(
     p0s = result["pilot_summaries"]["P0"]
     assert p0s["n_assigned_z_levels"] == 5
     assert p0s["observed_minimum_adjacent_gap"] == pytest.approx(0.15)
+    assert p0s["n_complete_profile_plants"] == 4
+    p0_gate = p0s["plant_level_gate_metric_distributions"]
+    assert p0_gate["minimum_adjacent_exsertion_gap"]["mean"] == pytest.approx(0.15)
+    assert p0_gate["minimum_adjacent_exsertion_gap"]["sd"] is not None
+    assert p0_gate["opening_width_relative_change"]["mean"] >= 0
+    assert p0_gate["maximum_mechanical_damage_rate"]["max"] == 0
 
     p1s = result["pilot_summaries"]["P1"]["plant_level_distributions"]
     assert p1s["pollen_grains_delta"]["mean"] == pytest.approx(14.0)

@@ -123,6 +123,24 @@ variance / repeatability information
 CAL-C produces sample-size minima only. It must not revise the selected effect
 or equivalence target merely to make the required sample size smaller.
 
+Machine implementation:
+
+```text
+empirical/architecture/PEDICULARIS_CAL_C_CRITERIA_TEMPLATE_V1.csv
+empirical/architecture/PEDICULARIS_CAL_C_PLANNING_CONFIG_TEMPLATE_V1.json
+scripts/materialize_pedicularis_cal_c_pilot_sd.py
+scripts/plan_pedicularis_cal_c.py
+docs/SCH_PEDICULARIS_CAL_C_PLANNING_V1.md
+```
+
+The pilot-SD materializer copies variability and its exact source path only.
+It intentionally leaves each boundary, assumed true value and basis note
+unresolved until those planning targets are frozen prospectively.
+
+The planner then allocates lane-level familywise failure probability by a
+union bound across 8 P0, 8 P1 and 9 G criteria and returns the eight registered
+sample-size fields.
+
 ## Threshold-free pilot summarizer
 
 Before thresholds are frozen, pilot data can be summarized with:
