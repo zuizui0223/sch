@@ -15,15 +15,15 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_five_sources_and_32_measurements() -> None:
+def test_published_empirical_recovery_has_five_sources_and_34_measurements() -> None:
     result = build()
     assert result["n_published_sources"] == 5
-    assert result["n_published_measurement_rows"] == 32
+    assert result["n_published_measurement_rows"] == 34
     assert result["measurement_rows_by_source"] == {
         "PRX2007_POLLINATION": 1,
         "PRX2013_ALLEE": 8,
         "PRX2015_WATER": 15,
-        "PRX2016_SELECTION": 8,
+        "PRX2016_SELECTION": 10,
     }
 
 
@@ -52,11 +52,13 @@ def test_2016_supplement_files_are_explicitly_tracked() -> None:
 
 def test_reported_uncertainty_is_preserved_without_inventing_raw_variance() -> None:
     result = build()
-    assert result["n_rows_with_reported_sd"] == 3
+    assert result["n_rows_with_reported_sd"] == 5
     assert set(result["rows_with_reported_sd"]) == {
         "PRX2016_CAPSULES_PER_PLANT",
         "PRX2016_OVULES_MEAN",
+        "PRX2016_POLLEN_GLM_POOL",
         "PRX2016_POLLEN_MEAN",
+        "PRX2016_PREDATION_GLM_POOL",
     }
     assert result["n_rows_with_reported_se"] == 12
 
