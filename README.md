@@ -162,7 +162,10 @@ CAL-C  prospective power / precision planning              8 gates
 ```
 
 CAL-A repeatability infrastructure is implemented; its same-flower calibration
-data are not yet collected.
+data are not yet collected. CAL-C planning infrastructure is also implemented:
+pilot SD provenance can be materialized separately from biological targets,
+then a familywise P0/P1/G plan can generate the eight sample-size gates once
+CAL-A/B targets and planning assumptions are prospectively frozen.
 
 Use `scripts/summarize_pedicularis_calibration_pilots.py` for threshold-free
 pilot summaries and `scripts/validate_pedicularis_cohort_registry.py` to keep
