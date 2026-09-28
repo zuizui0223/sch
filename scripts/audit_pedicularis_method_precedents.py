@@ -107,6 +107,21 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         for row in rows
         if "CAL_B" in row["target_stage"]
     )
+    g_timing = sorted(
+        row["precedent_id"]
+        for row in rows
+        if (
+            "G3" in row["target_stage"]
+            or "timing" in row["method_relevance"].lower()
+        )
+    )
+    pedicularis_postpollination_attack_timing = sorted(
+        row["precedent_id"]
+        for row in rows
+        if (
+            row["precedent_id"] == "PEDMETH_G_TIMING_FURBISHIAE1986"
+        )
+    )
 
     same_species = sorted(
         row["precedent_id"]
@@ -130,6 +145,10 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "n_p1_whole_plant_supplementation_precedents": len(p1_whole_plant_supplementation),
         "cal_a_method_precedents": cal_a,
         "cal_b_method_precedents": cal_b,
+        "g_timing_method_precedents": g_timing,
+        "pedicularis_postpollination_attack_timing_precedents": (
+            pedicularis_postpollination_attack_timing
+        ),
         "same_species_precedents": same_species,
         "n_direct_f0_values": 0,
         "registered_method_gaps_after_recovery": [
@@ -146,6 +165,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "whole_plant_and_within_plant_supplementation_are_alternative_design_precedents_not_interchangeable_estimands",
             "resource_reallocation_bias_must_be_considered_when_selecting_the_P1_unit_of_manipulation",
             "same_species_water_drainage_is_not_independent_G",
+            "postpollination_attack_timing_precedent_is_not_predator_exclusion_validation",
             "no_method_precedent_directly_freezes_F0",
         ],
     }
