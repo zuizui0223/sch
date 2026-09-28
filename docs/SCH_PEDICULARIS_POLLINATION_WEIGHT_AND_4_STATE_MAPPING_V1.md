@@ -21,6 +21,26 @@ The P manipulation therefore changes **dependence on pollinator-mediated pollen 
 
 `P. rex` is self-compatible but has little or no automatic self-pollination and seed production depends strongly on bumblebee pollination. The focal flowers are therefore suitable for a pollen-limitation manipulation.
 
+A focal mating-system study provides an important refinement. In sparse and
+dense P. rex patches, multilocus outcrossing estimates were respectively
+`t_m = 1.151` and `0.924` (Jing Xia, Liu & Qin 2013,
+doi:10.1007/s00606-012-0701-x). Thus self-compatibility does **not** imply that
+the natural P state is predominantly selfed.
+
+For SCH, the supplementation contrast is therefore interpreted as:
+
+```text
+natural high-outcrossing pollen delivery
+vs
+the same open visitor environment + standardized donor-mixed cross-pollen.
+```
+
+It is a manipulation of **pollen-delivery weight**, not a manipulation that
+converts selfing into outcrossing. Supplemental self pollen is not the default
+SCH P intervention. The donor-mixed cross-pollen protocol is retained because
+it asks whether natural pollen delivery is quantitatively limiting while
+avoiding a change of mating-system meaning between P states.
+
 The seed-predator natural-history window overlaps open flowering: eggs are laid on ovaries after flowers open and before ovaries swell. This makes temporal pollinator exclusion a potentially contaminated default intervention.
 
 The supplementation method itself has strong congeneric precedent. Yang, Sun &
@@ -90,6 +110,12 @@ treatment is repeated prospectively if needed to reach the frozen saturation cri
 ```
 
 The donor protocol should avoid repeated use of one pollen donor and should be blocked by plant / date.
+
+Because focal P. rex already shows high realized outcrossing, donor pollen
+should come from multiple non-focal plants and be mixed prospectively according
+to a frozen collection protocol. The design goal is to increase pollen quantity
+and/or donor representation without creating a qualitatively different
+self-versus-outcross mating treatment.
 
 ## P-pilot effectiveness gate
 
