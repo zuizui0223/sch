@@ -380,13 +380,56 @@ written into the CAL-C criterion table as observed pilot SD.
 
 Model-coefficient SE is not silently converted into raw-data SD.
 
+## Five-year focal natural-visitation raw dataset
+
+Ye et al. (2024; doi `10.1002/ecy.4284`) studied floral-resource
+partitioning in a species-rich Shangri-La bumblebee community over five years
+(2018–2022). The publication reports 10,598 bumblebee individuals from 13
+species across the full study and deposits the underlying data in Figshare:
+
+```text
+doi:10.6084/m9.figshare.25139777.v1
+```
+
+The later 2025 network analysis reuses the same dataset and its annual
+plant-bumblebee network figure explicitly maps:
+
+```text
+Pere = Pedicularis rex.
+```
+
+This establishes that focal P. rex occurs in the long-term quantitative
+plant-bumblebee dataset and makes the record a high-value **raw natural-P
+baseline recovery target**.
+
+Current bounded use is deliberately narrow:
+
+```text
+study-wide bumblebee count      10598
+study span                      2018-2022
+focal network membership        Pere = P. rex
+P. rex-specific annual counts   NOT YET MATERIALIZED
+P. rex-specific partner list    NOT YET MATERIALIZED
+direct P1 supplementation       NO
+direct F0 value                 NO
+```
+
+The Figshare DOI and focal species membership are verified, but the file list
+and binary data could not be retrieved in the current environment. Link widths
+in published network figures are therefore **not** digitized or converted into
+interaction counts.
+
+The 2025 Dryad dataset `10.5061/dryad.qfttdz0tb` is a derived bumblebee
+competition table and explicitly notes reuse of the 2024 Figshare data. It is
+not a substitute for the plant-specific raw interaction table.
+
 ## Direct F0 boundary
 
 Current recovery result:
 
 ```text
-published source records          9
-published measurement rows       69
+published source records         10
+published measurement rows       71
 direct F0 gate values recovered   0.
 ```
 
@@ -413,8 +456,10 @@ qualified independent-G timing window in P. rex.
 
 1. Retrieve and inspect Dryad `10.5061/dryad.6cv06/raw data.xlsx`.
 2. Retrieve the 2016 `mcw097` supplementary XLS/DOC files.
-3. Recompute only estimands supported by actual columns/grain in those files.
-4. Feed any usable historical SD/effect information into external-prior
+3. Retrieve Figshare `10.6084/m9.figshare.25139777.v1` and extract only
+   verified `Pere` rows / annual partners / interaction counts.
+4. Recompute only estimands supported by actual columns/grain in those files.
+5. Feed any usable historical SD/effect information into external-prior
    scenarios for CAL-A/B/C, never directly into F0 without prospective
    justification.
 
