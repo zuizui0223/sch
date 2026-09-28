@@ -58,6 +58,11 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         for row in rows
         if "P1" in row["target_stage"]
     )
+    p1_supplementation = sorted(
+        row["precedent_id"]
+        for row in rows
+        if "supplement" in row["manipulation"].lower()
+    )
     cal_a = sorted(
         row["precedent_id"]
         for row in rows
@@ -83,6 +88,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "n_unique_dois": len(doi_counts),
         "p0_method_precedents": p0,
         "p1_method_precedents": p1,
+        "p1_supplementation_precedents": p1_supplementation,
         "cal_a_method_precedents": cal_a,
         "cal_b_method_precedents": cal_b,
         "same_species_precedents": same_species,
