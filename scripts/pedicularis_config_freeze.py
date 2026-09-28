@@ -27,7 +27,7 @@ LANE_SPECS: dict[str, dict[str, tuple[str, ...]]] = {
     },
     "P1": {
         "pollination_weight": (
-            "min_paired_plants",
+            "min_plant_units_per_treatment",
             "min_flowers_per_treatment",
             "min_pollen_grain_delta",
             "min_initial_seed_set_delta",
