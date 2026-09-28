@@ -108,6 +108,21 @@ and be frozen before confirmatory outcomes are read.
 The G timing pilot must remain separate from the confirmatory method-qualified
 G receipt.
 
+Machine implementation:
+
+```text
+empirical/architecture/PEDICULARIS_CAL_B_TARGET_TEMPLATE_V1.csv
+scripts/materialize_pedicularis_cal_b_observed.py
+scripts/freeze_pedicularis_cal_b_targets.py
+scripts/apply_pedicularis_cal_b_to_cal_c.py
+docs/SCH_PEDICULARIS_CAL_B_TARGET_FREEZE_V1.md
+```
+
+Observed pilot descriptors are materialized first with all target fields still
+unfrozen. Only after the seven targets receive explicit basis notes and a
+prospective freeze may the five effect boundaries be transferred into CAL-C.
+The two timing bounds bypass CAL-C and later enter the G config during F0.
+
 ## CAL-C — prospective sample size / precision
 
 CAL-C covers eight sample-size fields.
