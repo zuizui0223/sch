@@ -258,6 +258,23 @@ pollen–ovule ratio = 11222.04 ± 4887.18 SD.
 These are focal reproductive/pollinator-reward context measurements. Neither is
 a P1 supplementation effect or direct F0 value.
 
+## Focal floral morphology and pollen-grain scale
+
+Corbet & Huang (2014; doi `10.1093/aob/mcu195`) measured floral traits in
+eight sympatric Pedicularis species and reports exact P. rex values:
+
+```text
+corolla tube length    23.43 ± 0.498 SEM mm   n=20 specimens
+lower-lip width        12.71 ± 0.382 SEM mm   n=20 specimens
+pollen-grain volume    4448  ± 89.28 SEM um3  n=20 plants
+```
+
+These measurements are focal natural-trait scale information. They can inform
+whether a proposed P0 manipulation range is biologically extreme, but they do
+not provide same-flower repeatability, measurement error or a manipulation
+effect. The audit therefore keeps `SEM` as a separate uncertainty type rather
+than silently merging it with SD/SE or using it as a CAL-A equivalence margin.
+
 ## Focal mating-system data
 
 Jing Xia, Liu & Qin (2013; doi `10.1007/s00606-012-0701-x`) directly
@@ -368,8 +385,8 @@ Model-coefficient SE is not silently converted into raw-data SD.
 Current recovery result:
 
 ```text
-published source records          8
-published measurement rows       66
+published source records          9
+published measurement rows       69
 direct F0 gate values recovered   0.
 ```
 
