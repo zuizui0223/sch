@@ -15,11 +15,12 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_nine_sources_and_69_measurements() -> None:
+def test_published_empirical_recovery_has_ten_sources_and_73_measurements() -> None:
     result = build()
-    assert result["n_published_sources"] == 9
-    assert result["n_published_measurement_rows"] == 69
+    assert result["n_published_sources"] == 10
+    assert result["n_published_measurement_rows"] == 73
     assert result["measurement_rows_by_source"] == {
+        "PRX2005_GENETIC_VARIATION": 4,
         "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
         "PRX2013_ALLEE": 8,
@@ -211,3 +212,37 @@ def test_focal_p_rex_buzz_pollination_morphology_keeps_sem_separate() -> None:
     assert pollen["sample_n"] == "20 plants"
 
     assert {tube["direct_freeze_eligible"], lip["direct_freeze_eligible"], pollen["direct_freeze_eligible"]} == {"NO"}
+
+
+def test_2005_genetic_structure_is_context_not_direct_selfing_rate() -> None:
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+    gst = priors["PRX2005_GST"]
+    assert gst["estimate"] == "0.747"
+    assert gst["metric"] == "population differentiation Gst"
+    assert gst["direct_freeze_eligible"] == "NO"
+    assert "do not treat Gst as a direct selfing-rate estimator" in gst[
+        "notes"
+    ]
+
+    datasets = {
+        row["source_id"]: row
+        for row in _rows(DEFAULT_DATASETS)
+    }
+    source = datasets["PRX2005_GENETIC_VARIATION"]
+    assert source["direct_F0_freeze_eligible"] == "NO"
+    assert "not a direct selfing-rate estimate" in source["notes"]
+
+
+def test_focal_mating_context_contains_opposing_population_level_clues() -> None:
+    priors = _rows(DEFAULT_PRIORS)
+    assert any(
+        row["measurement_id"] == "PRX2005_GST"
+        for row in priors
+    )
+    assert any(
+        row["source_id"] == "PRX2013_OUTCROSSING"
+        for row in priors
+    )

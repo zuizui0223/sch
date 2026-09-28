@@ -224,6 +224,30 @@ pollination success in 14 populations.
 The supplement identities are verified but the binary files have not yet been
 ingested in the current environment.
 
+## P. rex population-genetic mating context
+
+Li, Gao & Wang (2005) surveyed five Yunnan P. rex populations
+(Zhongdian, Lijiang, Dali, Wuding and Kunming; Zhongdian included three
+subpopulations) with RAPD markers.
+
+Published summaries are:
+
+```text
+polymorphic loci          82.0%
+Shannon diversity I       0.361
+Nei gene diversity h      0.240
+Gst                       0.747.
+```
+
+The authors interpret the strong among-population differentiation as
+potentially related to a mixed mating system with relatively high selfing.
+That interpretation is retained as **population-genetic context only**:
+`Gst=0.747` is not a selfing-rate estimate.
+
+This is useful precisely because a later focal study reported very high
+multilocus outcrossing in two patches. The two records together argue against
+a single species-wide expected P1 effect or mating-state assumption.
+
 ## P. rex nectar dynamics and reproductive allocation
 
 Liu et al. (2016; doi `10.1111/jipb.12374`) measured nectar production
@@ -385,8 +409,8 @@ Model-coefficient SE is not silently converted into raw-data SD.
 Current recovery result:
 
 ```text
-published source records          9
-published measurement rows       69
+published source records         10
+published measurement rows       73
 direct F0 gate values recovered   0.
 ```
 
