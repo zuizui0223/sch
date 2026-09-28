@@ -41,8 +41,12 @@ P1   8
 G    9
 ```
 
-Two damage-rate criteria are binomial upper-bound problems. The remaining
-23 criteria use plant-level pilot SDs.
+All 25 currently registered criteria are planned on plant-level gate metrics
+using pilot SDs. This matches the clustered confirmatory analysis family more
+closely than planning damage from pooled flower-level Bernoulli counts.
+
+The planner retains a generic BINOMIAL_UPPER implementation for a future
+prospectively registered criterion, but no current P0/P1/G criterion uses it.
 
 Populate only pilot SD and its exact source path with:
 
@@ -137,16 +141,20 @@ n_inflated = ceil(n_raw * design_effect).
 If the assumed true value is not on the successful side of the boundary,
 planning fails closed.
 
-## Binomial damage-rate calculation
+## Damage-rate planning
 
-P0 and P1 mechanical-damage criteria use the exact probability, under the
-prospectively specified assumed true damage rate, that the 95% Wilson upper
-confidence bound is at or below the registered damage-rate ceiling.
+P0 and P1 mechanical-damage criteria use plant-level maximum damage-rate
+summaries, matching the confirmatory cluster/bootstrap estimand family. Their
+CAL-C pilot SD must therefore come from the plant-level maximum-damage
+distribution, not pooled flower counts.
 
-The smallest n reaching the per-criterion target probability is found by exact
-enumeration of binomial outcome probabilities. That observation requirement is
-converted to a plant requirement using the frozen flowers-per-plant-per-cell
-assumption and explicit design-effect inflation.
+If a calibration pilot yields zero SD for a damage criterion, CAL-C fails
+closed rather than treating zero pilot variance as certainty. A nonzero
+conservative variability basis must then be justified independently and its
+source recorded in `pilot_sd_source`.
+
+The code retains an optional exact Wilson/binomial planning function, but it is
+not part of the current registered 25-criterion plan.
 
 ## Lane sample size
 
