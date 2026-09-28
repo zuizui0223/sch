@@ -258,6 +258,39 @@ pollen–ovule ratio = 11222.04 ± 4887.18 SD.
 These are focal reproductive/pollinator-reward context measurements. Neither is
 a P1 supplementation effect or direct F0 value.
 
+## Focal mating-system data
+
+Jing Xia, Liu & Qin (2013; doi `10.1007/s00606-012-0701-x`) directly
+estimated mating-system parameters in sparse and dense P. rex patches.
+
+The primary abstract reports:
+
+```text
+sparse patch multilocus outcrossing   t_m = 1.151
+dense patch multilocus outcrossing    t_m = 0.924
+```
+
+and states that reproductive outputs under hand and natural pollination were
+also measured. A secondary thesis that cites this study reproduces the
+outcrossing estimates as:
+
+```text
+1.151 ± 0.108
+0.924 ± 0.042.
+```
+
+The uncertainty type of those ± values has not yet been verified in the
+primary full text, so the ledger deliberately labels it
+`SECONDARY_REPORTED_UNCERTAINTY_TYPE_UNVERIFIED` rather than SD or SE.
+
+The same primary abstract reports a regression-derived theoretical maximum of
+63 fruits per plant.
+
+These results strengthen the focal natural-state conclusion that
+self-compatibility does not imply predominantly selfed realized reproduction.
+They remain mating-system/resource-context priors and are not the registered
+P1 supplementation intervention.
+
 ## Older pollination data
 
 Tang, Xie & Sun 2007 report a nectar sugar concentration of 22% for
@@ -335,8 +368,8 @@ Model-coefficient SE is not silently converted into raw-data SD.
 Current recovery result:
 
 ```text
-published source records          7
-published measurement rows       63
+published source records          8
+published measurement rows       66
 direct F0 gate values recovered   0.
 ```
 
