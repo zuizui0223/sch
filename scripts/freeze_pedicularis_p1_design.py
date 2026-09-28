@@ -107,6 +107,7 @@ def validate(payload: dict) -> dict:
         "donor_protocol": donor_protocol,
         "randomization_or_matching_protocol": randomization_or_matching_protocol,
         "basis_document": basis_document,
+        "frozen_before_confirmatory_data": True,
         "frozen_at_utc": frozen_at_utc,
         "status": STATUS,
         "claim_ceiling": [
