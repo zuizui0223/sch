@@ -47,6 +47,11 @@ def _criteria() -> list[dict[str, str]]:
             if row["criterion_type"] == "BINOMIAL_UPPER"
             else "1.0"
         )
+        row["pilot_sd_source"] = (
+            "NOT_APPLICABLE"
+            if row["criterion_type"] == "BINOMIAL_UPPER"
+            else "UNIT_TEST_SYNTHETIC_CALIBRATION_SUMMARY"
+        )
     return rows
 
 
