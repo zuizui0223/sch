@@ -66,6 +66,7 @@ def _config(
     return {
         "confidence_level": 0.95,
         "familywise_target_power": familywise_power,
+        "familywise_target_power_basis": "UNIT_TEST_SYNTHETIC_PLANNING_INPUT",
         "planning_provenance": {
             "status": PLANNING_STATUS,
             "population_id": "P_REX_TEST",
@@ -76,7 +77,9 @@ def _config(
         "lane_design": {
             lane: {
                 "design_effect": design_effect,
+                "design_effect_basis": "UNIT_TEST_SYNTHETIC_PLANNING_INPUT",
                 "flowers_per_plant_per_cell": 1,
+                "flowers_per_plant_per_cell_basis": "UNIT_TEST_SYNTHETIC_PLANNING_INPUT",
             }
             for lane in ("P0", "P1", "G")
         },
@@ -128,6 +131,12 @@ def test_complete_cal_c_plan_populates_all_eight_sample_size_fields() -> None:
     assert result["status"] == "PEDICULARIS_CAL_C_SAMPLE_SIZE_PLAN_READY"
     assert result["familywise_method"] == (
         "union_bound_failure_allocation_no_independence_assumption"
+    )
+    assert result["familywise_target_power_basis"] == (
+        "UNIT_TEST_SYNTHETIC_PLANNING_INPUT"
+    )
+    assert result["lane_plans"]["P0"]["design_effect_basis"] == (
+        "UNIT_TEST_SYNTHETIC_PLANNING_INPUT"
     )
 
     gates = result["sample_size_gate_values"]
