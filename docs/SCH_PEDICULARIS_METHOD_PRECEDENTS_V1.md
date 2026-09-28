@@ -106,6 +106,83 @@ the supplementation effect itself can be strongly context-dependent.
 The protocol may transfer, but neither published effect may be treated as a
 P. rex effect.
 
+### Sun et al. 2005 — P. monbeigiana
+
+A separate congeneric experiment included:
+
+```text
+open control                     n=20
+bagged flowers                   n=12
+bagged hand-geitonogamy          n=12
+supplemental outcross pollen     n=12.
+```
+
+Supplemental outcross seed set was not statistically different from open
+control, whereas hand geitonogamy reduced seed production. In three open field
+sites, fruit set was 94.7±3.2%, 96.2±3.0% and 94.2±4.3%, and seed set was
+41.7±9.3%, 38.2±8.4% and 37.6±9.0% (N>20 per site; the indexed full text does
+not make the SD/SE label of the ± values sufficiently clear for reuse as a
+variance estimate).
+
+This is a useful precedent for a **true near-zero supplementation response**:
+supplementation can be methodologically valid yet biologically uninformative
+when natural pollen delivery is already sufficient.
+
+### Liao et al. 2011 — whole-plant supplementation
+
+P. monbeigiana was supplemented at the **whole-plant** level rather than by
+supplementing one focal flower only.
+
+Within each experimental plot:
+
+```text
+10 plants  supplemental outcross pollen
+10 plants  natural-pollination controls
+```
+
+Supplemental pollen was applied to all flowers every two days through anthesis.
+Pollen was pooled from 20 flowers on five non-focal donors about 100 m away.
+
+The design explicitly reduced the risk that a supplemented flower would draw
+resources away from untreated flowers on the same plant.
+
+Published quantitative results included:
+
+```text
+fruit-set treatment effect   F1,304 = 107.12, P <= 0.001
+seed-set treatment effect    F1,304 = 113.27, P <= 0.001
+
+seed set relative to control
+pure sparse plot             2.1 x
+pure dense plot              1.1 x
+mixed sparse plot            +36%
+mixed dense plot             +35%
+
+plot-type x treatment
+seed set                     F = 18.13, P <= 0.001.
+```
+
+This is both an effect-scale precedent and a warning: the supplementation
+effect can vary strongly with ecological context.
+
+### Two legitimate P1 experimental units now exist
+
+The literature therefore supports at least two distinct P1 designs:
+
+```text
+A. within-plant paired flowers
+   + controls individual heterogeneity strongly
+   - can permit within-plant resource reallocation among treated/control flowers
+
+B. whole-plant supplementation
+   + minimizes within-plant resource-reallocation bias
+   - sacrifices within-plant treatment pairing and requires more donor pollen.
+```
+
+These are alternative experimental estimands, not interchangeable
+implementations. The P. rex calibration basis document should state which
+experimental unit is selected and why.
+
 ## Handling and exclusion precedent
 
 Huang & Shi 2013 manipulated eight nectarless Pedicularis species.
@@ -142,7 +219,7 @@ Method-family uncertainty is substantially reduced:
 
 ```text
 P0 non-destructive floral manipulation   CONGENERIC FIELD PRECEDENT
-P1 supplemental hand pollination         >=2 CONGENERIC PRECEDENTS
+P1 supplemental hand pollination         >=5 CONGENERIC PRECEDENTS
 flower handling / bagging controls       MULTI-SPECIES PEDICULARIS PRECEDENT
 visitor contamination auditing           CONGENERIC + P. rex PRECEDENT.
 ```
