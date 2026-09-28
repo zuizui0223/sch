@@ -101,6 +101,13 @@ def _validate_planning_config(config: dict) -> dict:
     )
     if not 0.0 < familywise_power < 1.0:
         raise ValueError("familywise_target_power must lie in (0, 1)")
+    familywise_basis = config.get("familywise_target_power_basis")
+    if (
+        not isinstance(familywise_basis, str)
+        or not familywise_basis.strip()
+        or familywise_basis == PLACEHOLDER
+    ):
+        raise ValueError("familywise_target_power_basis is not prospectively specified")
 
     provenance = config.get("planning_provenance")
     if not isinstance(provenance, dict):
@@ -141,14 +148,35 @@ def _validate_planning_config(config: dict) -> dict:
             design.get("flowers_per_plant_per_cell"),
             f"lane_design.{lane}.flowers_per_plant_per_cell",
         )
+        design_effect_basis = design.get("design_effect_basis")
+        flowers_basis = design.get("flowers_per_plant_per_cell_basis")
+        if (
+            not isinstance(design_effect_basis, str)
+            or not design_effect_basis.strip()
+            or design_effect_basis == PLACEHOLDER
+        ):
+            raise ValueError(
+                f"lane_design.{lane}.design_effect_basis is not prospectively specified"
+            )
+        if (
+            not isinstance(flowers_basis, str)
+            or not flowers_basis.strip()
+            or flowers_basis == PLACEHOLDER
+        ):
+            raise ValueError(
+                f"lane_design.{lane}.flowers_per_plant_per_cell_basis is not prospectively specified"
+            )
         normalized_design[lane] = {
             "design_effect": design_effect,
+            "design_effect_basis": design_effect_basis,
             "flowers_per_plant_per_cell": flowers,
+            "flowers_per_plant_per_cell_basis": flowers_basis,
         }
 
     return {
         "confidence_level": confidence,
         "familywise_target_power": familywise_power,
+        "familywise_target_power_basis": familywise_basis,
         "planning_provenance": provenance,
         "lane_design": normalized_design,
     }
@@ -507,8 +535,12 @@ def build_plan(
             "familywise_target_power": familywise,
             "union_bound_per_criterion_target_power": per_criterion_power,
             "design_effect": design["design_effect"],
+            "design_effect_basis": design["design_effect_basis"],
             "flowers_per_plant_per_cell": design[
                 "flowers_per_plant_per_cell"
+            ],
+            "flowers_per_plant_per_cell_basis": design[
+                "flowers_per_plant_per_cell_basis"
             ],
             "required_plants": required_plants,
             "required_flowers_per_cell": flowers_per_cell,
@@ -549,6 +581,9 @@ def build_plan(
         "confidence_level": config["confidence_level"],
         "familywise_target_power": config[
             "familywise_target_power"
+        ],
+        "familywise_target_power_basis": config[
+            "familywise_target_power_basis"
         ],
         "familywise_method": (
             "union_bound_failure_allocation_no_independence_assumption"
