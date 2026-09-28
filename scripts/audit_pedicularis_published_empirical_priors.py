@@ -104,6 +104,11 @@ def build(
         for row in priors
         if row["uncertainty_type"] == "SE"
     ]
+    sem_rows = [
+        row["measurement_id"]
+        for row in priors
+        if row["uncertainty_type"] == "SEM"
+    ]
 
     external_support = {
         "CAL_A": sorted(
@@ -144,6 +149,8 @@ def build(
         "rows_with_reported_sd": sorted(sd_rows),
         "n_rows_with_reported_se": len(se_rows),
         "rows_with_reported_se": sorted(se_rows),
+        "n_rows_with_reported_sem": len(sem_rows),
+        "rows_with_reported_sem": sorted(sem_rows),
         "external_support_by_calibration_module": external_support,
         "n_direct_F0_freeze_values_recovered": 0,
         "published_data_can_replace_same_context_calibration_package": False,
