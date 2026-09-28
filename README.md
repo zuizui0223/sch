@@ -159,7 +159,10 @@ supplements. These historical data can inform variance, effect scale and field
 feasibility, but recover **0 direct F0 gate values** because they are not the
 same prospectively registered population/season/intervention package. Run
 `python scripts/audit_pedicularis_published_empirical_priors.py` for the
-bounded recovery state.
+bounded recovery state. Directly reported 2016 plant-level SDs now also
+support external paired-difference sensitivity envelopes for P1 pollen and G
+seed predation across explicit within-pair correlation assumptions; these
+remain scenario priors, not observed CAL-C pilot SDs.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
