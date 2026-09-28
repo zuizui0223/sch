@@ -15,14 +15,16 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_five_sources_and_34_measurements() -> None:
+def test_published_empirical_recovery_has_seven_sources_and_63_measurements() -> None:
     result = build()
-    assert result["n_published_sources"] == 5
-    assert result["n_published_measurement_rows"] == 34
+    assert result["n_published_sources"] == 7
+    assert result["n_published_measurement_rows"] == 63
     assert result["measurement_rows_by_source"] == {
+        "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
         "PRX2013_ALLEE": 8,
         "PRX2015_WATER": 15,
+        "PRX2016_NECTAR_DYNAMICS": 28,
         "PRX2016_SELECTION": 10,
     }
 
@@ -52,9 +54,12 @@ def test_2016_supplement_files_are_explicitly_tracked() -> None:
 
 def test_reported_uncertainty_is_preserved_without_inventing_raw_variance() -> None:
     result = build()
-    assert result["n_rows_with_reported_sd"] == 5
+    assert result["n_rows_with_reported_sd"] == 8
     assert set(result["rows_with_reported_sd"]) == {
+        "PRX2007_PO_RATIO_REX",
         "PRX2016_CAPSULES_PER_PLANT",
+        "PRX2016_NECTAR_POOL_SUGAR",
+        "PRX2016_NECTAR_POOL_VOL",
         "PRX2016_OVULES_MEAN",
         "PRX2016_POLLEN_GLM_POOL",
         "PRX2016_POLLEN_MEAN",
@@ -98,3 +103,43 @@ def test_published_data_leave_the_registered_direct_empirical_gaps_open() -> Non
         "independent_seed_predator_exclusion_effect_with_water_y_fixed",
         "independent_G_timing_window_qualified_in_P_rex",
     }
+
+
+def test_focal_p_rex_nectar_dynamics_are_multisite_and_stage_resolved() -> None:
+    priors = _rows(DEFAULT_PRIORS)
+    nectar = [
+        row for row in priors
+        if row["source_id"] == "PRX2016_NECTAR_DYNAMICS"
+    ]
+    assert len(nectar) == 28
+    stage_rows = [
+        row for row in nectar
+        if row["measurement_id"] not in {
+            "PRX2016_NECTAR_POOL_VOL",
+            "PRX2016_NECTAR_POOL_SUGAR",
+        }
+    ]
+    assert len(stage_rows) == 26
+    assert {row["population_scope"] for row in stage_rows} == {
+        "Kunming, Yunnan",
+        "Lijiang, Yunnan",
+        "Daocheng, Sichuan",
+    }
+
+    pooled = {row["measurement_id"]: row for row in nectar}
+    assert pooled["PRX2016_NECTAR_POOL_VOL"]["estimate"] == "1.13"
+    assert pooled["PRX2016_NECTAR_POOL_VOL"]["uncertainty_value"] == "0.68"
+    assert pooled["PRX2016_NECTAR_POOL_SUGAR"]["estimate"] == "33"
+    assert pooled["PRX2016_NECTAR_POOL_SUGAR"]["uncertainty_value"] == "5"
+
+
+def test_focal_p_rex_pollen_ovule_ratio_is_external_context_not_p1_effect() -> None:
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+    po = priors["PRX2007_PO_RATIO_REX"]
+    assert po["estimate"] == "11222.04"
+    assert po["uncertainty_type"] == "SD"
+    assert po["uncertainty_value"] == "4887.18"
+    assert po["direct_freeze_eligible"] == "NO"

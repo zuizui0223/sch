@@ -152,7 +152,7 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 
-Published-data recovery now tracks 5 Pedicularis sources and 34 quantitative
+Published-data recovery now tracks 7 Pedicularis sources and 63 quantitative
 measurement/design rows. The strongest external resources are the public Dryad
 dataset `10.5061/dryad.6cv06` (`raw data.xlsx`) and the 2016 `mcw097`
 supplements. These historical data can inform variance, effect scale and field
@@ -163,6 +163,13 @@ bounded recovery state. Directly reported 2016 plant-level SDs now also
 support external paired-difference sensitivity envelopes for P1 pollen and G
 seed predation across explicit within-pair correlation assumptions; these
 remain scenario priors, not observed CAL-C pilot SDs.
+
+Focal reward-context recovery now also includes P. rex nectar dynamics across
+Kunming, Lijiang and Daocheng. Across 13 stage/population rows, reported nectar
+volume is 1.13±0.68 uL SD and sugar concentration 33±5% SD, with individual
+table rows spanning 0.23–2.50 uL and 26–41% sugar. A separate 2007 study reports
+a P. rex subsp. rex pollen–ovule ratio of 11222.04±4887.18 SD. These are focal
+natural-state measurements, not supplementation effects.
 
 Method recovery also shows that the P0/P1 treatment families do not need to be
 invented from scratch. Pedicularis field studies already demonstrate

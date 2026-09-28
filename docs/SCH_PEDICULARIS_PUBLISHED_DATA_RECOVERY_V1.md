@@ -224,6 +224,40 @@ pollination success in 14 populations.
 The supplement identities are verified but the binary files have not yet been
 ingested in the current environment.
 
+## P. rex nectar dynamics and reproductive allocation
+
+Liu et al. (2016; doi `10.1111/jipb.12374`) measured nectar production
+through flower development in focal P. rex populations at Kunming, Lijiang and
+Daocheng. Table 1 gives 13 exact stage/population rows with 4–6 flowers per row.
+
+Across those rows the authors report:
+
+```text
+nectar volume                 1.13 ± 0.68 uL SD
+nectar sugar concentration      33 ± 5 % SD
+```
+
+Individual rows span:
+
+```text
+volume   0.23–2.50 uL
+sugar    26–41%.
+```
+
+This shows strong natural reward heterogeneity across population/stage and
+explains why the separate 2007 P. rex report of 22% sugar should not be treated
+as a universal species constant.
+
+Yang & Guo (2007; doi `10.1111/j.1744-7909.2007.00398.x`) report for
+P. rex subsp. rex:
+
+```text
+pollen–ovule ratio = 11222.04 ± 4887.18 SD.
+```
+
+These are focal reproductive/pollinator-reward context measurements. Neither is
+a P1 supplementation effect or direct F0 value.
+
 ## Older pollination data
 
 Tang, Xie & Sun 2007 report a nectar sugar concentration of 22% for
@@ -301,8 +335,8 @@ Model-coefficient SE is not silently converted into raw-data SD.
 Current recovery result:
 
 ```text
-published source records          5
-published measurement rows       34
+published source records          7
+published measurement rows       63
 direct F0 gate values recovered   0.
 ```
 
