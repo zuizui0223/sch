@@ -152,14 +152,27 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
-registered contracts; the remaining 35 require independent calibration,
-precision/power work, effect-size justification, or method-pilot evidence.
+registered contracts. The remaining 35 are now organized into three
+nonconfirmatory modules:
+
+```text
+CAL-A  measurement / equivalence / handling calibration   20 gates
+CAL-B  exploratory P/G effects + G timing                  7 gates
+CAL-C  prospective power / precision planning              8 gates
+```
+
+Use `scripts/summarize_pedicularis_calibration_pilots.py` for threshold-free
+pilot summaries and `scripts/validate_pedicularis_cohort_registry.py` to keep
+calibration flowers separate from confirmatory/full-surface rows.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
 ```text
 same population + same season
+CAL-A     measurement/equivalence/handling calibration
+CAL-B     exploratory P/G effects + G timing pilot
+CAL-C     prospective power/precision planning
 Stage F0  freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
 Stage P0  validate >=5 realized exsertion levels
 Stage P1  validate selective pollination-weight supplementation
