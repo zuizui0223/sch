@@ -61,7 +61,14 @@ def _config() -> dict:
     }
 
 
-def _rows(*, early_barrier: bool = False, cover_pollinator_entry: bool = False) -> list[dict[str, str]]:
+def _rows(
+    *,
+    early_barrier: bool = False,
+    cover_pollinator_entry: bool = False,
+    contact_bract_water: bool = False,
+    sagging: bool = False,
+    visible_breach: bool = False,
+) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for plant in range(16):
         for treatment in ("EXPOSED", "EXCLUDED"):
@@ -75,6 +82,23 @@ def _rows(*, early_barrier: bool = False, cover_pollinator_entry: bool = False) 
                     "flower_id": f"P{plant:02d}_{treatment}",
                     "predator_treatment": treatment,
                     "exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE" if not exposed else "SHAM_SLEEVE",
+                    "barrier_material_class": (
+                        "SHAM_MATCHED" if exposed else "SOFT_POROUS_TUBING"
+                    ),
+                    "barrier_material_specification": (
+                        "SHAM_DIALYSIS_LIKE_V1"
+                        if exposed
+                        else "DIALYSIS_LIKE_TUBING_V1"
+                    ),
+                    "barrier_contacts_bract_water": (
+                        "1" if (contact_bract_water and not exposed) else "0"
+                    ),
+                    "barrier_sagging_or_displaced": (
+                        "1" if (sagging and not exposed) else "0"
+                    ),
+                    "visible_barrier_puncture_or_oviposition": (
+                        "1" if (visible_breach and not exposed) else "0"
+                    ),
                     "sham_device_applied": "1" if exposed else "0",
                     "anthesis_time_hours": "0",
                     "barrier_application_time_hours": str(delay),
@@ -110,6 +134,13 @@ def test_timed_post_pollination_method_passes_when_selective() -> None:
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_VALIDATED"
     assert all(result["gates"].values())
     assert result["method_summary"]["exclusion_method"] == "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    assert result["method_summary"]["barrier_material_class"] == "SOFT_POROUS_TUBING"
+    assert result["method_summary"]["barrier_material_specification"] == (
+        "DIALYSIS_LIKE_TUBING_V1"
+    )
+    assert result["method_summary"]["n_barrier_contacts_bract_water"] == 0
+    assert result["method_summary"]["n_barrier_sagging_or_displaced"] == 0
+    assert result["method_summary"]["n_visible_barrier_puncture_or_oviposition"] == 0
     assert result["predator_weight_receipt"]["status"] == "PEDICULARIS_PREDATOR_WEIGHT_VALIDATED"
 
 
@@ -122,4 +153,22 @@ def test_barrier_applied_before_registered_pollination_window_fails() -> None:
 def test_barrier_covering_pollinator_entry_fails() -> None:
     result = evaluate(_rows(cover_pollinator_entry=True), _config())
     assert result["gates"]["method_pollinator_entry_not_covered"] is False
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_barrier_contact_with_bract_water_fails() -> None:
+    result = evaluate(_rows(contact_bract_water=True), _config())
+    assert result["gates"]["method_barrier_does_not_contact_bract_water"] is False
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_sagging_or_displacement_fails() -> None:
+    result = evaluate(_rows(sagging=True), _config())
+    assert result["gates"]["method_barrier_stable"] is False
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_visible_puncture_or_oviposition_through_barrier_fails() -> None:
+    result = evaluate(_rows(visible_breach=True), _config())
+    assert result["gates"]["method_no_visible_barrier_aperture_breach"] is False
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
