@@ -116,6 +116,19 @@ The remaining rows specify the required resolution route rather than a guessed
 value: power/precision, measurement-equivalence calibration, effect-size
 justification, method-feasibility calibration, or a separate G timing pilot.
 
+Those 35 rows are grouped into the three-module programme in
+`docs/SCH_PEDICULARIS_CALIBRATION_PROGRAM_V1.md`:
+
+```text
+CAL-A  20 gates
+CAL-B   7 gates
+CAL-C   8 gates
+```
+
+CAL-A/B pilot rows are descriptive threshold-basis evidence only. They are not
+confirmatory rows and may be summarized before F0 with
+`scripts/summarize_pedicularis_calibration_pilots.py`.
+
 ## Machine enforcement
 
 Shared validation is implemented in:
