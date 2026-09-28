@@ -55,6 +55,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
 
     p0 = sorted(row["prior_id"] for row in rows if "P0" in row["stage"])
     p1 = sorted(row["prior_id"] for row in rows if "P1" in row["stage"])
+    g = sorted(row["prior_id"] for row in rows if "G" in row["stage"])
 
     relative_effects = sorted(
         row["prior_id"]
@@ -106,6 +107,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "p1_prior_rows": p1,
         "n_p0_prior_rows": len(p0),
         "n_p1_prior_rows": len(p1),
+        "g_prior_rows": g,
+        "n_g_prior_rows": len(g),
         "relative_effect_rows": relative_effects,
         "exact_mean_se_rows": exact_mean_se,
         "near_zero_effect_precedents": near_zero_effect_precedents,
@@ -128,6 +131,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "null_and_large_effect_precedents_both_exist",
             "resource_reallocation_and_experimental_unit_change_the_estimand",
             "do_not_pool_all_congeneric_effects_into_one_expected_effect",
+            "preflowering_mesh_timing_precedent_is_not_independent_G_validation",
             "no_row_directly_freezes_F0",
         ],
     }
