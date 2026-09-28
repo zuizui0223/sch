@@ -161,8 +161,10 @@ CAL-B  exploratory P/G effects + G timing                  7 gates
 CAL-C  prospective power / precision planning              8 gates
 ```
 
-CAL-A repeatability infrastructure is implemented; its same-flower calibration
-data are not yet collected. CAL-B target-freeze infrastructure is implemented:
+CAL-A repeatability and target-freeze infrastructure is implemented: 20
+separation/equivalence decisions can be materialized with pilot context and
+13 matched measurement-noise q95 values, then frozen prospectively and
+transferred into CAL-C. Its calibration data are not yet collected. CAL-B target-freeze infrastructure is implemented:
 pilot mean/q05/q95 can be materialized separately from the seven manually
 justified effect/timing targets, and the five effect targets can be transferred
 into CAL-C without filling assumed true effects. CAL-C planning infrastructure is also implemented:
