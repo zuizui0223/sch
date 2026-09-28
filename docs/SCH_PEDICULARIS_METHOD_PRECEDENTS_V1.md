@@ -201,6 +201,25 @@ the manipulated flowers.
 This is a strong handling-control and exclusion-method precedent, but it is
 neither P1 supplementation nor independent seed-predator G.
 
+## G timing precedent within Pedicularis
+
+Menges, Waller & Gawler (1986; doi `10.2307/2443796`) studied
+`Pedicularis furbishiae`. In a spittlebug experiment, immature scapes were
+covered by aluminum-mesh cages and the cages were removed before flowers
+opened. Those scapes later suffered the same level of lepidopteran seed
+predation as other plants, which the authors used to infer that the plume-moth
+seed predator attacked after pollination.
+
+This is useful for the registered G3 timing logic:
+
+```text
+pollination can finish
+-> seed-predator attack can still occur later.
+```
+
+It is not an exclusion-effect precedent because the mesh was removed before
+the seed predator attacked.
+
 ## Same-species antagonist-related precedent
 
 Sun & Huang 2015 manipulated bract water in P. rex and jointly measured visitor
@@ -221,6 +240,7 @@ Method-family uncertainty is substantially reduced:
 P0 non-destructive floral manipulation   CONGENERIC FIELD PRECEDENT
 P1 supplemental hand pollination         >=5 CONGENERIC PRECEDENTS
 flower handling / bagging controls       MULTI-SPECIES PEDICULARIS PRECEDENT
+post-pollination seed-predator timing     PEDICULARIS GENUS PRECEDENT
 visitor contamination auditing           CONGENERIC + P. rex PRECEDENT.
 ```
 

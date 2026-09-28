@@ -193,12 +193,15 @@ Method recovery also shows that the P0/P1 treatment families do not need to be
 invented from scratch. Pedicularis field studies already demonstrate
 non-destructive corolla shortening by bending + clear tape, flower-level
 blocking/bagging controls, and self/outcross pollen supplementation. The P1
-recovery now includes five supplementation precedents, including a
-whole-plant P. monbeigiana experiment with an exact treatment effect
-(F1,304=113.27 for seed set) and explicit resource-reallocation rationale.
-These remain method/effect-scale precedents only: focal P. rex manipulation,
-repeatability, supplementation and independent-G effects remain unmeasured in
-the registered form. Run `python scripts/audit_pedicularis_method_precedents.py`.
+recovery includes five supplementation precedents, including a whole-plant
+P. monbeigiana experiment with an exact treatment effect (F1,304=113.27 for
+seed set). A ninth method precedent now adds within-genus G timing evidence:
+P. furbishiae scapes covered before flowering but uncovered for pollination
+later showed normal lepidopteran seed predation, supporting post-pollination
+attack timing. These remain method/timing precedents only: focal P. rex
+manipulation, repeatability, supplementation and independent-G effects remain
+unmeasured in the registered form. Run
+`python scripts/audit_pedicularis_method_precedents.py`.
 
 A separate congeneric quantitative ledger now contains 19 numerical/design
 rows from four Pedicularis species. It makes the P1 uncertainty concrete:
