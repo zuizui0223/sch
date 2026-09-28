@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import json
 import math
+from pathlib import Path
 
 import pytest
 
 from scripts.build_pedicularis_published_cal_c_sd_scenarios import (
     build,
     paired_difference_sd,
+)
+
+
+ROOT = Path(__file__).resolve().parents[1]
+READOUT = ROOT / "empirical" / "architecture" / "PEDICULARIS_PUBLISHED_CAL_C_SD_SCENARIOS_V1.json"
+
 )
 
 
@@ -82,3 +90,7 @@ def test_invalid_correlation_grid_fails_closed() -> None:
         build(correlations=(0.5, 0.5))
     with pytest.raises(ValueError, match="\(-1, 1\)"):
         build(correlations=(0.0, 1.0))
+
+
+def test_frozen_published_sd_scenario_readout_is_reproducible() -> None:
+    assert build() == json.loads(READOUT.read_text(encoding="utf-8"))
