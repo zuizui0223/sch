@@ -152,14 +152,21 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 
-Published-data recovery now tracks 9 Pedicularis sources and 69 quantitative
+Published-data recovery now tracks 10 Pedicularis sources and 71 quantitative
 measurement/design rows. The strongest external resources are the public Dryad
 dataset `10.5061/dryad.6cv06` (`raw data.xlsx`) and the 2016 `mcw097`
 supplements. These historical data can inform variance, effect scale and field
 feasibility, but recover **0 direct F0 gate values** because they are not the
 same prospectively registered population/season/intervention package. Run
 `python scripts/audit_pedicularis_published_empirical_priors.py` for the
-bounded recovery state. Directly reported 2016 plant-level SDs now also
+bounded recovery state.
+
+A second public raw-data target is now tracked for the natural P state:
+Ye et al. 2024 Figshare `10.6084/m9.figshare.25139777.v1`, a 2018–2022
+plant-bumblebee dataset in which P. rex is represented as `Pere`. The study
+contains 10,598 bumblebees from 13 species across five years, but those are
+community-wide counts; P. rex-specific annual partner/count rows are not
+materialized until the raw Figshare files are actually retrieved. Directly reported 2016 plant-level SDs now also
 support external paired-difference sensitivity envelopes for P1 pollen and G
 seed predation across explicit within-pair correlation assumptions; these
 remain scenario priors, not observed CAL-C pilot SDs.
