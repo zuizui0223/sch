@@ -162,7 +162,10 @@ CAL-C  prospective power / precision planning              8 gates
 ```
 
 CAL-A repeatability infrastructure is implemented; its same-flower calibration
-data are not yet collected. CAL-C planning infrastructure is also implemented:
+data are not yet collected. CAL-B target-freeze infrastructure is implemented:
+pilot mean/q05/q95 can be materialized separately from the seven manually
+justified effect/timing targets, and the five effect targets can be transferred
+into CAL-C without filling assumed true effects. CAL-C planning infrastructure is also implemented:
 pilot SD provenance can be materialized separately from biological targets,
 then a familywise P0/P1/G plan can generate the eight sample-size gates once
 CAL-A/B targets and planning assumptions are prospectively frozen.
