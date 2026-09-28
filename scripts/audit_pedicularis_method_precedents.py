@@ -107,6 +107,23 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         for row in rows
         if "CAL_B" in row["target_stage"]
     )
+    g_method_precedents = sorted(
+        row["precedent_id"]
+        for row in rows
+        if "G" in row["target_stage"]
+    )
+    g_timing_negative_controls = sorted(
+        row["precedent_id"]
+        for row in rows
+        if (
+            "timing" in row["target_stage"].lower()
+            and any(token in row["key_result"].lower() for token in (
+                "same predation level",
+                "after pollination",
+                "did not reduce later",
+            ))
+        )
+    )
 
     same_species = sorted(
         row["precedent_id"]
@@ -130,6 +147,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "n_p1_whole_plant_supplementation_precedents": len(p1_whole_plant_supplementation),
         "cal_a_method_precedents": cal_a,
         "cal_b_method_precedents": cal_b,
+        "g_method_precedents": g_method_precedents,
+        "g_timing_negative_controls": g_timing_negative_controls,
         "same_species_precedents": same_species,
         "n_direct_f0_values": 0,
         "registered_method_gaps_after_recovery": [
@@ -146,6 +165,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "whole_plant_and_within_plant_supplementation_are_alternative_design_precedents_not_interchangeable_estimands",
             "resource_reallocation_bias_must_be_considered_when_selecting_the_P1_unit_of_manipulation",
             "same_species_water_drainage_is_not_independent_G",
+            "preflowering_mesh_negative_control_is_not_successful_seed_predator_exclusion",
             "no_method_precedent_directly_freezes_F0",
         ],
     }
