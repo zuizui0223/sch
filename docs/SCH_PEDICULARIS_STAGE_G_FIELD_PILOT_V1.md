@@ -40,15 +40,22 @@ natural pollination window
 -> maintain normal cupulate-bract water state.
 ```
 
-Candidate materials:
+Primary material classes:
 
 ```text
-fine inert mesh
-soft porous / dialysis-like tubing
-custom lower-flower sleeve.
+A1  soft porous / dialysis-like tubing
+A2  fine inert mesh
 ```
 
-The exact material is not preregistered as successful. It must be selected by this pilot.
+External experiments support both as physical exclusion classes, while also
+showing why they must be compared rather than assumed equivalent: mesh aperture
+can permit piercing/sucking attackers, and wet bag mass can damage delicate
+fruit supports. For every excluded flower record material identity, aperture or
+porosity class, approximate wet-mass class, fixation point and whether the
+barrier contacts the bract-water pool.
+
+A custom lower-flower sleeve is reserved for a second engineering round if A1
+and A2 both fail. No material is preregistered as successful.
 
 ### Method B — local lower-corolla ovipositor barrier
 
@@ -128,7 +135,9 @@ Record:
 water depth / water presence
 bract integrity
 realized exsertion
-mechanical damage.
+mechanical damage
+barrier sagging or displacement when wet
+visible puncture / oviposition through barrier apertures.
 ```
 
 If exclusion changes water retention, that method is rejected even if predation falls.
