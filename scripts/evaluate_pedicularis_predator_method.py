@@ -20,6 +20,11 @@ REQUIRED_FIELDS = (
     "flower_id",
     "predator_treatment",
     "exclusion_method",
+    "barrier_material_class",
+    "barrier_material_specification",
+    "barrier_contacts_bract_water",
+    "barrier_sagging_or_displaced",
+    "visible_barrier_puncture_or_oviposition",
     "sham_device_applied",
     "anthesis_time_hours",
     "barrier_application_time_hours",
@@ -38,6 +43,12 @@ REQUIRED_FIELDS = (
 )
 
 TREATMENTS = ("EXPOSED", "EXCLUDED")
+EXCLUDED_MATERIAL_CLASSES = {
+    "SOFT_POROUS_TUBING",
+    "FINE_INERT_MESH",
+    "CUSTOM_LOCAL_SLEEVE",
+}
+EXPOSED_MATERIAL_CLASS = "SHAM_MATCHED"
 RECEIPT_SCHEMA = "SCH_PEDICULARIS_PREDATOR_METHOD_V3"
 
 
@@ -80,6 +91,17 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         seen.add(row["flower_id"])
         if row["predator_treatment"] not in TREATMENTS:
             raise ValueError("predator_treatment must be EXPOSED or EXCLUDED")
+        material_class = row["barrier_material_class"]
+        if row["predator_treatment"] == "EXCLUDED":
+            if material_class not in EXCLUDED_MATERIAL_CLASSES:
+                raise ValueError(
+                    "EXCLUDED barrier_material_class must be one of "
+                    + ", ".join(sorted(EXCLUDED_MATERIAL_CLASSES))
+                )
+        elif material_class != EXPOSED_MATERIAL_CLASS:
+            raise ValueError(
+                f"EXPOSED barrier_material_class must be {EXPOSED_MATERIAL_CLASS}"
+            )
         for field in (
             "anthesis_time_hours",
             "barrier_application_time_hours",
@@ -93,6 +115,9 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         ):
             _num(row, field)
         for field in (
+            "barrier_contacts_bract_water",
+            "barrier_sagging_or_displaced",
+            "visible_barrier_puncture_or_oviposition",
             "sham_device_applied",
             "pollination_window_complete_before_barrier",
             "ovary_swollen_at_barrier",
@@ -126,6 +151,8 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
         raise ValueError("both EXPOSED and EXCLUDED rows are required")
 
     methods = {row["exclusion_method"] for row in excluded}
+    material_classes = {row["barrier_material_class"] for row in excluded}
+    material_specs = {row["barrier_material_specification"] for row in excluded}
     delays = [_timing_delay(row) for row in excluded]
 
     min_delay = float(cfg["min_hours_after_anthesis_before_barrier"])
@@ -141,6 +168,20 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
 
     gates = {
         "single_exclusion_method": len(methods) == 1,
+        "single_barrier_material_class": len(material_classes) == 1,
+        "single_barrier_material_specification": len(material_specs) == 1,
+        "barrier_does_not_contact_bract_water": all(
+            _binary(row, "barrier_contacts_bract_water") == 0
+            for row in excluded
+        ),
+        "barrier_stable": all(
+            _binary(row, "barrier_sagging_or_displaced") == 0
+            for row in excluded
+        ),
+        "no_visible_barrier_aperture_breach": all(
+            _binary(row, "visible_barrier_puncture_or_oviposition") == 0
+            for row in excluded
+        ),
         "minimum_paired_plants": n_paired >= int(cfg["min_paired_plants"]),
         "minimum_flowers_per_treatment": all(
             counts[t] >= int(cfg["min_flowers_per_treatment"]) for t in TREATMENTS
@@ -166,6 +207,28 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
     }
     summary = {
         "exclusion_method": next(iter(methods)) if len(methods) == 1 else sorted(methods),
+        "barrier_material_class": (
+            next(iter(material_classes))
+            if len(material_classes) == 1
+            else sorted(material_classes)
+        ),
+        "barrier_material_specification": (
+            next(iter(material_specs))
+            if len(material_specs) == 1
+            else sorted(material_specs)
+        ),
+        "n_barrier_contacts_bract_water": sum(
+            _binary(row, "barrier_contacts_bract_water")
+            for row in excluded
+        ),
+        "n_barrier_sagging_or_displaced": sum(
+            _binary(row, "barrier_sagging_or_displaced")
+            for row in excluded
+        ),
+        "n_visible_barrier_puncture_or_oviposition": sum(
+            _binary(row, "visible_barrier_puncture_or_oviposition")
+            for row in excluded
+        ),
         "barrier_delay_hours_min": min(delays),
         "barrier_delay_hours_max": max(delays),
         "n_paired_plants": n_paired,
