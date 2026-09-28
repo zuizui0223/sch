@@ -36,7 +36,10 @@ def _criteria() -> list[dict[str, str]]:
         row["population_id"] = "P_REX_TEST"
         row["season_id"] = "S1"
         row["basis_note"] = "UNIT_TEST_SYNTHETIC_PLANNING_INPUT"
-        if row["direction"] == "LOWER":
+        if row["criterion_type"] == "BINOMIAL_UPPER":
+            row["boundary"] = "0.10"
+            row["assumed_true_value"] = "0.0"
+        elif row["direction"] == "LOWER":
             row["boundary"] = "0.0"
             row["assumed_true_value"] = "1.0"
         else:
