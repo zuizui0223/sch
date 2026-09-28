@@ -205,6 +205,14 @@ def test_repeatability_flowers_must_be_subset_of_p0_cal_a(tmp_path: Path) -> Non
 
 def test_all_calibration_inputs_must_share_context(tmp_path: Path) -> None:
     p=_paths(tmp_path,g_season="S2")
-    with pytest.raises(ValueError,match="contexts must match exactly"):
-        build_package(registry_path=p["registry"],repeatability_path=p["repeatability"],
-                      p0_path=p["p0"],p1_path=p["p1"],g_path=p["g"])
+    with pytest.raises(
+        ValueError,
+        match="population and season|contexts must match exactly",
+    ):
+        build_package(
+            registry_path=p["registry"],
+            repeatability_path=p["repeatability"],
+            p0_path=p["p0"],
+            p1_path=p["p1"],
+            g_path=p["g"],
+        )
