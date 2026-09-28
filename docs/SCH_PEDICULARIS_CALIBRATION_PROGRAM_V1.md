@@ -53,6 +53,17 @@ to power have been frozen.
 
 ## CAL-A — measurement, equivalence and handling
 
+CAL-A begins with a dedicated same-flower repeatability component:
+
+```text
+empirical/architecture/PEDICULARIS_CAL_A_REPEATABILITY_TEMPLATE_V1.csv
+scripts/summarize_pedicularis_cal_a_repeatability.py
+docs/SCH_PEDICULARIS_CAL_A_REPEATABILITY_V1.md
+```
+
+This separates measurement noise from flower-to-flower biological variation
+before any equivalence margin or minimum realized-z separation is frozen.
+
 CAL-A supplies basis evidence for 20 gate fields:
 
 - P0 realized-z separation calibration;
