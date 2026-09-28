@@ -152,7 +152,7 @@ The machine-readable current Pedicularis blocker is
 `PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED`; run
 `python scripts/audit_pedicularis_execution_frontier.py` to verify it.
 
-Published-data recovery now tracks 5 Pedicularis sources and 32 quantitative
+Published-data recovery now tracks 5 Pedicularis sources and 34 quantitative
 measurement/design rows. The strongest external resources are the public Dryad
 dataset `10.5061/dryad.6cv06` (`raw data.xlsx`) and the 2016 `mcw097`
 supplements. These historical data can inform variance, effect scale and field
