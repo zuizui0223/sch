@@ -114,7 +114,7 @@ def _cal_c_plan(
         "sample_size_gate_values": {
             "stage_p0.min_plants": 24,
             "stage_p0.min_flowers_per_level": 120,
-            "pollination_weight.min_paired_plants": 30,
+            "pollination_weight.min_plant_units_per_treatment": 30,
             "pollination_weight.min_flowers_per_treatment": 60,
             "method_gate.min_paired_plants": 36,
             "method_gate.min_flowers_per_treatment": 72,
@@ -239,7 +239,7 @@ def test_every_threshold_basis_records_its_source_layer() -> None:
     assert p0_basis["stage_p0.min_z_levels"].startswith("REGISTERED_CONTRACT:")
     assert p0_basis["stage_p0.min_adjacent_exsertion_gap"].startswith("CAL_A:")
     assert p1_basis["pollination_weight.min_pollen_grain_delta"].startswith("CAL_B:")
-    assert p1_basis["pollination_weight.min_paired_plants"].startswith("CAL_C:")
+    assert p1_basis["pollination_weight.min_plant_units_per_treatment"].startswith("CAL_C:")
     assert "driving_criteria=" in g_basis["predator_weight.min_paired_plants"]
     assert "familywise_basis=" in g_basis["predator_weight.min_paired_plants"]
 
