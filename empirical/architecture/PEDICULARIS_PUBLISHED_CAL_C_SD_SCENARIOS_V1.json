@@ -1,0 +1,142 @@
+{
+  "analysis": "pedicularis_published_cal_c_sd_scenarios_v1",
+  "claim_ceiling": [
+    "external_historical_variance_sensitivity_only",
+    "equal_marginal_variance_assumption_is_explicit",
+    "within_pair_correlation_is_unknown_and_varied",
+    "do_not_write_scenario_sd_into_CAL_C_as_observed_pilot_sd",
+    "replace_with_same_context_calibration_variance_when_available"
+  ],
+  "criterion_summary": {
+    "G_PREDATION": {
+      "correlation_grid": [
+        0,
+        0.25,
+        0.5,
+        0.75
+      ],
+      "gate_path": "predator_weight.min_predation_fraction_reduction",
+      "max_implied_paired_difference_sd": 0.16970562748477142,
+      "min_implied_paired_difference_sd": 0.08485281374238571,
+      "published_marginal_sd": 0.12,
+      "published_measurement_id": "PRX2016_PREDATION_GLM_POOL"
+    },
+    "P1_POLLEN": {
+      "correlation_grid": [
+        0,
+        0.25,
+        0.5,
+        0.75
+      ],
+      "gate_path": "pollination_weight.min_pollen_grain_delta",
+      "max_implied_paired_difference_sd": 7.495331880577404,
+      "min_implied_paired_difference_sd": 3.747665940288702,
+      "published_marginal_sd": 5.3,
+      "published_measurement_id": "PRX2016_POLLEN_GLM_POOL"
+    }
+  },
+  "direct_cal_c_pilot_sd_values_materialized": 0,
+  "direct_f0_values_materialized": 0,
+  "n_criteria_with_external_sd_scenarios": 2,
+  "n_scenarios": 8,
+  "paired_difference_formula": "sd_delta = sd_marginal * sqrt(2 * (1 - rho)) under equal marginal variances",
+  "scenarios": [
+    {
+      "criterion_id": "P1_POLLEN",
+      "gate_path": "pollination_weight.min_pollen_grain_delta",
+      "implied_paired_difference_sd": 7.495331880577404,
+      "published_marginal_metric": "plant-level pollen grains on stigma",
+      "published_marginal_sd": 5.3,
+      "published_measurement_id": "PRX2016_POLLEN_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired supplementation-minus-natural pollen-grain difference",
+      "within_pair_correlation_assumption": 0
+    },
+    {
+      "criterion_id": "P1_POLLEN",
+      "gate_path": "pollination_weight.min_pollen_grain_delta",
+      "implied_paired_difference_sd": 6.491147818375421,
+      "published_marginal_metric": "plant-level pollen grains on stigma",
+      "published_marginal_sd": 5.3,
+      "published_measurement_id": "PRX2016_POLLEN_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired supplementation-minus-natural pollen-grain difference",
+      "within_pair_correlation_assumption": 0.25
+    },
+    {
+      "criterion_id": "P1_POLLEN",
+      "gate_path": "pollination_weight.min_pollen_grain_delta",
+      "implied_paired_difference_sd": 5.3,
+      "published_marginal_metric": "plant-level pollen grains on stigma",
+      "published_marginal_sd": 5.3,
+      "published_measurement_id": "PRX2016_POLLEN_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired supplementation-minus-natural pollen-grain difference",
+      "within_pair_correlation_assumption": 0.5
+    },
+    {
+      "criterion_id": "P1_POLLEN",
+      "gate_path": "pollination_weight.min_pollen_grain_delta",
+      "implied_paired_difference_sd": 3.747665940288702,
+      "published_marginal_metric": "plant-level pollen grains on stigma",
+      "published_marginal_sd": 5.3,
+      "published_measurement_id": "PRX2016_POLLEN_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired supplementation-minus-natural pollen-grain difference",
+      "within_pair_correlation_assumption": 0.75
+    },
+    {
+      "criterion_id": "G_PREDATION",
+      "gate_path": "predator_weight.min_predation_fraction_reduction",
+      "implied_paired_difference_sd": 0.16970562748477142,
+      "published_marginal_metric": "plant-level seed-predation proportion",
+      "published_marginal_sd": 0.12,
+      "published_measurement_id": "PRX2016_PREDATION_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired exposed-minus-excluded seed-predation difference",
+      "within_pair_correlation_assumption": 0
+    },
+    {
+      "criterion_id": "G_PREDATION",
+      "gate_path": "predator_weight.min_predation_fraction_reduction",
+      "implied_paired_difference_sd": 0.14696938456699066,
+      "published_marginal_metric": "plant-level seed-predation proportion",
+      "published_marginal_sd": 0.12,
+      "published_measurement_id": "PRX2016_PREDATION_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired exposed-minus-excluded seed-predation difference",
+      "within_pair_correlation_assumption": 0.25
+    },
+    {
+      "criterion_id": "G_PREDATION",
+      "gate_path": "predator_weight.min_predation_fraction_reduction",
+      "implied_paired_difference_sd": 0.12,
+      "published_marginal_metric": "plant-level seed-predation proportion",
+      "published_marginal_sd": 0.12,
+      "published_measurement_id": "PRX2016_PREDATION_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired exposed-minus-excluded seed-predation difference",
+      "within_pair_correlation_assumption": 0.5
+    },
+    {
+      "criterion_id": "G_PREDATION",
+      "gate_path": "predator_weight.min_predation_fraction_reduction",
+      "implied_paired_difference_sd": 0.08485281374238571,
+      "published_marginal_metric": "plant-level seed-predation proportion",
+      "published_marginal_sd": 0.12,
+      "published_measurement_id": "PRX2016_PREDATION_GLM_POOL",
+      "published_source_id": "PRX2016_SELECTION",
+      "scenario_role": "EXTERNAL_CAL_C_SENSITIVITY_ONLY_NOT_PILOT_SD",
+      "target_metric": "paired exposed-minus-excluded seed-predation difference",
+      "within_pair_correlation_assumption": 0.75
+    }
+  ],
+  "status": "PUBLISHED_SD_SENSITIVITY_SCENARIOS_READY"
+}
