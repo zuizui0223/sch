@@ -61,7 +61,13 @@ def _config() -> dict:
     }
 
 
-def _rows(*, early_barrier: bool = False, cover_pollinator_entry: bool = False) -> list[dict[str, str]]:
+def _rows(
+    *,
+    early_barrier: bool = False,
+    cover_pollinator_entry: bool = False,
+    pre_barrier_attack: bool = False,
+    barrier_integrity_failure: bool = False,
+) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for plant in range(16):
         for treatment in ("EXPOSED", "EXCLUDED"):
@@ -81,8 +87,12 @@ def _rows(*, early_barrier: bool = False, cover_pollinator_entry: bool = False) 
                     "pollination_window_complete_before_barrier": "1",
                     "ovary_swollen_at_barrier": "0",
                     "barrier_covers_pollinator_entry": "1" if (cover_pollinator_entry and not exposed) else "0",
-                    "pre_barrier_attack_present": "0",
-                    "barrier_integrity_failure_present": "0",
+                    "pre_barrier_attack_present": (
+                        "1" if (pre_barrier_attack and not exposed) else "0"
+                    ),
+                    "barrier_integrity_failure_present": (
+                        "1" if (barrier_integrity_failure and not exposed) else "0"
+                    ),
                     "realized_exsertion": "0.50",
                     "water_depth": "10.0",
                     "pollen_grains": "100",
@@ -124,4 +134,19 @@ def test_barrier_applied_before_registered_pollination_window_fails() -> None:
 def test_barrier_covering_pollinator_entry_fails() -> None:
     result = evaluate(_rows(cover_pollinator_entry=True), _config())
     assert result["gates"]["method_pollinator_entry_not_covered"] is False
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+
+def test_pre_barrier_attack_invalidates_method_timing() -> None:
+    result = evaluate(_rows(pre_barrier_attack=True), _config())
+    assert result["gates"]["method_no_attack_before_barrier"] is False
+    assert result["method_summary"]["n_excluded_with_pre_barrier_attack"] == 16
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_barrier_integrity_failure_invalidates_method() -> None:
+    result = evaluate(_rows(barrier_integrity_failure=True), _config())
+    assert result["gates"]["method_barrier_integrity_preserved"] is False
+    assert result["method_summary"]["n_excluded_with_barrier_integrity_failure"] == 16
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
