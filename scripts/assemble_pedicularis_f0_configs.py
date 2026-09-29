@@ -26,7 +26,7 @@ ASSEMBLY_STATUS = "PEDICULARIS_F0_CONFIGS_ASSEMBLED_AND_FROZEN"
 DEFAULT_TEMPLATES = {
     "P0": ROOT / "empirical" / "architecture" / "PEDICULARIS_STAGE_P0_CONFIG_TEMPLATE_V1.json",
     "P1": ROOT / "empirical" / "architecture" / "PEDICULARIS_POLLINATION_WEIGHT_CONFIG_TEMPLATE_V1.json",
-    "G": ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_CONFIG_V3.json",
+    "G": ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_CONFIG_V4.json",
 }
 
 REGISTERED_VALUES = {
