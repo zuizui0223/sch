@@ -41,7 +41,7 @@ pollination-weight receipt
   SCH_PEDICULARIS_POLLINATION_WEIGHT_V1
 
 method-qualified independent predator receipt
-  SCH_PEDICULARIS_PREDATOR_METHOD_V3
+  SCH_PEDICULARIS_PREDATOR_METHOD_V4
 ```
 
 The predator method receipt must include both the antagonist-effect/selectivity result and a method-timing qualification showing that the barrier was applied in a registered post-pollination / pre-ovary-swelling window, or by an equivalently validated local barrier, without covering the pollinator-entry zone.
@@ -174,7 +174,7 @@ pollination_treatment = NATURAL | SUPPLEMENTED
 predator_treatment    = EXPOSED | EXCLUDED.
 ```
 
-`exclusion_method` is retained as provenance. The method itself must already have passed `SCH_PEDICULARIS_PREDATOR_METHOD_V3`.
+`exclusion_method` is retained as provenance. The method itself must already have passed `SCH_PEDICULARIS_PREDATOR_METHOD_V4`.
 
 ## Primary outcome
 
