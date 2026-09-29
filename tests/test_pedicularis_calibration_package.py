@@ -91,6 +91,7 @@ def _g_rows(season: str = "S1") -> list[dict[str, str]]:
                 "anthesis_time_hours":"0","barrier_application_time_hours":"12",
                 "pollination_window_complete_before_barrier":"1",
                 "ovary_swollen_at_barrier":"0","barrier_covers_pollinator_entry":"0",
+                "pre_barrier_attack_present":"0","barrier_integrity_failure_present":"0",
                 "realized_exsertion":"0.50","water_depth":"10.0","pollen_grains":"100",
                 "pollinator_visits":"10","early_predator_attack_present":"1" if exp else "0",
                 "ovule_count":"100","undamaged_seed_count":"50" if exp else "68",
