@@ -184,7 +184,7 @@ receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V4
 status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
 ```
 
-Only this method-qualified V3 receipt can enter:
+Only this method-qualified V4 receipt can enter:
 
 ```text
 SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3.
@@ -220,12 +220,12 @@ handling damage stable.
 ## Decision rule
 
 ```text
-one method passes V3
+one method passes V4
 -> freeze method + timing + tolerances
 -> run same-context P0 / P1 / G3 readiness
 -> only then unlock the full z x P x G surface.
 
-no method passes V3
+no method passes V4
 -> the failure is specifically barrier effectiveness/selectivity or focal timing qualification, not generic post-pollination timing plausibility
 -> Pedicularis is demoted as first-choice causal SCH system
 -> move to Dalechampia / Castilleja rather than reusing water as G.
