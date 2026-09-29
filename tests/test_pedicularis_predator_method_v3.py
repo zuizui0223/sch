@@ -81,6 +81,8 @@ def _rows(*, early_barrier: bool = False, cover_pollinator_entry: bool = False) 
                     "pollination_window_complete_before_barrier": "1",
                     "ovary_swollen_at_barrier": "0",
                     "barrier_covers_pollinator_entry": "1" if (cover_pollinator_entry and not exposed) else "0",
+                    "pre_barrier_attack_present": "0",
+                    "barrier_integrity_failure_present": "0",
                     "realized_exsertion": "0.50",
                     "water_depth": "10.0",
                     "pollen_grains": "100",
