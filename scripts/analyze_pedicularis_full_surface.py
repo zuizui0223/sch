@@ -123,8 +123,8 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
         raise ValueError("V2 readiness receipt lacks the timed predator-method qualification requirement")
     source_receipts = readiness.get("source_receipts", {})
     source_g = source_receipts.get("g", {})
-    if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V3":
-        raise ValueError("V2 readiness must be grounded in the timed independent predator-method V3 receipt")
+    if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V4":
+        raise ValueError("V2 readiness must be grounded in the timed independent predator-method V4 receipt")
     for lane in ("z", "p", "g"):
         source = source_receipts.get(lane, {})
         if source.get("threshold_freeze_status") != FREEZE_STATUS:
