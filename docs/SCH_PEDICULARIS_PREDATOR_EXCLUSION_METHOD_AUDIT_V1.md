@@ -41,14 +41,91 @@ Pedicularis seed predator: the cages had already been removed. It does,
 however, strengthen the temporal premise of G-A by showing within the genus
 that a lepidopteran seed predator can arrive after the pollination phase.
 
-## External method precedents
+## External barrier precedents: three separate evidence axes
 
-Other plant systems demonstrate that the seed-predator lane can be isolated after pollination:
+The external evidence is now split deliberately into **timing**, **fruit-development compatibility**, and **barrier efficacy**. These are not interchangeable claims.
 
-- in `Cypripedium candidum`, flowers were allowed an open-pollination phase, and developing fruits were later enclosed in dialysis tubing to exclude insect damage while fruit/seed development continued;
-- in other predispersal seed-predator systems, mesh sleeves / fruit-stage barriers are used to prevent later oviposition or larval access.
+### 1. Within-genus timing — `Pedicularis furbishiae`
 
-These precedents establish method feasibility at the class level only. They do not validate a Pedicularis-specific device.
+The Menges et al. precedent above supports only the event ordering:
+
+```text
+pollination can finish
+-> a Pedicularis seed predator can attack later.
+```
+
+It does not test a barrier left in place during the predator-access period.
+
+### 2. Fruit-local barrier compatibility — `Cypripedium candidum`
+
+Walsh et al. (2014; doi `10.1093/aobpla/plu031`) used a fruit-local porous barrier after pollination.
+
+In the 2011 experiment:
+
+```text
+N = 30 plants
+initial fruit set scored 2 weeks after floral dehiscence
+all fruits then enclosed in dialysis tubing
+final fruit maturation and seed mass measured afterward.
+```
+
+Final maturation remained measurable:
+
+```text
+self     0.466 ± 0.08 SE
+outcross 0.400 ± 0.08 SE
+open     0.100 ± 0.08 SE.
+```
+
+Seed mass was measured in 29 fruits; outcross/open fruits averaged about 0.027 g and selfed fruits about 0.017 g.
+
+This is strong evidence that a **post-pollination fruit-local porous barrier can coexist with continued fruit development and seed measurement**.
+
+It is **not** a same-year efficacy contrast: all 2011 fruits were shielded, so there is no contemporaneous unshielded predator-control from which to estimate the causal reduction in predation. An earlier 2009 cohort had 73% fruit predation and an 89% seed-mass reduction, but year/site differ.
+
+### 3. Fruit-local barrier efficacy — `Chamaecrista desvauxii`
+
+Baker-Méio & Marquis (2012; doi `10.1111/j.1365-2745.2011.01892.x`) provide a closer efficacy-class precedent.
+
+As developing fruits matured, treated individuals had each fruit enclosed in a mesh bag. Control fruits received brief sham bagging initially and were enclosed only near ripeness for collection.
+
+The experiment showed that fruit-local exclusion could reduce attack without a detectable seed-mass penalty:
+
+```text
+var. 1 sucking attack      LRT = 9.62, P = 0.002
+var. 1 chewing attack      LRT = 7.07, P = 0.008
+var. modesta fruit set     LRT = 19.7, P < 0.001
+seed mass                  no treatment difference, all P > 0.12.
+```
+
+The authors also report that early reproductive investment / pollination rates were not changed by the exclusion treatments.
+
+But the efficacy was imperfect and context-dependent. Two failure modes are directly relevant to P. rex:
+
+```text
+1. some fruits were attacked before they were large enough to bag;
+2. some sucking insects attacked through mesh holes.
+```
+
+Therefore this is a strong **barrier-class efficacy/selectivity precedent**, not a portable effect size or a validated P. rex device.
+
+Machine audit:
+
+```text
+empirical/architecture/PEDICULARIS_G_BARRIER_PRECEDENTS_V1.csv
+scripts/audit_pedicularis_g_barrier_precedents.py
+```
+
+The current three-axis evidence state is:
+
+```text
+Pedicularis post-pollination attack timing       RECOVERED
+fruit-development compatibility of porous barrier RECOVERED OUTSIDE PEDICULARIS
+fruit-local barrier efficacy/selectivity class    RECOVERED OUTSIDE PEDICULARIS
+focal P. rex barrier effectiveness                NOT RECOVERED
+focal P. rex barrier selectivity                   NOT RECOVERED
+focal P. rex timing bounds                         NOT RECOVERED.
+```
 
 ## Candidate methods ranked
 
@@ -67,9 +144,23 @@ Preferred first pilot.
 Potential materials to pilot:
 
 ```text
-fine inert mesh sleeve
+fine inert mesh sleeve with pore size explicitly matched to focal predator access
 soft dialysis / porous tubing
 custom lower-flower sleeve fixed below the pollinator-contact zone.
+```
+
+The external precedents add three mandatory design checks:
+
+```text
+PRE-ATTACK CHECK
+  score whether eggs / punctures are already present before barrier placement;
+
+PORE-SIZE CHECK
+  reject a mesh that still permits ovipositor / sucking access through openings;
+
+DEVELOPMENT-COMPATIBILITY CHECK
+  compare sham versus barrier for swelling, fruit retention, seed mass and
+  mechanical damage rather than assuming porous material is inert.
 ```
 
 This is the strongest route because it exploits sequence rather than trying to make one barrier simultaneously transparent to pollinators and opaque to predators.
@@ -174,9 +265,13 @@ Do not rescue the system by reusing water drainage as `G`; that would restore th
 predator natural-history route:          RECOVERED
 Pedicularis post-pollination attack timing: RECOVERED
 whole-flower exclusion as selective G:   REJECTED
-post-pollination shielding effectiveness: RECOVERED OUTSIDE PEDICULARIS ONLY
-lower-corolla local barrier:             BIOLOGICALLY PLAUSIBLE, UNVALIDATED
-P. rex selective independent G:          NOT YET EXECUTED
+post-pollination attack timing:          RECOVERED WITHIN PEDICULARIS
+fruit-local barrier compatibility:       RECOVERED OUTSIDE PEDICULARIS
+fruit-local barrier efficacy class:      RECOVERED OUTSIDE PEDICULARIS
+P. rex barrier effectiveness/selectivity: NOT YET EXECUTED
+P. rex numeric timing bounds:             NOT YET EXECUTED
+lower-corolla local barrier:              BIOLOGICALLY PLAUSIBLE, UNVALIDATED
+P. rex selective independent G:           NOT YET EXECUTED
 ```
 
 ## Bottom line
