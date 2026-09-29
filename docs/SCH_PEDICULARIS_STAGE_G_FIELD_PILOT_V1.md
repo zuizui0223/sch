@@ -167,6 +167,29 @@ frozen before the confirmatory outcome data are read. Use
 `SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md`, including one basis note
 for every timing, sample-size, effectiveness, and selectivity gate.
 
+## V4 protocol change
+
+The current method receipt is V4.
+
+Relative to historical V3, V4 adds two required observations:
+
+```text
+pre_barrier_attack_present
+barrier_integrity_failure_present
+```
+
+and two fail-closed method gates:
+
+```text
+no_attack_before_barrier
+barrier_integrity_preserved.
+```
+
+These are **method-validity observations**, not new F0 threshold values. The
+registered threshold-basis set therefore remains 19 G gate fields. Historical
+V3 remains a separate protocol artifact and is not accepted by current
+readiness/full-surface analysis.
+
 ## Machine evaluation
 
 Use:
