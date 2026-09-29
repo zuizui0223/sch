@@ -94,6 +94,8 @@ def _g_rows(season: str = "S1") -> list[dict[str, str]]:
                     "pollination_window_complete_before_barrier": "1",
                     "ovary_swollen_at_barrier": "0",
                     "barrier_covers_pollinator_entry": "0",
+                    "pre_barrier_attack_present": "0",
+                    "barrier_integrity_failure_present": "0",
                     "realized_exsertion": "0.50",
                     "water_depth": "10.0",
                     "pollen_grains": "100",
