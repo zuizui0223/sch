@@ -143,6 +143,8 @@ def test_all_three_calibration_lanes_are_summarized_without_threshold_decisions(
 
     gs = result["pilot_summaries"]["G"]
     assert gs["barrier_delay_hours"]["median"] == pytest.approx(12.0)
+    assert gs["excluded_pre_barrier_attack_free_rate"] == pytest.approx(1.0)
+    assert gs["excluded_barrier_integrity_success_rate"] == pytest.approx(1.0)
     assert gs["plant_level_distributions"]["attack_reduction"]["mean"] == pytest.approx(1.0)
     assert gs["plant_level_distributions"]["predation_reduction"]["mean"] > 0
     assert gs["plant_level_distributions"]["final_seed_gain"]["mean"] > 0
