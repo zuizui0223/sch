@@ -71,7 +71,7 @@ empirical/architecture/PEDICULARIS_CALIBRATION_COHORT_TEMPLATE_V1.csv
 empirical/architecture/PEDICULARIS_CAL_A_REPEATABILITY_TEMPLATE_V1.csv
 empirical/architecture/PEDICULARIS_STAGE_P0_EXSERTION_TEMPLATE_V1.csv
 empirical/architecture/PEDICULARIS_POLLINATION_WEIGHT_TEMPLATE_V1.csv
-empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V3.csv.
+empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V4.csv.
 ```
 
 ## Build
