@@ -88,11 +88,37 @@ barrier application time
 whether the preregistered natural-pollination window was completed
 whether ovary swelling had begun at barrier application
 whether the barrier covered the pollinator-entry zone
+whether attack / puncture / oviposition evidence was already present before barrier placement
+whether the barrier later showed an integrity/access failure
 barrier removal time if removed
 exclusion_method identifier.
 ```
 
 Do not infer an hour-scale window from the congeneric timing precedent. It supports the ordering of events only. Estimate the earliest post-pollination application time and latest effective pre-swelling application time in focal P. rex, then freeze those bounds before confirmatory Stage G.
+
+## Barrier timing and integrity checks
+
+The recovered external barrier literature adds two hard method-validity checks
+that are not biological effect-size thresholds:
+
+```text
+pre_barrier_attack_present = 0
+barrier_integrity_failure_present = 0
+```
+
+for every EXCLUDED focal flower entering a positive method receipt.
+
+Why:
+
+- a barrier applied after attack has already begun cannot identify the full
+  predator-exclusion contrast;
+- a sleeve with a pore / seal / placement failure may look like a biological
+  non-response even when the material class itself could work.
+
+Record these observations independently of the later
+`early_predator_attack_present` endpoint. The former describes the state at
+treatment start / barrier integrity; the latter is a post-treatment antagonist
+outcome.
 
 ## Pollination checks
 
@@ -177,6 +203,8 @@ barrier applied before the registered late cutoff
 pollination window complete
 ovary not yet swollen
 pollinator-entry zone not covered
+no attack already present before EXCLUDED barrier application
+barrier integrity maintained / no visible access failure
 EXPOSED control receives matched sham handling
 predator attack reduced
 seed predation reduced
