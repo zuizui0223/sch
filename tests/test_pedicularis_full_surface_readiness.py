@@ -41,7 +41,7 @@ def _p() -> dict:
 
 def _g() -> dict:
     receipt = _receipt(
-        "SCH_PEDICULARIS_PREDATOR_METHOD_V3",
+        "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
         "PEDICULARIS_PREDATOR_METHOD_VALIDATED",
         "G",
     )
