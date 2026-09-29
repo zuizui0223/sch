@@ -1,0 +1,59 @@
+{
+  "bootstrap_reps": 2000,
+  "random_seed": 20260905,
+  "method_gate": {
+    "min_paired_plants": "REQUIRED_BEFORE_USE",
+    "min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
+    "min_hours_after_anthesis_before_barrier": "REQUIRED_BEFORE_USE",
+    "max_hours_after_anthesis_before_barrier": "REQUIRED_BEFORE_USE",
+    "require_pollination_window_complete": true,
+    "require_ovary_not_swollen": true,
+    "require_barrier_not_cover_pollinator_entry": true,
+    "require_sham_on_exposed": true
+  },
+  "predator_weight": {
+    "min_paired_plants": "REQUIRED_BEFORE_USE",
+    "min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
+    "min_early_attack_reduction": "REQUIRED_BEFORE_USE",
+    "min_predation_fraction_reduction": "REQUIRED_BEFORE_USE",
+    "min_final_seed_set_gain": "REQUIRED_BEFORE_USE",
+    "max_initial_seed_set_difference": "REQUIRED_BEFORE_USE",
+    "max_pollen_grain_relative_change": "REQUIRED_BEFORE_USE",
+    "max_pollinator_visit_relative_change": "REQUIRED_BEFORE_USE",
+    "max_z_relative_change": "REQUIRED_BEFORE_USE",
+    "max_water_depth_change": "REQUIRED_BEFORE_USE",
+    "max_damage_rate_difference": "REQUIRED_BEFORE_USE"
+  },
+  "status": "TEMPLATE_ONLY_V4_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN",
+  "prospective_freeze": {
+    "schema": "SCH_PEDICULARIS_THRESHOLD_FREEZE_V1",
+    "status": "REQUIRED_BEFORE_USE",
+    "lane": "G",
+    "population_id": "REQUIRED_BEFORE_USE",
+    "season_id": "REQUIRED_BEFORE_USE",
+    "frozen_before_confirmatory_data": "REQUIRED_BEFORE_USE",
+    "frozen_at_utc": "REQUIRED_BEFORE_USE",
+    "basis_document": "REQUIRED_BEFORE_USE",
+    "threshold_basis": {
+      "method_gate.min_paired_plants": "REQUIRED_BEFORE_USE",
+      "method_gate.min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
+      "method_gate.min_hours_after_anthesis_before_barrier": "REQUIRED_BEFORE_USE",
+      "method_gate.max_hours_after_anthesis_before_barrier": "REQUIRED_BEFORE_USE",
+      "method_gate.require_pollination_window_complete": "REQUIRED_BEFORE_USE",
+      "method_gate.require_ovary_not_swollen": "REQUIRED_BEFORE_USE",
+      "method_gate.require_barrier_not_cover_pollinator_entry": "REQUIRED_BEFORE_USE",
+      "method_gate.require_sham_on_exposed": "REQUIRED_BEFORE_USE",
+      "predator_weight.min_paired_plants": "REQUIRED_BEFORE_USE",
+      "predator_weight.min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
+      "predator_weight.min_early_attack_reduction": "REQUIRED_BEFORE_USE",
+      "predator_weight.min_predation_fraction_reduction": "REQUIRED_BEFORE_USE",
+      "predator_weight.min_final_seed_set_gain": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_initial_seed_set_difference": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_pollen_grain_relative_change": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_pollinator_visit_relative_change": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_z_relative_change": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_water_depth_change": "REQUIRED_BEFORE_USE",
+      "predator_weight.max_damage_rate_difference": "REQUIRED_BEFORE_USE"
+    }
+  }
+}
