@@ -34,7 +34,7 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
                 "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
             },
             "g": {
-                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V3",
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
                 "status": "PEDICULARIS_PREDATOR_METHOD_VALIDATED",
                 "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
             },
@@ -122,7 +122,7 @@ def test_v2_mapping_recovers_non_circular_pedicularis_compromise_surface() -> No
     assert mapping["G0"] == "SEED_PREDATOR_INDEPENDENTLY_EXCLUDED"
     assert mapping["G1"] == "SEED_PREDATOR_EXPOSED"
     assert mapping["water_y"] == "HELD_FIXED_ACROSS_ALL_SCH_CELLS"
-    assert result["readiness_reference"]["g_schema"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V3"
+    assert result["readiness_reference"]["g_schema"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V4"
     assert "POLLINATOR_ACCESS_PRESERVED" in result["readiness_reference"]["predator_method_requirement"]
     est = result["observed_estimands"]
     assert abs(est["z_pollinator_context"] - 2.0) < 1e-8
@@ -154,7 +154,7 @@ def test_v2_rejects_predator_weight_without_method_qualification() -> None:
         "schema": "SCH_PEDICULARIS_PREDATOR_WEIGHT_V2",
         "status": "PEDICULARIS_PREDATOR_WEIGHT_VALIDATED",
     }
-    with pytest.raises(ValueError, match="predator-method V3"):
+    with pytest.raises(ValueError, match="predator-method V4"):
         analyze(_rows(), receipt, _config())
 
 

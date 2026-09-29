@@ -75,7 +75,7 @@ If material is sufficient, add:
 EXCLUDED + Method B
 ```
 
-Method comparison is exploratory. The confirmatory Stage-G receipt must use a single prospectively chosen method.
+Method comparison is exploratory. The confirmatory Stage-G V4 receipt must use a single prospectively chosen method.
 
 ## Timing records
 
@@ -167,24 +167,47 @@ frozen before the confirmatory outcome data are read. Use
 `SCH_PEDICULARIS_THRESHOLD_FREEZE_CONTRACT_V1.md`, including one basis note
 for every timing, sample-size, effectiveness, and selectivity gate.
 
+## V4 protocol change
+
+The current method receipt is V4.
+
+Relative to historical V3, V4 adds two required observations:
+
+```text
+pre_barrier_attack_present
+barrier_integrity_failure_present
+```
+
+and two fail-closed method gates:
+
+```text
+no_attack_before_barrier
+barrier_integrity_preserved.
+```
+
+These are **method-validity observations**, not new F0 threshold values. The
+registered threshold-basis set therefore remains 19 G gate fields. Historical
+V3 remains a separate protocol artifact and is not accepted by current
+readiness/full-surface analysis.
+
 ## Machine evaluation
 
 Use:
 
 ```text
-empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V3.csv
-empirical/architecture/PEDICULARIS_PREDATOR_METHOD_CONFIG_V3.json
+empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V4.csv
+empirical/architecture/PEDICULARIS_PREDATOR_METHOD_CONFIG_V4.json
 scripts/evaluate_pedicularis_predator_method.py
 ```
 
 The output must be:
 
 ```text
-receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V3
+receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V4
 status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
 ```
 
-Only this method-qualified V3 receipt can enter:
+Only this method-qualified V4 receipt can enter:
 
 ```text
 SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3.
@@ -220,12 +243,12 @@ handling damage stable.
 ## Decision rule
 
 ```text
-one method passes V3
+one method passes V4
 -> freeze method + timing + tolerances
 -> run same-context P0 / P1 / G3 readiness
 -> only then unlock the full z x P x G surface.
 
-no method passes V3
+no method passes V4
 -> the failure is specifically barrier effectiveness/selectivity or focal timing qualification, not generic post-pollination timing plausibility
 -> Pedicularis is demoted as first-choice causal SCH system
 -> move to Dalechampia / Castilleja rather than reusing water as G.

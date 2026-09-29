@@ -152,7 +152,7 @@ scripts/evaluate_pedicularis_predator_method.py
 The required receipt is:
 
 ```text
-receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V3
+receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V4
 status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
 ```
 
@@ -176,7 +176,7 @@ The corrected full surface is unlocked only when one population and season produ
 ```text
 SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1
 + SCH_PEDICULARIS_POLLINATION_WEIGHT_V1
-+ SCH_PEDICULARIS_PREDATOR_METHOD_V3
++ SCH_PEDICULARIS_PREDATOR_METHOD_V4
 -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3.
 ```
 
@@ -346,7 +346,7 @@ CAL-B exploratory P/G effect + G timing calibration:      NOT YET EXECUTED
 CAL-C prospective power/precision planning:               NOT YET EXECUTED
 P. rex multi-level z validation:                        NOT YET EXECUTED
 P. rex pollination-weight validation:                   NOT YET EXECUTED
-independent predator-method V3 validation:               NOT YET EXECUTED
+independent predator-method V4 validation:               NOT YET EXECUTED
 corrected V2 full causal z x P x G surface:             NOT YET EXECUTED
 biological fitness-scale L receipt:                     NOT YET EXECUTED.
 ```

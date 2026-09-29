@@ -182,7 +182,7 @@ G1 = PREDATOR_EXPOSED
 Required method receipt:
 
 ```text
-SCH_PEDICULARIS_PREDATOR_METHOD_V3
+SCH_PEDICULARIS_PREDATOR_METHOD_V4
 status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
 ```
 
@@ -330,7 +330,7 @@ Independent antagonist method:
 
 ```text
 scripts/evaluate_pedicularis_predator_method.py
-receipt = SCH_PEDICULARIS_PREDATOR_METHOD_V3.
+receipt = SCH_PEDICULARIS_PREDATOR_METHOD_V4.
 ```
 
 Readiness assembly:

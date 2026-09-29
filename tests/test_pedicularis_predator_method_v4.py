@@ -9,8 +9,8 @@ from scripts.pedicularis_config_freeze import required_gate_paths
 
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATE = ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V3.csv"
-CONFIG = ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_CONFIG_V3.json"
+TEMPLATE = ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V4.csv"
+CONFIG = ROOT / "empirical" / "architecture" / "PEDICULARIS_PREDATOR_METHOD_CONFIG_V4.json"
 
 
 def _freeze(lane: str) -> dict:
@@ -118,7 +118,7 @@ def test_template_and_config_are_fail_closed() -> None:
 
 def test_timed_post_pollination_method_passes_when_selective() -> None:
     result = evaluate(_rows(), _config())
-    assert result["receipt_schema_version"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V3"
+    assert result["receipt_schema_version"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V4"
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_VALIDATED"
     assert all(result["gates"].values())
     assert result["method_summary"]["exclusion_method"] == "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
