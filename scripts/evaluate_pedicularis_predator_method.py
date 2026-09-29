@@ -26,6 +26,8 @@ REQUIRED_FIELDS = (
     "pollination_window_complete_before_barrier",
     "ovary_swollen_at_barrier",
     "barrier_covers_pollinator_entry",
+    "pre_barrier_attack_present",
+    "barrier_integrity_failure_present",
     "realized_exsertion",
     "water_depth",
     "pollen_grains",
@@ -97,6 +99,8 @@ def read_rows(path: Path) -> list[dict[str, str]]:
             "pollination_window_complete_before_barrier",
             "ovary_swollen_at_barrier",
             "barrier_covers_pollinator_entry",
+            "pre_barrier_attack_present",
+            "barrier_integrity_failure_present",
             "early_predator_attack_present",
             "mechanical_damage",
         ):
@@ -159,6 +163,14 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
             not bool(cfg.get("require_barrier_not_cover_pollinator_entry", True))
             or all(_binary(row, "barrier_covers_pollinator_entry") == 0 for row in excluded)
         ),
+        "no_attack_before_barrier": all(
+            _binary(row, "pre_barrier_attack_present") == 0
+            for row in excluded
+        ),
+        "barrier_integrity_preserved": all(
+            _binary(row, "barrier_integrity_failure_present") == 0
+            for row in excluded
+        ),
         "exposed_has_sham_handling": (
             not bool(cfg.get("require_sham_on_exposed", True))
             or all(_binary(row, "sham_device_applied") == 1 for row in exposed)
@@ -170,6 +182,14 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
         "barrier_delay_hours_max": max(delays),
         "n_paired_plants": n_paired,
         "n_by_treatment": counts,
+        "n_excluded_with_pre_barrier_attack": sum(
+            _binary(row, "pre_barrier_attack_present")
+            for row in excluded
+        ),
+        "n_excluded_with_barrier_integrity_failure": sum(
+            _binary(row, "barrier_integrity_failure_present")
+            for row in excluded
+        ),
     }
     return gates, summary
 

@@ -346,6 +346,14 @@ def _summarize_g(path: Path) -> tuple[dict, tuple[str, str]]:
             1 - int(row["barrier_covers_pollinator_entry"])
             for row in excluded
         ),
+        "excluded_pre_barrier_attack_free_rate": mean(
+            1 - int(row["pre_barrier_attack_present"])
+            for row in excluded
+        ),
+        "excluded_barrier_integrity_success_rate": mean(
+            1 - int(row["barrier_integrity_failure_present"])
+            for row in excluded
+        ),
         "plant_level_distributions": {
             field: _summary([float(row[field]) for row in pairs])
             for field in pair_fields

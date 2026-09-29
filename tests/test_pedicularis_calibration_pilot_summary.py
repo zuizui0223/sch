@@ -94,6 +94,8 @@ def _g_rows(season: str = "S1") -> list[dict[str, str]]:
                     "pollination_window_complete_before_barrier": "1",
                     "ovary_swollen_at_barrier": "0",
                     "barrier_covers_pollinator_entry": "0",
+                    "pre_barrier_attack_present": "0",
+                    "barrier_integrity_failure_present": "0",
                     "realized_exsertion": "0.50",
                     "water_depth": "10.0",
                     "pollen_grains": "100",
@@ -141,6 +143,8 @@ def test_all_three_calibration_lanes_are_summarized_without_threshold_decisions(
 
     gs = result["pilot_summaries"]["G"]
     assert gs["barrier_delay_hours"]["median"] == pytest.approx(12.0)
+    assert gs["excluded_pre_barrier_attack_free_rate"] == pytest.approx(1.0)
+    assert gs["excluded_barrier_integrity_success_rate"] == pytest.approx(1.0)
     assert gs["plant_level_distributions"]["attack_reduction"]["mean"] == pytest.approx(1.0)
     assert gs["plant_level_distributions"]["predation_reduction"]["mean"] > 0
     assert gs["plant_level_distributions"]["final_seed_gain"]["mean"] > 0
