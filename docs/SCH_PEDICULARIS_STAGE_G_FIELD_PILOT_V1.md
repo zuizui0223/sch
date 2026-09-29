@@ -75,7 +75,7 @@ If material is sufficient, add:
 EXCLUDED + Method B
 ```
 
-Method comparison is exploratory. The confirmatory Stage-G receipt must use a single prospectively chosen method.
+Method comparison is exploratory. The confirmatory Stage-G V4 receipt must use a single prospectively chosen method.
 
 ## Timing records
 
@@ -172,15 +172,15 @@ for every timing, sample-size, effectiveness, and selectivity gate.
 Use:
 
 ```text
-empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V3.csv
-empirical/architecture/PEDICULARIS_PREDATOR_METHOD_CONFIG_V3.json
+empirical/architecture/PEDICULARIS_PREDATOR_METHOD_TEMPLATE_V4.csv
+empirical/architecture/PEDICULARIS_PREDATOR_METHOD_CONFIG_V4.json
 scripts/evaluate_pedicularis_predator_method.py
 ```
 
 The output must be:
 
 ```text
-receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V3
+receipt_schema_version = SCH_PEDICULARIS_PREDATOR_METHOD_V4
 status = PEDICULARIS_PREDATOR_METHOD_VALIDATED.
 ```
 
