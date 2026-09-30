@@ -22,9 +22,10 @@ python scripts/audit_pedicularis_focal_direct_evidence_search.py
 
 ```text
 registered P1 supplementation effect       NOT RECOVERED
-Pedicularis post-pollination attack timing  RECOVERED
-P. rex post-pollination barrier validation  NOT RECOVERED
-registered independent G                    NOT RECOVERED
+Pedicularis post-pollination attack timing         RECOVERED
+Pedicularis physical-barrier efficacy               RECOVERED
+natural-pollination-preserving P. rex barrier       NOT RECOVERED
+registered independent G                            NOT RECOVERED
 same-flower CAL-A repeatability             NOT RECOVERED
 focal >=5-level P0 manipulation             NOT RECOVERED.
 ```
@@ -125,6 +126,32 @@ The precedent supports temporal plausibility only. Because the mesh was removed
 before flowering, it did not test whether leaving a barrier on after pollination
 would selectively exclude the predator.
 
+### Eriksen, Molau & Svensson 1993 — P. lapponica barrier efficacy
+
+A second within-genus result closes a different part of the method question.
+Individual `P. lapponica` ramets were enclosed from bud stage in white
+nylon-stocking cages and selected flowers were hand-pollinated inside the
+cages. The authors explicitly report **no seed predation in caged plants**,
+while naturally exposed populations in the same study had approximately
+13.9–37.1% attacked capsules across sampled site-years.
+
+This changes the G evidence frontier again:
+
+```text
+Pedicularis post-pollination attack timing              RECOVERED
+Pedicularis physical-barrier efficacy                    RECOVERED
+barrier + natural bumblebee pollination simultaneously   NOT RECOVERED
+focal P. rex device effectiveness/selectivity            NOT RECOVERED
+focal P. rex timing qualification                        NOT RECOVERED
+registered independent G                                 NOT RECOVERED
+```
+
+The efficacy result is not selective G because the cage excluded natural
+visitors and pollination was replaced by hand crossing. The remaining focal
+question is therefore specifically whether a late/local P. rex barrier can
+reduce predator access **while preserving natural bumblebee pollination and
+water-y**.
+
 ## CAL-A repeatability
 
 Sun et al. 2016 measured two different flowers from different whorls on each
@@ -149,8 +176,9 @@ off-target checks was recovered.
    treatment exactly.
 2. Tang 2011 thesis full text to check for any focal predator-access
    manipulation beyond the already recovered timing natural history.
-3. A focal P. rex post-pollination barrier pilot: the literature now supports
-   timing plausibility more strongly than barrier effectiveness.
+3. A focal P. rex post-pollination barrier pilot: within-genus barrier
+   efficacy is now supported, but natural-pollination-preserving selectivity is
+   still unmeasured.
 4. Dryad `10.5061/dryad.6cv06/raw data.xlsx` for raw focal seed-outcome
    distributions.
 5. 2016 `mcw097` supplements and Wang 1998 PDF for remaining focal context
