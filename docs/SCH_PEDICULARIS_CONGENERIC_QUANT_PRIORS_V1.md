@@ -24,10 +24,10 @@ python scripts/audit_pedicularis_congeneric_quantitative_priors.py
 Current bounded state:
 
 ```text
-19 quantitative prior rows
-4 Pedicularis species
+27 quantitative prior rows
+6 Pedicularis species
 P0 rows   5
-P1 rows  14
+P1 rows  22
 direct P. rex effect rows  0
 direct F0 values           0.
 ```
@@ -106,6 +106,49 @@ The plot-type x treatment interaction for seed set was F=18.13, P<=0.001.
 
 Thus the same genus contains both near-zero and large supplementation effects.
 A single congeneric expected effect is not biologically defensible.
+
+## P1 — hand-pollination response and whole-plant context
+
+### P. dunniana — quantitative hand-pollination response
+
+Sun et al. (2005) report:
+
+```text
+natural pollination       seed set 54.2%
+hand self-pollination     seed set 63.1%
+hand cross-pollination    seed set 67.2%
+
+ANOVA F = 115.08, df = 2,15, P < 0.001.
+```
+
+This demonstrates that hand pollen addition can increase seed set within
+`Pedicularis`. It is kept separate from the open-flower supplementation family:
+`P. dunniana` is strongly autogamous and the contrast is a breeding-system /
+pollen-limitation assay rather than the exact registered P. rex P1 intervention.
+
+### P. palustris — whole-plant pollinator dependence can coexist with scale-dependent limitation
+
+Karrenberg & Jensen (2000) compared pollinator exclosure, hand pollination and
+natural pollination at the whole-plant level in one large and one small
+population.
+
+Published quantitative context includes:
+
+```text
+pollinator exclosure seed set   <15% of natural seed set
+self-compatibility               61% and 97% of within-population cross seed set
+maximum simultaneously open flowers
+  small population               31%
+  large population               13%.
+```
+
+Natural pollination was sufficient for maximum **seed production per plant**,
+yet seed set **per capsule** was pollen-limited in the smaller population.
+
+That distinction matters for P1 design: whole-plant reproductive output and
+capsule-level pollen limitation can disagree even in the same system. The
+registered P. rex endpoint and experimental unit must therefore be frozen
+before effect targets are chosen.
 
 ## P1 — pollination context also varies strongly
 
