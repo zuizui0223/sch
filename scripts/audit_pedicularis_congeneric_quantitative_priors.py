@@ -94,6 +94,12 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "PCQ_P1_DENSISPICA_VISITS_PURE",
             "PCQ_P1_DENSISPICA_PL_S",
         ],
+        "bagged_or_hand_pollination_pollen_limitation": [
+            "PCQ_P1_DUNN2005_NATURAL",
+            "PCQ_P1_DUNN2005_HAND_SELF",
+            "PCQ_P1_DUNN2005_HAND_CROSS",
+            "PCQ_P1_DUNN2005_POLLEN_LIMIT_F",
+        ],
     }
 
     return {
@@ -126,6 +132,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "quantitative_external_prior_only",
             "congeneric_effects_are_not_P_rex_effects",
             "null_and_large_effect_precedents_both_exist",
+            "hand_pollination_pollen_limitation_is_not_identical_to_open_supplementation",
             "resource_reallocation_and_experimental_unit_change_the_estimand",
             "do_not_pool_all_congeneric_effects_into_one_expected_effect",
             "no_row_directly_freezes_F0",
