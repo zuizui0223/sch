@@ -24,10 +24,10 @@ python scripts/audit_pedicularis_congeneric_quantitative_priors.py
 Current bounded state:
 
 ```text
-19 quantitative prior rows
-4 Pedicularis species
+23 quantitative prior rows
+5 Pedicularis species
 P0 rows   5
-P1 rows  14
+P1 rows  18
 direct P. rex effect rows  0
 direct F0 values           0.
 ```
@@ -106,6 +106,28 @@ The plot-type x treatment interaction for seed set was F=18.13, P<=0.001.
 
 Thus the same genus contains both near-zero and large supplementation effects.
 A single congeneric expected effect is not biologically defensible.
+
+## P1 — direct hand-pollination response precedent
+
+Sun et al. (2005) provide another quantitative Pedicularis pollen-limitation
+experiment in `P. dunniana`:
+
+```text
+natural pollination       seed set 54.2%
+hand self-pollination     seed set 63.1%
+hand cross-pollination    seed set 67.2%
+
+ANOVA F = 115.08, df = 2,15, P < 0.001.
+```
+
+This is useful because it demonstrates directly that hand pollen addition can
+increase seed set within Pedicularis. It is kept separate from the open-flower
+supplementation family: `P. dunniana` is strongly autogamous and the published
+comparison is a breeding-system / pollen-limitation assay, not the exact
+registered P. rex P1 intervention.
+
+The result therefore broadens the empirical response range without supplying a
+portable P. rex target.
 
 ## P1 — pollination context also varies strongly
 
