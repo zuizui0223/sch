@@ -1,14 +1,15 @@
 from scripts.audit_pedicularis_g_barrier_precedents import build
 
 
-def test_g_barrier_precedent_ledger_has_three_distinct_evidence_axes() -> None:
+def test_g_barrier_precedent_ledger_has_four_distinct_evidence_axes() -> None:
     result = build()
 
-    assert result["n_precedents"] == 3
-    assert result["n_species"] == 3
+    assert result["n_precedents"] == 4
+    assert result["n_species"] == 4
     assert result["evidence_axis_counts"] == {
         "POSTPOLLINATION_FRUIT_BARRIER_COMPATIBILITY": 1,
         "POSTPOLLINATION_FRUIT_LOCAL_BARRIER_EFFICACY": 1,
+        "WITHIN_GENUS_BARRIER_EFFICACY_POLLINATION_REPLACED": 1,
         "WITHIN_GENUS_POSTPOLLINATION_ATTACK_TIMING": 1,
     }
 
@@ -17,6 +18,8 @@ def test_timing_compatibility_and_efficacy_are_all_recovered_but_external() -> N
     result = build()
 
     assert result["within_genus_postpollination_attack_timing_recovered"] is True
+    assert result["within_genus_barrier_efficacy_recovered"] is True
+    assert result["within_genus_barrier_preserved_natural_pollination"] is False
     assert (
         result["external_postpollination_fruit_barrier_compatibility_recovered"]
         is True
@@ -60,4 +63,14 @@ def test_current_g_bottleneck_is_focal_barrier_validation() -> None:
     )
     assert "external_barrier_efficacy_is_not_P_rex_efficacy" in (
         result["claim_ceiling"]
+    )
+
+
+def test_lapponica_is_barrier_efficacy_but_not_selective_natural_pollination_g() -> None:
+    result = build()
+    assert result["within_genus_barrier_efficacy_recovered"] is True
+    assert result["within_genus_barrier_preserved_natural_pollination"] is False
+    assert (
+        "within_genus_barrier_efficacy_with_hand_pollination_is_not_selective_natural_pollination_G"
+        in result["claim_ceiling"]
     )
