@@ -43,7 +43,7 @@ def test_search_audit_distinguishes_recovery_from_absence_claim() -> None:
 
 def test_g_timing_is_recovered_but_barrier_effectiveness_is_not() -> None:
     result = build()
-    assert result["n_independent_g_sources_checked"] == 5
+    assert result["n_independent_g_sources_checked"] == 6
     assert result["pedicularis_postpollination_attack_timing_recovered"] is True
     assert result["pedicularis_within_genus_barrier_efficacy_recovered"] is True
     assert (
