@@ -94,6 +94,12 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "PCQ_P1_DENSISPICA_VISITS_PURE",
             "PCQ_P1_DENSISPICA_PL_S",
         ],
+        "whole_plant_exclosure_hand_natural_context": [
+            "PCQ_P1_PALUSTRIS_EXCLOSURE",
+            "PCQ_P1_PALUSTRIS_SELF_COMPAT_LOW",
+            "PCQ_P1_PALUSTRIS_SELF_COMPAT_HIGH",
+            "PCQ_P1_PALUSTRIS_DISPLAY",
+        ],
     }
 
     return {
@@ -128,6 +134,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "null_and_large_effect_precedents_both_exist",
             "resource_reallocation_and_experimental_unit_change_the_estimand",
             "do_not_pool_all_congeneric_effects_into_one_expected_effect",
+            "whole_plant_seed_production_and_capsule_level_pollen_limitation_can_diverge",
             "no_row_directly_freezes_F0",
         ],
     }
