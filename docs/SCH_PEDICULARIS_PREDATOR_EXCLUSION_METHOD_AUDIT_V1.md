@@ -41,9 +41,9 @@ Pedicularis seed predator: the cages had already been removed. It does,
 however, strengthen the temporal premise of G-A by showing within the genus
 that a lepidopteran seed predator can arrive after the pollination phase.
 
-## External barrier precedents: three separate evidence axes
+## External barrier precedents: four separate evidence axes
 
-The external evidence is now split deliberately into **timing**, **fruit-development compatibility**, and **barrier efficacy**. These are not interchangeable claims.
+The external evidence is now split deliberately into **within-genus timing**, **within-genus barrier efficacy with pollination replaced**, **fruit-development compatibility**, and **fruit-local selective efficacy**. These are not interchangeable claims.
 
 ### 1. Within-genus timing — `Pedicularis furbishiae`
 
@@ -56,7 +56,38 @@ pollination can finish
 
 It does not test a barrier left in place during the predator-access period.
 
-### 2. Fruit-local barrier compatibility — `Cypripedium candidum`
+### 2. Within-genus barrier efficacy with pollination replaced — `Pedicularis lapponica`
+
+Eriksen, Molau & Svensson (1993; doi `10.1111/j.1600-0587.1993.tb00067.x`) provide a second within-genus precedent that is stronger on barrier efficacy but weaker on selectivity.
+
+For crossing experiments, individual `P. lapponica` ramets were enclosed **in bud stage** using cages made from white nylon stocking, iron thread and a stick. Natural visitors were therefore excluded, and selected flowers were hand-pollinated inside the cages.
+
+The authors explicitly report:
+
+```text
+No seed predation was recorded in caged plants.
+```
+
+In natural populations in the same study, attacked capsules ranged from approximately:
+
+```text
+13.9% to 37.1%
+```
+
+across sampled P. lapponica site-years, with substantial seed loss in the uncaged field populations.
+
+This is the first recovered **Pedicularis barrier-efficacy** precedent: a physical cage can prevent attack by Pedicularis seed predators while hand pollination still permits fruit/seed development.
+
+But it is not selective SCH G, because:
+
+```text
+natural pollinator access = blocked
+pollination lane          = experimentally replaced by hand crossing.
+```
+
+Therefore the evidence supports barrier-material / exclusion plausibility, not the claim that a P. rex barrier can reduce predator access **while preserving natural bumblebee pollination**.
+
+### 3. Fruit-local barrier compatibility — `Cypripedium candidum`
 
 Walsh et al. (2014; doi `10.1093/aobpla/plu031`) used a fruit-local porous barrier after pollination.
 
@@ -83,7 +114,7 @@ This is strong evidence that a **post-pollination fruit-local porous barrier can
 
 It is **not** a same-year efficacy contrast: all 2011 fruits were shielded, so there is no contemporaneous unshielded predator-control from which to estimate the causal reduction in predation. An earlier 2009 cohort had 73% fruit predation and an 89% seed-mass reduction, but year/site differ.
 
-### 3. Fruit-local barrier efficacy — `Chamaecrista desvauxii`
+### 4. Fruit-local barrier efficacy — `Chamaecrista desvauxii`
 
 Baker-Méio & Marquis (2012; doi `10.1111/j.1365-2745.2011.01892.x`) provide a closer efficacy-class precedent.
 
@@ -116,15 +147,16 @@ empirical/architecture/PEDICULARIS_G_BARRIER_PRECEDENTS_V1.csv
 scripts/audit_pedicularis_g_barrier_precedents.py
 ```
 
-The current three-axis evidence state is:
+The current four-axis evidence state is:
 
 ```text
-Pedicularis post-pollination attack timing       RECOVERED
-fruit-development compatibility of porous barrier RECOVERED OUTSIDE PEDICULARIS
-fruit-local barrier efficacy/selectivity class    RECOVERED OUTSIDE PEDICULARIS
-focal P. rex barrier effectiveness                NOT RECOVERED
-focal P. rex barrier selectivity                   NOT RECOVERED
-focal P. rex timing bounds                         NOT RECOVERED.
+Pedicularis post-pollination attack timing          RECOVERED
+Pedicularis barrier efficacy (pollination replaced)  RECOVERED
+fruit-development compatibility of porous barrier    RECOVERED OUTSIDE PEDICULARIS
+fruit-local barrier efficacy/selectivity class       RECOVERED OUTSIDE PEDICULARIS
+focal P. rex barrier effectiveness                   NOT RECOVERED
+focal P. rex natural-pollination selectivity          NOT RECOVERED
+focal P. rex timing bounds                            NOT RECOVERED.
 ```
 
 ## Candidate methods ranked
