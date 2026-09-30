@@ -1,12 +1,13 @@
 from scripts.audit_pedicularis_congeneric_quantitative_priors import build
 
 
-def test_congeneric_quantitative_ledger_has_19_rows_across_four_species() -> None:
+def test_congeneric_quantitative_ledger_has_23_rows_across_five_species() -> None:
     result = build()
-    assert result["n_quantitative_prior_rows"] == 19
-    assert result["n_species"] == 4
+    assert result["n_quantitative_prior_rows"] == 23
+    assert result["n_species"] == 5
     assert result["species_counts"] == {
         "Pedicularis densispica": 3,
+        "Pedicularis dunniana": 4,
         "Pedicularis monbeigiana": 10,
         "Pedicularis siphonantha": 1,
         "Pedicularis tricolor": 5,
@@ -57,3 +58,21 @@ def test_p0_mean_se_rows_are_directly_reported_congeneric_handling_data() -> Non
         "PCQ_P0_TRICOLOR_COROLLA",
     } >= set(result["exact_mean_se_rows"])
     assert len(result["exact_mean_se_rows"]) >= 4
+
+
+def test_dunniana_adds_quantitative_hand_pollination_pollen_limitation() -> None:
+    result = build()
+    family = result["p1_design_families"][
+        "bagged_or_hand_pollination_pollen_limitation"
+    ]
+    assert set(family) == {
+        "PCQ_P1_DUNN2005_NATURAL",
+        "PCQ_P1_DUNN2005_HAND_SELF",
+        "PCQ_P1_DUNN2005_HAND_CROSS",
+        "PCQ_P1_DUNN2005_POLLEN_LIMIT_F",
+    }
+    assert "PCQ_P1_DUNN2005_HAND_CROSS" in result["p1_prior_rows"]
+    assert (
+        "hand_pollination_pollen_limitation_is_not_identical_to_open_supplementation"
+        in result["claim_ceiling"]
+    )
