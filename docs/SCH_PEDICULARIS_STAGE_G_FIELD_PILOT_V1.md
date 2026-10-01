@@ -26,6 +26,26 @@ which the authors interpreted as attack occurring after pollination. This
 supports a Pedicularis post-pollination attack window, but does **not** show
 that leaving a barrier in place after pollination is effective or selective.
 
+A second within-genus precedent now addresses barrier efficacy. Eriksen, Molau
+& Svensson (1993; doi `10.1111/j.1600-0587.1993.tb00067.x`) enclosed
+`P. lapponica` ramets in white nylon-stocking cages from bud stage and supplied
+pollen by hand crossing inside the cages. They explicitly report no seed
+predation in caged plants, whereas naturally exposed populations in the study
+had approximately 13.9–37.1% attacked capsules across site-years.
+
+This means:
+
+```text
+Pedicularis physical-barrier efficacy                 SUPPORTED
+fruit/seed development under supplied pollination     SUPPORTED
+natural bumblebee access under the barrier            NOT SUPPORTED
+post-pollination P. rex device selectivity            NOT TESTED
+```
+
+The focal Stage-G question is therefore no longer whether a physical barrier can
+block a Pedicularis seed predator at all. It is whether a barrier can be applied
+late/local enough in `P. rex` to preserve the natural pollination lane.
+
 ## Candidate methods
 
 ### Method A — post-pollination lower-flower / fruit sleeve

@@ -105,6 +105,19 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "predator-exclusion validation"
         )
 
+    lapponica = next(
+        row for row in rows
+        if row["gap_id"] == "G_LAPPONICA1993"
+    )
+    if (
+        lapponica["qualification_status"]
+        != "CONGENERIC_BARRIER_EFFICACY_RECOVERED_NATURAL_POLLINATION_REPLACED"
+    ):
+        raise ValueError(
+            "P. lapponica must remain a barrier-efficacy precedent with "
+            "natural pollination replaced, not selective focal G"
+        )
+
     return {
         "analysis": "pedicularis_focal_direct_evidence_search_audit_v1",
         "n_search_rows": len(rows),
@@ -115,7 +128,10 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "direct_registered_p1_recovered": bool(direct_p1),
         "direct_registered_g_recovered": bool(direct_g),
         "pedicularis_postpollination_attack_timing_recovered": True,
+        "pedicularis_within_genus_barrier_efficacy_recovered": True,
+        "pedicularis_within_genus_barrier_preserved_natural_pollination": False,
         "focal_p_rex_barrier_effectiveness_recovered": False,
+        "focal_p_rex_natural_pollination_selectivity_recovered": False,
         "focal_p_rex_g_timing_qualification_recovered": False,
         "direct_same_flower_repeatability_recovered": bool(
             direct_repeatability
@@ -129,7 +145,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "P_rex_same_flower_repeatability",
             "P_rex_registered_pollination_supplementation_effect",
             "P_rex_independent_seed_predator_exclusion",
-            "P_rex_postpollination_barrier_effectiveness_and_selectivity",
+            "P_rex_postpollination_barrier_effectiveness_under_natural_pollination",
             "P_rex_independent_G_timing_qualification",
         ],
         "status": (
@@ -141,6 +157,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
             "hand_pollination_is_not_relabelled_as_supplementation_without_primary_methods",
             "water_drainage_is_not_independent_G",
             "within_genus_postpollination_attack_timing_is_not_barrier_effectiveness",
+            "within_genus_barrier_efficacy_with_hand_pollination_is_not_natural_pollination_selectivity",
             "congeneric_timing_is_not_focal_P_rex_timing_qualification",
             "different_flowers_per_plant_are_not_same_flower_repeatability",
             "congeneric_manipulation_is_not_focal_P0_validation",

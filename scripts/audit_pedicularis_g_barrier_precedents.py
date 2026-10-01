@@ -17,6 +17,7 @@ DEFAULT_LEDGER = (
 
 EXPECTED_AXES = {
     "WITHIN_GENUS_POSTPOLLINATION_ATTACK_TIMING",
+    "WITHIN_GENUS_BARRIER_EFFICACY_POLLINATION_REPLACED",
     "POSTPOLLINATION_FRUIT_BARRIER_COMPATIBILITY",
     "POSTPOLLINATION_FRUIT_LOCAL_BARRIER_EFFICACY",
 }
@@ -66,6 +67,9 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
 
     by_axis = {row["evidence_axis"]: row for row in rows}
     timing = by_axis["WITHIN_GENUS_POSTPOLLINATION_ATTACK_TIMING"]
+    within_genus_efficacy = by_axis[
+        "WITHIN_GENUS_BARRIER_EFFICACY_POLLINATION_REPLACED"
+    ]
     compatibility = by_axis[
         "POSTPOLLINATION_FRUIT_BARRIER_COMPATIBILITY"
     ]
@@ -80,6 +84,21 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
     ].lower():
         raise ValueError(
             "timing precedent must not be misread as a retained postpollination barrier"
+        )
+
+    if within_genus_efficacy["species"] != "Pedicularis lapponica":
+        raise ValueError(
+            "within-genus barrier efficacy precedent must remain Pedicularis"
+        )
+    if (
+        "no seed predation" not in within_genus_efficacy["quantitative_result"].lower()
+        or "hand pollination" not in within_genus_efficacy[
+            "pollination_or_development_compatibility"
+        ].lower()
+    ):
+        raise ValueError(
+            "P. lapponica precedent must preserve both barrier efficacy and "
+            "the fact that natural pollination was replaced"
         )
 
     if "no contemporaneous unshielded" not in compatibility["notes"].lower():
@@ -103,6 +122,8 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         "n_species": len({row["species"] for row in rows}),
         "evidence_axis_counts": dict(sorted(axis_counts.items())),
         "within_genus_postpollination_attack_timing_recovered": True,
+        "within_genus_barrier_efficacy_recovered": True,
+        "within_genus_barrier_preserved_natural_pollination": False,
         "external_postpollination_fruit_barrier_compatibility_recovered": True,
         "external_fruit_local_barrier_efficacy_class_recovered": True,
         "focal_P_rex_barrier_effectiveness_recovered": False,
@@ -123,6 +144,7 @@ def build(path: Path = DEFAULT_LEDGER) -> dict:
         ),
         "claim_ceiling": [
             "timing_precedent_is_not_barrier_effectiveness",
+            "within_genus_barrier_efficacy_with_hand_pollination_is_not_selective_natural_pollination_G",
             "fruit_development_compatibility_is_not_predator_reduction_effect",
             "external_barrier_efficacy_is_not_P_rex_efficacy",
             "mesh_pore_size_and_application_timing_are_candidate_specific",
