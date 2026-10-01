@@ -237,6 +237,14 @@ The barrier-class evidence itself is audited separately with
 `python scripts/audit_pedicularis_g_barrier_precedents.py`; none of those
 external precedents is promoted to focal P. rex validation or a direct F0
 value.
+
+Broad literature expansion is now explicitly stopped. Only five named primary
+assets remain worth retrieving: Jing 2013 Methods, Tang 2011 thesis, Wang 1998
+PDF, Xia 2013 Dryad raw workbook, and the 2016 mcw097 supplements. Only the
+first three could plausibly change a direct P1/G gap; the last two can sharpen
+external priors only. Until one of those primary binaries is retrieved, focal
+field calibration is the primary path. Run
+`python scripts/audit_pedicularis_primary_binary_frontier.py`.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
