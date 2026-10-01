@@ -1,0 +1,114 @@
+# SCH Pedicularis primary-binary retrieval frontier v1
+
+## Purpose
+
+The literature search has reached a point where additional broad screening is
+less informative than either retrieving a small number of already identified
+primary files or collecting the focal calibration package.
+
+This contract freezes that frontier.
+
+Machine ledger:
+
+```text
+empirical/architecture/PEDICULARIS_PRIMARY_BINARY_RETRIEVAL_FRONTIER_V1.csv
+```
+
+Audit:
+
+```bash
+python scripts/audit_pedicularis_primary_binary_frontier.py
+```
+
+## Five remaining primary assets
+
+### 1. Jing et al. 2013 primary Methods
+
+Potential direct-gap value: **HIGH / P1**.
+
+The primary abstract already states that reproductive outputs were measured
+under hand and natural pollination, but the hand treatment is not identified
+well enough to decide whether it is registered open supplementation or a
+different breeding-system assay.
+
+Promotion requires primary Methods showing the actual treatment, unit of
+manipulation, sample size and outcome. A bagged self/cross assay does not
+become P1 merely because it is called hand pollination.
+
+### 2. Tang 2011 PhD thesis
+
+Potential direct-gap value: **MEDIUM-HIGH / G**.
+
+The thesis is cited for focal predator behavior/timing. No focal predator
+exclusion manipulation has yet been verified from it.
+
+Only P. rex-specific Methods/Tables documenting an actual predator-access
+manipulation could change the G frontier.
+
+### 3. Wang 1998 PDF
+
+Potential direct-gap value: **MEDIUM / P1**.
+
+The JIPB/Acta Botanica Sinica site lists a 611-KB PDF. Searchable text
+establishes bumblebee dependence, but not a quantitative supplemental-pollen
+contrast.
+
+The PDF can change P1 status only if its Methods/Tables contain a qualifying
+hand-supplemented/open contrast.
+
+### 4. Xia et al. 2013 Dryad workbook
+
+Direct-gap value: **LOW; variance value HIGH**.
+
+Dryad publicly lists `raw data.xlsx`. The study design is observational, so
+recovering the workbook can improve seed-set/predation distributions and CAL-C
+external scenarios but cannot create randomized independent G.
+
+### 5. Sun et al. 2016 supplements
+
+Direct-gap value: **LOW; aggregate-prior value MODERATE**.
+
+The DOC/XLS files can sharpen population means/SE and trait/seed-outcome
+priors. They cannot create missing P1/G interventions because the study design
+is already known to be observational.
+
+## Search stop rule
+
+While none of the three direct-gap candidate binaries is retrieved:
+
+```text
+general literature expansion      STOP
+additional congeneric screening   STOP
+field calibration                 PRIMARY PATH
+```
+
+The only literature actions still allowed by default are legitimate retrieval
+attempts for the five named primary assets.
+
+If Jing/Tang/Wang full primary text is retrieved, audit **that file only**
+against its promotion condition before changing any P1/G state.
+
+If Dryad or the 2016 supplements are retrieved, update only external-prior
+analyses; field calibration remains the primary path.
+
+## Current status
+
+```text
+LITERATURE_EXPANSION_STOPPED_PENDING_PRIMARY_BINARY_OR_FIELD_DATA
+```
+
+## Why this matters
+
+This prevents two failure modes:
+
+1. endlessly adding increasingly remote congeners after the relevant method
+   families are already demonstrated;
+2. mistaking more observational precision for the missing causal intervention.
+
+## Claim ceiling
+
+Failure to retrieve a file is not proof that it does not exist.
+
+The stop rule is a resource-allocation rule: it says that, given the current
+indexed evidence, new broad screening has lower information value than focal
+field calibration unless one of the named primary binaries becomes available.
