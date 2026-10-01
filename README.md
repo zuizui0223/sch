@@ -203,12 +203,17 @@ manipulation, repeatability, supplementation and independent-G effects remain
 unmeasured in the registered form. Run
 `python scripts/audit_pedicularis_method_precedents.py`.
 
-A separate congeneric quantitative ledger now contains 19 numerical/design
-rows from four Pedicularis species. It makes the P1 uncertainty concrete:
+A separate congeneric quantitative ledger now contains 27 numerical/design
+rows from six Pedicularis species. It makes the P1 uncertainty concrete:
 published supplementation spans an effectively null response in P. monbeigiana
-to a reported 2.1x seed-set response in another ecological context. These
-values are external CAL-B/C sensitivity priors, not portable P. rex targets.
-Run `python scripts/audit_pedicularis_congeneric_quantitative_priors.py`.
+to a reported 2.1x seed-set response in another ecological context. The
+expanded range also includes P. dunniana natural/hand-self/hand-cross seed set
+(54.2%, 63.1%, 67.2%; F=115.08, df=2,15, P<0.001) and P. palustris
+whole-plant pollinator exclosure (<15% of natural seed set) plus
+population-dependent pollen-limitation context. These are external CAL-B/C
+sensitivity priors, not portable P. rex targets, and the different intervention
+families are not pooled as one effect. Run
+`python scripts/audit_pedicularis_congeneric_quantitative_priors.py`.
 
 A focal direct-evidence search audit is also frozen. It currently recovers
 natural pollinator dependence, high outcrossing, reward variation, seed-

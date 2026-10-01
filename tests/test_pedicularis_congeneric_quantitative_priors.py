@@ -1,13 +1,15 @@
 from scripts.audit_pedicularis_congeneric_quantitative_priors import build
 
 
-def test_congeneric_quantitative_ledger_has_19_rows_across_four_species() -> None:
+def test_congeneric_quantitative_ledger_has_27_rows_across_six_species() -> None:
     result = build()
-    assert result["n_quantitative_prior_rows"] == 19
-    assert result["n_species"] == 4
+    assert result["n_quantitative_prior_rows"] == 27
+    assert result["n_species"] == 6
     assert result["species_counts"] == {
         "Pedicularis densispica": 3,
+        "Pedicularis dunniana": 4,
         "Pedicularis monbeigiana": 10,
+        "Pedicularis palustris": 4,
         "Pedicularis siphonantha": 1,
         "Pedicularis tricolor": 5,
     }
@@ -57,3 +59,39 @@ def test_p0_mean_se_rows_are_directly_reported_congeneric_handling_data() -> Non
         "PCQ_P0_TRICOLOR_COROLLA",
     } >= set(result["exact_mean_se_rows"])
     assert len(result["exact_mean_se_rows"]) >= 4
+
+
+def test_dunniana_adds_quantitative_hand_pollination_pollen_limitation() -> None:
+    result = build()
+    family = result["p1_design_families"][
+        "bagged_or_hand_pollination_pollen_limitation"
+    ]
+    assert set(family) == {
+        "PCQ_P1_DUNN2005_NATURAL",
+        "PCQ_P1_DUNN2005_HAND_SELF",
+        "PCQ_P1_DUNN2005_HAND_CROSS",
+        "PCQ_P1_DUNN2005_POLLEN_LIMIT_F",
+    }
+    assert "PCQ_P1_DUNN2005_HAND_CROSS" in result["p1_prior_rows"]
+    assert (
+        "hand_pollination_pollen_limitation_is_not_identical_to_open_supplementation"
+        in result["claim_ceiling"]
+    )
+
+
+def test_palustris_adds_whole_plant_pollinator_dependence_and_context_prior() -> None:
+    result = build()
+    family = result["p1_design_families"][
+        "whole_plant_exclosure_hand_natural_context"
+    ]
+    assert set(family) == {
+        "PCQ_P1_PALUSTRIS_EXCLOSURE",
+        "PCQ_P1_PALUSTRIS_SELF_COMPAT_LOW",
+        "PCQ_P1_PALUSTRIS_SELF_COMPAT_HIGH",
+        "PCQ_P1_PALUSTRIS_DISPLAY",
+    }
+    assert "PCQ_P1_PALUSTRIS_EXCLOSURE" in result["p1_prior_rows"]
+    assert (
+        "whole_plant_seed_production_and_capsule_level_pollen_limitation_can_diverge"
+        in result["claim_ceiling"]
+    )
