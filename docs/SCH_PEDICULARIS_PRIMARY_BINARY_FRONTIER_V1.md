@@ -72,6 +72,62 @@ The DOC/XLS files can sharpen population means/SE and trait/seed-outcome
 priors. They cannot create missing P1/G interventions because the study design
 is already known to be observational.
 
+## Concrete retrieval attempts — 2026-10-02
+
+Machine receipt:
+
+```text
+empirical/architecture/PEDICULARIS_PRIMARY_BINARY_RETRIEVAL_ATTEMPTS_V1.csv
+scripts/audit_pedicularis_primary_binary_retrieval_attempts.py
+```
+
+The current attempt state is:
+
+```text
+Jing 2013
+  Springer content-PDF route       not accessible in current web tool
+  ResearchGate author full text    listed; direct binary unavailable/404
+  Semantic Scholar route           record blocked; no indexed public PDF
+  P1 state                         UNRESOLVED
+
+Tang 2011
+  Globethesis host                 indexed but suspended
+  citing-paper role audit          low autogamy + predator identity/timing
+  independent-G manipulation       NOT EVIDENCED BY CITING PASSAGES
+  G state                          UNRESOLVED
+
+Wang 1998
+  JIPB PDF                         listed as 611 KB
+  JIPB route                       403 in current web tool
+  legitimate archival mirror       not recovered
+  P1 state                         UNRESOLVED
+
+Xia 2013 Dryad
+  public dataset                   VERIFIED
+  file                             raw data.xlsx, 89.60 KB
+  legacy file-stream ID            46101
+  anonymous file_stream            HTTP 403
+  current /api/v2 file download    Bearer-authenticated endpoint
+  DataONE dataset metadata mirror  VERIFIED; file object not recovered
+  direct G state                   unchanged by design
+
+Sun 2016 supplements
+  DOC/XLS identities + sizes       VERIFIED
+  binary                           not retrieved
+  direct P1/G state                unchanged by design
+```
+
+The Dryad result is particularly important: the file is not missing. The
+public landing page and file identity are resolved, but the current API file
+download route is authenticated. Repeating anonymous file-stream/API attempts
+therefore has no information value.
+
+Tang 2011 remains a legitimate primary-binary target, but its observed citation
+role is now narrower than the binary frontier alone implied. Later focal
+primary papers cite it for very low self-pollination without pollinators and
+for seed-predator identity/oviposition timing. That strengthens G natural
+history but does not itself evidence a predator-exclusion manipulation.
+
 ## Search stop rule
 
 While none of the three direct-gap candidate binaries is retrieved:
