@@ -114,6 +114,13 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
         },
     }
 
+    for row in rows:
+        template_path = ROOT / row["template_path"]
+        if not template_path.exists():
+            raise ValueError(
+                f"registered collection template does not exist: {row['template_path']}"
+            )
+
     by_id = {row["bundle_id"]: row for row in rows}
     for bundle_id, fields in expected_counts.items():
         row = by_id[bundle_id]
