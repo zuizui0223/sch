@@ -245,6 +245,14 @@ first three could plausibly change a direct P1/G gap; the last two can sharpen
 external priors only. Until one of those primary binaries is retrieved, focal
 field calibration is the primary path. Run
 `python scripts/audit_pedicularis_primary_binary_frontier.py`.
+
+Concrete retrieval attempts are now frozen separately. Jing2013 remains
+treatment-identity unresolved after Springer/author-copy/index routes; Wang1998
+is a listed 611-KB PDF not retrievable through the current JIPB route; Tang2011
+is indexed on a suspended host and its recovered citation role is natural
+history only; and Dryad file `46101` is publicly identified but the current
+file-download API requires authentication. Run
+`python scripts/audit_pedicularis_primary_binary_retrieval_attempts.py`.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
