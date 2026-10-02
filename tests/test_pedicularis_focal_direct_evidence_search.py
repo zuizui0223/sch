@@ -66,3 +66,9 @@ def test_lapponica_closes_barrier_efficacy_class_but_not_natural_pollination_sel
         "within_genus_barrier_efficacy_with_hand_pollination_is_not_natural_pollination_selectivity"
         in result["claim_ceiling"]
     )
+
+
+def test_tang2011_abstract_strengthens_natural_history_but_not_direct_g() -> None:
+    result = build()
+    assert result["direct_registered_g_recovered"] is False
+    assert "absence_of_recovery_is_not_proof_of_absence" in result["claim_ceiling"]
