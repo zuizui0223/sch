@@ -37,13 +37,19 @@ become P1 merely because it is called hand pollination.
 
 ### 2. Tang 2011 PhD thesis
 
-Potential direct-gap value: **MEDIUM-HIGH / G**.
+Potential direct-gap value: **MEDIUM-LOW / G after abstract audit**.
 
-The thesis is cited for focal predator behavior/timing. No focal predator
-exclusion manipulation has yet been verified from it.
+The full English abstract is now recovered. It reports quantitative pollinator
+observation in 11 plots, predator behavior/preference and phenotypic-selection
+analyses. It does **not** describe a predator-access/exclusion manipulation.
 
-Only P. rex-specific Methods/Tables documenting an actual predator-access
-manipulation could change the G frontier.
+Later focal papers cite the thesis for low autogamy without pollinators and for
+seed-predator identity/oviposition timing. The thesis therefore already
+strengthens G natural history, but its direct-G value now depends entirely on
+whether the unretrieved full Methods/Tables contain an additional P. rex
+predator-access manipulation that was not summarized in the abstract.
+
+Only such an explicit focal manipulation could change the G frontier.
 
 ### 3. Wang 1998 PDF
 
@@ -92,9 +98,11 @@ Jing 2013
 
 Tang 2011
   Globethesis host                 indexed but suspended
+  full English abstract            RECOVERED
+  abstract design                  11-plot visitation + predator behavior/preference + selection
   citing-paper role audit          low autogamy + predator identity/timing
-  independent-G manipulation       NOT EVIDENCED BY CITING PASSAGES
-  G state                          UNRESOLVED
+  independent-G manipulation       NOT DESCRIBED IN ABSTRACT OR CITING PASSAGES
+  G state                          UNRESOLVED; direct-G expectation reduced
 
 Wang 1998
   JIPB PDF                         listed as 611 KB
