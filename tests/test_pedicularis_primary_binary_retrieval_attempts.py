@@ -3,7 +3,7 @@ from scripts.audit_pedicularis_primary_binary_retrieval_attempts import build
 
 def test_retrieval_attempt_audit_covers_all_five_primary_assets() -> None:
     result = build()
-    assert result["n_attempts"] == 10
+    assert result["n_attempts"] == 11
     assert result["n_primary_assets_with_attempts"] == 5
     assert set(result["attempt_counts_by_asset"]) == {
         "PRIMARY_JING2013_METHODS",
@@ -49,6 +49,7 @@ def test_tang_thesis_is_natural_history_stronger_not_direct_g() -> None:
     assert tang["gap"] == "G"
     assert any("NATURAL_HISTORY" in state for state in tang["states"])
     assert all("G_RECOVERED" != state for state in tang["states"])
+    assert "legitimate primary binary" in tang["latest_allowed_action"].lower()
 
 
 def test_external_prior_assets_never_change_direct_gap_state() -> None:
@@ -58,3 +59,13 @@ def test_external_prior_assets_never_change_direct_gap_state() -> None:
             state in {"NO_DIRECT_G_CHANGE", "NO_DIRECT_GAP_CHANGE"}
             for state in states
         )
+
+
+def test_tang_full_abstract_reduces_direct_g_expectation_without_closing_gap() -> None:
+    result = build()
+    tang = result["direct_gap_asset_states"]["PRIMARY_TANG2011_THESIS"]
+    assert tang["n_attempts"] == 3
+    assert tang["states"] == [
+        "G_UNRESOLVED",
+        "G_UNRESOLVED_NATURAL_HISTORY_STRONGER",
+    ]
