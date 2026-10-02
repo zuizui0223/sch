@@ -287,6 +287,14 @@ repeatability + threshold-free calibration summaries together. The package
 allows same-flower repeatability within CAL-A P0 but rejects other cross-lane
 flower reuse. Lower-level summarizer/registry tools remain available for audit.
 
+Field-effort priority is now explicit without inventing sample sizes:
+`G exploratory > P0 + nested repeatability > P1 exploratory`. This is a
+structural-risk / information-yield order, not a strict chronological sequence
+or an informal stop rule. The derived bundle yields are G=20, P0=16,
+repeatability=13 measurement-noise floors, and P1=16 calibration-support
+outputs. Run
+`python scripts/audit_pedicularis_calibration_collection_yield.py`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
