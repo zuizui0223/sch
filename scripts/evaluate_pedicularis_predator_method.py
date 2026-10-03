@@ -132,6 +132,12 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
     methods = {row["exclusion_method"] for row in excluded}
     delays = [_timing_delay(row) for row in excluded]
 
+    selected_method = str(cfg.get("selected_exclusion_method", "")).strip()
+    if not selected_method or selected_method == "REQUIRED_BEFORE_USE":
+        raise ValueError(
+            "method_gate.selected_exclusion_method must be prospectively frozen"
+        )
+
     min_delay = float(cfg["min_hours_after_anthesis_before_barrier"])
     max_delay = float(cfg["max_hours_after_anthesis_before_barrier"])
     if min_delay < 0 or max_delay <= min_delay:
@@ -145,6 +151,9 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
 
     gates = {
         "single_exclusion_method": len(methods) == 1,
+        "selected_exclusion_method_match": (
+            len(methods) == 1 and next(iter(methods)) == selected_method
+        ),
         "minimum_paired_plants": n_paired >= int(cfg["min_paired_plants"]),
         "minimum_flowers_per_treatment": all(
             counts[t] >= int(cfg["min_flowers_per_treatment"]) for t in TREATMENTS
@@ -177,6 +186,7 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
         ),
     }
     summary = {
+        "selected_exclusion_method": selected_method,
         "exclusion_method": next(iter(methods)) if len(methods) == 1 else sorted(methods),
         "barrier_delay_hours_min": min(delays),
         "barrier_delay_hours_max": max(delays),
