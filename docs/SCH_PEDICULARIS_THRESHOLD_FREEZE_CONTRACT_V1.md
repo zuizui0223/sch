@@ -131,8 +131,9 @@ confirmatory rows and may be summarized before F0 with
 
 ## Final F0 assembly
 
-Once positive CAL-A and CAL-B target receipts and a positive CAL-C plan exist,
-assemble the three field configs with:
+Once positive CAL-A and CAL-B target receipts, a positive CAL-C plan, and a
+positive prospective G device-selection receipt exist, assemble the three field
+configs with:
 
 ```text
 scripts/assemble_pedicularis_f0_configs.py
@@ -150,6 +151,12 @@ total                 40
 ```
 
 and then reruns the shared freeze validator on P0, P1 and G.
+
+The selected G device identity is deliberately outside this 40-field count. It
+is categorical protocol metadata supplied by
+`SCH_PEDICULARIS_G_DEVICE_SELECTION_V1`, written into
+`method_gate.selected_exclusion_method`, and later enforced by the V4 G
+evaluator.
 
 A positive F0 assembly is therefore the machine transition from calibration
 and planning to confirmatory data collection. It remains a decision-rule
@@ -191,7 +198,15 @@ Against the committed templates, the expected current result is:
 current_blocker = PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED
 ```
 
-After all three same-context configs are genuinely frozen, the frontier becomes:
+After all three same-context threshold configs are frozen but the categorical
+G device identity is still unset, the frontier becomes:
+
+```text
+current_blocker = G_DEVICE_SELECTION_REQUIRED
+```
+
+Only after one hard-validity-admissible G device has been prospectively selected
+and propagated into the G config does the frontier become:
 
 ```text
 current_blocker = CONFIRMATORY_P0_P1_G_RECEIPTS_REQUIRED
