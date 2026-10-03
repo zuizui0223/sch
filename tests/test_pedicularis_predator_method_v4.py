@@ -36,6 +36,7 @@ def _config() -> dict:
         "bootstrap_reps": 300,
         "random_seed": 67,
         "method_gate": {
+            "selected_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
             "min_paired_plants": 12,
             "min_flowers_per_treatment": 12,
             "min_hours_after_anthesis_before_barrier": 6.0,
@@ -111,6 +112,7 @@ def test_template_and_config_are_fail_closed() -> None:
     with TEMPLATE.open(encoding="utf-8", newline="") as handle:
         assert tuple(next(csv.reader(handle))) == REQUIRED_FIELDS
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
+    assert cfg["method_gate"]["selected_exclusion_method"] == "REQUIRED_BEFORE_USE"
     assert cfg["method_gate"]["min_hours_after_anthesis_before_barrier"] == "REQUIRED_BEFORE_USE"
     assert cfg["predator_weight"]["min_predation_fraction_reduction"] == "REQUIRED_BEFORE_USE"
     assert "DO_NOT_RUN" in cfg["status"]
@@ -121,6 +123,7 @@ def test_timed_post_pollination_method_passes_when_selective() -> None:
     assert result["receipt_schema_version"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V4"
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_VALIDATED"
     assert all(result["gates"].values())
+    assert result["method_summary"]["selected_exclusion_method"] == "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
     assert result["method_summary"]["exclusion_method"] == "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
     assert result["predator_weight_receipt"]["status"] == "PEDICULARIS_PREDATOR_WEIGHT_VALIDATED"
 
@@ -150,3 +153,22 @@ def test_barrier_integrity_failure_invalidates_method() -> None:
     assert result["gates"]["method_barrier_integrity_preserved"] is False
     assert result["method_summary"]["n_excluded_with_barrier_integrity_failure"] == 16
     assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_confirmatory_method_must_match_prospectively_selected_device() -> None:
+    config = _config()
+    config["method_gate"]["selected_exclusion_method"] = "DIFFERENT_DEVICE"
+    result = evaluate(_rows(), config)
+    assert result["gates"]["method_selected_exclusion_method_match"] is False
+    assert result["status"] == "PEDICULARIS_PREDATOR_METHOD_NOT_VALIDATED"
+
+
+def test_unfrozen_selected_device_identity_fails_closed() -> None:
+    config = _config()
+    config["method_gate"]["selected_exclusion_method"] = "REQUIRED_BEFORE_USE"
+    try:
+        evaluate(_rows(), config)
+    except ValueError as exc:
+        assert "selected_exclusion_method" in str(exc)
+    else:
+        raise AssertionError("unfrozen G device identity must fail closed")
