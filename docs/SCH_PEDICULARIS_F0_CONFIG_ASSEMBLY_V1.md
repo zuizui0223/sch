@@ -40,6 +40,16 @@ analysis = pedicularis_cal_c_sample_size_plan_v1
 status = PEDICULARIS_CAL_C_SAMPLE_SIZE_PLAN_READY
 ```
 
+Positive G device-selection receipt:
+
+```text
+receipt_schema_version = SCH_PEDICULARIS_G_DEVICE_SELECTION_V1
+status = PEDICULARIS_G_DEVICE_SELECTED_FOR_CONFIRMATORY_QUALIFICATION
+```
+
+The selected G device identity is required protocol metadata but is not part of
+the 40 threshold-value source partition.
+
 Assembly metadata template:
 
 ```text
@@ -47,7 +57,7 @@ empirical/architecture/PEDICULARIS_F0_ASSEMBLY_CONFIG_TEMPLATE_V1.json
 ```
 
 The assembly metadata must be prospectively frozen before confirmatory data
-and must carry the same population and season as CAL-A/B/C.
+and must carry the same population and season as CAL-A/B/C and the G device-selection receipt.
 
 ## Registered values
 
@@ -122,6 +132,16 @@ Every assembled config is then passed back through:
 validate_prospective_freeze(config, lane).
 ```
 
+For G, the assembler also writes:
+
+```text
+method_gate.selected_exclusion_method
+```
+
+from the positive device-selection receipt and preserves its selection basis in
+the F0 assembly receipt. The confirmatory V4 evaluator later requires the
+observed EXCLUDED method to match this exact identity.
+
 ## Run
 
 ```bash
@@ -129,6 +149,7 @@ python scripts/assemble_pedicularis_f0_configs.py \
   <cal_a_target_freeze_receipt.json> \
   <cal_b_target_freeze_receipt.json> \
   <cal_c_plan.json> \
+  <g_device_selection_receipt.json> \
   <completed_f0_assembly_config.json> \
   --p0-out <p0_frozen_config.json> \
   --p1-out <p1_frozen_config.json> \
