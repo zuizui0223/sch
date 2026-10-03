@@ -254,6 +254,15 @@ behavior/preference and phenotypic-selection analyses) but no predator
 exclusion manipulation is described; and Dryad file `46101` is publicly
 identified but the current file-download API requires authentication. Run
 `python scripts/audit_pedicularis_primary_binary_retrieval_attempts.py`.
+
+Primary-binary interpretation is now fail-closed as well. If Jing2013,
+Wang1998 or Tang2011 is ever retrieved, its Methods/Table facts must be entered
+in `PEDICULARIS_PRIMARY_METHOD_ADJUDICATION_V1.csv` and passed through
+`scripts/adjudicate_pedicularis_primary_methods.py`. The adjudicator separates
+a historical focal effect from the stricter registered estimand/protocol
+family, so terms such as "hand pollination" or "predator exclusion" cannot be
+promoted by wording alone. Even a positive historical adjudication recovers
+zero direct F0 values; same-context prospective calibration remains required.
 The threshold-basis ledger currently resolves 5/40 gate values directly from
 registered contracts. The remaining 35 are now organized into three
 nonconfirmatory modules:
