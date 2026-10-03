@@ -15,6 +15,10 @@ from scripts.pedicularis_config_freeze import (
     required_gate_paths,
     validate_prospective_freeze,
 )
+from scripts.freeze_pedicularis_g_device_selection import (
+    SELECTION_SCHEMA as G_DEVICE_SELECTION_SCHEMA,
+    SELECTION_STATUS as G_DEVICE_SELECTION_STATUS,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -215,6 +219,25 @@ def _validate_cal_c(plan: dict) -> tuple[dict[str, int], dict[str, str], tuple[s
     return normalized, basis, context
 
 
+def _validate_g_device_selection(
+    receipt: dict,
+) -> tuple[str, tuple[str, str], str]:
+    if receipt.get("receipt_schema_version") != G_DEVICE_SELECTION_SCHEMA:
+        raise ValueError("G device selection receipt schema mismatch")
+    if receipt.get("status") != G_DEVICE_SELECTION_STATUS:
+        raise ValueError("G device selection receipt status is not positive")
+
+    method = receipt.get("selected_exclusion_method")
+    if not isinstance(method, str) or not method.strip():
+        raise ValueError("G selected_exclusion_method is missing")
+
+    basis_note = receipt.get("selection_basis_note")
+    if not isinstance(basis_note, str) or not basis_note.strip():
+        raise ValueError("G device selection basis note is missing")
+
+    return method.strip(), _context(receipt, "G device selection"), basis_note.strip()
+
+
 def _validate_assembly_config(config: dict) -> tuple[str, str]:
     if config.get("receipt_schema_version") != ASSEMBLY_SCHEMA:
         raise ValueError("F0 assembly schema mismatch")
@@ -245,6 +268,7 @@ def assemble(
     cal_a_receipt: dict,
     cal_b_receipt: dict,
     cal_c_plan: dict,
+    g_device_selection_receipt: dict,
     assembly_config: dict,
     templates: dict[str, dict],
 ) -> tuple[dict[str, dict], dict]:
@@ -261,17 +285,23 @@ def assemble(
         label="CAL-B",
     )
     cal_c_values, cal_c_basis, cal_c_context = _validate_cal_c(cal_c_plan)
+    (
+        selected_g_method,
+        g_device_selection_context,
+        g_device_selection_basis,
+    ) = _validate_g_device_selection(g_device_selection_receipt)
     assembly_context = _validate_assembly_config(assembly_config)
 
     contexts = {
         cal_a_context,
         cal_b_context,
         cal_c_context,
+        g_device_selection_context,
         assembly_context,
     }
     if len(contexts) != 1:
         raise ValueError(
-            "CAL-A, CAL-B, CAL-C and F0 assembly contexts must match exactly"
+            "CAL-A, CAL-B, CAL-C, G device selection and F0 assembly contexts must match exactly"
         )
     population_id, season_id = next(iter(contexts))
 
@@ -339,6 +369,16 @@ def assemble(
         for gate in lane_gates:
             _set_gate(config, gate, all_values[gate])
 
+        if lane == "G":
+            method_gate = config.get("method_gate")
+            if not isinstance(method_gate, dict):
+                raise ValueError("G config method_gate section is missing")
+            if "selected_exclusion_method" not in method_gate:
+                raise ValueError(
+                    "G config template lacks selected_exclusion_method protocol field"
+                )
+            method_gate["selected_exclusion_method"] = selected_g_method
+
         config["prospective_freeze"] = {
             "schema": FREEZE_SCHEMA,
             "status": FREEZE_STATUS,
@@ -390,6 +430,12 @@ def assemble(
             lane: outputs[lane]["status"]
             for lane in ("P0", "P1", "G")
         },
+        "g_device_selection": {
+            "selected_exclusion_method": selected_g_method,
+            "selection_basis_note": g_device_selection_basis,
+            "source_receipt_schema": G_DEVICE_SELECTION_SCHEMA,
+            "source_receipt_status": G_DEVICE_SELECTION_STATUS,
+        },
         "status": ASSEMBLY_STATUS,
         "unlocked_next_step": (
             "collect same-context confirmatory P0/P1/G data using these frozen configs"
@@ -422,6 +468,7 @@ def main() -> None:
     parser.add_argument("cal_a_receipt", type=Path)
     parser.add_argument("cal_b_receipt", type=Path)
     parser.add_argument("cal_c_plan", type=Path)
+    parser.add_argument("g_device_selection_receipt", type=Path)
     parser.add_argument("assembly_config", type=Path)
     parser.add_argument("--p0-template", type=Path, default=DEFAULT_TEMPLATES["P0"])
     parser.add_argument("--p1-template", type=Path, default=DEFAULT_TEMPLATES["P1"])
@@ -436,6 +483,9 @@ def main() -> None:
         cal_a_receipt=_load_json(args.cal_a_receipt),
         cal_b_receipt=_load_json(args.cal_b_receipt),
         cal_c_plan=_load_json(args.cal_c_plan),
+        g_device_selection_receipt=_load_json(
+            args.g_device_selection_receipt
+        ),
         assembly_config=_load_json(args.assembly_config),
         templates={
             "P0": _load_json(args.p0_template),
