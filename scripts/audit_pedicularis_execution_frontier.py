@@ -40,8 +40,12 @@ def build(
     config_paths: dict[str, Path],
     module_ledger_path: Path = DEFAULT_MODULE_LEDGER,
 ) -> dict:
+    configs = {
+        lane: _load(config_paths[lane])
+        for lane in ("P0", "P1", "G")
+    }
     lane_receipts = {
-        lane: inspect_prospective_freeze(_load(config_paths[lane]), lane)
+        lane: inspect_prospective_freeze(configs[lane], lane)
         for lane in ("P0", "P1", "G")
     }
     frozen_lanes = [
@@ -57,13 +61,25 @@ def build(
             for receipt in lane_receipts.values()
         }
         same_context = len(contexts) == 1
-        blocker = (
-            "CONFIRMATORY_P0_P1_G_RECEIPTS_REQUIRED"
-            if same_context
-            else "FROZEN_CONFIG_CONTEXT_MISMATCH"
+        g_method = (
+            configs["G"].get("method_gate", {}).get(
+                "selected_exclusion_method"
+            )
         )
+        g_method_selected = (
+            isinstance(g_method, str)
+            and bool(g_method.strip())
+            and g_method != "REQUIRED_BEFORE_USE"
+        )
+        if not same_context:
+            blocker = "FROZEN_CONFIG_CONTEXT_MISMATCH"
+        elif not g_method_selected:
+            blocker = "G_DEVICE_SELECTION_REQUIRED"
+        else:
+            blocker = "CONFIRMATORY_P0_P1_G_RECEIPTS_REQUIRED"
     else:
         same_context = False
+        g_method_selected = False
         blocker = "PROSPECTIVE_THRESHOLD_FREEZE_REQUIRED"
 
     module_counts = _module_counts(module_ledger_path)
@@ -82,6 +98,14 @@ def build(
         "frozen_lanes": frozen_lanes,
         "all_three_lane_configs_frozen": all_frozen,
         "same_population_and_season_after_freeze": same_context,
+        "g_device_selected": g_method_selected,
+        "selected_g_device": (
+            configs["G"].get("method_gate", {}).get(
+                "selected_exclusion_method"
+            )
+            if g_method_selected
+            else None
+        ),
         "current_blocker": blocker,
         "next_action": (
             "Complete nonconfirmatory CAL-A (measurement/equivalence), CAL-B (exploratory effects/G timing), and CAL-C (power/precision), then freeze P0/P1/G gate values with one basis note per gate before reading confirmatory outcomes."
@@ -89,7 +113,11 @@ def build(
             else (
                 "Re-freeze all three lane configs for one common population and season before collecting confirmatory data."
                 if blocker == "FROZEN_CONFIG_CONTEXT_MISMATCH"
-                else "Collect same-context P0/P1/G confirmatory data and generate the three positive evaluator receipts."
+                else (
+                    "Complete the threshold-free G device screen, prospectively freeze one hard-validity-admissible exclusion method, and propagate that method identity into the G config before confirmatory collection."
+                    if blocker == "G_DEVICE_SELECTION_REQUIRED"
+                    else "Collect same-context P0/P1/G confirmatory data and generate the three positive evaluator receipts."
+                )
             )
         ),
         "claim_ceiling": (
