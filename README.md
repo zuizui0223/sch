@@ -276,10 +276,12 @@ then a familywise P0/P1/G plan can generate the eight sample-size gates once
 CAL-A/B targets and planning assumptions are prospectively frozen.
 
 F0 assembly infrastructure is also implemented. A positive CAL-A receipt,
-positive CAL-B receipt and positive CAL-C plan are combined with the five
-registered contract values as an exact 5 + 20 + 7 + 8 = 40 source partition;
-all three output configs are revalidated by the shared prospective-freeze
-validator before confirmatory collection is unlocked.
+positive CAL-B receipt, positive CAL-C plan, and positive prospective G
+device-selection receipt are required. The 40 threshold values still form the
+exact 5 + 20 + 7 + 8 source partition; the selected G method is separate
+categorical protocol metadata. All three output configs are revalidated by the
+shared prospective-freeze validator, and confirmatory V4 additionally requires
+the observed G method identity to match the prospectively selected device.
 
 Use `scripts/build_pedicularis_calibration_package.py` to validate the
 cohort registry against the four nonconfirmatory data bundles and generate the
