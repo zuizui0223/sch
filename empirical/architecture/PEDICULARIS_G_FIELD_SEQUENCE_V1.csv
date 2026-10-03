@@ -5,20 +5,20 @@ plant_id,FOCAL,0,REGISTRY_ASSIGNMENT,assign plant identifier before treatment,NO
 flower_id,FOCAL,0,REGISTRY_ASSIGNMENT,assign unique endpoint flower identifier,NONE,IDENTITY,Must be disjoint from pollen-proxy flower IDs.
 predator_treatment,FOCAL,0,REGISTRY_ASSIGNMENT,assign EXPOSED or EXCLUDED within plant,NONE,PAIRING,Randomization/assignment occurs before outcomes.
 exclusion_method,FOCAL,0,REGISTRY_ASSIGNMENT,record sham or candidate barrier method identifier,NONE,METHOD_ID,Confirmatory V4 requires one exclusion method in EXCLUDED flowers.
-sham_device_applied,FOCAL,3,BARRIER_APPLICATION,record matched sham handling on EXPOSED flower,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires sham handling when configured.
+sham_device_applied,FOCAL,4,BARRIER_APPLICATION,record matched sham handling on EXPOSED flower,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires sham handling when configured.
 anthesis_time_hours,FOCAL,1,ANTHESIS_BASELINE,record anthesis reference time,NONE,TIMING,Barrier and proxy timings are interpreted relative to anthesis.
-barrier_application_time_hours,FOCAL,3,BARRIER_APPLICATION,record barrier or sham application time,NONE,TIMING,Must not precede anthesis.
-pollination_window_complete_before_barrier,FOCAL,3,BARRIER_APPLICATION,score whether registered natural-pollination window completed,NONE,HARD_METHOD_VALIDITY,If false in EXCLUDED flower it cannot support a positive V4 method receipt.
-ovary_swollen_at_barrier,FOCAL,3,BARRIER_APPLICATION,score ovary swelling state immediately before barrier,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires no swelling when configured.
-barrier_covers_pollinator_entry,FOCAL,3,BARRIER_APPLICATION,inspect whether device covers visitor-entry / contact zone,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires entry zone uncovered when configured.
-pre_barrier_attack_present,FOCAL,3,BARRIER_APPLICATION,inspect for eggs punctures or attack before treatment,NONE,HARD_METHOD_VALIDITY,Any positive EXCLUDED flower is invalid for full predator-exclusion contrast.
-barrier_integrity_failure_present,FOCAL,4,POST_BARRIER_INTEGRITY,inspect seal pore placement slippage and access failure during exposure period,NONE,HARD_METHOD_VALIDITY,Any positive EXCLUDED flower is invalid for positive V4 method receipt.
+barrier_application_time_hours,FOCAL,4,BARRIER_APPLICATION,record barrier or sham application time,NONE,TIMING,Must not precede anthesis.
+pollination_window_complete_before_barrier,FOCAL,4,BARRIER_APPLICATION,score whether registered natural-pollination window completed,NONE,HARD_METHOD_VALIDITY,If false in EXCLUDED flower it cannot support a positive V4 method receipt.
+ovary_swollen_at_barrier,FOCAL,4,BARRIER_APPLICATION,score ovary swelling state immediately before barrier,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires no swelling when configured.
+barrier_covers_pollinator_entry,FOCAL,4,BARRIER_APPLICATION,inspect whether device covers visitor-entry / contact zone,NONE,HARD_METHOD_VALIDITY,Positive method receipt requires entry zone uncovered when configured.
+pre_barrier_attack_present,FOCAL,4,BARRIER_APPLICATION,inspect for eggs punctures or attack before treatment,NONE,HARD_METHOD_VALIDITY,Any positive EXCLUDED flower is invalid for full predator-exclusion contrast.
+barrier_integrity_failure_present,FOCAL,5,POST_BARRIER_INTEGRITY,inspect seal pore placement slippage and access failure during exposure period,NONE,HARD_METHOD_VALIDITY,Any positive EXCLUDED flower is invalid for positive V4 method receipt.
 realized_exsertion,FOCAL,2,POLLINATION_WINDOW,measure focal floral z before barrier placement,NONDESTRUCTIVE,SELECTIVITY_BASELINE,Used for treatment balance/selectivity; not a G effect endpoint.
 water_depth,FOCAL,2,POLLINATION_WINDOW,measure cupulate-bract water state before/at barrier placement,NONDESTRUCTIVE,SELECTIVITY_BASELINE,Water-y must remain fixed between G treatments.
-pollen_grains,PROXY_MATERIALIZED,2,POLLEN_PROXY_COLLECTION,count stigma pollen on matched sacrificial proxy after natural-pollination window,DESTRUCTIVE_PROXY,SELECTIVITY_PROXY,Never pretend the destructive proxy is the same endpoint flower; materializer assigns plant×treatment proxy mean.
+pollen_grains,PROXY_MATERIALIZED,3,POLLEN_PROXY_COLLECTION,count stigma pollen on matched sacrificial proxy after natural-pollination window,DESTRUCTIVE_PROXY,SELECTIVITY_PROXY,Never pretend the destructive proxy is the same endpoint flower; materializer assigns plant×treatment proxy mean.
 pollinator_visits,FOCAL,2,POLLINATION_WINDOW,accumulate legitimate visits before barrier/sham application,NONDESTRUCTIVE,SELECTIVITY_BASELINE,Natural visitation endpoint for P-lane preservation.
-early_predator_attack_present,FOCAL,5,EARLY_POST_TREATMENT,score post-treatment early attack / oviposition evidence,NONDESTRUCTIVE,ANTAGONIST_EFFECT,First biological G-effect endpoint; distinct from pre-barrier attack.
-ovule_count,FOCAL,6,HARVEST,count/reconstruct ovules at capsule endpoint,ENDPOINT,REPRODUCTIVE_DENOMINATOR,Used with damaged and undamaged seeds to compute initial/final seed set.
-undamaged_seed_count,FOCAL,6,HARVEST,count intact seeds at capsule endpoint,ENDPOINT,ANTAGONIST_AND_FITNESS_EFFECT,Contributes to final intact seed set.
-damaged_seed_count,FOCAL,6,HARVEST,count predator-damaged seeds at capsule endpoint,ENDPOINT,ANTAGONIST_EFFECT,Contributes to seed-predation fraction and initial seed set.
-mechanical_damage,FOCAL,5,EARLY_POST_TREATMENT,score handling/device mechanical damage,NONDESTRUCTIVE,SELECTIVITY_AND_HANDLING,Used as handling-contamination endpoint.
+early_predator_attack_present,FOCAL,6,EARLY_POST_TREATMENT,score post-treatment early attack / oviposition evidence,NONDESTRUCTIVE,ANTAGONIST_EFFECT,First biological G-effect endpoint; distinct from pre-barrier attack.
+ovule_count,FOCAL,7,HARVEST,count/reconstruct ovules at capsule endpoint,ENDPOINT,REPRODUCTIVE_DENOMINATOR,Used with damaged and undamaged seeds to compute initial/final seed set.
+undamaged_seed_count,FOCAL,7,HARVEST,count intact seeds at capsule endpoint,ENDPOINT,ANTAGONIST_AND_FITNESS_EFFECT,Contributes to final intact seed set.
+damaged_seed_count,FOCAL,7,HARVEST,count predator-damaged seeds at capsule endpoint,ENDPOINT,ANTAGONIST_EFFECT,Contributes to seed-predation fraction and initial seed set.
+mechanical_damage,FOCAL,6,EARLY_POST_TREATMENT,score handling/device mechanical damage,NONDESTRUCTIVE,SELECTIVITY_AND_HANDLING,Used as handling-contamination endpoint.
