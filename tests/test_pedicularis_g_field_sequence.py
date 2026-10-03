@@ -11,10 +11,11 @@ def test_g_field_sequence_covers_all_23_v4_fields() -> None:
         0: "REGISTRY_ASSIGNMENT",
         1: "ANTHESIS_BASELINE",
         2: "POLLINATION_WINDOW",
-        3: "BARRIER_APPLICATION",
-        4: "POST_BARRIER_INTEGRITY",
-        5: "EARLY_POST_TREATMENT",
-        6: "HARVEST",
+        3: "POLLEN_PROXY_COLLECTION",
+        4: "BARRIER_APPLICATION",
+        5: "POST_BARRIER_INTEGRITY",
+        6: "EARLY_POST_TREATMENT",
+        7: "HARVEST",
     }
 
 
@@ -29,8 +30,8 @@ def test_hard_method_validity_is_detectable_before_harvest() -> None:
         "pre_barrier_attack_present",
         "barrier_integrity_failure_present",
     }
-    assert result["earliest_hard_method_validity_phase"] == 3
-    assert set(result["hard_method_validity_by_phase"]) == {3, 4}
+    assert result["earliest_hard_method_validity_phase"] == 4
+    assert set(result["hard_method_validity_by_phase"]) == {4, 5}
     assert "HARVEST_ENDPOINTS" in result["field_stop_priority"]
 
 
