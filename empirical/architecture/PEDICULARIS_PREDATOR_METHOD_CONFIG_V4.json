@@ -2,6 +2,7 @@
   "bootstrap_reps": 2000,
   "random_seed": 20260905,
   "method_gate": {
+    "selected_exclusion_method": "REQUIRED_BEFORE_USE",
     "min_paired_plants": "REQUIRED_BEFORE_USE",
     "min_flowers_per_treatment": "REQUIRED_BEFORE_USE",
     "min_hours_after_anthesis_before_barrier": "REQUIRED_BEFORE_USE",
