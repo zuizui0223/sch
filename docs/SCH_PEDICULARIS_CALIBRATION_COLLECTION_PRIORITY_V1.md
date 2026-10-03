@@ -99,8 +99,31 @@ This is the least recovered intervention component of the same-system chain.
 It also supplies the largest registered calibration-support yield (20
 outputs), so scarce pilot effort should first protect the G lane.
 
-This priority does **not** create an informal G pass/fail criterion. Before F0
-the exploratory G data remain descriptive threshold-basis evidence.
+This priority does **not** create an informal G effect-size pass/fail
+criterion. Before F0 the exploratory G effect distributions remain descriptive
+threshold-basis evidence.
+
+If multiple candidate barrier materials/geometries are tested, first run the
+threshold-free hard-validity screen:
+
+```text
+scripts/screen_pedicularis_g_devices.py
+```
+
+A device may be rejected here for covering the pollinator entrance, being
+applied after attack has already begun, integrity/access failure, ovary
+swelling, incomplete pollination window, or unmatched sham handling. It is
+**not** rejected merely because the exploratory predation effect is small.
+
+After the hard-validity screen, prospectively freeze one admissible method
+identity with:
+
+```text
+scripts/freeze_pedicularis_g_device_selection.py
+```
+
+before confirmatory G data collection. The final V4 evaluator requires the
+confirmatory device identity to match this selection exactly.
 
 ### 2. P0 + repeatability — collect together where feasible
 
