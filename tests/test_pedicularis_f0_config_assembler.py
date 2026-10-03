@@ -125,6 +125,21 @@ def _cal_c_plan(
     }
 
 
+def _g_device_selection(
+    population: str = "P_REX_TEST",
+    season: str = "S1",
+) -> dict:
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_G_DEVICE_SELECTION_V1",
+        "analysis": "pedicularis_g_device_selection_freeze",
+        "population_id": population,
+        "season_id": season,
+        "selected_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+        "selection_basis_note": "UNIT_TEST_SELECTED_AFTER_HARD_DEVICE_SCREEN",
+        "status": "PEDICULARIS_G_DEVICE_SELECTED_FOR_CONFIRMATORY_QUALIFICATION",
+    }
+
+
 def _assembly_config(
     population: str = "P_REX_TEST",
     season: str = "S1",
@@ -152,6 +167,7 @@ def test_f0_assembler_closes_exactly_40_gate_fields() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        g_device_selection_receipt=_g_device_selection(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -183,6 +199,7 @@ def test_registered_contract_values_are_not_overwritten_by_calibration() -> None
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        g_device_selection_receipt=_g_device_selection(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -208,6 +225,7 @@ def test_cal_a_cal_b_and_cal_c_values_land_in_correct_lane_configs() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        g_device_selection_receipt=_g_device_selection(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -221,6 +239,9 @@ def test_cal_a_cal_b_and_cal_c_values_land_in_correct_lane_configs() -> None:
     assert outputs["P1"]["pollination_weight"]["min_paired_plants"] == 30
     assert outputs["G"]["method_gate"]["min_paired_plants"] == 36
     assert outputs["G"]["predator_weight"]["min_paired_plants"] == 36
+    assert outputs["G"]["method_gate"]["selected_exclusion_method"] == (
+        "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    )
 
 
 def test_every_threshold_basis_records_its_source_layer() -> None:
@@ -228,6 +249,7 @@ def test_every_threshold_basis_records_its_source_layer() -> None:
         cal_a_receipt=_cal_a_receipt(),
         cal_b_receipt=_cal_b_receipt(),
         cal_c_plan=_cal_c_plan(),
+        g_device_selection_receipt=_g_device_selection(),
         assembly_config=_assembly_config(),
         templates=_templates(),
     )
@@ -250,6 +272,7 @@ def test_context_mismatch_between_sources_fails_closed() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(season="S2"),
             cal_c_plan=_cal_c_plan(),
+            g_device_selection_receipt=_g_device_selection(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -268,6 +291,7 @@ def test_missing_cal_a_gate_fails_40_gate_coverage() -> None:
             cal_a_receipt=receipt,
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=_cal_c_plan(),
+            g_device_selection_receipt=_g_device_selection(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -281,6 +305,7 @@ def test_cal_c_must_supply_exactly_eight_sample_size_gates() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=plan,
+            g_device_selection_receipt=_g_device_selection(),
             assembly_config=_assembly_config(),
             templates=_templates(),
         )
@@ -294,6 +319,39 @@ def test_assembly_freeze_timestamp_must_be_timezone_aware() -> None:
             cal_a_receipt=_cal_a_receipt(),
             cal_b_receipt=_cal_b_receipt(),
             cal_c_plan=_cal_c_plan(),
+            g_device_selection_receipt=_g_device_selection(),
             assembly_config=config,
             templates=_templates(),
         )
+
+
+def test_g_device_selection_context_must_match_f0_context() -> None:
+    with pytest.raises(ValueError, match="contexts must match"):
+        assemble(
+            cal_a_receipt=_cal_a_receipt(),
+            cal_b_receipt=_cal_b_receipt(),
+            cal_c_plan=_cal_c_plan(),
+            g_device_selection_receipt=_g_device_selection(season="S2"),
+            assembly_config=_assembly_config(),
+            templates=_templates(),
+        )
+
+
+def test_f0_receipt_preserves_g_device_selection_provenance() -> None:
+    outputs, receipt = assemble(
+        cal_a_receipt=_cal_a_receipt(),
+        cal_b_receipt=_cal_b_receipt(),
+        cal_c_plan=_cal_c_plan(),
+        g_device_selection_receipt=_g_device_selection(),
+        assembly_config=_assembly_config(),
+        templates=_templates(),
+    )
+    assert receipt["g_device_selection"]["selected_exclusion_method"] == (
+        "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    )
+    assert receipt["g_device_selection"]["source_receipt_schema"] == (
+        "SCH_PEDICULARIS_G_DEVICE_SELECTION_V1"
+    )
+    assert outputs["G"]["method_gate"]["selected_exclusion_method"] == (
+        receipt["g_device_selection"]["selected_exclusion_method"]
+    )
