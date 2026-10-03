@@ -97,6 +97,27 @@ EXCLUDED + Method B
 
 Method comparison is exploratory. The confirmatory Stage-G V4 receipt must use a single prospectively chosen method.
 
+Use the threshold-free device screen before selecting that method:
+
+```text
+scripts/screen_pedicularis_g_devices.py
+docs/SCH_PEDICULARIS_G_DEVICE_SCREEN_V1.md
+```
+
+The screen may reject a device only for hard physical/method-invalidity
+observations. It does not apply exploratory effect-size thresholds.
+
+If one or more devices are hard-validity admissible, freeze exactly one method
+identity prospectively with:
+
+```text
+empirical/architecture/PEDICULARIS_G_DEVICE_SELECTION_TEMPLATE_V1.json
+scripts/freeze_pedicularis_g_device_selection.py
+```
+
+That selected method identity is categorical protocol metadata, not an
+additional F0 biological threshold.
+
 ## Timing records
 
 For every focal flower record:
@@ -239,6 +260,7 @@ A method is not promoted if any of the following fails:
 
 ```text
 single method identity
+method identity matches prospectively selected G device
 minimum paired plants
 minimum flowers per treatment
 barrier applied after the registered pollination window
@@ -263,8 +285,10 @@ handling damage stable.
 ## Decision rule
 
 ```text
-one method passes V4
--> freeze method + timing + tolerances
+one exploratory device passes hard validity
+-> freeze one device identity before confirmatory data
+-> freeze timing + effect/selectivity tolerances through CAL-B/C/F0
+-> that same selected method passes V4
 -> run same-context P0 / P1 / G3 readiness
 -> only then unlock the full z x P x G surface.
 
