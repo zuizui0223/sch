@@ -295,6 +295,15 @@ repeatability=13 measurement-noise floors, and P1=16 calibration-support
 outputs. Run
 `python scripts/audit_pedicularis_calibration_collection_yield.py`.
 
+G exploratory now has a separate device-development path. Multiple late/local
+barrier candidates can be screened with
+`scripts/screen_pedicularis_g_devices.py`; only hard method-invalidity can
+reject a device at this stage. One admissible method must then be selected and
+frozen prospectively with
+`scripts/freeze_pedicularis_g_device_selection.py`. This categorical method
+choice is propagated through F0 and must exactly match the confirmatory V4 G
+dataset; it is not a 41st F0 threshold.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
@@ -302,8 +311,9 @@ Pedicularis route is:
 same population + same season
 CAL-A     measurement/equivalence/handling calibration
 CAL-B     exploratory P/G effects + G timing pilot
+G device  hard-validity screen -> prospectively freeze one barrier identity
 CAL-C     prospective power/precision planning
-Stage F0  freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
+Stage F0  freeze P0/P1/G thresholds + G method identity before confirmatory outcomes
 Stage P0  validate >=5 realized exsertion levels
 Stage P1  validate selective pollination-weight supplementation
 Stage G   validate independent seed-predator exclusion with water-y fixed
