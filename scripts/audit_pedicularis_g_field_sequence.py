@@ -67,9 +67,9 @@ def build(path: Path = DEFAULT_SEQUENCE) -> dict:
             raise ValueError("phase_order must be >= 0")
         phases.setdefault(order, set()).add(row["phase"])
 
-    if set(phases) != set(range(7)):
+    if set(phases) != set(range(8)):
         raise ValueError(
-            "G field sequence must cover phase_order 0 through 6 exactly"
+            "G field sequence must cover phase_order 0 through 7 exactly"
         )
     if any(len(names) != 1 for names in phases.values()):
         raise ValueError(
