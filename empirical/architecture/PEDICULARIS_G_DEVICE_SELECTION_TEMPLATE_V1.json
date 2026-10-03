@@ -1,0 +1,11 @@
+{
+  "receipt_schema_version": "SCH_PEDICULARIS_G_DEVICE_SELECTION_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "selected_exclusion_method": "REQUIRED_BEFORE_USE",
+  "selected_before_confirmatory_data": "REQUIRED_BEFORE_USE",
+  "selected_at_utc": "REQUIRED_BEFORE_USE",
+  "basis_document": "REQUIRED_BEFORE_USE",
+  "selection_basis_note": "REQUIRED_BEFORE_USE"
+}
