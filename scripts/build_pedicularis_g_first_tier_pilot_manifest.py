@@ -10,21 +10,9 @@ from pathlib import Path
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
 FLOWER_FIELDS = ("flower_id_1", "flower_id_2", "flower_id_3")
 ARMS = (
-    (
-        "EXPOSED_SHAM",
-        "EXPOSED",
-        "SHAM_SLEEVE",
-    ),
-    (
-        "G_A1_FINE_MESH",
-        "EXCLUDED",
-        "FINE_MESH_LOWER_FRUIT_SLEEVE",
-    ),
-    (
-        "G_A2_POROUS_TUBING",
-        "EXCLUDED",
-        "POROUS_TUBING_LOWER_FRUIT_SLEEVE",
-    ),
+    ("EXPOSED_SHAM", "EXPOSED", "SHAM_SLEEVE"),
+    ("G_A1_FINE_MESH", "EXCLUDED", "FINE_MESH_LOWER_FRUIT_SLEEVE"),
+    ("G_A2_POROUS_TUBING", "EXCLUDED", "POROUS_TUBING_LOWER_FRUIT_SLEEVE"),
 )
 
 
@@ -42,33 +30,28 @@ def _read(path: Path) -> list[dict[str, str]]:
     return rows
 
 
-def _randomized_flower_order(
-    row: dict[str, str],
-    *,
+def _arm_order(
+    randomization_key: str,
     population_id: str,
     season_id: str,
-    allocation_seed: str,
-) -> list[str]:
-    decorated: list[tuple[str, str]] = []
-    for field in FLOWER_FIELDS:
-        flower_id = row[field]
-        token = "\x1f".join(
-            [
-                allocation_seed,
-                population_id,
-                season_id,
-                row["plant_id"],
-                flower_id,
-            ]
+    plant_id: str,
+) -> list[tuple[str, str, str]]:
+    if not randomization_key or randomization_key == PLACEHOLDER:
+        raise ValueError("randomization_key must be resolved before allocation")
+
+    scored = []
+    for arm in ARMS:
+        token = "|".join(
+            [randomization_key, population_id, season_id, plant_id, arm[0]]
         )
         digest = hashlib.sha256(token.encode("utf-8")).hexdigest()
-        decorated.append((digest, flower_id))
-    return [flower_id for _, flower_id in sorted(decorated)]
+        scored.append((digest, arm))
+    return [arm for _, arm in sorted(scored)]
 
 
 def build(
     rows: list[dict[str, str]],
-    allocation_seed: str,
+    randomization_key: str,
 ) -> tuple[list[dict[str, str]], dict]:
     required = {
         "population_id",
@@ -82,10 +65,6 @@ def build(
             "G first-tier manifest lacks columns: "
             + ", ".join(missing_columns)
         )
-
-    allocation_seed = allocation_seed.strip()
-    if not allocation_seed or allocation_seed == PLACEHOLDER:
-        raise ValueError("allocation_seed must be resolved before allocation")
 
     contexts = {
         (row["population_id"], row["season_id"])
@@ -110,6 +89,9 @@ def build(
     if len(plant_ids) != len(set(plant_ids)):
         raise ValueError("plant_id must be unique in the first-tier manifest")
 
+    if not randomization_key or randomization_key == PLACEHOLDER:
+        raise ValueError("randomization_key must be resolved before allocation")
+
     all_flower_ids: list[str] = []
     allocations: list[dict[str, str]] = []
 
@@ -128,17 +110,15 @@ def build(
             )
         all_flower_ids.extend(flower_ids)
 
-        assigned_flower_ids = _randomized_flower_order(
-            row,
-            population_id=population_id,
-            season_id=season_id,
-            allocation_seed=allocation_seed,
+        randomized_arms = _arm_order(
+            randomization_key,
+            population_id,
+            season_id,
+            row["plant_id"],
         )
-        for (
-            arm_id,
-            treatment,
-            method,
-        ), flower_id in zip(ARMS, assigned_flower_ids, strict=True):
+        for flower_id, (arm_id, treatment, method) in zip(
+            flower_ids, randomized_arms
+        ):
             allocations.append(
                 {
                     "population_id": population_id,
@@ -152,7 +132,7 @@ def build(
                         "1" if treatment == "EXPOSED" else "0"
                     ),
                     "candidate_selected": "NO",
-                    "assignment_method": "SHA256_RANK_V1",
+                    "randomization_algorithm": "SHA256_SORT_V1",
                     "field_status": "ALLOCATED_NOT_YET_MEASURED",
                 }
             )
@@ -176,20 +156,18 @@ def build(
         ],
         "candidate_selected": False,
         "sample_size_chosen_by_script": False,
-        "assignment_randomized_within_plant": True,
-        "allocation_algorithm": "SHA256_RANK_V1",
-        "allocation_seed": allocation_seed,
-        "allocation_seed_sha256": hashlib.sha256(
-            allocation_seed.encode("utf-8")
-        ).hexdigest(),
+        "within_plant_randomized": True,
+        "randomization_algorithm": "SHA256_SORT_V1",
+        "randomization_key": randomization_key,
         "status": "G_FIRST_TIER_PILOT_ALLOCATED_NOT_YET_MEASURED",
         "next_step": (
-            "collect V4 timing/outcome fields using the canonical method codes, "
-            "then run screen_pedicularis_g_candidates.py"
+            "freeze this allocation receipt before field outcomes; collect V4 "
+            "timing/outcome fields using the canonical method codes, then run "
+            "screen_pedicularis_g_candidates.py"
         ),
         "claim_ceiling": [
             "field_allocation_only",
-            "randomized_within_plant_three_arm_comparison",
+            "within_plant_randomized_three_arm_comparison",
             "does_not_choose_number_of_plants",
             "does_not_choose_effect_or_selectivity_thresholds",
             "does_not_validate_any_candidate",
@@ -209,17 +187,17 @@ def _write_csv(path: Path, rows: list[dict[str, str]]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Build a randomized three-arm within-plant field allocation "
-            "manifest for the two first-tier P. rex G barrier candidates"
+            "Build a randomized three-arm within-plant field allocation manifest "
+            "for the two first-tier P. rex G barrier candidates"
         )
     )
     parser.add_argument("plant_manifest_csv", type=Path)
     parser.add_argument(
-        "--allocation-seed",
+        "--randomization-key",
         required=True,
         help=(
-            "Precommitted neutral seed used to randomize the three supplied "
-            "flower IDs within each plant"
+            "Prospectively fixed key used for deterministic SHA256 within-plant "
+            "arm allocation. Freeze it with the allocation receipt before outcomes."
         ),
     )
     parser.add_argument("--allocations-out", type=Path, required=True)
@@ -228,7 +206,7 @@ def main() -> None:
 
     allocations, receipt = build(
         _read(args.plant_manifest_csv),
-        allocation_seed=args.allocation_seed,
+        args.randomization_key,
     )
     _write_csv(args.allocations_out, allocations)
     args.receipt_out.parent.mkdir(parents=True, exist_ok=True)
