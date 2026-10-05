@@ -241,21 +241,44 @@ def _validate_config(config: dict) -> dict:
             "power inputs must be frozen before full-surface outcome data"
         )
 
-    raw_candidates = config.get("candidate_complete_block_plants")
+    raw_candidates = config.get("candidate_plants")
     if not isinstance(raw_candidates, list) or not raw_candidates:
         raise ValueError(
-            "candidate_complete_block_plants must be a non-empty list"
+            "candidate_plants must be a non-empty list"
         )
     candidates = sorted(
         {
-            _positive_int(value, "candidate_complete_block_plants")
+            _positive_int(value, "candidate_plants")
             for value in raw_candidates
         }
     )
     if candidates[0] < 3:
         raise ValueError(
-            "candidate_complete_block_plants must be >=3 for the secondary bootstrap"
+            "candidate_plants must be >=3 for the secondary bootstrap"
         )
+
+    field_design = config.get("field_design")
+    if not isinstance(field_design, dict):
+        raise ValueError("field_design is required")
+    flowers_per_plant = _positive_int(
+        field_design.get("flowers_per_plant"),
+        "field_design.flowers_per_plant",
+    )
+    if flowers_per_plant > len(STATES) * 5:
+        raise ValueError("field_design.flowers_per_plant cannot exceed 20")
+    if field_design.get("allocation_strategy") != (
+        "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+    ):
+        raise ValueError(
+            "field_design.allocation_strategy must be "
+            "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+        )
+    for candidate in candidates:
+        if (candidate * flowers_per_plant) % 20 != 0:
+            raise ValueError(
+                "each candidate plant count x flowers_per_plant must be divisible "
+                "by 20 for exact cell balance"
+            )
 
     reps = _positive_int(config.get("simulation_reps"), "simulation_reps")
     if status == FROZEN_STATUS and reps < 200:
@@ -491,7 +514,11 @@ def _validate_config(config: dict) -> dict:
             "population_id": population_id,
             "season_id": season_id,
         },
-        "candidate_complete_block_plants": candidates,
+        "candidate_plants": candidates,
+        "field_design": {
+            "flowers_per_plant": flowers_per_plant,
+            "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL",
+        },
         "simulation_reps": reps,
         "simulation_seed": int(config.get("simulation_seed", 20261005)),
         "target_primary_surface_power": target_primary,
@@ -544,6 +571,7 @@ def generate_rows(
     n_plants: int,
     rng: random.Random,
     *,
+    flowers_per_plant: int,
     population_id: str = "PEDICULARIS_W1W2_POWER",
     season_id: str = "SIMULATION",
 ) -> tuple[list[dict[str, str]], dict]:
@@ -553,10 +581,29 @@ def generate_rows(
     pollen_models = model["pollen_state_models"]
     seed_models = model["initial_seed_state_models"]
 
+    if not 1 <= flowers_per_plant <= 20:
+        raise ValueError("flowers_per_plant must lie in [1, 20]")
+    if (n_plants * flowers_per_plant) % 20 != 0:
+        raise ValueError(
+            "n_plants x flowers_per_plant must be divisible by 20"
+        )
+
+    cells = [
+        (z_index, z, state)
+        for z_index, z in enumerate(z_levels)
+        for state in STATES
+    ]
+    rng.shuffle(cells)
+
     rows: list[dict[str, str]] = []
     final_clip_count = 0
     initial_clip_count = 0
     initial_floor_count = 0
+    cell_counts = {
+        f"Z{z_index:02d}_{state}": 0
+        for z_index, _ in enumerate(z_levels)
+        for state in STATES
+    }
 
     for plant_index in range(n_plants):
         plant_id = f"P{plant_index:04d}"
@@ -573,9 +620,19 @@ def generate_rows(
             float(model["initial_seed_between_plant_sd_fraction"]),
         )
 
-        for z_index, nominal_z in enumerate(z_levels):
-            for state in STATES:
+        start = (plant_index * flowers_per_plant) % len(cells)
+        selected_cells = [
+            cells[(start + offset) % len(cells)]
+            for offset in range(flowers_per_plant)
+        ]
+        if len(set((z_index, state) for z_index, _, state in selected_cells)) != (
+            flowers_per_plant
+        ):
+            raise ValueError("balanced allocator produced a duplicate cell within plant")
+
+        for z_index, nominal_z, state in selected_cells:
                 pollination, predator = STATE_TREATMENTS[state]
+                cell_counts[f"Z{z_index:02d}_{state}"] += 1
                 z = nominal_z + rng.gauss(
                     0.0,
                     float(model["realized_z_sd"]),
@@ -655,7 +712,10 @@ def generate_rows(
     return rows, {
         "n_rows": n_rows,
         "n_plants": n_plants,
-        "flowers_per_plant": len(z_levels) * len(STATES),
+        "flowers_per_plant": flowers_per_plant,
+        "replicates_per_cell": (n_plants * flowers_per_plant) // 20,
+        "cell_counts": cell_counts,
+        "exact_cell_balance": len(set(cell_counts.values())) == 1,
         "final_seed_boundary_clip_fraction": final_clip_count / n_rows,
         "initial_seed_fraction_clip_fraction": initial_clip_count / n_rows,
         "initial_seed_floored_at_final_seed_fraction": (
@@ -678,7 +738,7 @@ def simulate_power(
     master = random.Random(frozen["simulation_seed"])
 
     candidate_results = []
-    for n_plants in frozen["candidate_complete_block_plants"]:
+    for n_plants in frozen["candidate_plants"]:
         primary_success = 0
         shift_success = 0
         pollen_success = 0
@@ -700,6 +760,7 @@ def simulate_power(
                 frozen["generating_model"],
                 n_plants,
                 rng,
+                flowers_per_plant=frozen["field_design"]["flowers_per_plant"],
                 population_id=population_id,
                 season_id=season_id,
             )
@@ -767,15 +828,13 @@ def simulate_power(
 
         candidate_results.append(
             {
-                "complete_block_plants": n_plants,
-                "flowers_per_treatment_cell": n_plants,
-                "flowers_per_plant": (
-                    len(frozen["generating_model"]["z_levels"]) * len(STATES)
+                "plants": n_plants,
+                "flowers_per_plant": frozen["field_design"]["flowers_per_plant"],
+                "flowers_per_treatment_cell": (
+                    n_plants * frozen["field_design"]["flowers_per_plant"] // 20
                 ),
                 "total_full_surface_flowers": (
-                    n_plants
-                    * len(frozen["generating_model"]["z_levels"])
-                    * len(STATES)
+                    n_plants * frozen["field_design"]["flowers_per_plant"]
                 ),
                 "simulation_reps": reps,
                 "primary_surface_power": primary_success / reps,
@@ -802,7 +861,7 @@ def simulate_power(
         )
 
     eligible = [
-        row["complete_block_plants"]
+        row["plants"]
         for row in candidate_results
         if row["primary_surface_power"]
         >= frozen["target_primary_surface_power"]
@@ -813,9 +872,10 @@ def simulate_power(
     return {
         "analysis": "pedicularis_W1_W2_full_surface_power_v1",
         "planning_provenance": provenance,
+        "field_design": frozen["field_design"],
         "design_assumption": (
-            "balanced complete-block planning model: each independent plant "
-            "contributes one focal flower to every z x P x G cell"
+            "balanced cyclic randomized allocation across all 20 z x P x G cells; "
+            "complete block only when flowers_per_plant=20"
         ),
         "conditioning_statement": (
             "power is conditional on P0/P1/G having already passed their "
@@ -828,13 +888,11 @@ def simulate_power(
         "target_truth_world": frozen["target_truth_world"],
         "generating_truth_descriptor": frozen["truth_descriptor"],
         "candidate_results": candidate_results,
-        "minimum_complete_block_plants_meeting_both_targets": (
+        "minimum_plants_meeting_both_targets": (
             min(eligible) if eligible else None
         ),
         "minimum_total_full_surface_flowers_meeting_both_targets": (
-            min(eligible)
-            * len(frozen["generating_model"]["z_levels"])
-            * len(STATES)
+            min(eligible) * frozen["field_design"]["flowers_per_plant"]
             if eligible
             else None
         ),
@@ -844,7 +902,7 @@ def simulate_power(
             "conditional_on_qualified_P0_P1_G_interventions",
             "uses_current_production_surface_secondary_and_W0_W5_classifiers",
             "does_not_choose_generating_effects_from_confirmatory_data",
-            "complete_block_assumption_must_match_field_design_before_using_n",
+            "flowers_per_plant_and_balanced_allocation_must_match_field_design_before_using_n",
             "Monte_Carlo_power_is_conditional_on_frozen_generating_scenario",
         ],
     }
