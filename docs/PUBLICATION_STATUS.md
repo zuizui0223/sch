@@ -204,7 +204,7 @@ V48 closes the eleventh deterministic TA3 batch: 25 records screened, 9 retained
 
 V49 closes the twelfth deterministic TA3 batch: 25 records screened, 9 retained for full text and 16 excluded. Formal title/abstract screening reaches 783/868 records, leaving 85 unscreened.
 
-V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868.\n\nV51 closes the fourteenth deterministic TA3 batch, review orders 404–428: 9 records retained and 16 excluded. Formal title/abstract screening reaches 833/868, leaving 35 unscreened. Erysimum, Sidalcea, Veratrum, Breynia and the 2026 Red Queen comparative analysis strengthen the trait-axis × ecological-context × consumer-role reality layer; no prospective H2M1 outcome is opened.
+V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868.\n\nV51 closes the fourteenth deterministic TA3 batch, review orders 404–428: 9 records retained and 16 excluded. Formal title/abstract screening reaches 833/868. Erysimum, Sidalcea, Veratrum, Breynia and the 2026 Red Queen comparative analysis strengthen the trait-axis × ecological-context × consumer-role reality layer; no prospective H2M1 outcome is opened.\n\nV52 closes the fifteenth deterministic TA3 batch, review orders 429–453: 14 records retained and 11 excluded. Formal title/abstract screening reaches 858/868, leaving 10 unscreened. The retained systems expose role switching, reward partitioning, cross-stage propagation and context-sensitive pollinator–exploiter use without changing the prospective H2M1 registry.
 
 The programme score q_j is the within-programme fraction of eligible repeated axes with bidirectionally supported reversal. This keeps the biological programme as the inferential unit and prevents papers measuring many trait axes from contributing pseudo-replicates.
 
@@ -227,7 +227,7 @@ strict numeric pooling             FAIL_CLOSED
 full frozen systematic screen      INCOMPLETE
 ~~~
 
-The immediate macroecology operation is continued deterministic TA3 remainder screening/full-text closure; 35 title/abstract records remain unscreened after V51.
+The immediate macroecology operation is the final deterministic TA3 title/abstract batch; 10 records remain unscreened after V52.
 
 Canonical macroecology documents:
 
@@ -259,7 +259,7 @@ Canonical macroecology documents:
 - docs/SCH_PRISMA_V47_TA3_BATCH_J_READOUT.md
 - docs/SCH_PRISMA_V48_TA3_BATCH_K_READOUT.md
 - docs/SCH_PRISMA_V49_TA3_BATCH_L_READOUT.md
-- docs/SCH_PRISMA_V50_TA3_BATCH_M_READOUT.md\n- docs/SCH_PRISMA_V51_TA3_BATCH_N_READOUT.md
+- docs/SCH_PRISMA_V50_TA3_BATCH_M_READOUT.md\n- docs/SCH_PRISMA_V51_TA3_BATCH_N_READOUT.md\n- docs/SCH_PRISMA_V52_TA3_BATCH_O_READOUT.md
 ## Frozen literature-layer status
 
 ```text
