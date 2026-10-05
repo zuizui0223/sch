@@ -110,7 +110,14 @@ def _validate_allocation(
     if len(normalized) != int(allocation_receipt.get("n_allocated_flowers", -1)):
         raise ValueError("allocation row count does not match receipt")
 
-    if _semantic_sha256(normalized) != allocation_receipt.get(
+    canonical_allocation_rows = sorted(
+        [
+            {key: value.strip() for key, value in row.items()}
+            for row in allocation_rows
+        ],
+        key=lambda row: (row["plant_id"], row["flower_id"]),
+    )
+    if _semantic_sha256(canonical_allocation_rows) != allocation_receipt.get(
         "allocation_identity_sha256"
     ):
         raise ValueError(
