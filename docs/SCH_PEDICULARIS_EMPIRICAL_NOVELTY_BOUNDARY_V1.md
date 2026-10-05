@@ -81,6 +81,20 @@ Again, the consumer manipulation is already factorial. The plant traits used
 for selection analysis are naturally varying rather than one randomized
 multi-level coordinate whose entire state-specific fitness surface is mapped.
 
+### Trifolium repens
+
+Santangelo, Thompson & Johnson (2019; doi:10.1111/jeb.13392) provides another
+strong causal precedent. In an 800-plant common-garden experiment, they crossed
+open versus supplemental pollination with ambient versus reduced herbivory
+(and a defensive cyanogenesis phenotype) and tested how these treatments
+changed selection on reproductive traits.
+
+This removes any remaining basis for calling crossed pollination × herbivory
+itself novel. As in the other factorial precedents, however, the focal
+reproductive traits were naturally/genotypically varying rather than one shared
+coordinate randomized over multiple ordered values for direct recovery of four
+bounded state surfaces.
+
 Therefore the focal paper must not claim:
 
 ```text
