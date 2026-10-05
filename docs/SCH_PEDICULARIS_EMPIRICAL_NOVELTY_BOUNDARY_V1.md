@@ -125,6 +125,23 @@ selectively cross pollinator and antagonist states around the same randomized
 trait to recover separate reproductive surfaces and ask whether removing the
 antagonist **moves the optimum**.
 
+## A close optimum-displacement precedent
+
+The idea that antagonist context can move a floral optimum is also not unique to
+the P. rex programme. Wise & Hebert (2010; doi:10.1890/09-1373.1) found in
+*Solanum carolinense* that selection on floral-sex ratio changed with natural
+flower/fruit herbivory: under low herbivory the fitted optimum was near 29%
+male flowers, whereas increasing herbivory shifted the pattern toward an
+optimum at 0% male flowers.
+
+This is a genuine context-dependent optimum-displacement precedent. It is not
+the same causal design as P. rex: herbivory was not selectively randomized as a
+G state, pollination was not crossed as P, and the focal floral coordinate was
+not randomized across a registered multi-level surface.
+
+Therefore **enemy-associated movement of a floral optimum is not itself the
+novelty claim**.
+
 ## The bounded gap
 
 Across the close precedents audited here, individual ingredients exist:
@@ -134,6 +151,7 @@ shared floral conflict                         YES
 direct floral phenotype manipulation           YES
 multi-level attraction-trait manipulation       YES
 ecological optimum under mutualist-antagonist conflict YES
+antagonist-associated floral optimum displacement YES
 selective enemy-context manipulation           YES
 factorial pollination x herbivory              YES
 selection-gradient decomposition               YES
@@ -196,7 +214,8 @@ pollinators and enemies can prefer the same floral cues;
 their selection can oppose;
 consumer manipulations can change selection gradients;
 a manipulated attraction trait can have an inferred optimum under
-pollinator-antagonist conflict.
+pollinator-antagonist conflict;
+an antagonist gradient can coincide with displacement of a floral optimum.
 ```
 
 The focal causal experiment would add:
