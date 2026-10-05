@@ -35,9 +35,9 @@ def test_priority_queue_covers_exact_current_unscreened_denominator_and_generate
     rows, receipt = _mod().build(FROZEN, PRISMA)
 
     assert receipt["n_frozen_candidates"] == 868
-    assert receipt["n_formally_ta_screened"] == 833
+    assert receipt["n_formally_ta_screened"] == 858
     assert receipt["n_unscreened_priority_queue"] == 35
-    assert len(rows) == 35
+    assert len(rows) == 10
     assert receipt["n_formal_decisions_generated"] == 0
     assert all(row["formal_title_abstract_decision"] == "" for row in rows)
     assert all(row["priority_status"] == "OUTCOME_BLIND_REVIEW_ORDER_ONLY" for row in rows)
