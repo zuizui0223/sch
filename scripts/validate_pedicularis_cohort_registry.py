@@ -25,6 +25,12 @@ ROLE_RULES = {
         "confirmatory_eligible": "NO",
         "phase": "CALIBRATION",
     },
+    "CAL_B_G_TIMING": {
+        "lane": "G",
+        "threshold_basis_eligible": "YES",
+        "confirmatory_eligible": "NO",
+        "phase": "CALIBRATION",
+    },
     "CONFIRMATORY_P0": {
         "lane": "P0",
         "threshold_basis_eligible": "NO",
