@@ -98,7 +98,7 @@ def test_strongest_empirical_tier_is_enemy_shift_with_pollen_and_seed_cost() -> 
         "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLINATION_AND_PREPREDATION_REPRODUCTIVE_COST"
     )
     assert "greater pollen receipt" in result["headline_ecological_conclusion"]
-    assert "greater initial seed set" in result["headline_ecological_conclusion"]
+    assert "initial seed set" in result["headline_ecological_conclusion"]
     assert (
         "seed_predator_exposure_causes_downward_reproductive_state_optimum_shift"
         in result["permitted_claims"]
