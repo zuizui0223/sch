@@ -179,6 +179,26 @@ mechanical damage.
 
 If exclusion changes water retention, that method is rejected even if predation falls.
 
+## Exploratory fail-fast screen
+
+Before selecting one confirmatory device, exploratory V4 rows may include
+multiple candidate EXCLUDED methods. Summarize them with:
+
+```text
+scripts/screen_pedicularis_g_exploratory_methods.py
+docs/SCH_PEDICULARIS_G_FAIL_FAST_SCREEN_V1.md
+```
+
+The screen applies only registered hard method-validity checks
+(pollination-window completion, pre-attack state, barrier integrity, entry
+geometry and related boolean requirements) and returns descriptive
+effect/selectivity distributions. It applies no CAL-B effect threshold and no
+CAL-A equivalence margin.
+
+If every candidate fails hard validity, modify/demote the device class before
+spending confirmatory effort. If one or more pass, freeze one method and its
+targets prospectively before confirmatory V4.
+
 ## Prospective threshold freeze
 
 Method-development information may be used to choose the final method and
