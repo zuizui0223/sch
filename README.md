@@ -304,6 +304,14 @@ repeatability=13 measurement-noise floors, and P1=16 calibration-support
 outputs. Run
 `python scripts/audit_pedicularis_calibration_collection_yield.py`.
 
+G exploratory now also has a threshold-free fail-fast screen. Multiple V4
+candidate barriers can be compared on the already-registered hard validity
+requirements first; attack/predation, reproductive gain and contamination are
+summarized descriptively, with no automatic method selection or effect
+threshold. This allows mechanically invalid barrier designs to be retired
+before confirmatory G planning. Run
+`python scripts/screen_pedicularis_g_exploratory_methods.py <g_v4.csv>`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
