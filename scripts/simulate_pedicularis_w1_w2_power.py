@@ -664,45 +664,6 @@ def generate_rows(
     }
 
 
-def _truth_descriptor(model: dict) -> dict:
-    surfaces = model["state_fitness_surfaces"]
-    pollen = model["pollen_state_models"]
-    seed = model["initial_seed_state_models"]
-    shift = (
-        surfaces["P1G0"]["optimum"] - surfaces["P1G1"]["optimum"]
-    )
-    pollen_positive = (
-        pollen["P1G0"]["z_slope"] > 0
-        and pollen["P1G1"]["z_slope"] > 0
-    )
-    seed_positive = (
-        seed["P1G0"]["z_slope_fraction"] > 0
-        and seed["P1G1"]["z_slope_fraction"] > 0
-    )
-    if shift > 0 and pollen_positive and seed_positive:
-        intended_world = "W1"
-    elif shift > 0 and pollen_positive:
-        intended_world = "W2"
-    elif shift > 0:
-        intended_world = "W3"
-    elif pollen_positive:
-        intended_world = "W4"
-    else:
-        intended_world = "W5"
-    return {
-        "generating_z_predator_free_natural_optimum": surfaces["P1G0"][
-            "optimum"
-        ],
-        "generating_z_predator_exposed_natural_optimum": surfaces["P1G1"][
-            "optimum"
-        ],
-        "generating_shift_remove_antagonist": shift,
-        "generating_pollen_slopes_positive_in_both_G_states": pollen_positive,
-        "generating_initial_seed_slopes_positive_in_both_G_states": seed_positive,
-        "intended_secondary_world_if_primary_surface_passes": intended_world,
-    }
-
-
 def simulate_power(
     config: dict,
     *,
