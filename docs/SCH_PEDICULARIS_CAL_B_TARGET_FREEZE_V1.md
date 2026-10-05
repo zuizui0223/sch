@@ -20,6 +20,11 @@ G latest allowed barrier time
 
 Pilot means and quantiles are context, not automatic targets.
 
+The three G effect targets and the two G timing targets come from different
+biological cohorts. G effectiveness/selectivity comes from `CAL_B_G`; timing
+comes from natural-state `CAL_B_G_TIMING` sentinels. Investigator-selected
+`barrier_application_time_hours` is not a natural-history timing target.
+
 ## Step 1 — materialize observed pilot descriptors
 
 Template:
@@ -143,8 +148,8 @@ config directly during F0 assembly.
 
 ## Separation from confirmatory data
 
-CAL-B rows come from `CAL_B_P1` and `CAL_B_G` calibration cohorts and therefore
-remain:
+CAL-B rows come from `CAL_B_P1`, `CAL_B_G` and `CAL_B_G_TIMING`
+calibration cohorts and therefore remain:
 
 ```text
 threshold_basis_eligible = YES
@@ -152,7 +157,8 @@ confirmatory_eligible    = NO.
 ```
 
 The same flower-level outcomes may not be reused for the confirmatory P1 or G
-receipts.
+receipts. G event-time flowers must also be disjoint from G barrier-effect
+flowers so the natural chronology is not altered by the exclusion treatment.
 
 ## What CAL-B may not do
 
