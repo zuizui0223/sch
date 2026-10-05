@@ -60,6 +60,10 @@ def _summary() -> dict:
                 },
                 "barrier_delay_hours": _dist(14.0),
             },
+            "G_TIMING": {
+                "pollination_complete_observation_hours": _dist(8.0),
+                "first_constraint_positive_observation_hours": _dist(20.0),
+            },
         },
         "status": "CALIBRATION_SUMMARY_ONLY_NO_THRESHOLD_DECISION",
         "thresholds_selected": False,
@@ -193,3 +197,21 @@ def test_materializer_refuses_prefilled_target_leakage() -> None:
     altered[0]["target_value"] = "1.0"
     with pytest.raises(ValueError, match="must remain unresolved"):
         build(_summary(), altered)
+
+
+def test_g_timing_targets_use_natural_event_time_sources_not_barrier_delay() -> None:
+    rows = _read_csv(TEMPLATE)
+    timing = {
+        row["decision_kind"]: row["calibration_source_path"]
+        for row in rows
+        if row["lane"] == "G" and row["decision_kind"].startswith("TIMING_")
+    }
+    assert timing == {
+        "TIMING_LOWER_BOUND": (
+            "pilot_summaries.G_TIMING.pollination_complete_observation_hours"
+        ),
+        "TIMING_UPPER_BOUND": (
+            "pilot_summaries.G_TIMING.first_constraint_positive_observation_hours"
+        ),
+    }
+    assert all("barrier_delay_hours" not in value for value in timing.values())
