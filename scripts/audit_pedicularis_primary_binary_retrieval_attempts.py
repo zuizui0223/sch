@@ -106,6 +106,13 @@ def build(path: Path = DEFAULT_ATTEMPTS) -> dict:
         != "https://www.jipb.net/EN/article/downloadArticleFile.do?attachType=PDF&id=25287"
     ):
         raise ValueError("Wang1998 exact citation_pdf_url drifted")
+    if not any(
+        row["result"] == "ALL_FOUR_KNOWN_PDF_ENDPOINTS_HTTP_403"
+        for row in wang_rows
+    ):
+        raise ValueError(
+            "Wang1998 known mirror-endpoint closure receipt is missing"
+        )
 
     jing_rows = [
         row for row in rows if row["asset_id"] == "PRIMARY_JING2013_METHODS"
@@ -148,7 +155,7 @@ def build(path: Path = DEFAULT_ATTEMPTS) -> dict:
         "external_prior_only_asset_states": external_states,
         "wang1998_exact_pdf_url": wang_pdf_url,
         "wang1998_direct_pdf_state": (
-            "EXACT_URL_KNOWN_DIRECT_GET_HTTP_403"
+            "EXACT_URL_KNOWN_ALL_KNOWN_PUBLIC_ENDPOINT_VARIANTS_HTTP_403"
         ),
         "jing2013_primary_page_state": (
             "LIVE_PUBLISHER_PREVIEW_METHODS_NOT_PUBLICLY_EXPOSED"
