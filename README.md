@@ -362,6 +362,16 @@ field scoring, run the same tool in `verify --require-complete` mode before
 `screen_pedicularis_g_candidates.py`; any flower substitution, treatment or
 method-code drift, missing/extra row, or incomplete V4 cell fails closed.
 
+Primary biological timing is now audited separately in
+`PEDICULARIS_G_TIMING_PRIMARY_EVIDENCE_V1.csv`. Focal P. rex sources recover
+the open-flower/pre-swelling oviposition order, bumblebee dependence,
+approximately three-week capsule maturation, and strong geographic variation in
+seed predation, but recover **no hour-scale safe barrier window**. The registered
+timing bounds therefore remain focal event-time estimands rather than literature
+constants; natural predation prevalence is explicitly ineligible as a device
+hard-failure tolerance. Run
+`python scripts/audit_pedicularis_g_timing_primary_evidence.py`.
+
 Exploratory G method reliability also has a prospective sample-size planner.
 Given a frozen maximum acceptable per-plant hard-failure probability, it
 computes the minimum plants required for zero observed hard failures using the
