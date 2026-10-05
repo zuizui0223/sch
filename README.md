@@ -354,6 +354,16 @@ porous-tubing arms using SHA-256 ranking and records the seed/algorithm in the
 receipt. The script does not choose the number of plants and does not generate
 V4 outcomes before they are measured.
 
+Exploratory G method reliability also has a prospective sample-size planner.
+Given a frozen maximum acceptable per-plant hard-failure probability, it
+computes the minimum plants required for zero observed hard failures using the
+one-sided exact binomial upper bound. At 95% confidence, a 10% tolerance implies
+29 plants/candidate and a 5% tolerance implies 59; neither is a default.
+Because the current three-arm manifest puts both first-tier candidates plus one
+shared sham on every plant, those examples correspond to 29 or 59 distinct
+plants (87 or 177 total flowers), not 58 or 118 distinct plants. Run
+`python scripts/plan_pedicularis_g_hard_validity_pilot.py`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
