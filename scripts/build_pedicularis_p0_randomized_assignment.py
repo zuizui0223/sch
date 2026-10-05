@@ -173,7 +173,24 @@ def build(
     n_levels = len(levels)
     if n_levels < 5:
         raise ValueError("P0 allocation requires at least five z levels")
-    if sum(int(row["sham_control"]) for row in levels) != 1:
+
+    level_labels = [row["assigned_z_level"] for row in levels]
+    if any(not value or value == PLACEHOLDER for value in level_labels):
+        raise ValueError("every P0 level needs a resolved assigned_z_level")
+    if len(level_labels) != len(set(level_labels)):
+        raise ValueError("assigned_z_level must be unique")
+
+    try:
+        level_ranks = [int(row["assigned_z_rank"]) for row in levels]
+    except ValueError as exc:
+        raise ValueError("assigned_z_rank must be an integer") from exc
+    if len(level_ranks) != len(set(level_ranks)):
+        raise ValueError("assigned_z_rank must be unique")
+
+    sham_values = [row["sham_control"] for row in levels]
+    if any(value not in {"0", "1"} for value in sham_values):
+        raise ValueError("sham_control must be coded 0/1")
+    if sum(int(value) for value in sham_values) != 1:
         raise ValueError("P0 level plan must contain exactly one sham_control=1")
 
     wrong_counts = {
