@@ -50,8 +50,14 @@ def _antagonist(
         "surface_data_fingerprint_match": True,
         "status": "SYNTHETIC_TEST_STATUS",
         "predator_removal_shifts_optimum_upward": shift,
-        "antagonist_shift_away_from_higher_pollen_receipt_supported": pollen,
-        "antagonist_shift_away_from_higher_initial_seed_set_supported": seed,
+        "higher_z_increases_pollen_receipt_in_both_G_states": pollen,
+        "higher_z_increases_initial_seed_set_in_both_G_states": seed,
+        "antagonist_shift_away_from_higher_pollen_receipt_supported": (
+            shift and pollen
+        ),
+        "antagonist_shift_away_from_higher_initial_seed_set_supported": (
+            shift and pollen and seed
+        ),
         "z_predator_free_natural_pollination_state_optimum": 0.8,
         "z_predator_exposed_natural_pollination_state_optimum": 0.5,
         "pollinator_favored_optimum_identified": False,
@@ -89,7 +95,7 @@ def test_strongest_empirical_tier_is_enemy_shift_with_pollen_and_seed_cost() -> 
     )
 
     assert result["headline_result_code"] == (
-        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLEN_AND_INITIAL_SEED_COST"
+        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLINATION_AND_PREPREDATION_REPRODUCTIVE_COST"
     )
     assert "greater pollen receipt" in result["headline_ecological_conclusion"]
     assert "greater initial seed set" in result["headline_ecological_conclusion"]
@@ -116,7 +122,7 @@ def test_pollen_only_tier_does_not_promote_initial_seed_cost() -> None:
     )
 
     assert result["headline_result_code"] == (
-        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLEN_COST"
+        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLEN_RECEIPT_COST_ONLY"
     )
     assert (
         "enemy_induced_optimum_shift_moves_away_from_higher_initial_seed_set"
@@ -137,7 +143,7 @@ def test_optimum_shift_without_pollination_cost_stays_biologically_distinct() ->
     )
 
     assert result["headline_result_code"] == (
-        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITHOUT_POLLINATION_COST"
+        "ANTAGONIST_OPTIMUM_DISPLACEMENT_WITHOUT_POLLINATION_PERFORMANCE_COST"
     )
     assert (
         "enemy_induced_optimum_shift_moves_away_from_higher_pollen_receipt"
@@ -154,7 +160,7 @@ def test_negative_primary_surface_blocks_enemy_shift_interpretation() -> None:
     )
 
     assert result["headline_result_code"] == (
-        "CAUSAL_COMPROMISE_NOT_RECOVERED_IN_TESTED_CONTEXT"
+        "NO_CAUSAL_COMPROMISE_SURFACE"
     )
     assert result["primary_surface"]["causal_compromise_supported"] is False
     assert result["permitted_claims"] == []
@@ -176,8 +182,8 @@ def test_temporal_entanglement_changes_method_route_not_headline_tier() -> None:
     assert result["timing_mechanism"]["headline_role"] == (
         "enabling_ecological_mechanism_only"
     )
-    assert result["headline_result_code"].startswith(
-        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT"
+    assert result["headline_result_code"] == (
+        "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLINATION_AND_PREPREDATION_REPRODUCTIVE_COST"
     )
 
 
@@ -241,19 +247,18 @@ def test_all_receipts_must_share_population_and_season() -> None:
         )
 
 
-def test_impossible_secondary_boolean_hierarchy_fails_closed() -> None:
-    with pytest.raises(ValueError, match="cannot pass without optimum shift"):
-        build(
-            event_time=_event(),
-            surface=_surface(),
-            antagonist=_antagonist(shift=False, pollen=True, seed=False),
-            pure_function=None,
-        )
+def test_positive_surface_without_secondary_remains_pending() -> None:
+    result = build(
+        event_time=_event(),
+        surface=_surface(),
+        antagonist=None,
+        pure_function=None,
+    )
 
-    with pytest.raises(ValueError, match="cannot pass without pollen tier"):
-        build(
-            event_time=_event(),
-            surface=_surface(),
-            antagonist=_antagonist(shift=True, pollen=False, seed=True),
-            pure_function=None,
-        )
+    assert result["primary_outcome_world"]["world_id"] is None
+    assert result["primary_outcome_world"]["status"] == (
+        "POSITIVE_PRIMARY_SURFACE_SECONDARY_DIAGNOSTIC_PENDING"
+    )
+    assert result["headline_result_code"] == (
+        "POSITIVE_PRIMARY_SURFACE_SECONDARY_DIAGNOSTIC_PENDING"
+    )
