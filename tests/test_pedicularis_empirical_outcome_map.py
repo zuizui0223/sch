@@ -162,7 +162,7 @@ def test_negative_primary_surface_blocks_enemy_shift_interpretation() -> None:
     assert result["headline_result_code"] == (
         "NO_CAUSAL_COMPROMISE_SURFACE"
     )
-    assert result["primary_surface"]["causal_compromise_supported"] is False
+    assert result["primary_outcome_world"]["world_id"] == "W0"
     assert result["permitted_claims"] == []
 
 
@@ -225,7 +225,7 @@ def test_antagonist_receipt_must_share_surface_fingerprint() -> None:
     ant = _antagonist()
     ant["surface_data_sha256"] = "b" * 64
 
-    with pytest.raises(ValueError, match="different raw data"):
+    with pytest.raises(ValueError, match="surface receipt for surface_data_sha256"):
         build(
             event_time=_event(),
             surface=_surface(),
@@ -262,3 +262,13 @@ def test_positive_surface_without_secondary_remains_pending() -> None:
     assert result["headline_result_code"] == (
         "POSITIVE_PRIMARY_SURFACE_SECONDARY_DIAGNOSTIC_PENDING"
     )
+
+
+def test_pure_function_upgrade_is_not_admissible_after_negative_surface() -> None:
+    with pytest.raises(ValueError, match="not admissible after a negative primary surface"):
+        build(
+            event_time=_event(),
+            surface=_surface("COMPROMISE_CRITERIA_NOT_ALL_RECOVERED"),
+            antagonist=None,
+            pure_function=_pure(True),
+        )
