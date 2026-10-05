@@ -97,7 +97,8 @@ def build(rows: list[dict[str, str]]) -> dict:
         "bounded_design_gap_present": len(full_joint_ids) == 0,
         "allowed_novelty_statement": (
             "Among the audited close floral mutualist-antagonist precedents, "
-            "factorial consumer manipulations and a multi-level floral-display optimum "
+            "factorial consumer manipulations, a multi-level floral-display optimum "
+            "precedent, and an antagonist-associated floral optimum-displacement "
             "precedent exist, but none combines a randomized multi-level shared-trait "
             "manipulation with crossed selective consumer "
             "states to recover state-specific reproductive optima and test "
