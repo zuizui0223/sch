@@ -462,6 +462,7 @@ repeated TOTAL_SELECTION_EFFECT axes        27
     uncertainty unresolved                   1
 
 H1 modelability = FAIL_CLOSED
+interaction-timing moderator = FAIL_CLOSED (34/35 fixed-role axes simultaneous/overlapping)
 H2 breadth gate = PASS
 H2 estimand-family breadth gate = PASS
 H2 strict numeric-pooling gate = FAIL_CLOSED
