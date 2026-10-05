@@ -354,6 +354,15 @@ porous-tubing arms using SHA-256 ranking and records the seed/algorithm in the
 receipt. The script does not choose the number of plants and does not generate
 V4 outcomes before they are measured.
 
+Stage-P0 now uses the same allocation discipline. Freeze the intended ordered
+z-level/sham plan separately, register treatment-blind flower IDs, and run
+`build_pedicularis_p0_randomized_assignment.py` with a precommitted seed.
+Every plant must supply one flower per planned z level; the builder randomizes
+flowers within plant but does not choose manipulation strengths, plant count,
+or thresholds. This closes the previous gap between the P0 contract
+("randomize flower-to-level assignment within plant") and a treatment-labelled
+input table.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
