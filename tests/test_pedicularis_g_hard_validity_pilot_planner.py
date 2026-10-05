@@ -57,6 +57,9 @@ def test_planner_applies_same_prospective_hard_validity_n_to_candidates() -> Non
         "G_A2_POROUS_TUBING",
     ]
     assert result["initial_first_tier_total_paired_plant_assignments"] == 58
+    assert result["hard_failure_unit"].startswith(
+        "paired-plant candidate application fails if any"
+    )
     assert {
         row["minimum_paired_plants_for_zero_failure_screen"]
         for row in result["candidate_plans"]
