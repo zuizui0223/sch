@@ -427,6 +427,10 @@ The biological paper spine is now frozen separately in
 enemy-induced displacement of the natural-pollination reproductive optimum
 away from trait states with greater pollination performance; timing and
 threshold machinery remain enabling methods rather than the paper's subject.
+The six predeclared empirical outcome worlds (W0-W5) are machine-readable in
+`PEDICULARIS_EMPIRICAL_OUTCOME_WORLDS_V1.csv` and classified with
+`classify_pedicularis_empirical_outcome.py`, so null and partial outcomes have
+their own biological interpretations rather than being post-hoc relabelled.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
