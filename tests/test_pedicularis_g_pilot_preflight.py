@@ -213,3 +213,28 @@ def test_preflight_rejects_receipt_digest_or_unready_plan() -> None:
             lock,
             allocation_receipt_sha256=_receipt_digest(receipt),
         )
+
+
+def test_preflight_rejects_unresolved_allocation_context() -> None:
+    rows = _allocation_rows(3)
+    receipt = _receipt(3)
+    rows[0]["population_id"] = ""
+    with pytest.raises(ValueError, match="population_id and season_id"):
+        build(
+            _plan(3),
+            rows,
+            receipt,
+            {"status": "G_V4_FIELD_SHEET_PREPARED_NOT_YET_MEASURED"},
+            allocation_receipt_sha256=_receipt_digest(receipt),
+        )
+
+    rows = _allocation_rows(3)
+    rows[0]["plant_id"] = "REQUIRED_BEFORE_USE"
+    with pytest.raises(ValueError, match="resolved plant_id"):
+        build(
+            _plan(3),
+            rows,
+            receipt,
+            {"status": "G_V4_FIELD_SHEET_PREPARED_NOT_YET_MEASURED"},
+            allocation_receipt_sha256=_receipt_digest(receipt),
+        )
