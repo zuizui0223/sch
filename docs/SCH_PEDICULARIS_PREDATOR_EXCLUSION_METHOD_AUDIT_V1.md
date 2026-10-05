@@ -229,6 +229,34 @@ Not preferred.
 
 Localized insecticide / repellent would require independent evidence that it leaves pollinator behaviour, floral physiology, water chemistry and seed development unaffected. This adds more assumptions than a physical barrier.
 
+## Machine candidate matrix
+
+The candidate classes above are frozen as an exploratory priority matrix, not
+as a method choice:
+
+```text
+empirical/architecture/PEDICULARIS_G_EXPLORATORY_CANDIDATES_V1.csv
+scripts/audit_pedicularis_g_exploratory_candidates.py
+```
+
+Current tiers are:
+
+```text
+priority 1  G_A1_FINE_MESH
+            G_A2_POROUS_TUBING
+
+priority 2  G_B_LOCAL_SLEEVE
+
+priority 3  G_C_WHOLE_FLOWER_MESH
+
+priority 4  G_D_CHEMICAL
+```
+
+The two first-tier methods remain tied. Neither is selected from precedent.
+They must be compared with focal V4 exploratory rows and the registered
+fail-fast hard-validity screen. Whole-flower mesh remains ineligible during
+the open-pollination phase, and the chemical route remains last-priority.
+
 ## Stage-G pilot design
 
 Within the same focal population and season, randomize flowers within plants to:
