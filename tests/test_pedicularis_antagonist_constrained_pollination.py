@@ -135,7 +135,7 @@ def test_nonpositive_z_to_pollen_response_fails_chain() -> None:
             z = float(row["realized_exsertion"])
             row["pollen_grains"] = str(30.0 - 20.0 * z)
 
-    result = build(rows, _surface_receipt(), _config())
+    result = build(rows, _surface_receipt(rows), _config())
 
     assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is False
     assert (
@@ -165,7 +165,7 @@ def test_pollen_cost_can_be_supported_without_claiming_seed_set_or_pollen_limita
         row["undamaged_seed_count"] = str(int(round(30 - 10 * z)))
         row["damaged_seed_count"] = "0"
 
-    result = build(rows, _surface_receipt(), _config())
+    result = build(rows, _surface_receipt(rows), _config())
 
     assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is True
     assert result["higher_z_increases_initial_seed_set_in_both_G_states"] is False
