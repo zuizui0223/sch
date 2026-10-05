@@ -378,3 +378,37 @@ def test_g_effect_and_event_time_cannot_reuse_a_flower(tmp_path: Path) -> None:
             g_timing_config_path=paths["g_timing_config"],
             g_timing_path=paths["g_timing"],
         )
+
+
+def test_package_requires_observed_pollination_completion_and_constraint_onset(
+    tmp_path: Path,
+) -> None:
+    p0=_p0_rows(); p1=_p1_rows(); g=_g_rows(); rep=_repeatability_rows()
+    gt=_g_timing_rows()
+    for row in gt:
+        if row["flower_role"] == "ATTACK_SWELL_SENTINEL":
+            row["attack_present"] = "0"
+            row["ovary_swollen"] = "0"
+    registry=_registry_rows(p0,p1,g,gt)
+    paths={
+        "registry":_write(tmp_path/"registry.csv",REG_FIELDS,registry),
+        "repeatability":_write(tmp_path/"repeat.csv",repmod.REQUIRED_FIELDS,rep),
+        "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
+        "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
+        "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(),
+        ),
+    }
+    with pytest.raises(ValueError, match="no observed attack/swelling"):
+        build_package(
+            registry_path=paths["registry"],
+            repeatability_path=paths["repeatability"],
+            p0_path=paths["p0"],
+            p1_path=paths["p1"],
+            g_path=paths["g"],
+            g_timing_config_path=paths["g_timing_config"],
+            g_timing_path=paths["g_timing"],
+        )
