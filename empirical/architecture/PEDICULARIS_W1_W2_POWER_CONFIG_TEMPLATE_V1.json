@@ -7,7 +7,6 @@
     "basis_document": "REQUIRED_BEFORE_USE",
     "frozen_before_full_surface_data": "REQUIRED_BEFORE_USE"
   },
-  "candidate_complete_block_plants": "REQUIRED_BEFORE_USE",
   "simulation_reps": "REQUIRED_BEFORE_USE",
   "simulation_seed": 20261005,
   "target_primary_surface_power": "REQUIRED_BEFORE_USE",
@@ -104,5 +103,10 @@
     "bootstrap_reps": "REQUIRED_BEFORE_USE",
     "random_seed": 20261007
   },
-  "target_truth_world": "REQUIRED_BEFORE_USE"
+  "target_truth_world": "REQUIRED_BEFORE_USE",
+  "candidate_plants": "REQUIRED_BEFORE_USE",
+  "field_design": {
+    "flowers_per_plant": "REQUIRED_BEFORE_USE",
+    "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+  }
 }
