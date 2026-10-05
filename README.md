@@ -354,6 +354,14 @@ porous-tubing arms using SHA-256 ranking and records the seed/algorithm in the
 receipt. The script does not choose the number of plants and does not generate
 V4 outcomes before they are measured.
 
+Before field scoring, bind that randomized allocation to the canonical V4
+schema with `prepare_pedicularis_g_v4_field_sheet.py prepare`. The command
+prefills only the frozen plant/flower/treatment/method identity columns and
+writes an identity lock tied to the allocation receipt and seed digest. After
+field scoring, run the same tool in `verify --require-complete` mode before
+`screen_pedicularis_g_candidates.py`; any flower substitution, treatment or
+method-code drift, missing/extra row, or incomplete V4 cell fails closed.
+
 Exploratory G method reliability also has a prospective sample-size planner.
 Given a frozen maximum acceptable per-plant hard-failure probability, it
 computes the minimum plants required for zero observed hard failures using the
