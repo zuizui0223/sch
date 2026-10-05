@@ -372,6 +372,17 @@ constants; natural predation prevalence is explicitly ineligible as a device
 hard-failure tolerance. Run
 `python scripts/audit_pedicularis_g_timing_primary_evidence.py`.
 
+The separate natural-state `CAL_B_G_TIMING` pilot now tests temporal
+separability directly. Destructive pollen sentinels estimate the pollination
+completion trajectory, while one repeated attack/swelling sentinel per plant
+tracks the first antagonist/developmental constraint. The nominal elapsed-hour
+grids and maximum allowed field-timing deviation are frozen in the config before
+data; every plant must cover every scheduled time, and both sentinel lanes use
+the same plant blocks. The summarizer reports interval-censored event timing and
+the exploratory median `Delta_T50` ordering without selecting a confirmatory
+barrier hour. Run
+`python scripts/summarize_pedicularis_g_event_time_pilot.py <config.json> <timing.csv>`.
+
 Exploratory G method reliability also has a prospective sample-size planner.
 Given a frozen maximum acceptable per-plant hard-failure probability, it
 computes the minimum plants required for zero observed hard failures using the
