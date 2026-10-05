@@ -207,6 +207,7 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
         "minimum_total_flowers_for_current_three_arm_manifest": (
             current_total_flowers
         ),
+        "first_tier_candidate_trials_independent_for_pooling": False,
         "candidate_selected": False,
         "effect_thresholds_selected": False,
         "selectivity_thresholds_selected": False,
@@ -219,6 +220,7 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
             "does_not_establish_selectivity",
             "does_not_rank_first_tier_candidates_by_expected_effect",
             "current_three_arm_manifest_uses_one_shared_sham_plus_both_first_tier_candidates_per_plant",
+            "do_not_pool_first_tier_candidate_assignments_as_independent_trials_because_candidates_share_plants_and_sham",
             "paired_plants_can_host_multiple_candidate_flowers_only_if_assignment_and_interference_are_prospectively_controlled",
         ],
     }
