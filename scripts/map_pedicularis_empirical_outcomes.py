@@ -4,10 +4,13 @@ import argparse
 import json
 from pathlib import Path
 
+from scripts.classify_pedicularis_empirical_outcome import (
+    DEFAULT_WORLDS,
+    _read_worlds,
+    build as classify_world,
+)
 
-SURFACE_SCHEMA = "SCH_CAUSAL_COMPROMISE_STATE_OPTIMA_V1"
-SURFACE_WRAPPER = "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2"
-POSITIVE_SURFACE = "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
+
 EVENT_STATUS = "G_EVENT_TIME_DESCRIPTORS_READY_NO_WINDOW_SELECTED"
 PURE_STATUS = "CONTEXT_STABLE_COMPONENT_OPTIMA_IDENTIFIED"
 
@@ -31,16 +34,23 @@ def _context(payload: dict, label: str) -> tuple[str, str]:
     return population, season
 
 
-def _validate_same_context(
-    named_payloads: list[tuple[str, dict | None]],
+def _require_same_context(
+    surface: dict,
+    event_time: dict | None,
+    antagonist: dict | None,
+    pure_function: dict | None,
 ) -> tuple[str, str]:
+    named = [
+        ("surface", surface),
+        ("event_time", event_time),
+        ("antagonist", antagonist),
+        ("pure_function", pure_function),
+    ]
     observed = [
         (label, _context(payload, label))
-        for label, payload in named_payloads
+        for label, payload in named
         if payload is not None
     ]
-    if not observed:
-        raise ValueError("at least one Pedicularis result receipt is required")
     contexts = {context for _, context in observed}
     if len(contexts) != 1:
         detail = ", ".join(
@@ -89,102 +99,15 @@ def _timing_state(event_time: dict | None) -> dict:
     }
 
 
-def _surface_state(surface: dict | None) -> dict:
-    if surface is None:
-        return {
-            "status": "NOT_EVALUATED",
-            "causal_compromise_supported": False,
-        }
-    if surface.get("receipt_schema_version") != SURFACE_SCHEMA:
-        raise ValueError("surface receipt schema mismatch")
-    if surface.get("system_wrapper_schema_version") != SURFACE_WRAPPER:
-        raise ValueError("surface receipt is not the active Pedicularis wrapper")
-    if surface.get("system") != "Pedicularis rex":
-        raise ValueError("surface receipt is not Pedicularis rex")
-    return {
-        "status": surface.get("status"),
-        "causal_compromise_supported": (
-            surface.get("status") == POSITIVE_SURFACE
-        ),
-        "surface_data_sha256": surface.get("surface_data_sha256"),
-        "surface_data_n_rows": surface.get("surface_data_n_rows"),
-    }
-
-
-def _antagonist_state(
-    antagonist: dict | None,
-    surface: dict | None,
-) -> dict:
-    if antagonist is None:
-        return {
-            "status": "NOT_EVALUATED",
-            "enemy_induced_optimum_displacement_supported": False,
-            "pollen_performance_cost_supported": False,
-            "initial_seed_cost_supported": False,
-        }
-    if surface is None or surface.get("status") != POSITIVE_SURFACE:
-        raise ValueError(
-            "antagonist diagnostic requires a positive full-surface receipt"
-        )
-    if antagonist.get("surface_status") != POSITIVE_SURFACE:
-        raise ValueError(
-            "antagonist diagnostic is not downstream of a positive surface"
-        )
-    if antagonist.get("surface_data_fingerprint_match") is not True:
-        raise ValueError("antagonist diagnostic lacks positive fingerprint match")
-    if antagonist.get("surface_data_sha256") != surface.get(
-        "surface_data_sha256"
-    ):
-        raise ValueError(
-            "antagonist diagnostic and full surface use different raw data"
-        )
-    if antagonist.get("pollinator_favored_optimum_identified") is not False:
-        raise ValueError(
-            "state-specific antagonist diagnostic must not promote a pure "
-            "pollinator optimum"
-        )
-
-    shift = antagonist.get("predator_removal_shifts_optimum_upward")
-    pollen = antagonist.get(
-        "antagonist_shift_away_from_higher_pollen_receipt_supported"
-    )
-    seed = antagonist.get(
-        "antagonist_shift_away_from_higher_initial_seed_set_supported"
-    )
-    if not all(isinstance(value, bool) for value in (shift, pollen, seed)):
-        raise ValueError("antagonist diagnostic lacks registered boolean results")
-    if pollen and not shift:
-        raise ValueError("pollen-cost chain cannot pass without optimum shift")
-    if seed and not pollen:
-        raise ValueError("initial-seed tier cannot pass without pollen tier")
-
-    return {
-        "status": antagonist.get("status"),
-        "enemy_induced_optimum_displacement_supported": shift,
-        "pollen_performance_cost_supported": pollen,
-        "initial_seed_cost_supported": seed,
-        "z_predator_free_state": antagonist.get(
-            "z_predator_free_natural_pollination_state_optimum"
-        ),
-        "z_predator_exposed_state": antagonist.get(
-            "z_predator_exposed_natural_pollination_state_optimum"
-        ),
-        "pollinator_favored_optimum_identified": False,
-        "antagonist_contribution_to_pollen_limitation_identified": False,
-    }
-
-
 def _pure_function_state(
     pure_function: dict | None,
-    surface: dict | None,
+    surface: dict,
 ) -> dict:
     if pure_function is None:
         return {
             "status": "NOT_EVALUATED",
             "context_stable_component_optima_identified": False,
         }
-    if surface is None:
-        raise ValueError("pure-function upgrade requires a surface receipt")
     if pure_function.get("surface_data_sha256") != surface.get(
         "surface_data_sha256"
     ):
@@ -213,157 +136,127 @@ def _pure_function_state(
     }
 
 
-def _headline(
-    surface_state: dict,
-    antagonist_state: dict,
-) -> tuple[str, str]:
-    if surface_state["status"] == "NOT_EVALUATED":
-        return (
-            "EMPIRICAL_SURFACE_NOT_YET_RUN",
-            "No causal Pedicularis ecological headline is licensed yet.",
+def _permitted_claims(world: dict, pure: dict) -> list[str]:
+    world_id = world.get("world_id")
+    claims: list[str] = []
+    if world_id in {"W1", "W2", "W3", "W4", "W5"}:
+        claims.append(
+            "causal_state_specific_multifunctional_compromise_in_tested_context"
         )
-    if not surface_state["causal_compromise_supported"]:
-        return (
-            "CAUSAL_COMPROMISE_NOT_RECOVERED_IN_TESTED_CONTEXT",
-            "The tested population/season does not recover the registered "
-            "causal compromise geometry.",
+    if world_id in {"W1", "W2", "W3"}:
+        claims.append(
+            "seed_predator_exposure_causes_downward_reproductive_state_optimum_shift"
         )
-    if antagonist_state["status"] == "NOT_EVALUATED":
-        return (
-            "CAUSAL_COMPROMISE_RECOVERED_SECONDARY_ENEMY_SHIFT_NOT_YET_TESTED",
-            "Causal compromise is recovered, but the enemy-induced optimum "
-            "displacement hypothesis has not yet been evaluated.",
+    if world_id in {"W1", "W2"}:
+        claims.append(
+            "enemy_induced_optimum_shift_moves_away_from_higher_pollen_receipt"
         )
-    if antagonist_state["initial_seed_cost_supported"]:
-        return (
-            "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLEN_AND_INITIAL_SEED_COST",
-            "Seed-predator exposure shifts the reproductive state optimum "
-            "toward lower exsertion, away from trait states with greater pollen "
-            "receipt and greater initial seed set.",
+    if world_id == "W1":
+        claims.append(
+            "enemy_induced_optimum_shift_moves_away_from_higher_initial_seed_set"
         )
-    if antagonist_state["pollen_performance_cost_supported"]:
-        return (
-            "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITH_POLLEN_COST",
-            "Seed-predator exposure shifts the reproductive state optimum "
-            "toward lower exsertion, away from trait states with greater pollen "
-            "receipt.",
+    if pure["context_stable_component_optima_identified"]:
+        claims.append(
+            "context_stable_pollinator_and_antagonist_component_optima_identified"
         )
-    if antagonist_state["enemy_induced_optimum_displacement_supported"]:
-        return (
-            "ENEMY_INDUCED_OPTIMUM_DISPLACEMENT_WITHOUT_POLLINATION_COST",
-            "Seed-predator exposure shifts the reproductive state optimum, "
-            "but the shift is not supported as a cost to the registered "
-            "pollination-performance responses.",
+    return claims
+
+
+def _prohibited_claims(world: dict, pure: dict) -> list[str]:
+    prohibited = [
+        "do_not_claim_historical_adaptation",
+        "do_not_claim_predator_cue_identity",
+        "do_not_claim_adaptive_pollen_limitation",
+        "do_not_claim_antagonists_maintain_population_pollen_limitation",
+        "do_not_use_Delta_T50_as_confirmatory_barrier_hour",
+    ]
+    if not pure["context_stable_component_optima_identified"]:
+        prohibited.append(
+            "do_not_relabel_state_specific_optima_as_pure_function_optima"
         )
-    return (
-        "CAUSAL_COMPROMISE_WITHOUT_DIRECTIONAL_ENEMY_DISPLACEMENT",
-        "Causal compromise is recovered, but predator removal does not support "
-        "the preregistered upward optimum shift.",
-    )
+    if world.get("world_id") != "W1":
+        prohibited.append(
+            "do_not_claim_enemy_displacement_reduces_initial_seed_set"
+        )
+    if world.get("world_id") not in {"W1", "W2"}:
+        prohibited.append(
+            "do_not_claim_enemy_displacement_reduces_pollination_performance"
+        )
+    return prohibited
 
 
 def build(
     *,
-    event_time: dict | None,
-    surface: dict | None,
+    surface: dict,
     antagonist: dict | None,
+    event_time: dict | None,
     pure_function: dict | None,
+    world_rows: list[dict[str, str]] | None = None,
 ) -> dict:
-    population_id, season_id = _validate_same_context(
-        [
-            ("event_time", event_time),
-            ("surface", surface),
-            ("antagonist", antagonist),
-            ("pure_function", pure_function),
-        ]
+    population_id, season_id = _require_same_context(
+        surface,
+        event_time,
+        antagonist,
+        pure_function,
     )
-
+    worlds = _read_worlds(DEFAULT_WORLDS) if world_rows is None else world_rows
+    primary_world = classify_world(surface, antagonist, worlds)
     timing = _timing_state(event_time)
-    surface_result = _surface_state(surface)
-    antagonist_result = _antagonist_state(antagonist, surface)
-    pure_result = _pure_function_state(pure_function, surface)
-    headline_code, headline = _headline(surface_result, antagonist_result)
-
-    permitted_claims = []
-    if surface_result["causal_compromise_supported"]:
-        permitted_claims.append(
-            "causal_state_specific_multifunctional_compromise_in_tested_context"
-        )
-    if antagonist_result["enemy_induced_optimum_displacement_supported"]:
-        permitted_claims.append(
-            "seed_predator_exposure_causes_downward_reproductive_state_optimum_shift"
-        )
-    if antagonist_result["pollen_performance_cost_supported"]:
-        permitted_claims.append(
-            "enemy_induced_optimum_shift_moves_away_from_higher_pollen_receipt"
-        )
-    if antagonist_result["initial_seed_cost_supported"]:
-        permitted_claims.append(
-            "enemy_induced_optimum_shift_moves_away_from_higher_initial_seed_set"
-        )
-    if pure_result["context_stable_component_optima_identified"]:
-        permitted_claims.append(
-            "context_stable_pollinator_and_antagonist_component_optima_identified"
-        )
-
-    prohibited_claims = [
-        "do_not_claim_historical_adaptation",
-        "do_not_claim_predator_cue_identity",
-        "do_not_claim_adaptive_pollen_limitation",
-        "do_not_use_Delta_T50_as_confirmatory_barrier_hour",
-    ]
-    if not pure_result["context_stable_component_optima_identified"]:
-        prohibited_claims.append(
-            "do_not_relabel_state_specific_optima_as_pure_function_optima"
-        )
-    if not antagonist_result["initial_seed_cost_supported"]:
-        prohibited_claims.append(
-            "do_not_claim_enemy_displacement_reduces_initial_seed_set"
-        )
-    prohibited_claims.append(
-        "do_not_claim_antagonists_maintain_population_pollen_limitation"
-    )
+    pure = _pure_function_state(pure_function, surface)
 
     return {
-        "analysis": "pedicularis_empirical_outcome_map_v1",
+        "analysis": "pedicularis_empirical_interpretation_bundle_v1",
         "population_id": population_id,
         "season_id": season_id,
-        "headline_result_code": headline_code,
-        "headline_ecological_conclusion": headline,
+        "primary_outcome_world": primary_world,
+        "headline_result_code": (
+            primary_world.get("biological_state")
+            or primary_world.get("status")
+        ),
+        "headline_ecological_conclusion": (
+            primary_world.get("allowed_headline")
+            or "Positive primary surface recovered; secondary enemy-displacement "
+            "diagnostic remains pending."
+        ),
         "timing_mechanism": timing,
-        "primary_surface": surface_result,
-        "enemy_displacement_secondary": antagonist_result,
-        "pure_function_upgrade": pure_result,
-        "permitted_claims": permitted_claims,
-        "prohibited_claims": prohibited_claims,
+        "pure_function_upgrade": pure,
+        "permitted_claims": _permitted_claims(primary_world, pure),
+        "prohibited_claims": _prohibited_claims(primary_world, pure),
         "paper_spine": (
             "natural conflict -> temporal feasibility -> randomized z x P x G "
-            "surface -> enemy-induced state-optimum displacement -> "
-            "pollination-performance consequence"
+            "surface -> predeclared W0-W5 world -> optional component-optimum "
+            "promotion"
         ),
-        "status": "PEDICULARIS_EMPIRICAL_OUTCOME_INTERPRETATION_READY",
+        "status": "PEDICULARIS_EMPIRICAL_INTERPRETATION_BUNDLE_READY",
+        "claim_ceiling": [
+            "W0_W5_classifier_is_the_single_source_of_primary_outcome_assignment",
+            "timing_is_enabling_mechanism_not_headline_outcome",
+            "pure_function_promotion_is_separate_from_state_optimum_world",
+        ],
     }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Map completed P. rex receipts to prospectively bounded ecological "
-            "conclusions without promoting state optima or calibration outputs"
+            "Assemble the predeclared P. rex W0-W5 ecological outcome with "
+            "optional temporal-separability and pure-function receipts"
         )
     )
-    parser.add_argument("--event-time", type=Path)
-    parser.add_argument("--surface", type=Path)
+    parser.add_argument("surface", type=Path)
     parser.add_argument("--antagonist", type=Path)
+    parser.add_argument("--event-time", type=Path)
     parser.add_argument("--pure-function", type=Path)
+    parser.add_argument("--worlds", type=Path, default=DEFAULT_WORLDS)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     result = build(
-        event_time=_load(args.event_time),
         surface=_load(args.surface),
         antagonist=_load(args.antagonist),
+        event_time=_load(args.event_time),
         pure_function=_load(args.pure_function),
+        world_rows=_read_worlds(args.worlds),
     )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
