@@ -77,12 +77,24 @@ def test_positive_surface_supports_contemporary_antagonist_constraint() -> None:
     assert result["higher_z_increases_initial_seed_set_in_both_G_states"] is True
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is True
     )
+    assert (
+        result[
+            "antagonist_shift_away_from_higher_initial_seed_set_supported"
+        ]
+        is True
+    )
+    assert result["pollinator_favored_optimum_identified"] is False
+    assert result["antagonist_contribution_to_pollen_limitation_identified"] is False
+    assert result["state_optimum_semantics"] == (
+        "reproductive_state_optima_not_pure_function_optima"
+    )
     assert result["status"] == (
-        "CONTEMPORARY_ANTAGONIST_CONSTRAINED_POLLINATION_SUPPORTED"
+        "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_"
+        "POLLEN_AND_INITIAL_SEED_COST_SUPPORTED"
     )
 
 
@@ -106,7 +118,7 @@ def test_optimum_shift_ci_crossing_zero_fails_chain() -> None:
     assert result["predator_removal_shifts_optimum_upward"] is False
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is False
     )
@@ -124,7 +136,7 @@ def test_nonpositive_z_to_pollen_response_fails_chain() -> None:
     assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is False
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is False
     )
@@ -140,3 +152,42 @@ def test_requires_positive_primary_causal_surface() -> None:
         assert "positive causal-compromise surface" in str(exc)
     else:
         raise AssertionError("negative primary surface should fail closed")
+
+
+def test_pollen_cost_can_be_supported_without_claiming_seed_set_or_pollen_limitation() -> None:
+    rows = deepcopy(_rows())
+    for row in rows:
+        z = float(row["realized_exsertion"])
+        row["undamaged_seed_count"] = str(int(round(30 - 10 * z)))
+        row["damaged_seed_count"] = "0"
+
+    result = build(rows, _surface_receipt(), _config())
+
+    assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is True
+    assert result["higher_z_increases_initial_seed_set_in_both_G_states"] is False
+    assert result[
+        "antagonist_shift_away_from_higher_pollen_receipt_supported"
+    ] is True
+    assert result[
+        "antagonist_shift_away_from_higher_initial_seed_set_supported"
+    ] is False
+    assert result["antagonist_contribution_to_pollen_limitation_identified"] is False
+    assert result["status"] == (
+        "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_POLLEN_COST_SUPPORTED"
+    )
+
+
+def test_predator_free_state_optimum_is_not_relabelled_as_pure_pollinator_optimum() -> None:
+    result = build(_rows(), _surface_receipt(), _config())
+
+    assert result[
+        "z_predator_free_natural_pollination_state_optimum"
+    ] == 0.8
+    assert result[
+        "z_predator_exposed_natural_pollination_state_optimum"
+    ] == 0.5
+    assert result["pollinator_favored_optimum_identified"] is False
+    assert (
+        "predator_free_state_optimum_is_not_a_pure_pollinator_optimum"
+        in result["claim_ceiling"]
+    )
