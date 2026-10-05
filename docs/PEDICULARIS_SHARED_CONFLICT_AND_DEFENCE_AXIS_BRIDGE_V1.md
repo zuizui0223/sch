@@ -47,6 +47,45 @@ seed predators favor reduced exsertion / greater protection by the water-bearing
 
 This is a strong real-world L1 functional-conflict anchor, but not a causal SCH optimum experiment because exsertion was observational rather than experimentally assigned over multiple levels.
 
+### Pollination success is also coupled to antagonist risk
+
+The same 2016 analysis contains a second pattern that is not reducible to the two
+marginal z paths. In the seven populations with linked plant-level morphology,
+pollination and seed outcomes, the selected seed-predation model retained:
+
+```text
+exsertion***
++ lower-lip width*
++ stigmatic pollen load*
++ population***
+```
+
+with AICc = -156.11.
+
+Thus plants/flowers with greater pollen receipt also had greater seed-predation
+risk after the measured exsertion/lip geometry and population were retained in
+the model. The authors explicitly describe this relationship as unexpected.
+
+Because oviposition occurs during flowering, adults cannot directly inspect the
+later seed crop. The source proposes predictive floral information as a possible
+mechanism but states that the cue is unresolved and warns that standing
+phenotypic variation can retain environmental or unmeasured correlates.
+
+SCH therefore records:
+
+```text
+POLLINATION_SUCCESS_ANTAGONIST_RISK_COUPLING = OBSERVATIONALLY RECOVERED
+POLLEN_AS_PREDATOR_CUE = NOT IDENTIFIED
+PREDICTIVE_OVIPOSITION = HYPOTHESIS
+```
+
+This creates a stronger focal ecological hypothesis: antagonist selection may
+not only oppose the pollinator-favoured exsertion state, but may constrain the
+trait below that state while the population remains pollen limited.
+
+See
+`docs/SCH_PEDICULARIS_ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION_V1.md`.
+
 ## Geographic functional-weight variation
 
 The antagonist channel changes strongly among populations while the pollinator-facing direction is comparatively consistent.
