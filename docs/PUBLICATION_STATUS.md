@@ -104,6 +104,12 @@ biology-first empirical upgrade whose headline question is:
 
 The primary empirical objects are the predator-free versus predator-exposed
 **state-specific reproductive optima** and the randomized z-to-pollen response.
+The bounded novelty is the joint design/estimand: randomized multi-level shared
+z crossed with selective P and G states to reconstruct four reproductive
+surfaces and test antagonist-removal optimum displacement. Factorial
+pollination x antagonism, ecological optimum estimation and enemy-associated
+floral optimum shifts each have close precedents and are not claimed as novel
+by themselves. See `docs/SCH_PEDICULARIS_EMPIRICAL_NOVELTY_BOUNDARY_V1.md`.
 The predator-free state optimum is not a pure pollinator optimum by default.
 Temporal-separability and method-qualification work are enabling gates, not the
 headline result. The biological interpretation is also frozen across six
