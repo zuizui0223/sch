@@ -1,0 +1,112 @@
+{
+  "schema": "PEDICULARIS_W1_W2_POWER_CONFIG_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "planning_provenance": {
+    "population_id": "REQUIRED_BEFORE_USE",
+    "season_id": "REQUIRED_BEFORE_USE",
+    "basis_document": "REQUIRED_BEFORE_USE",
+    "frozen_before_full_surface_data": "REQUIRED_BEFORE_USE"
+  },
+  "simulation_reps": "REQUIRED_BEFORE_USE",
+  "simulation_seed": 20261005,
+  "target_primary_surface_power": "REQUIRED_BEFORE_USE",
+  "target_headline_w1_or_w2_power": "REQUIRED_BEFORE_USE",
+  "generating_model": {
+    "z_levels": "REQUIRED_BEFORE_USE",
+    "ovule_count": "REQUIRED_BEFORE_USE",
+    "fitness_between_plant_sd": "REQUIRED_BEFORE_USE",
+    "fitness_residual_sd": "REQUIRED_BEFORE_USE",
+    "state_fitness_surfaces": {
+      "P0G0": {
+        "peak": "REQUIRED_BEFORE_USE",
+        "optimum": "REQUIRED_BEFORE_USE",
+        "curvature": "REQUIRED_BEFORE_USE"
+      },
+      "P1G0": {
+        "peak": "REQUIRED_BEFORE_USE",
+        "optimum": "REQUIRED_BEFORE_USE",
+        "curvature": "REQUIRED_BEFORE_USE"
+      },
+      "P0G1": {
+        "peak": "REQUIRED_BEFORE_USE",
+        "optimum": "REQUIRED_BEFORE_USE",
+        "curvature": "REQUIRED_BEFORE_USE"
+      },
+      "P1G1": {
+        "peak": "REQUIRED_BEFORE_USE",
+        "optimum": "REQUIRED_BEFORE_USE",
+        "curvature": "REQUIRED_BEFORE_USE"
+      }
+    },
+    "pollen_between_plant_sd": "REQUIRED_BEFORE_USE",
+    "pollen_residual_sd": "REQUIRED_BEFORE_USE",
+    "pollen_state_models": {
+      "P0G0": {
+        "intercept": "REQUIRED_BEFORE_USE",
+        "z_slope": "REQUIRED_BEFORE_USE"
+      },
+      "P1G0": {
+        "intercept": "REQUIRED_BEFORE_USE",
+        "z_slope": "REQUIRED_BEFORE_USE"
+      },
+      "P0G1": {
+        "intercept": "REQUIRED_BEFORE_USE",
+        "z_slope": "REQUIRED_BEFORE_USE"
+      },
+      "P1G1": {
+        "intercept": "REQUIRED_BEFORE_USE",
+        "z_slope": "REQUIRED_BEFORE_USE"
+      }
+    },
+    "initial_seed_between_plant_sd_fraction": "REQUIRED_BEFORE_USE",
+    "initial_seed_residual_sd_fraction": "REQUIRED_BEFORE_USE",
+    "initial_seed_state_models": {
+      "P0G0": {
+        "intercept_fraction": "REQUIRED_BEFORE_USE",
+        "z_slope_fraction": "REQUIRED_BEFORE_USE"
+      },
+      "P1G0": {
+        "intercept_fraction": "REQUIRED_BEFORE_USE",
+        "z_slope_fraction": "REQUIRED_BEFORE_USE"
+      },
+      "P0G1": {
+        "intercept_fraction": "REQUIRED_BEFORE_USE",
+        "z_slope_fraction": "REQUIRED_BEFORE_USE"
+      },
+      "P1G1": {
+        "intercept_fraction": "REQUIRED_BEFORE_USE",
+        "z_slope_fraction": "REQUIRED_BEFORE_USE"
+      }
+    },
+    "early_attack_rate_excluded": "REQUIRED_BEFORE_USE",
+    "early_attack_rate_exposed": "REQUIRED_BEFORE_USE",
+    "water_depth": "REQUIRED_BEFORE_USE",
+    "realized_z_sd": "REQUIRED_BEFORE_USE"
+  },
+  "production_surface_config": {
+    "sch_surface": {
+      "bootstrap_reps": "REQUIRED_BEFORE_USE",
+      "random_seed": 20261006,
+      "min_z_levels": 5,
+      "min_valid_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+      "min_interior_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+      "min_optimum_separation": "REQUIRED_BEFORE_USE",
+      "min_optimum_shift": "REQUIRED_BEFORE_USE",
+      "min_abs_component_gradient": "REQUIRED_BEFORE_USE"
+    },
+    "system_checks": {
+      "max_water_depth_range": "REQUIRED_BEFORE_USE",
+      "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+    }
+  },
+  "secondary_diagnostic_config": {
+    "bootstrap_reps": "REQUIRED_BEFORE_USE",
+    "random_seed": 20261007
+  },
+  "target_truth_world": "REQUIRED_BEFORE_USE",
+  "candidate_plants": "REQUIRED_BEFORE_USE",
+  "field_design": {
+    "flowers_per_plant": "REQUIRED_BEFORE_USE",
+    "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+  }
+}
