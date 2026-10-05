@@ -422,6 +422,11 @@ pure pollinator optimum and not yet evidence that antagonists maintain pollen
 limitation. The four-criterion adaptive-pollen-limitation map remains fail-closed
 at 1/4 fully supported criteria.
 See `SCH_PEDICULARIS_ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION_V1.md`.
+The biological paper spine is now frozen separately in
+`docs/SCH_PEDICULARIS_EMPIRICAL_STORY_V1.md`: the headline test is
+enemy-induced displacement of the natural-pollination reproductive optimum
+away from trait states with greater pollination performance; timing and
+threshold machinery remain enabling methods rather than the paper's subject.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
