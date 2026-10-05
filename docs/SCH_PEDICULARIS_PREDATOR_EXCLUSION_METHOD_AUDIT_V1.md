@@ -311,6 +311,37 @@ The output is an allocation manifest, not fabricated V4 measurements. Timing,
 pollination, attack, seed and contamination fields are collected in the field
 and only then passed to the candidate-linked hard-validity screen.
 
+### Locked handoff into the V4 field sheet
+
+Do not manually retype treatment identity into the V4 template. Bind the
+randomized allocation manifest and its receipt to the V4 schema before field
+outcomes are entered:
+
+```bash
+python scripts/prepare_pedicularis_g_v4_field_sheet.py prepare \
+  <allocation.csv> <allocation_receipt.json> \
+  --field-sheet-out <g_v4_field_sheet.csv> \
+  --lock-out <g_v4_identity_lock.json>
+```
+
+The prepared field sheet contains the frozen population, season, plant, flower,
+predator treatment, exclusion method and sham status, while all timing and
+outcome cells remain blank. The lock records the normalized allocation identity,
+allocation-receipt digest and allocation-seed digest.
+
+After field collection, verify the returned sheet before any candidate screen:
+
+```bash
+python scripts/prepare_pedicularis_g_v4_field_sheet.py verify \
+  <completed_g_v4.csv> <g_v4_identity_lock.json> \
+  --require-complete
+```
+
+Verification fails closed if a flower is substituted, a row is added or
+dropped, treatment/method identity drifts, or any V4 timing/outcome cell remains
+blank. Passing this handoff only licenses the existing exploratory
+hard-validity screen; it does not establish G effectiveness or selectivity.
+
 ## Stage-G pilot design
 
 Within the same focal population and season, randomize flowers within plants to:
