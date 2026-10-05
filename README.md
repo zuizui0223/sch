@@ -508,7 +508,7 @@ V48 closes the eleventh deterministic TA3 batch, review orders 329–353: 25 rec
 
 V49 closes the twelfth deterministic TA3 batch, review orders 354–378: 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 783/868; only 85 remain unscreened. Retains include ant–pollinator conflict, nursery-pollinator selection, shared floral volatile attraction/defence and Thunia bract defence.
 
-V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868.\n\nV51 closes the fourteenth deterministic TA3 batch: review orders 404–428, 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 833/868; only 35 remain unscreened. The retained batch adds Erysimum multi-agent geographic context, Sidalcea pollination–seed-predation, Veratrum predator-satiation, Breynia nursery-pollination and the 2026 Red Queen comparative programme without changing any held-out q_j.
+V50 closes the thirteenth deterministic TA3 batch: 25 records screened, 15 retained and 10 excluded. Formal title/abstract screening reaches 808/868.\n\nV51 closes the fourteenth deterministic TA3 batch: review orders 404–428, 25 records screened, 9 retained and 16 excluded. Formal title/abstract screening reaches 833/868. The retained batch adds Erysimum multi-agent geographic context, Sidalcea pollination–seed-predation, Veratrum predator-satiation, Breynia nursery-pollination and the 2026 Red Queen comparative programme without changing any held-out q_j.\n\nV52 closes the fifteenth deterministic TA3 batch: review orders 429–453, 25 records screened, 14 retained and 11 excluded. Formal title/abstract screening reaches 858/868; only 10 remain. This batch adds direct role-switching and functional-partition systems including Trollius, Bitou Bush, Brassica, Rivea, Sparattosperma, Tabebuia and Handroanthus without opening the prospective H2M1 test.
 
 The current biological synthesis is:
 
@@ -556,7 +556,7 @@ See:
 - `docs/SCH_PRISMA_V47_TA3_BATCH_J_READOUT.md` — tenth deterministic TA3 batch
 - `docs/SCH_PRISMA_V48_TA3_BATCH_K_READOUT.md` — eleventh deterministic TA3 batch
 - `docs/SCH_PRISMA_V49_TA3_BATCH_L_READOUT.md` — twelfth deterministic TA3 batch
-- `docs/SCH_PRISMA_V50_TA3_BATCH_M_READOUT.md` — thirteenth deterministic TA3 batch\n- `docs/SCH_PRISMA_V51_TA3_BATCH_N_READOUT.md` — fourteenth deterministic TA3 batch
+- `docs/SCH_PRISMA_V50_TA3_BATCH_M_READOUT.md` — thirteenth deterministic TA3 batch\n- `docs/SCH_PRISMA_V51_TA3_BATCH_N_READOUT.md` — fourteenth deterministic TA3 batch\n- `docs/SCH_PRISMA_V52_TA3_BATCH_O_READOUT.md` — fifteenth deterministic TA3 batch
 
 ## Empirical execution strategy
 
