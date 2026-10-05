@@ -47,6 +47,50 @@ seed-protection-facing optimum shifted toward lower exsertion.
 
 This remains an expectation until causal multi-level manipulation is completed.
 
+## Focal ecological hypothesis — antagonist-constrained pollination
+
+The observational programme suggests a stronger downstream hypothesis than
+generic compromise:
+
+> seed predators constrain exsertion below the pollinator-favoured state,
+> thereby contributing to maintenance of pollen limitation.
+
+This is a partial match to the antagonist-induced adaptive pollen-limitation
+framework of Fitch & Vandermeer (2021), not a completed example of that
+mechanism.
+
+The causal surface gives a direct contemporary prediction:
+
+```text
+z_P* = optimum under NATURAL pollination + predator EXCLUDED
+z_C* = optimum under NATURAL pollination + predator EXPOSED
+
+prediction:
+z_P* > z_C*
+```
+
+and the randomized z manipulation should independently show:
+
+```text
+higher realized z
+-> greater pollen receipt
+(and, if supported, greater initial seed set).
+```
+
+The two links must remain conceptually separate: G does not directly increase
+pollen at fixed z. Rather, antagonist removal changes the fitness optimum over z,
+and higher randomized z changes pollination performance.
+
+After a positive primary causal-compromise surface, run:
+
+```text
+scripts/analyze_pedicularis_antagonist_constrained_pollination.py
+```
+
+A positive secondary receipt supports a contemporary antagonist-constrained
+pollination mechanism only. It does not establish historical adaptation,
+heritability, genetic response, cue identity, or adaptive pollen limitation.
+
 ## Stage CAL-A/B/C — nonconfirmatory threshold-basis programme
 
 Before confirmatory P0/P1/G outcomes are interpreted, resolve the remaining
