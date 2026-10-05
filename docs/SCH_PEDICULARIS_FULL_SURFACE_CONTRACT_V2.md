@@ -223,12 +223,16 @@ python scripts/analyze_pedicularis_antagonist_constrained_pollination.py \
 ```
 
 This secondary diagnostic tests whether predator removal shifts the fitted
-reproductive optimum toward greater exsertion while randomized greater
-exsertion increases pollen receipt under natural pollination. It is downstream
-of the primary SCH surface and cannot rescue a negative compromise result.
+**state-specific reproductive optimum** toward greater exsertion while
+randomized greater exsertion increases pollen receipt under natural
+pollination. It is downstream of the primary SCH surface and cannot rescue a
+negative compromise result.
 
-Even a positive secondary diagnostic is labelled contemporary
-antagonist-constrained pollination, not adaptive pollen limitation.
+The predator-free state optimum remains a reproductive-state optimum, not a
+pure pollinator optimum. A positive secondary diagnostic therefore supports an
+antagonist-induced shift away from trait states with greater pollination
+performance. It does not by itself establish that antagonists maintain pollen
+limitation, and it is not adaptive pollen limitation.
 
 The returned core receipt remains:
 
