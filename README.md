@@ -431,6 +431,13 @@ The six predeclared empirical outcome worlds (W0-W5) are machine-readable in
 `PEDICULARIS_EMPIRICAL_OUTCOME_WORLDS_V1.csv` and classified with
 `classify_pedicularis_empirical_outcome.py`, so null and partial outcomes have
 their own biological interpretations rather than being post-hoc relabelled.
+The close-precedent novelty audit is frozen in
+`PEDICULARIS_EMPIRICAL_NOVELTY_MATRIX_V1.csv`. Existing studies already cover
+factorial pollination x antagonism, multi-level floral-display optima, and
+enemy-associated floral optimum shifts. The bounded P. rex gap is therefore
+the joint randomized multi-level shared-z x selective-P x selective-G design
+that recovers four reproductive state surfaces and directly tests
+antagonist-removal optimum displacement.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
