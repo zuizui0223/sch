@@ -44,7 +44,7 @@ def _summary() -> dict:
         "analysis": "pedicularis_calibration_pilot_summary_v1",
         "population_id": "P_REX_TEST",
         "season_id": "S1",
-        "available_pilot_lanes": ["G", "P0", "P1"],
+        "available_pilot_lanes": ["G", "G_TIMING", "P0", "P1"],
         "pilot_summaries": {
             "P1": {
                 "plant_level_distributions": {
@@ -215,3 +215,11 @@ def test_g_timing_targets_use_natural_event_time_sources_not_barrier_delay() -> 
         ),
     }
     assert all("barrier_delay_hours" not in value for value in timing.values())
+
+
+def test_cal_b_materializer_requires_separate_g_timing_summary() -> None:
+    summary = _summary()
+    summary["available_pilot_lanes"] = ["G", "P0", "P1"]
+    summary["pilot_summaries"].pop("G_TIMING")
+    with pytest.raises(ValueError, match="G event-time"):
+        build(summary, _read_csv(TEMPLATE))
