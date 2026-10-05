@@ -114,7 +114,17 @@ barrier removal time if removed
 exclusion_method identifier.
 ```
 
-Do not infer an hour-scale window from the congeneric timing precedent. It supports the ordering of events only. Estimate the earliest post-pollination application time and latest effective pre-swelling application time in focal P. rex, then freeze those bounds before confirmatory Stage G.
+Do not infer an hour-scale window from the congeneric timing precedent. It supports the ordering of events only. The focal-primary audit in `SCH_PEDICULARIS_G_TIMING_PRIMARY_EVIDENCE_V1.md` likewise recovers open-flower -> predator-access -> pre-swelling ordering, strong bumblebee dependence and an approximately three-week capsule-maturation horizon, but no focal numeric hour cutoff.
+
+The timing pilot therefore estimates three event-time distributions from anthesis:
+
+```text
+T_poll   natural-pollination window completion
+T_attack first detectable predator egg / puncture / attack evidence
+T_swell  prospectively defined ovary swelling
+```
+
+A selective late barrier is biologically available only where `T_poll < barrier time < min(T_attack, T_swell)`. Estimate those focal distributions first, then freeze the earliest and latest usable barrier times before confirmatory Stage G. Natural seed-predation prevalence is not a device hard-failure tolerance.
 
 ## Barrier timing and integrity checks
 
