@@ -124,8 +124,15 @@ Pilot-observed means are evidence about plausibility, not automatically the
 confirmatory cutoff. The minimum effect must still have a biological rationale
 and be frozen before confirmatory outcomes are read.
 
-The G timing pilot must remain separate from the confirmatory method-qualified
-G receipt.
+The G timing pilot must remain separate from both the barrier-effect pilot and
+the confirmatory method-qualified G receipt. Use natural-state sentinel flowers:
+single destructive pollen-receipt sentinels across scheduled post-anthesis times,
+plus separate repeatedly observed flowers for first predator attack and ovary
+swelling. The timing cohort is registered as `CAL_B_G_TIMING`; its flowers
+must not be reused in `CAL_B_G` or confirmatory G.
+
+The timing target basis is the natural event chronology, not the distribution
+of times at which an investigator happened to apply a barrier.
 
 Machine implementation:
 
@@ -235,6 +242,7 @@ Registered roles are:
 CAL_A
 CAL_B_P1
 CAL_B_G
+CAL_B_G_TIMING
 CONFIRMATORY_P0
 CONFIRMATORY_P1
 CONFIRMATORY_G
