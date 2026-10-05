@@ -35,7 +35,11 @@ def _config() -> dict:
             "basis_document": "SYNTHETIC_TEST_ONLY",
             "frozen_before_full_surface_data": True,
         },
-        "candidate_complete_block_plants": [6],
+        "candidate_plants": [6],
+        "field_design": {
+            "flowers_per_plant": 20,
+            "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL",
+        },
         "simulation_reps": 1,
         "simulation_seed": 17,
         "target_primary_surface_power": 0.8,
@@ -128,7 +132,7 @@ def test_strong_w1_truth_runs_current_production_pipeline() -> None:
     assert candidate["strongest_W1_power"] == 1.0
     assert candidate["target_truth_world_power"] == 1.0
     assert candidate["world_probabilities"]["W1"] == 1.0
-    assert result["minimum_complete_block_plants_meeting_both_targets"] == 6
+    assert result["minimum_plants_meeting_both_targets"] == 6
     assert result["minimum_total_full_surface_flowers_meeting_both_targets"] == 120
 
 
@@ -157,6 +161,7 @@ def test_realized_z_uncertainty_is_used_by_generator() -> None:
         frozen["generating_model"],
         3,
         random.Random(7),
+        flowers_per_plant=20,
         population_id="P_REX_POWER_TEST",
         season_id="S1",
     )
@@ -182,4 +187,39 @@ def test_w1_truth_requires_positive_pollen_slope_in_both_g_states() -> None:
     config["generating_model"]["pollen_state_models"]["P1G1"]["z_slope"] = 0.0
 
     with pytest.raises(ValueError, match="positive z->pollen slopes"):
+        _validate_config(config)
+
+
+def test_balanced_incomplete_block_generator_equalizes_all_twenty_cells() -> None:
+    config = _config()
+    config["candidate_plants"] = [10]
+    config["field_design"]["flowers_per_plant"] = 4
+    frozen = _validate_config(config)
+
+    rows, diagnostics = generate_rows(
+        frozen["generating_model"],
+        10,
+        random.Random(13),
+        flowers_per_plant=4,
+        population_id="P_REX_POWER_TEST",
+        season_id="S1",
+    )
+
+    assert len(rows) == 40
+    assert diagnostics["flowers_per_plant"] == 4
+    assert diagnostics["replicates_per_cell"] == 2
+    assert diagnostics["exact_cell_balance"] is True
+    assert set(diagnostics["cell_counts"].values()) == {2}
+    assert all(
+        len([row for row in rows if row["plant_id"] == f"P{i:04d}"]) == 4
+        for i in range(10)
+    )
+
+
+def test_unbalanced_candidate_design_is_rejected_before_power() -> None:
+    config = _config()
+    config["candidate_plants"] = [7]
+    config["field_design"]["flowers_per_plant"] = 4
+
+    with pytest.raises(ValueError, match="divisible by 20"):
         _validate_config(config)
