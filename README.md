@@ -344,6 +344,16 @@ Unknown ad-hoc method labels fail closed; a hard-validity failure can retire the
 tested candidate as implemented, while multiple hard-validity passes remain
 unselected until prospective effect/selectivity targets exist.
 
+For field execution, populate
+`PEDICULARIS_G_FIRST_TIER_PILOT_PLANTS_TEMPLATE_V1.csv` with the focal
+population/season, plant IDs and three treatment-blind flower IDs per plant.
+Then run `build_pedicularis_g_first_tier_pilot_manifest.py` with a
+precommitted neutral `--allocation-seed`. The builder deterministically
+randomizes those three flowers within each plant to sham, fine-mesh and
+porous-tubing arms using SHA-256 ranking and records the seed/algorithm in the
+receipt. The script does not choose the number of plants and does not generate
+V4 outcomes before they are measured.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
