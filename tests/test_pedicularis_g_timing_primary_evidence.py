@@ -22,6 +22,7 @@ def test_primary_timing_audit_recovers_order_but_not_hour_bounds() -> None:
     assert result["focal_ordinal_oviposition_window_recovered"] is True
     assert result["focal_bumblebee_dependence_recovered"] is True
     assert result["focal_pollination_mechanism_recovered"] is True
+    assert result["focal_late_anthesis_pollen_endpoint_recovered"] is True
     assert result["focal_hour_scale_lower_bound_recovered"] is False
     assert result["focal_hour_scale_upper_bound_recovered"] is False
     assert result["current_timing_gate_state"] == (
