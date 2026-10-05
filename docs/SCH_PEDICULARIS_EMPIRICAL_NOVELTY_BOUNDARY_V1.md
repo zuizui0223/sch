@@ -1,0 +1,221 @@
+# Pedicularis rex empirical novelty boundary v1
+
+## Purpose
+
+The focal empirical paper must not claim novelty for ecological ideas or
+experimental ingredients that already have strong precedents.
+
+The defensible novelty is narrower:
+
+> combine randomized multi-level manipulation of one shared floral coordinate
+> with crossed selective mutualist/antagonist states, recover the resulting
+> state-specific reproductive optima, and test whether antagonist exposure
+> displaces the optimum away from trait states with greater pollination
+> performance.
+
+This document is a bounded close-precedent audit, not a global systematic review.
+
+Machine matrix:
+
+```text
+empirical/architecture/PEDICULARIS_EMPIRICAL_NOVELTY_MATRIX_V1.csv
+scripts/audit_pedicularis_empirical_novelty.py
+```
+
+## What is already established
+
+### Conflicting selection on floral traits is not new
+
+Classic and close precedents already show that floral traits can attract or
+benefit pollinators while simultaneously increasing exposure to antagonists.
+
+*Polemonium viscosum* is especially strong mechanistically. Galen & Cuba (2001;
+doi:10.1111/j.0014-3820.2001.tb01313.x) experimentally altered flower shape:
+more tubular flowers reduced ant access but paid a pollination/seed-production
+cost. This is direct functional manipulation of a floral trade-off.
+
+*Castilleja linariaefolia* (Cariveau et al. 2004;
+doi:10.1111/j.0030-1299.2004.12641.x) used path/SEM decomposition to show
+opposing pollination- and seed-predation-mediated selection on calyx length.
+
+*Dalechampia scandens* (Pérez-Barrales et al. 2013;
+doi:10.1111/j.1600-0706.2013.20780.x) showed that larger advertising bracts
+received more pollen but also more seed-predator eggs, and constructed a
+multivariate fitness function from natural trait variation.
+
+Therefore the focal paper must not claim:
+
+```text
+first evidence for pollinator-antagonist conflict
+first demonstration that attractive flowers pay enemy costs
+first floral trait trade-off between pollination and defence.
+```
+
+## Consumer-factorial experiments are also not new
+
+Two particularly close precedents already manipulate both ecological agents.
+
+### Gymnadenia conopsea
+
+Sletvold, Moritz & Ågren (2015; doi:10.1890/14-0119.1) manipulated pollination
+and herbivory factorially. Pollinators and herbivores caused conflicting
+selection on flowering phenology and reinforcing selection on spur length.
+
+This is a very strong precedent for causal separation of mutualist- and
+antagonist-mediated selection.
+
+Its focal floral coordinates, however, remain naturally varying phenotypes.
+The experiment estimates treatment-specific selection gradients; it does not
+randomize one focal z across multiple levels to map four reproductive response
+curves and locate bounded state-specific optima.
+
+### Fragaria vesca
+
+Egan et al. (2021; doi:10.1002/evl3.262) used a full factorial manipulation of
+pollination and herbivory in woodland strawberry and quantified how the two
+agents altered selection on defence and attraction traits. Conflicting
+selection occurred on inflorescence density and agent effects were strongly
+context dependent.
+
+Again, the consumer manipulation is already factorial. The plant traits used
+for selection analysis are naturally varying rather than one randomized
+multi-level coordinate whose entire state-specific fitness surface is mapped.
+
+Therefore the focal paper must not claim:
+
+```text
+first pollinator x antagonist factorial experiment
+first causal partition of pollinator- and herbivore-mediated selection
+first demonstration that one agent changes selection imposed by another.
+```
+
+## Other close context-manipulation precedent
+
+In *Erysimum mediohispanicum*, Gómez (2003; doi:10.1086/376574) experimentally
+excluded ungulate herbivores and showed that the presence of herbivores weakened
+or eliminated selection on several floral traits. This demonstrates that enemy
+context can strongly alter the realized selection regime.
+
+It does not manipulate pollination as the second crossed treatment, nor
+randomize the focal floral coordinate across multiple levels.
+
+## The bounded gap
+
+Across the close precedents audited here, individual ingredients exist:
+
+```text
+shared floral conflict                         YES
+direct floral phenotype manipulation           YES
+selective enemy-context manipulation           YES
+factorial pollination x herbivory              YES
+selection-gradient decomposition               YES
+nonlinear floral fitness surfaces              YES in other pollination studies
+```
+
+What is not recovered in the audited close mutualist-antagonist examples is
+their joint use in one design:
+
+```text
+randomized multi-level shared trait z
+x
+selective P state
+x
+selective G state
+->
+W00(z), W10(z), W01(z), W11(z)
+->
+bounded state-specific reproductive optima
+->
+direct test of antagonist-induced optimum displacement.
+```
+
+That joint design/estimand combination is the defensible novelty boundary.
+
+## Why optimum displacement is different from a selection-gradient difference
+
+A treatment-dependent linear selection gradient says that the local slope of
+fitness with phenotype differs between ecological contexts.
+
+The focal P. rex result asks a stronger geometric question:
+
+```text
+where is the reproductive maximum in each ecological state,
+and how far does that maximum move when the antagonist is removed?
+```
+
+If:
+
+```text
+z_predator_free > z_predator_exposed
+```
+
+and randomized higher z also improves pollen receipt, then enemy pressure has
+not merely changed a regression coefficient. It has displaced the realized
+reproductive optimum away from a region of trait space with better pollination
+performance.
+
+That is the central empirical contribution.
+
+## What a positive W1/W2 result would add
+
+A positive outcome does not replace the older literature; it closes a different
+link.
+
+Earlier studies establish:
+
+```text
+pollinators and enemies can prefer the same floral cues;
+their selection can oppose;
+consumer manipulations can change selection gradients.
+```
+
+The focal causal experiment would add:
+
+```text
+antagonist state
+-> displacement of a bounded reproductive optimum
+-> displacement toward a region with lower measured pollination performance.
+```
+
+W1 further shows that the displacement also moves toward lower initial seed
+set. W2 supports the pollen-receipt cost but not that stronger pre-predation
+reproductive step.
+
+## Why null worlds remain informative relative to the literature
+
+The predeclared W3-W5 outcomes distinguish several alternatives already
+suggested by the precedent literature.
+
+- W3: enemies move the optimum, but not along the expected pollen-performance
+  gradient. Antagonist effects operate through another pathway.
+- W4: exsertion improves pollination, but enemies do not move the optimum.
+  Functional conflict need not translate into enemy-induced adaptive-surface
+  displacement.
+- W5: neither link is recovered in the focal context.
+
+These outcomes matter because factorial-selection studies already show that
+consumer effects can be additive, context dependent, or absent. The P. rex
+experiment tests which of those possibilities actually changes the location of
+the reproductive optimum.
+
+## Permitted novelty language
+
+Use:
+
+> Among the close floral mutualist-antagonist precedents audited here,
+> factorial consumer manipulations already exist, but we found no example that
+> combines randomized multi-level manipulation of one shared floral coordinate
+> with crossed selective consumer states to recover state-specific reproductive
+> optima and test antagonist-induced optimum displacement.
+
+Do not use:
+
+```text
+the first pollinator-antagonist experiment
+the first factorial test of mutualists and enemies
+the first demonstration of conflicting floral selection
+the first study ever to show enemy-induced optimum displacement
+```
+
+The last statement would require a dedicated systematic novelty search well
+beyond this bounded close-precedent audit.
