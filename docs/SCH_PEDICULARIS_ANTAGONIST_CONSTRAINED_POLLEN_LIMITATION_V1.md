@@ -204,7 +204,9 @@ historical evolutionary adaptation or genetic response.
 ## Success-risk coupling prediction for the field programme
 
 The current event-time and full-surface designs already preserve the variables
-needed for a prospective test:
+needed for a prospective test. The full-surface receipt also fingerprints the
+canonical flower-level dataset, and the downstream antagonist diagnostic accepts
+only that exact same surface:
 
 ```text
 randomized / realized z
