@@ -108,6 +108,23 @@ antagonist damage to pollination and reproduction, but it does not randomize one
 shared floral coordinate across a multi-level range or recover bounded
 consumer-state reproductive optima.
 
+## A close optimum precedent
+
+Fitch & Vandermeer (2021; doi:10.1086/716637) is especially important for
+bounding the novelty claim. In *Odontonema cuspidatum*, experimental floral
+arrays varied flower number to measure pollinator and nectar-robber responses,
+and the field/experimental programme recovered an optimum flower number under
+antagonist-induced pollen limitation.
+
+Thus neither multi-level manipulation of a pollinator-attraction trait nor
+estimation of an ecological optimum under pollinator-antagonist conflict is, by
+itself, the P. rex novelty.
+
+The remaining difference is causal architecture. *Odontonema* does not
+selectively cross pollinator and antagonist states around the same randomized
+trait to recover separate reproductive surfaces and ask whether removing the
+antagonist **moves the optimum**.
+
 ## The bounded gap
 
 Across the close precedents audited here, individual ingredients exist:
@@ -115,10 +132,12 @@ Across the close precedents audited here, individual ingredients exist:
 ```text
 shared floral conflict                         YES
 direct floral phenotype manipulation           YES
+multi-level attraction-trait manipulation       YES
+ecological optimum under mutualist-antagonist conflict YES
 selective enemy-context manipulation           YES
 factorial pollination x herbivory              YES
 selection-gradient decomposition               YES
-nonlinear floral fitness surfaces              YES in other pollination studies
+nonlinear floral fitness surfaces              YES
 ```
 
 What is not recovered in the audited close mutualist-antagonist examples is
@@ -175,7 +194,9 @@ Earlier studies establish:
 ```text
 pollinators and enemies can prefer the same floral cues;
 their selection can oppose;
-consumer manipulations can change selection gradients.
+consumer manipulations can change selection gradients;
+a manipulated attraction trait can have an inferred optimum under
+pollinator-antagonist conflict.
 ```
 
 The focal causal experiment would add:
