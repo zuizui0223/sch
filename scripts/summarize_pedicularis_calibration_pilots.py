@@ -11,6 +11,7 @@ from scripts import evaluate_pedicularis_stage_p0 as p0
 from scripts import evaluate_pedicularis_pollination_weight as p1
 from scripts import evaluate_pedicularis_predator_method as gmethod
 from scripts import evaluate_pedicularis_predator_weight as gweight
+from scripts import summarize_pedicularis_g_event_time_pilot as gtiming
 from scripts.scale_free_relative import relative_change
 
 
@@ -371,8 +372,19 @@ def build(
     p0_path: Path | None = None,
     p1_path: Path | None = None,
     g_path: Path | None = None,
+    g_timing_config_path: Path | None = None,
+    g_timing_path: Path | None = None,
 ) -> dict:
-    if p0_path is None and p1_path is None and g_path is None:
+    if (g_timing_config_path is None) != (g_timing_path is None):
+        raise ValueError(
+            "G event-time calibration requires both config and data paths"
+        )
+    if (
+        p0_path is None
+        and p1_path is None
+        and g_path is None
+        and g_timing_path is None
+    ):
         raise ValueError("at least one calibration pilot input is required")
 
     summaries = {}
@@ -387,6 +399,17 @@ def build(
     if g_path is not None:
         summaries["G"], context = _summarize_g(g_path)
         contexts.add(context)
+    if g_timing_path is not None and g_timing_config_path is not None:
+        timing_config = gtiming._read_json(g_timing_config_path)
+        timing_rows = gtiming._read_csv(g_timing_path)
+        timing_summary = gtiming.build(timing_config, timing_rows)
+        summaries["G_TIMING"] = timing_summary
+        contexts.add(
+            (
+                timing_summary["population_id"],
+                timing_summary["season_id"],
+            )
+        )
 
     if len(contexts) != 1:
         raise ValueError(
@@ -407,7 +430,7 @@ def build(
             ),
             "CAL_B": sorted(
                 lane for lane in summaries
-                if lane in {"P1", "G"}
+                if lane in {"P1", "G", "G_TIMING"}
             ),
             "CAL_C": (
                 "PILOT_VARIANCE_INPUTS_ONLY_NOT_SAMPLE_SIZE_DECISIONS"
@@ -434,10 +457,18 @@ def main() -> None:
     parser.add_argument("--p0", type=Path)
     parser.add_argument("--p1", type=Path)
     parser.add_argument("--g", type=Path)
+    parser.add_argument("--g-timing-config", type=Path)
+    parser.add_argument("--g-timing", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
-    result = build(p0_path=args.p0, p1_path=args.p1, g_path=args.g)
+    result = build(
+        p0_path=args.p0,
+        p1_path=args.p1,
+        g_path=args.g,
+        g_timing_config_path=args.g_timing_config,
+        g_timing_path=args.g_timing,
+    )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")

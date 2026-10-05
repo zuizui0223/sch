@@ -1,0 +1,13 @@
+{
+  "schema": "SCH_PEDICULARIS_G_EVENT_TIME_PILOT_CONFIG_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "pollination_completion_definition": "REQUIRED_BEFORE_USE",
+  "pollination_completion_measurement": "REQUIRED_BEFORE_USE",
+  "attack_event_definition": "REQUIRED_BEFORE_USE",
+  "ovary_swelling_definition": "REQUIRED_BEFORE_USE",
+  "sampling_schedule_basis_note": "REQUIRED_BEFORE_USE",
+  "frozen_before_event_time_data": "REQUIRED_BEFORE_USE",
+  "frozen_at_utc": "REQUIRED_BEFORE_USE"
+}

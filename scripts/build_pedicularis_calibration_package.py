@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from scripts import evaluate_pedicularis_predator_method as gmethod
 from scripts import evaluate_pedicularis_stage_p0 as p0
 from scripts import summarize_pedicularis_cal_a_repeatability as repeatability
 from scripts import summarize_pedicularis_calibration_pilots as calibration
+from scripts import summarize_pedicularis_g_event_time_pilot as gtiming
 from scripts import validate_pedicularis_cohort_registry as cohort
 
 
@@ -18,6 +20,7 @@ EXPECTED_DATA_ROLE = {
     "P0": "CAL_A",
     "P1": "CAL_B_P1",
     "G": "CAL_B_G",
+    "G_TIMING": "CAL_B_G_TIMING",
 }
 
 
@@ -89,6 +92,8 @@ def build_package(
     p0_path: Path,
     p1_path: Path,
     g_path: Path,
+    g_timing_config_path: Path,
+    g_timing_path: Path,
 ) -> tuple[dict, dict, dict]:
     registry_rows = cohort._read(registry_path)
     cohort_receipt = cohort.validate(registry_rows)
@@ -98,12 +103,24 @@ def build_package(
     p0_rows = p0._read_csv(p0_path)
     p1_rows = p1._read_csv(p1_path)
     g_rows = gmethod.read_rows(g_path)
+    g_timing_config = gtiming._read_json(g_timing_config_path)
+    g_timing_rows = gtiming._read_csv(g_timing_path)
+    g_timing_summary = gtiming.build(g_timing_config, g_timing_rows)
+    if g_timing_summary["pollination_complete_observation_hours"] is None:
+        raise ValueError(
+            "G event-time calibration has no observed pollination-complete sentinels"
+        )
+    if g_timing_summary["first_constraint_positive_observation_hours"] is None:
+        raise ValueError(
+            "G event-time calibration has no observed attack/swelling constraint onset"
+        )
 
     datasets = {
         "repeatability": repeatability_rows,
         "P0": p0_rows,
         "P1": p1_rows,
         "G": g_rows,
+        "G_TIMING": g_timing_rows,
     }
 
     contexts = {
@@ -116,7 +133,7 @@ def build_package(
     )
     if len(set(contexts.values())) != 1:
         raise ValueError(
-            "repeatability, P0, P1, G and cohort registry contexts must match exactly: "
+            "repeatability, P0, P1, G, G_TIMING and cohort registry contexts must match exactly: "
             + ", ".join(
                 f"{label}={context[0]}/{context[1]}"
                 for label, context in sorted(contexts.items())
@@ -138,6 +155,7 @@ def build_package(
     p0_ids = set(dataset_receipts["P0"]["flower_ids"])
     p1_ids = set(dataset_receipts["P1"]["flower_ids"])
     g_ids = set(dataset_receipts["G"]["flower_ids"])
+    g_timing_ids = set(dataset_receipts["G_TIMING"]["flower_ids"])
 
     if not rep_ids <= p0_ids:
         raise ValueError(
@@ -146,10 +164,15 @@ def build_package(
             "same calibration units"
         )
 
+    lane_flower_ids = {
+        "P0": p0_ids,
+        "P1": p1_ids,
+        "G": g_ids,
+        "G_TIMING": g_timing_ids,
+    }
     forbidden_overlaps = {
-        "P0_vs_P1": p0_ids & p1_ids,
-        "P0_vs_G": p0_ids & g_ids,
-        "P1_vs_G": p1_ids & g_ids,
+        f"{left}_vs_{right}": lane_flower_ids[left] & lane_flower_ids[right]
+        for left, right in itertools.combinations(lane_flower_ids, 2)
     }
     nonempty = {
         key: sorted(values)
@@ -168,6 +191,8 @@ def build_package(
         p0_path=p0_path,
         p1_path=p1_path,
         g_path=g_path,
+        g_timing_config_path=g_timing_config_path,
+        g_timing_path=g_timing_path,
     )
 
     if (
@@ -180,6 +205,13 @@ def build_package(
         calibration_summary["season_id"],
     ) != (population_id, season_id):
         raise ValueError("calibration summary context drifted during build")
+    if (
+        g_timing_summary["population_id"],
+        g_timing_summary["season_id"],
+    ) != (population_id, season_id):
+        raise ValueError("G event-time summary context drifted during build")
+    if calibration_summary.get("pilot_summaries", {}).get("G_TIMING") != g_timing_summary:
+        raise ValueError("G event-time summary drifted during package assembly")
 
     receipt = {
         "receipt_schema_version": "SCH_PEDICULARIS_CALIBRATION_PACKAGE_V1",
@@ -201,6 +233,8 @@ def build_package(
         "cross_lane_flower_overlap_detected": False,
         "repeatability_summary_status": repeatability_summary["status"],
         "calibration_summary_status": calibration_summary["status"],
+        "g_event_time_summary_status": g_timing_summary["status"],
+        "g_effect_and_timing_flower_overlap_detected": False,
         "status": "PEDICULARIS_CALIBRATION_PACKAGE_READY_FOR_TARGET_FREEZE",
         "unlocked_next_steps": [
             "materialize_and_freeze_CAL_A_targets",
@@ -209,6 +243,7 @@ def build_package(
         ],
         "claim_ceiling": [
             "calibration_package_integrity_only",
+            "requires_separate_G_effect_and_natural_event_time_cohorts",
             "does_not_select_thresholds",
             "does_not_validate_P0_P1_or_G",
             "does_not_use_confirmatory_rows",
@@ -238,6 +273,8 @@ def main() -> None:
     parser.add_argument("p0_csv", type=Path)
     parser.add_argument("p1_csv", type=Path)
     parser.add_argument("g_csv", type=Path)
+    parser.add_argument("--g-timing-config", type=Path, required=True)
+    parser.add_argument("--g-timing", type=Path, required=True)
     parser.add_argument("--repeatability-out", type=Path, required=True)
     parser.add_argument("--calibration-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -249,6 +286,8 @@ def main() -> None:
         p0_path=args.p0_csv,
         p1_path=args.p1_csv,
         g_path=args.g_csv,
+        g_timing_config_path=args.g_timing_config,
+        g_timing_path=args.g_timing,
     )
     _write_json(args.repeatability_out, rep)
     _write_json(args.calibration_out, cal)

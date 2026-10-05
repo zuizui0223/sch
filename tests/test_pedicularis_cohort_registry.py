@@ -45,6 +45,7 @@ def test_disjoint_calibration_and_confirmatory_cohorts_validate() -> None:
         _row("R1", "C01", "C01_F1", "CAL_A", "MULTI", "YES", "NO"),
         _row("R2", "C02", "C02_F1", "CAL_B_P1", "P1", "YES", "NO"),
         _row("R3", "C03", "C03_F1", "CAL_B_G", "G", "YES", "NO"),
+        _row("R3T", "C04", "C04_F1", "CAL_B_G_TIMING", "G", "YES", "NO"),
         _row("R4", "V01", "V01_F1", "CONFIRMATORY_P0", "P0", "NO", "YES"),
         _row("R5", "V02", "V02_F1", "CONFIRMATORY_P1", "P1", "NO", "YES"),
         _row("R6", "V03", "V03_F1", "CONFIRMATORY_G", "G", "NO", "YES"),
@@ -90,3 +91,21 @@ def test_registry_is_single_population_and_season() -> None:
     rows[1]["season_id"] = "S2"
     with pytest.raises(ValueError, match="exactly one population and season"):
         validate(rows)
+
+
+def test_g_event_time_role_is_threshold_basis_only() -> None:
+    row = _row(
+        "RT",
+        "T01",
+        "T01_F1",
+        "CAL_B_G_TIMING",
+        "G",
+        "YES",
+        "NO",
+    )
+    result = validate([row])
+    assert result["role_counts"]["CAL_B_G_TIMING"] == 1
+
+    row["confirmatory_eligible"] = "YES"
+    with pytest.raises(ValueError, match="confirmatory_eligible mismatch"):
+        validate([row])

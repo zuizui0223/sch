@@ -65,8 +65,10 @@ def build(
         raise ValueError("calibration summary season_id is missing")
 
     available = set(calibration_summary.get("available_pilot_lanes") or [])
-    if not {"P1", "G"} <= available:
-        raise ValueError("CAL-B materialization requires both P1 and G pilot summaries")
+    if not {"P1", "G", "G_TIMING"} <= available:
+        raise ValueError(
+            "CAL-B materialization requires P1, G effect, and G event-time pilot summaries"
+        )
 
     out: list[dict[str, str]] = []
     seen_decisions: set[str] = set()

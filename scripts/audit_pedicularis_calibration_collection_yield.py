@@ -73,6 +73,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
     expected_bundles = {
         "COHORT_REGISTRY",
         "G_EXPLORATORY",
+        "G_EVENT_TIME",
         "P0_EXPLORATORY",
         "CAL_A_REPEATABILITY",
         "P1_EXPLORATORY",
@@ -90,6 +91,10 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
 
     cal_a_by_lane = Counter(row["lane"] for row in cal_a)
     cal_b_by_lane = Counter(row["lane"] for row in cal_b)
+    cal_b_by_lane_kind = Counter(
+        (row["lane"], row["decision_kind"])
+        for row in cal_b
+    )
     cal_c_by_lane = Counter(row["lane"] for row in cal_c)
     repeatability_floors = sum(
         row["repeatability_source_path"] != "NOT_APPLICABLE"
@@ -99,8 +104,18 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
     expected_counts = {
         "G_EXPLORATORY": {
             "cal_a_observed_decisions": cal_a_by_lane["G"],
-            "cal_b_effect_or_timing_decisions": cal_b_by_lane["G"],
+            "cal_b_effect_or_timing_decisions": cal_b_by_lane_kind[
+                ("G", "MINIMUM_EFFECT")
+            ],
             "cal_c_pilot_sd_criteria": cal_c_by_lane["G"],
+        },
+        "G_EVENT_TIME": {
+            "cal_a_observed_decisions": 0,
+            "cal_b_effect_or_timing_decisions": (
+                cal_b_by_lane_kind[("G", "TIMING_LOWER_BOUND")]
+                + cal_b_by_lane_kind[("G", "TIMING_UPPER_BOUND")]
+            ),
+            "cal_c_pilot_sd_criteria": 0,
         },
         "P0_EXPLORATORY": {
             "cal_a_observed_decisions": cal_a_by_lane["P0"],
@@ -195,6 +210,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
     }
     if priorities != {
         "G_EXPLORATORY": 1,
+        "G_EVENT_TIME": 1,
         "P0_EXPLORATORY": 2,
         "CAL_A_REPEATABILITY": 2,
         "P1_EXPLORATORY": 3,
@@ -251,7 +267,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
         },
         "bundle_yield": yield_rows,
         "risk_priority_order": [
-            "G_EXPLORATORY",
+            "G_EXPLORATORY+G_EVENT_TIME",
             "P0_EXPLORATORY+CAL_A_REPEATABILITY",
             "P1_EXPLORATORY",
         ],
@@ -266,6 +282,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
             "P0_EXPLORATORY",
             "P1_EXPLORATORY",
             "G_EXPLORATORY",
+            "G_EVENT_TIME",
         ],
         "status": "CALIBRATION_COLLECTION_YIELD_MAPPED_NO_SAMPLE_SIZE_INVENTED",
         "claim_ceiling": [
@@ -273,7 +290,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
             "risk_priority_is_not_a_sample_size",
             "priority_is_not_a_confirmatory_stop_rule",
             "repeatability_should_be_nested_with_P0_when_feasible",
-            "all_four_data_bundles_are_still_required_for_full_package",
+            "all_five_data_bundles_are_still_required_for_full_package",
         ],
     }
 
@@ -281,7 +298,7 @@ def build(path: Path = DEFAULT_YIELD) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Audit the information yield and fail-fast priority of the four "
+            "Audit the information yield and fail-fast priority of the five "
             "Pedicularis calibration data bundles without inventing sample sizes"
         )
     )

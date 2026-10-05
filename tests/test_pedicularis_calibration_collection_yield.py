@@ -7,7 +7,7 @@ def test_collection_yield_matches_registered_calibration_templates() -> None:
     assert result["status"] == (
         "CALIBRATION_COLLECTION_YIELD_MAPPED_NO_SAMPLE_SIZE_INVENTED"
     )
-    assert result["n_collection_rows"] == 5
+    assert result["n_collection_rows"] == 6
     assert result["derived_gate_yield"] == {
         "cal_a_observed_decisions": 20,
         "cal_a_measurement_noise_floors": 13,
@@ -25,17 +25,29 @@ def test_g_exploratory_has_highest_risk_and_largest_direct_support_yield() -> No
     assert g["structural_risk"] == "HIGHEST"
     assert g["risk_priority"] == 1
     assert g["cal_a_observed_decisions"] == 6
-    assert g["cal_b_effect_or_timing_decisions"] == 5
+    assert g["cal_b_effect_or_timing_decisions"] == 3
     assert g["cal_c_pilot_sd_criteria"] == 9
-    assert g["decision_distributions"] == 11
-    assert g["total_calibration_support_outputs"] == 20
+    assert g["decision_distributions"] == 9
+    assert g["total_calibration_support_outputs"] == 18
 
-    assert g["total_calibration_support_outputs"] > bundles[
-        "P0_EXPLORATORY"
-    ]["total_calibration_support_outputs"]
-    assert g["total_calibration_support_outputs"] > bundles[
-        "P1_EXPLORATORY"
-    ]["total_calibration_support_outputs"]
+    timing = bundles["G_EVENT_TIME"]
+    assert timing["structural_risk"] == "HIGHEST"
+    assert timing["risk_priority"] == 1
+    assert timing["cal_b_effect_or_timing_decisions"] == 2
+    assert timing["total_calibration_support_outputs"] == 2
+    assert (
+        g["total_calibration_support_outputs"]
+        + timing["total_calibration_support_outputs"]
+    ) == 20
+
+    assert (
+        g["total_calibration_support_outputs"]
+        + timing["total_calibration_support_outputs"]
+    ) > bundles["P0_EXPLORATORY"]["total_calibration_support_outputs"]
+    assert (
+        g["total_calibration_support_outputs"]
+        + timing["total_calibration_support_outputs"]
+    ) > bundles["P1_EXPLORATORY"]["total_calibration_support_outputs"]
 
 
 def test_p0_and_repeatability_are_same_priority_and_should_be_nested() -> None:
@@ -68,7 +80,7 @@ def test_p1_is_required_but_lower_method_risk_than_g_or_p0() -> None:
 def test_risk_priority_is_not_mistaken_for_strict_chronology() -> None:
     result = build()
     assert result["risk_priority_order"] == [
-        "G_EXPLORATORY",
+        "G_EXPLORATORY+G_EVENT_TIME",
         "P0_EXPLORATORY+CAL_A_REPEATABILITY",
         "P1_EXPLORATORY",
     ]
@@ -78,7 +90,7 @@ def test_risk_priority_is_not_mistaken_for_strict_chronology() -> None:
     assert "phenology" in result["priority_interpretation"]
 
 
-def test_full_package_still_requires_all_four_data_bundles_and_registry() -> None:
+def test_full_package_requires_split_g_effect_and_event_time_bundles() -> None:
     result = build()
     assert result["package_completion_requirement"] == [
         "COHORT_REGISTRY",
@@ -86,7 +98,8 @@ def test_full_package_still_requires_all_four_data_bundles_and_registry() -> Non
         "P0_EXPLORATORY",
         "P1_EXPLORATORY",
         "G_EXPLORATORY",
+        "G_EVENT_TIME",
     ]
-    assert "all_four_data_bundles_are_still_required_for_full_package" in (
+    assert "all_five_data_bundles_are_still_required_for_full_package" in (
         result["claim_ceiling"]
     )

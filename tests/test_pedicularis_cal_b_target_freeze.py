@@ -44,7 +44,7 @@ def _summary() -> dict:
         "analysis": "pedicularis_calibration_pilot_summary_v1",
         "population_id": "P_REX_TEST",
         "season_id": "S1",
-        "available_pilot_lanes": ["G", "P0", "P1"],
+        "available_pilot_lanes": ["G", "G_TIMING", "P0", "P1"],
         "pilot_summaries": {
             "P1": {
                 "plant_level_distributions": {
@@ -59,6 +59,10 @@ def _summary() -> dict:
                     "final_seed_gain": _dist(0.15),
                 },
                 "barrier_delay_hours": _dist(14.0),
+            },
+            "G_TIMING": {
+                "pollination_complete_observation_hours": _dist(8.0),
+                "first_constraint_positive_observation_hours": _dist(20.0),
             },
         },
         "status": "CALIBRATION_SUMMARY_ONLY_NO_THRESHOLD_DECISION",
@@ -193,3 +197,29 @@ def test_materializer_refuses_prefilled_target_leakage() -> None:
     altered[0]["target_value"] = "1.0"
     with pytest.raises(ValueError, match="must remain unresolved"):
         build(_summary(), altered)
+
+
+def test_g_timing_targets_use_natural_event_time_sources_not_barrier_delay() -> None:
+    rows = _read_csv(TEMPLATE)
+    timing = {
+        row["decision_kind"]: row["calibration_source_path"]
+        for row in rows
+        if row["lane"] == "G" and row["decision_kind"].startswith("TIMING_")
+    }
+    assert timing == {
+        "TIMING_LOWER_BOUND": (
+            "pilot_summaries.G_TIMING.pollination_complete_observation_hours"
+        ),
+        "TIMING_UPPER_BOUND": (
+            "pilot_summaries.G_TIMING.first_constraint_positive_observation_hours"
+        ),
+    }
+    assert all("barrier_delay_hours" not in value for value in timing.values())
+
+
+def test_cal_b_materializer_requires_separate_g_timing_summary() -> None:
+    summary = _summary()
+    summary["available_pilot_lanes"] = ["G", "P0", "P1"]
+    summary["pilot_summaries"].pop("G_TIMING")
+    with pytest.raises(ValueError, match="G event-time"):
+        build(summary, _read_csv(TEMPLATE))
