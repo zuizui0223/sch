@@ -10,7 +10,7 @@ from scripts.audit_pedicularis_empirical_novelty import (
 def test_close_precedents_include_existing_factorial_consumer_experiments() -> None:
     result = build(_read(DEFAULT_MATRIX))
 
-    assert result["n_close_precedents_audited"] == 6
+    assert result["n_close_precedents_audited"] == 7
     assert result["n_factorial_consumer_manipulation_precedents"] == 2
     assert result["factorial_consumer_manipulation_precedent_ids"] == [
         "FRAGARIA_2021",
@@ -52,6 +52,9 @@ def test_matrix_keeps_classic_conflict_and_trait_manipulation_precedents() -> No
     assert rows["POLEMONIUM_2001"]["trait_manipulated_multilevel"] == "NO"
     assert rows["DALECHAMPIA_2013"]["natural_trait_selection_analysis"] == "YES"
     assert rows["CASTILLEJA_2004"]["opposing_functional_selection"] == "YES"
+    assert rows["EURYA_2018"]["pollination_manipulated"] == "YES"
+    assert rows["EURYA_2018"]["antagonist_manipulated"] == "YES"
+    assert rows["EURYA_2018"]["state_specific_reproductive_optima"] == "NO"
 
 
 def test_registered_target_declares_full_intended_design_only() -> None:
