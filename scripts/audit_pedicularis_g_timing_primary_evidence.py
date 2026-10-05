@@ -71,6 +71,7 @@ def build(rows: list[dict[str, str]]) -> dict:
         "POLLINATOR_DEPENDENCE",
         "NATURAL_SEED_PREDATION",
         "POLLINATION_MECHANISM",
+        "POLLINATION_ENDPOINT_OBSERVATION",
     }
     missing = sorted(required_focal_axes - focal_axes)
     if missing:
@@ -106,6 +107,7 @@ def build(rows: list[dict[str, str]]) -> dict:
         "focal_ordinal_oviposition_window_recovered": True,
         "focal_bumblebee_dependence_recovered": True,
         "focal_pollination_mechanism_recovered": True,
+        "focal_late_anthesis_pollen_endpoint_recovered": True,
         "focal_hour_scale_lower_bound_recovered": False,
         "focal_hour_scale_upper_bound_recovered": False,
         "natural_predation_range_percent": [0.80, 27.42],
