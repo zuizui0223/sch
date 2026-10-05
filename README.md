@@ -344,6 +344,14 @@ Unknown ad-hoc method labels fail closed; a hard-validity failure can retire the
 tested candidate as implemented, while multiple hard-validity passes remain
 unselected until prospective effect/selectivity targets exist.
 
+Exploratory G method reliability now also has a prospective sample-size planner.
+Given a frozen maximum acceptable per-plant hard-failure probability, it
+computes the minimum paired plants required for **zero observed hard failures**
+using a one-sided exact binomial upper bound. At 95% confidence this is 29
+paired plants/candidate for a 10% failure tolerance and 59 for 5%; neither
+tolerance is a default. Run
+`python scripts/plan_pedicularis_g_hard_validity_pilot.py`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
