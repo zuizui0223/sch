@@ -49,7 +49,7 @@ def test_tang_thesis_is_natural_history_stronger_not_direct_g() -> None:
     assert tang["gap"] == "G"
     assert any("NATURAL_HISTORY" in state for state in tang["states"])
     assert all("G_RECOVERED" != state for state in tang["states"])
-    assert "legitimate primary binary" in tang["latest_allowed_action"].lower()
+    assert "legitimate thesis binary" in tang["latest_allowed_action"].lower()
 
 
 def test_external_prior_assets_never_change_direct_gap_state() -> None:
