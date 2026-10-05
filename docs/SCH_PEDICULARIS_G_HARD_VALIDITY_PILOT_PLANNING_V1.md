@@ -126,6 +126,26 @@ If candidates are separated across plants or interference invalidates sharing a
 plant, recalculate the distinct-plant burden rather than treating candidate
 assignments as interchangeable with plants.
 
+## Pre-field packet audit
+
+After the hard-validity plan, randomized allocation manifest, allocation
+receipt and V4 identity lock all exist, run:
+
+```bash
+python scripts/audit_pedicularis_g_pilot_preflight.py \
+  <g_hard_validity_plan.json> \
+  <allocation.csv> \
+  <allocation_receipt.json> \
+  <g_v4_identity_lock.json>
+```
+
+The audit requires one shared population/season, checks that the V4 lock is
+bound to the exact randomized allocation and receipt, and compares the observed
+distinct-plant count with the prospectively planned minimum. A packet that is
+short of the planned n reports the exact plant deficit and remains not ready for
+field collection. This is still pre-outcome execution QA, not evidence that a
+candidate is valid or effective.
+
 ## Separation from effect/selectivity planning
 
 Passing this screen means only that the device can be applied without observed
