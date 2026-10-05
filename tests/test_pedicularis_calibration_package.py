@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 
 import pytest
@@ -100,14 +101,82 @@ def _g_rows(season: str = "S1") -> list[dict[str, str]]:
     return rows
 
 
+def _g_timing_config(season: str = "S1") -> dict:
+    return {
+        "schema": "SCH_PEDICULARIS_G_EVENT_TIME_PILOT_CONFIG_V1",
+        "status": "PEDICULARIS_G_EVENT_TIME_PILOT_PROSPECTIVELY_FROZEN",
+        "population_id": "P_REX_TEST",
+        "season_id": season,
+        "pollination_completion_definition": "unit-test pollen criterion",
+        "pollination_completion_measurement": "destructive stigma pollen count",
+        "attack_event_definition": "visible egg or puncture",
+        "ovary_swelling_definition": "unit-test visible swelling",
+        "sampling_schedule_basis_note": "fixed unit-test schedule",
+        "frozen_before_event_time_data": True,
+        "frozen_at_utc": "2026-10-05T00:00:00Z",
+    }
+
+
+def _g_timing_rows(season: str = "S1") -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    for plant in range(4):
+        for hours, pollen, complete in (
+            (4, 10 + plant, 0),
+            (8, 30 + plant, 1 if plant < 2 else 0),
+            (12, 50 + plant, 1),
+        ):
+            rows.append({
+                "population_id": "P_REX_TEST",
+                "season_id": season,
+                "plant_id": f"D{plant:02d}",
+                "flower_id": f"D{plant:02d}_P{hours}",
+                "flower_role": "POLLINATION_SENTINEL",
+                "anthesis_time_hours": "0",
+                "observation_time_hours": str(hours),
+                "pollen_grains": str(pollen),
+                "pollination_complete": str(complete),
+                "attack_present": "",
+                "ovary_swollen": "",
+            })
+        for hours, attack, swollen in (
+            (4, 0, 0),
+            (8, 0, 0),
+            (12, 1 if plant < 2 else 0, 1 if plant >= 2 else 0),
+        ):
+            rows.append({
+                "population_id": "P_REX_TEST",
+                "season_id": season,
+                "plant_id": f"D{plant:02d}",
+                "flower_id": f"D{plant:02d}_N",
+                "flower_role": "ATTACK_SWELL_SENTINEL",
+                "anthesis_time_hours": "0",
+                "observation_time_hours": str(hours),
+                "pollen_grains": "",
+                "pollination_complete": "",
+                "attack_present": str(attack),
+                "ovary_swollen": str(swollen),
+            })
+    return rows
+
+
+def _write_json(path: Path, payload: dict) -> Path:
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    return path
+
+
 def _registry_rows(
     p0_rows: list[dict[str,str]],
     p1_rows: list[dict[str,str]],
     g_rows: list[dict[str,str]],
+    g_timing_rows: list[dict[str,str]],
 ) -> list[dict[str,str]]:
     rows=[]
     def add(data,role,lane):
+        seen: set[str] = set()
         for r in data:
+            if r["flower_id"] in seen:
+                continue
+            seen.add(r["flower_id"])
             rows.append({
                 "record_id":f"R{len(rows)+1:03d}","population_id":r["population_id"],
                 "season_id":r["season_id"],"plant_id":r["plant_id"],
@@ -117,18 +186,30 @@ def _registry_rows(
     add(p0_rows,"CAL_A","MULTI")
     add(p1_rows,"CAL_B_P1","P1")
     add(g_rows,"CAL_B_G","G")
+    add(g_timing_rows,"CAL_B_G_TIMING","G")
     return rows
 
 
-def _paths(tmp_path: Path, *, g_season: str="S1"):
+def _paths(
+    tmp_path: Path,
+    *,
+    g_season: str="S1",
+    g_timing_season: str="S1",
+):
     p0=_p0_rows(); p1=_p1_rows(); g=_g_rows(g_season); rep=_repeatability_rows()
-    registry=_registry_rows(p0,p1,g)
+    gt=_g_timing_rows(g_timing_season)
+    registry=_registry_rows(p0,p1,g,gt)
     return {
         "registry":_write(tmp_path/"registry.csv",REG_FIELDS,registry),
         "repeatability":_write(tmp_path/"repeat.csv",repmod.REQUIRED_FIELDS,rep),
         "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
         "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
         "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(g_timing_season),
+        ),
     }
 
 
@@ -137,6 +218,8 @@ def test_complete_calibration_package_builds_two_summaries_and_receipt(tmp_path:
     rep,cal,receipt=build_package(
         registry_path=p["registry"],repeatability_path=p["repeatability"],
         p0_path=p["p0"],p1_path=p["p1"],g_path=p["g"],
+        g_timing_config_path=p["g_timing_config"],
+        g_timing_path=p["g_timing"],
     )
     assert receipt["status"]=="PEDICULARIS_CALIBRATION_PACKAGE_READY_FOR_TARGET_FREEZE"
     assert receipt["allowed_repeatability_p0_overlap_n_flowers"]==4
@@ -144,13 +227,19 @@ def test_complete_calibration_package_builds_two_summaries_and_receipt(tmp_path:
     assert receipt["dataset_registration"]["P0"]["role"]=="CAL_A"
     assert receipt["dataset_registration"]["P1"]["role"]=="CAL_B_P1"
     assert receipt["dataset_registration"]["G"]["role"]=="CAL_B_G"
+    assert receipt["dataset_registration"]["G_TIMING"]["role"]=="CAL_B_G_TIMING"
+    assert receipt["g_event_time_summary_status"] == (
+        "G_EVENT_TIME_DESCRIPTORS_READY_NO_WINDOW_SELECTED"
+    )
+    assert receipt["g_effect_and_timing_flower_overlap_detected"] is False
+    assert "G_TIMING" in cal["available_pilot_lanes"]
     assert rep["status"]=="CAL_A_REPEATABILITY_SUMMARY_ONLY_NO_MARGIN_DECISION"
     assert cal["status"]=="CALIBRATION_SUMMARY_ONLY_NO_THRESHOLD_DECISION"
 
 
 def test_missing_registry_flower_fails_closed(tmp_path: Path) -> None:
     p0=_p0_rows(); p1=_p1_rows(); g=_g_rows(); rep=_repeatability_rows()
-    registry=_registry_rows(p0,p1,g)
+    gt=_g_timing_rows(); registry=_registry_rows(p0,p1,g,gt)
     registry=[r for r in registry if r["flower_id"]!=p1[0]["flower_id"]]
     paths={
         "registry":_write(tmp_path/"registry.csv",REG_FIELDS,registry),
@@ -158,15 +247,22 @@ def test_missing_registry_flower_fails_closed(tmp_path: Path) -> None:
         "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
         "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
         "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(),
+        ),
     }
     with pytest.raises(ValueError,match="missing from cohort registry"):
         build_package(registry_path=paths["registry"],repeatability_path=paths["repeatability"],
-                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"])
+                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"],
+                      g_timing_config_path=paths["g_timing_config"],
+                      g_timing_path=paths["g_timing"])
 
 
 def test_wrong_calibration_role_fails_closed(tmp_path: Path) -> None:
     p0=_p0_rows(); p1=_p1_rows(); g=_g_rows(); rep=_repeatability_rows()
-    registry=_registry_rows(p0,p1,g)
+    gt=_g_timing_rows(); registry=_registry_rows(p0,p1,g,gt)
     target=next(r for r in registry if r["flower_id"]==p1[0]["flower_id"])
     target["cohort_role"]="CAL_A"; target["lane"]="MULTI"
     paths={
@@ -175,10 +271,17 @@ def test_wrong_calibration_role_fails_closed(tmp_path: Path) -> None:
         "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
         "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
         "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(),
+        ),
     }
     with pytest.raises(ValueError,match="wrong cohort_role"):
         build_package(registry_path=paths["registry"],repeatability_path=paths["repeatability"],
-                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"])
+                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"],
+                      g_timing_config_path=paths["g_timing_config"],
+                      g_timing_path=paths["g_timing"])
 
 
 def test_repeatability_flowers_must_be_subset_of_p0_cal_a(tmp_path: Path) -> None:
@@ -186,7 +289,7 @@ def test_repeatability_flowers_must_be_subset_of_p0_cal_a(tmp_path: Path) -> Non
     extra=dict(rep[0]); extra["flower_id"]="A_EXTRA"; extra["measurement_replicate"]="1"
     extra2=dict(extra); extra2["measurement_replicate"]="2"
     rep.extend([extra,extra2])
-    registry=_registry_rows(p0,p1,g)
+    gt=_g_timing_rows(); registry=_registry_rows(p0,p1,g,gt)
     registry.append({
         "record_id":"R999","population_id":"P_REX_TEST","season_id":"S1",
         "plant_id":extra["plant_id"],"flower_id":"A_EXTRA","cohort_role":"CAL_A",
@@ -198,10 +301,17 @@ def test_repeatability_flowers_must_be_subset_of_p0_cal_a(tmp_path: Path) -> Non
         "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
         "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
         "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(),
+        ),
     }
     with pytest.raises(ValueError,match="must be a subset"):
         build_package(registry_path=paths["registry"],repeatability_path=paths["repeatability"],
-                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"])
+                      p0_path=paths["p0"],p1_path=paths["p1"],g_path=paths["g"],
+                      g_timing_config_path=paths["g_timing_config"],
+                      g_timing_path=paths["g_timing"])
 
 
 def test_all_calibration_inputs_must_share_context(tmp_path: Path) -> None:
@@ -216,4 +326,55 @@ def test_all_calibration_inputs_must_share_context(tmp_path: Path) -> None:
             p0_path=p["p0"],
             p1_path=p["p1"],
             g_path=p["g"],
+            g_timing_config_path=p["g_timing_config"],
+            g_timing_path=p["g_timing"],
+        )
+
+
+def test_g_event_time_context_mismatch_fails_package(tmp_path: Path) -> None:
+    p=_paths(tmp_path,g_timing_season="S2")
+    with pytest.raises(
+        ValueError,
+        match="population and season|contexts must match exactly",
+    ):
+        build_package(
+            registry_path=p["registry"],
+            repeatability_path=p["repeatability"],
+            p0_path=p["p0"],
+            p1_path=p["p1"],
+            g_path=p["g"],
+            g_timing_config_path=p["g_timing_config"],
+            g_timing_path=p["g_timing"],
+        )
+
+
+def test_g_effect_and_event_time_cannot_reuse_a_flower(tmp_path: Path) -> None:
+    p0=_p0_rows(); p1=_p1_rows(); g=_g_rows(); rep=_repeatability_rows()
+    gt=_g_timing_rows()
+    gt[0]["flower_id"] = g[0]["flower_id"]
+    registry=_registry_rows(p0,p1,g,gt)
+    paths={
+        "registry":_write(tmp_path/"registry.csv",REG_FIELDS,registry),
+        "repeatability":_write(tmp_path/"repeat.csv",repmod.REQUIRED_FIELDS,rep),
+        "p0":_write(tmp_path/"p0.csv",p0mod.REQUIRED_FIELDS,p0),
+        "p1":_write(tmp_path/"p1.csv",p1mod.REQUIRED_FIELDS,p1),
+        "g":_write(tmp_path/"g.csv",gmod.REQUIRED_FIELDS,g),
+        "g_timing":_write(tmp_path/"g_timing.csv",list(gt[0]),gt),
+        "g_timing_config":_write_json(
+            tmp_path/"g_timing_config.json",
+            _g_timing_config(),
+        ),
+    }
+    with pytest.raises(
+        ValueError,
+        match="flower_id must be globally unique|flower reuse",
+    ):
+        build_package(
+            registry_path=paths["registry"],
+            repeatability_path=paths["repeatability"],
+            p0_path=paths["p0"],
+            p1_path=paths["p1"],
+            g_path=paths["g"],
+            g_timing_config_path=paths["g_timing_config"],
+            g_timing_path=paths["g_timing"],
         )
