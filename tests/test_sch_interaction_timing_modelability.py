@@ -1,9 +1,19 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from scripts.diagnose_sch_interaction_timing_modelability import (
     DEFAULT_LEDGER,
     build,
     _read,
+)
+
+
+READOUT = (
+    Path(__file__).resolve().parents[1]
+    / "data"
+    / "SCH_INTERACTION_TIMING_MODELABILITY_V1.json"
 )
 
 
@@ -68,3 +78,8 @@ def test_simultaneous_static_geometry_contains_conflict_and_nonconflict() -> Non
         "CONFLICT": 9,
         "ONE_SIDED_OR_NULL": 7,
     }
+
+
+def test_frozen_timing_readout_matches_current_canonical_ledger() -> None:
+    expected = json.loads(READOUT.read_text(encoding="utf-8"))
+    assert build(_read(DEFAULT_LEDGER)) == expected
