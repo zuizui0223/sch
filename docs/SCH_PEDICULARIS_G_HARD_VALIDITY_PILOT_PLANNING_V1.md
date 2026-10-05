@@ -116,9 +116,15 @@ At a 5% tolerance, the corresponding burden is:
 ```
 
 These distinct-plant counts apply only to the current within-plant three-arm
-design. If candidates are separated across plants or interference invalidates
-sharing a plant, recalculate the distinct-plant burden rather than treating
-58/118 candidate assignments as interchangeable with plants.
+design. The 58 or 118 candidate assignments are **not** 58 or 118 independent
+Bernoulli trials for a pooled reliability statement: the two candidates share
+the same plants and the same sham arm, so their hard-validity outcomes are
+correlated. Apply the zero-failure bound separately to each candidate at
+n=29 or n=59. Do not pool across candidates to tighten the bound.
+
+If candidates are separated across plants or interference invalidates sharing a
+plant, recalculate the distinct-plant burden rather than treating candidate
+assignments as interchangeable with plants.
 
 ## Separation from effect/selectivity planning
 
