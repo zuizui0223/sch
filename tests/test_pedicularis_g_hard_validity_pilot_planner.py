@@ -60,6 +60,11 @@ def test_planner_applies_same_prospective_hard_validity_n_to_candidates() -> Non
     assert result["current_three_arm_manifest_compatible"] is True
     assert result["minimum_distinct_plants_for_current_three_arm_manifest"] == 29
     assert result["minimum_total_flowers_for_current_three_arm_manifest"] == 87
+    assert result["first_tier_candidate_trials_independent_for_pooling"] is False
+    assert (
+        "do_not_pool_first_tier_candidate_assignments_as_independent_trials_because_candidates_share_plants_and_sham"
+        in result["claim_ceiling"]
+    )
     assert result["hard_failure_unit"].startswith(
         "paired-plant candidate application fails if any"
     )
