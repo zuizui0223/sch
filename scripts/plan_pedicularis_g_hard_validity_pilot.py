@@ -156,6 +156,20 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
         row["minimum_paired_plants_for_zero_failure_screen"]
         for row in first_tier
     )
+    first_tier_ids = sorted(row["candidate_id"] for row in first_tier)
+    current_three_arm_manifest_ids = [
+        "G_A1_FINE_MESH",
+        "G_A2_POROUS_TUBING",
+    ]
+    current_three_arm_manifest_compatible = (
+        first_tier_ids == current_three_arm_manifest_ids
+    )
+    current_distinct_plants = (
+        n if current_three_arm_manifest_compatible else None
+    )
+    current_total_flowers = (
+        n * 3 if current_three_arm_manifest_compatible else None
+    )
 
     return {
         "analysis": "pedicularis_g_hard_validity_pilot_planner_v1",
@@ -182,10 +196,17 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
                 row["candidate_id"],
             ),
         ),
-        "first_tier_candidate_ids": sorted(
-            row["candidate_id"] for row in first_tier
-        ),
+        "first_tier_candidate_ids": first_tier_ids,
         "initial_first_tier_total_paired_plant_assignments": initial_total,
+        "current_three_arm_manifest_compatible": (
+            current_three_arm_manifest_compatible
+        ),
+        "minimum_distinct_plants_for_current_three_arm_manifest": (
+            current_distinct_plants
+        ),
+        "minimum_total_flowers_for_current_three_arm_manifest": (
+            current_total_flowers
+        ),
         "candidate_selected": False,
         "effect_thresholds_selected": False,
         "selectivity_thresholds_selected": False,
@@ -197,6 +218,7 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
             "does_not_establish_predator_exclusion_effectiveness",
             "does_not_establish_selectivity",
             "does_not_rank_first_tier_candidates_by_expected_effect",
+            "current_three_arm_manifest_uses_one_shared_sham_plus_both_first_tier_candidates_per_plant",
             "paired_plants_can_host_multiple_candidate_flowers_only_if_assignment_and_interference_are_prospectively_controlled",
         ],
     }
