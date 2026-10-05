@@ -25,6 +25,9 @@ def _config() -> dict:
         ),
         "attack_event_definition": "visible egg or oviposition puncture",
         "ovary_swelling_definition": "prospectively defined visible swelling",
+        "pollination_sampling_elapsed_hours": [4, 8, 12],
+        "attack_swelling_sampling_elapsed_hours": [4, 8, 12],
+        "max_sampling_deviation_hours": 0.5,
         "sampling_schedule_basis_note": "fixed before event-time observations",
         "frozen_before_event_time_data": True,
         "frozen_at_utc": "2026-10-05T00:00:00Z",
@@ -45,6 +48,7 @@ def _pollen(
         "flower_id": flower_id,
         "flower_role": "POLLINATION_SENTINEL",
         "anthesis_time_hours": "0",
+        "scheduled_elapsed_hours": str(hours),
         "observation_time_hours": str(hours),
         "pollen_grains": str(pollen),
         "pollination_complete": str(complete),
@@ -67,6 +71,7 @@ def _natural(
         "flower_id": flower_id,
         "flower_role": "ATTACK_SWELL_SENTINEL",
         "anthesis_time_hours": "0",
+        "scheduled_elapsed_hours": str(hours),
         "observation_time_hours": str(hours),
         "pollen_grains": "",
         "pollination_complete": "",
@@ -238,7 +243,10 @@ def test_context_and_minimum_time_coverage_fail_closed() -> None:
             and row["observation_time_hours"] != "4"
         )
     ]
-    with pytest.raises(ValueError, match=">=2 pollination sentinel time points"):
+    with pytest.raises(
+        ValueError,
+        match="exactly one destructive flower|frozen schedule",
+    ):
         build(_config(), rows)
 
 
@@ -294,3 +302,95 @@ def test_delta_t50_remains_exploratory_and_does_not_select_barrier_hours() -> No
         "delta_t50_is_a_schedule_grid_median_descriptor_not_an_exact_individual_gap"
         in result["claim_ceiling"]
     )
+
+
+def test_sampling_grid_is_machine_frozen_and_reported() -> None:
+    result = build(_config(), _rows())
+
+    assert result["sampling_grid_prospectively_frozen"] is True
+    assert result["plant_blocking_enforced_across_time_and_roles"] is True
+    assert result["pollination_sampling_elapsed_hours"] == [4.0, 8.0, 12.0]
+    assert result["attack_swelling_sampling_elapsed_hours"] == [4.0, 8.0, 12.0]
+    assert result["max_sampling_deviation_hours"] == pytest.approx(0.5)
+    assert [
+        row["elapsed_hours"] for row in result["pollination_time_profiles"]
+    ] == [4.0, 8.0, 12.0]
+    assert [
+        row["elapsed_hours"] for row in result["attack_swelling_time_profiles"]
+    ] == [4.0, 8.0, 12.0]
+
+
+def test_unregistered_schedule_slot_fails_closed() -> None:
+    rows = _rows()
+    row = next(
+        row for row in rows
+        if row["flower_id"] == "P01_P8"
+    )
+    row["scheduled_elapsed_hours"] = "10"
+    row["observation_time_hours"] = "10"
+
+    with pytest.raises(ValueError, match="prospectively frozen"):
+        build(_config(), rows)
+
+
+def test_sampling_deviation_beyond_frozen_maximum_fails_closed() -> None:
+    rows = _rows()
+    row = next(
+        row for row in rows
+        if row["flower_id"] == "P01_P4"
+    )
+    row["observation_time_hours"] = "5"
+
+    with pytest.raises(ValueError, match="sampling deviation"):
+        build(_config(), rows)
+
+
+def test_each_plant_must_cover_every_pollination_schedule_slot() -> None:
+    rows = [
+        row for row in _rows()
+        if row["flower_id"] != "P02_P8"
+    ]
+
+    with pytest.raises(ValueError, match="exactly one destructive flower"):
+        build(_config(), rows)
+
+
+def test_each_natural_sentinel_must_cover_full_frozen_schedule() -> None:
+    rows = [
+        row for row in _rows()
+        if not (
+            row["flower_id"] == "P01_N"
+            and row["scheduled_elapsed_hours"] == "8"
+        )
+    ]
+
+    with pytest.raises(ValueError, match="exactly the prospectively frozen"):
+        build(_config(), rows)
+
+
+def test_pollination_and_natural_lanes_must_share_plant_blocks() -> None:
+    rows = _rows()
+    for row in rows:
+        if row["flower_id"] == "P02_N":
+            row["plant_id"] = "P03"
+
+    with pytest.raises(ValueError, match="same plant set"):
+        build(_config(), rows)
+
+
+def test_actual_observation_time_is_separate_from_nominal_grid() -> None:
+    rows = _rows()
+    row = next(
+        row for row in rows
+        if row["flower_id"] == "P01_P8"
+    )
+    row["observation_time_hours"] = "8.25"
+
+    result = build(_config(), rows)
+    slot = next(
+        profile
+        for profile in result["pollination_time_profiles"]
+        if profile["elapsed_hours"] == 8.0
+    )
+    assert slot["observed_elapsed_hours"]["max"] == pytest.approx(8.25)
+    assert slot["sampling_deviation_hours"]["max"] == pytest.approx(0.25)
