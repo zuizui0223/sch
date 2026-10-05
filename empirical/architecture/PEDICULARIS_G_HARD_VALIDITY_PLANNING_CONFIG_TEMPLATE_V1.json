@@ -1,0 +1,11 @@
+{
+  "schema": "SCH_PEDICULARIS_G_HARD_VALIDITY_PILOT_PLAN_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "confidence_level": "REQUIRED_BEFORE_USE",
+  "max_acceptable_per_plant_hard_failure_probability": "REQUIRED_BEFORE_USE",
+  "planning_basis_note": "REQUIRED_BEFORE_USE",
+  "frozen_before_exploratory_G_data": "REQUIRED_BEFORE_USE",
+  "frozen_at_utc": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE"
+}
