@@ -281,6 +281,32 @@ priority/precedent provenance into the hard-validity result, can retire a tested
 candidate after a hard-validity failure, and does not rank multiple hard passes
 from post hoc effect size.
 
+## First-tier field allocation manifest
+
+Before collecting V4 outcomes, define the actual flowers used for the two
+first-tier candidates with:
+
+```text
+empirical/architecture/PEDICULARIS_G_FIRST_TIER_PILOT_PLANTS_TEMPLATE_V1.csv
+scripts/build_pedicularis_g_first_tier_pilot_manifest.py
+```
+
+For every input plant the builder creates exactly three allocation rows:
+
+```text
+EXPOSED_SHAM
+G_A1_FINE_MESH
+G_A2_POROUS_TUBING
+```
+
+Each arm must use a distinct flower ID, and flower IDs cannot be reused across
+plants. The builder uses the supplied plant count; it does not choose a pilot
+sample size.
+
+The output is an allocation manifest, not fabricated V4 measurements. Timing,
+pollination, attack, seed and contamination fields are collected in the field
+and only then passed to the candidate-linked hard-validity screen.
+
 ## Stage-G pilot design
 
 Within the same focal population and season, randomize flowers within plants to:
