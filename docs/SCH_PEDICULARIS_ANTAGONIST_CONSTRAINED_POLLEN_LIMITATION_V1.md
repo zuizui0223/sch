@@ -8,9 +8,13 @@ pre-dispersal seed predators.
 
 A stronger biological consequence is now testable:
 
-> **Do seed predators constrain floral exsertion below the state favoured by
-> pollination, thereby contributing to the maintenance of pollen limitation in
+> **Do seed predators shift the natural-pollination reproductive optimum toward
+> lower exsertion, away from trait states with greater pollen receipt in
 > Pedicularis rex?**
+
+That contemporary state shift is directly testable. Whether it contributes to
+the observed pollen limitation is a stricter question and is not implied by the
+state-optimum comparison alone.
 
 This is related to, but not yet an example of, the
 **antagonist-induced adaptive pollen limitation** mechanism formalized by Fitch
@@ -146,12 +150,15 @@ without redefining its primary SCH estimands.
 The strongest directional prediction is:
 
 ```text
-z_P* = optimum under natural pollination + predator exclusion
-z_C* = optimum under natural pollination + predator exposure
+z_P* = state-specific reproductive optimum under natural pollination + predator exclusion
+z_C* = state-specific reproductive optimum under natural pollination + predator exposure
 
-antagonist-constrained-pollination prediction:
+antagonist-shift prediction:
 
 z_P* > z_C*.
+
+Here z_P* is a predator-free reproductive-state optimum. It is not automatically
+the pure optimum of the pollination function.
 ```
 
 This should not be described as predator removal directly increasing pollen
@@ -163,7 +170,7 @@ Instead the causal chain is:
 ```text
 predator exposure
 -> changes the reproductive fitness surface over randomized z
--> lowers the favoured exsertion state
+-> lowers the state-specific reproductive optimum
 
 and independently
 
@@ -171,9 +178,12 @@ randomized higher z
 -> increases pollen receipt / initial seed set.
 ```
 
-The biological consequence is that the exsertion state favoured in the absence
-of seed predators should provide more pollination service than the lower state
-favoured when predators are present.
+The directly testable biological consequence is that predator exposure moves
+the reproductive optimum toward a region of z with lower pollen receipt. If
+higher z also increases initial seed set, the same shift carries a stronger
+pre-predation reproductive cost. Neither result by itself identifies a pure
+pollinator optimum or proves that antagonists maintain population-level pollen
+limitation.
 
 ## Natural phenotype alignment
 
@@ -185,7 +195,8 @@ is realized natural/sham exsertion closer to z_C* than to z_P*?
 ```
 
 If so, the contemporary phenotype is consistent with the combined
-mutualist-antagonist optimum rather than the predator-free pollination optimum.
+mutualist-antagonist optimum rather than the predator-free natural-pollination
+reproductive-state optimum.
 
 This is supporting evidence only. A one-season alignment does not demonstrate
 historical evolutionary adaptation or genetic response.
@@ -214,7 +225,7 @@ separate chemical/phenological/reward assay.
 
 ## Falsifiers
 
-The antagonist-constrained pollen-limitation hypothesis is weakened or rejected
+The antagonist-induced downward-state-shift hypothesis is weakened or rejected
 for the tested context if:
 
 ```text
@@ -241,7 +252,9 @@ Current evidence supports:
 SHARED_POLLINATOR_ANTAGONIST_TRACKING              RECOVERED
 POLLEN_LIMITATION_STATE                            RECOVERED
 POLLINATION_SUCCESS_ANTAGONIST_RISK_COUPLING       RECOVERED_OBSERVATIONALLY
-ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION           CAUSAL_HYPOTHESIS
+ANTAGONIST_SHIFT_AWAY_FROM_HIGH_POLLEN_STATE      CAUSAL_HYPOTHESIS
+ANTAGONIST_CONTRIBUTION_TO_POLLEN_LIMITATION       NOT IDENTIFIED
+PURE_POLLINATOR_OPTIMUM                            NOT IDENTIFIED
 ADAPTIVE_POLLEN_LIMITATION                         NOT IDENTIFIED
 PREDICTIVE_SEED_PREDATOR_CUE                       NOT IDENTIFIED
 POLLEN_ODOR_AS_CAUSAL_CUE                          NOT IDENTIFIED
@@ -249,5 +262,6 @@ POLLEN_ODOR_AS_CAUSAL_CUE                          NOT IDENTIFIED
 
 The value of this hypothesis is that it converts the Pedicularis full surface
 from a generic demonstration of compromise into a direct ecological question:
-whether enemy-mediated selection can keep a pollinator-dependent flower below
-its pollination-favoured trait state.
+whether enemy-mediated selection moves the realized reproductive optimum away
+from trait states that deliver greater pollination performance, while keeping
+the stronger pollen-limitation and pure-function claims explicitly unresolved.
