@@ -73,6 +73,39 @@ Consequently the pilot does **not** pretend to estimate an exact individual
 `Delta_T`. It estimates population-level event timing on the same
 population/season and sampling grid.
 
+### The sampling grid is part of the prospective design
+
+The clock grid must be frozen numerically before event-time observations. The
+config therefore records separate elapsed-hour schedules for destructive
+pollination sentinels and repeated attack/swelling sentinels, plus a maximum
+allowed deviation between the scheduled and actual observation time.
+
+The raw table stores both:
+
+```text
+scheduled_elapsed_hours
+observation_time_hours
+```
+
+so a nominal 8-h slot remains the 8-h design stratum even when field access
+occurs slightly early or late. The analyzer reports the actual elapsed-time and
+schedule-deviation distributions for every slot and rejects observations outside
+the prospectively frozen deviation allowance.
+
+To keep the median crossing a plant-level ecological comparison rather than a
+flower-count artefact, the current pilot also requires:
+
+```text
+each plant -> exactly one destructive pollination sentinel at every frozen pollination time
+each plant -> exactly one attack/swelling sentinel followed at every frozen natural-history time
+pollination and attack/swelling lanes -> identical plant set.
+```
+
+The script does not choose the number of plants or the clock times. It only
+enforces the supplied prospective design. Missing a scheduled slot is therefore
+a design deviation, not permission to rebuild the grid after seeing the event
+trajectory.
+
 ## Registered exploratory descriptor: Delta_T50
 
 The threshold-free summarizer brackets two median crossings on the
