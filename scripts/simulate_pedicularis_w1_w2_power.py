@@ -887,6 +887,11 @@ def simulate_power(
         ],
         "target_truth_world": frozen["target_truth_world"],
         "generating_truth_descriptor": frozen["truth_descriptor"],
+        "powered_design": {
+            "nominal_z_levels": list(frozen["generating_model"]["z_levels"]),
+            "realized_z_sd": frozen["generating_model"]["realized_z_sd"],
+            "field_design": frozen["field_design"],
+        },
         "candidate_results": candidate_results,
         "minimum_plants_meeting_both_targets": (
             min(eligible) if eligible else None
