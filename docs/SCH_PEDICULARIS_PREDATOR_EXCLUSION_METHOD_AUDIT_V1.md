@@ -299,9 +299,13 @@ G_A1_FINE_MESH
 G_A2_POROUS_TUBING
 ```
 
-Each arm must use a distinct flower ID, and flower IDs cannot be reused across
-plants. The builder uses the supplied plant count; it does not choose a pilot
-sample size.
+Enter three treatment-blind flower IDs per plant (`flower_id_1..3`) before
+allocation. Flower IDs cannot be reused within or across plants. Supply a
+precommitted neutral `--allocation-seed`; the builder uses SHA-256 ranking to
+assign exactly one flower per plant to each of the three arms. The same
+seed/input reproduces the same allocation, the seed and its SHA-256 digest are
+written to the receipt, and the supplied plant count is used unchanged. Do not
+rename or replace flower IDs after seeing their assigned arm.
 
 The output is an allocation manifest, not fabricated V4 measurements. Timing,
 pollination, attack, seed and contamination fields are collected in the field
