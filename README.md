@@ -431,6 +431,11 @@ The six predeclared empirical outcome worlds (W0-W5) are machine-readable in
 `PEDICULARIS_EMPIRICAL_OUTCOME_WORLDS_V1.csv` and classified with
 `classify_pedicularis_empirical_outcome.py`, so null and partial outcomes have
 their own biological interpretations rather than being post-hoc relabelled.
+The close-precedent novelty audit is frozen in
+`PEDICULARIS_EMPIRICAL_NOVELTY_MATRIX_V1.csv`: existing studies already cover
+conflicting floral selection and factorial consumer manipulation, so novelty is
+restricted to randomized multi-level shared-z surfaces plus state-specific
+optimum displacement.
 
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
