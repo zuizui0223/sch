@@ -18,6 +18,7 @@ from scripts.pedicularis_config_freeze import FREEZE_STATUS
 
 SCHEMA = "PEDICULARIS_W1_W2_POWER_CONFIG_V1"
 FROZEN_STATUS = "PEDICULARIS_W1_W2_POWER_INPUTS_PROSPECTIVELY_FROZEN"
+TEST_STATUS = "SYNTHETIC_TEST_ONLY"
 POSITIVE_SURFACE = "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
 STATES = ("P0G0", "P1G0", "P0G1", "P1G1")
 STATE_TREATMENTS = {
@@ -98,10 +99,123 @@ def _linear_model(
     }
 
 
+def _surface_coefficients(surface: dict[str, float]) -> tuple[float, float, float]:
+    optimum = float(surface["optimum"])
+    curvature = float(surface["curvature"])
+    peak = float(surface["peak"])
+    return (
+        peak - curvature * optimum * optimum,
+        2.0 * curvature * optimum,
+        -curvature,
+    )
+
+
+def _gradient(coefficients: tuple[float, float, float], z: float) -> float:
+    return coefficients[1] + 2.0 * coefficients[2] * z
+
+
+def _subtract_coefficients(
+    left: tuple[float, float, float],
+    right: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    return tuple(left[i] - right[i] for i in range(3))  # type: ignore[return-value]
+
+
+def _truth_gate_descriptor(
+    model: dict,
+    surface_config: dict,
+    target_truth_world: str,
+) -> dict:
+    surfaces = model["state_fitness_surfaces"]
+    sch = surface_config["sch_surface"]
+    z_values = [float(value) for value in model["z_levels"]]
+    z_min, z_max = min(z_values), max(z_values)
+
+    z_p = float(surfaces["P1G0"]["optimum"])
+    z_g = float(surfaces["P0G1"]["optimum"])
+    z_c = float(surfaces["P1G1"]["optimum"])
+
+    coeffs = {
+        state: _surface_coefficients(surfaces[state])
+        for state in STATES
+    }
+    pollinator_component = _subtract_coefficients(
+        coeffs["P1G0"], coeffs["P0G0"]
+    )
+    antagonist_component = _subtract_coefficients(
+        coeffs["P1G1"], coeffs["P1G0"]
+    )
+    pollinator_gradient = _gradient(pollinator_component, z_c)
+    antagonist_gradient = _gradient(antagonist_component, z_c)
+
+    min_sep = float(sch["min_optimum_separation"])
+    min_shift = float(sch["min_optimum_shift"])
+    min_grad = float(sch["min_abs_component_gradient"])
+
+    checks = {
+        "combined_optimum_inside_sampled_range": z_min < z_c < z_max,
+        "state_optimum_separation_success_side": (z_p - z_g) >= min_sep,
+        "remove_antagonist_shift_success_side": (z_p - z_c) >= min_shift,
+        "remove_pollinator_shift_success_side": (z_g - z_c) <= -min_shift,
+        "pollinator_component_gradient_success_side": (
+            pollinator_gradient >= min_grad
+        ),
+        "antagonist_component_gradient_success_side": (
+            antagonist_gradient <= -min_grad
+        ),
+    }
+    if not all(checks.values()):
+        failed = [name for name, passed in checks.items() if not passed]
+        raise ValueError(
+            "generating surface is not on the preregistered primary-success side: "
+            + ", ".join(failed)
+        )
+
+    pollen = model["pollen_state_models"]
+    pollen_slopes = [
+        float(pollen[state]["z_slope"])
+        for state in ("P1G0", "P1G1")
+    ]
+    if not all(value > 0 for value in pollen_slopes):
+        raise ValueError(
+            "W1/W2 truth requires positive z->pollen slopes in both natural-pollination G states"
+        )
+
+    seed = model["initial_seed_state_models"]
+    seed_slopes = [
+        float(seed[state]["z_slope_fraction"])
+        for state in ("P1G0", "P1G1")
+    ]
+    if target_truth_world == "W1" and not all(value > 0 for value in seed_slopes):
+        raise ValueError(
+            "W1 truth requires positive z->initial-seed slopes in both natural-pollination G states"
+        )
+    if target_truth_world == "W2" and all(value > 0 for value in seed_slopes):
+        raise ValueError(
+            "W2 truth requires the stronger initial-seed tier to be absent in at least one G state"
+        )
+
+    return {
+        "target_truth_world": target_truth_world,
+        "z_predator_free_state": z_p,
+        "z_antagonist_only_state": z_g,
+        "z_predator_exposed_state": z_c,
+        "true_state_optimum_separation": z_p - z_g,
+        "true_shift_remove_antagonist": z_p - z_c,
+        "true_shift_remove_pollinator": z_g - z_c,
+        "true_pollinator_component_gradient_at_combined": pollinator_gradient,
+        "true_antagonist_component_gradient_at_combined": antagonist_gradient,
+        "true_pollen_slopes_P1G0_P1G1": pollen_slopes,
+        "true_initial_seed_slopes_P1G0_P1G1": seed_slopes,
+        "primary_truth_checks": checks,
+    }
+
+
 def _validate_config(config: dict) -> dict:
     if config.get("schema") != SCHEMA:
         raise ValueError("W1/W2 power config schema mismatch")
-    if config.get("status") != FROZEN_STATUS:
+    status = config.get("status")
+    if status not in {FROZEN_STATUS, TEST_STATUS}:
         raise ValueError("W1/W2 power inputs are not prospectively frozen")
 
     provenance = config.get("planning_provenance")
@@ -119,7 +233,10 @@ def _validate_config(config: dict) -> dict:
         provenance.get("basis_document"),
         "planning_provenance.basis_document",
     )
-    if provenance.get("frozen_before_full_surface_data") is not True:
+    if (
+        status == FROZEN_STATUS
+        and provenance.get("frozen_before_full_surface_data") is not True
+    ):
         raise ValueError(
             "power inputs must be frozen before full-surface outcome data"
         )
@@ -141,6 +258,8 @@ def _validate_config(config: dict) -> dict:
         )
 
     reps = _positive_int(config.get("simulation_reps"), "simulation_reps")
+    if status == FROZEN_STATUS and reps < 200:
+        raise ValueError("prospective W1/W2 power simulation requires >=200 reps")
     target_primary = _probability(
         config.get("target_primary_surface_power"),
         "target_primary_surface_power",
@@ -149,6 +268,12 @@ def _validate_config(config: dict) -> dict:
         config.get("target_headline_w1_or_w2_power"),
         "target_headline_w1_or_w2_power",
     )
+    target_truth_world = _nonempty_text(
+        config.get("target_truth_world"),
+        "target_truth_world",
+    )
+    if target_truth_world not in {"W1", "W2"}:
+        raise ValueError("target_truth_world must be W1 or W2")
 
     model = config.get("generating_model")
     if not isinstance(model, dict):
@@ -190,6 +315,10 @@ def _validate_config(config: dict) -> dict:
         model.get("initial_seed_residual_sd_fraction"),
         "generating_model.initial_seed_residual_sd_fraction",
     )
+    realized_z_sd = _number(
+        model.get("realized_z_sd"),
+        "generating_model.realized_z_sd",
+    )
     for label, value in (
         ("fitness_between_plant_sd", fitness_between),
         ("fitness_residual_sd", fitness_residual),
@@ -197,6 +326,7 @@ def _validate_config(config: dict) -> dict:
         ("pollen_residual_sd", pollen_residual),
         ("initial_seed_between_plant_sd_fraction", seed_between),
         ("initial_seed_residual_sd_fraction", seed_residual),
+        ("realized_z_sd", realized_z_sd),
     ):
         if value < 0:
             raise ValueError(f"generating_model.{label} must be >=0")
@@ -308,6 +438,53 @@ def _validate_config(config: dict) -> dict:
     ) < 200:
         raise ValueError("secondary_diagnostic_config.bootstrap_reps must be >=200")
 
+    for field in (
+        "min_optimum_separation",
+        "min_optimum_shift",
+        "min_abs_component_gradient",
+        "min_interior_bootstrap_fraction",
+        "min_valid_bootstrap_fraction",
+    ):
+        _number(
+            sch.get(field),
+            f"production_surface_config.sch_surface.{field}",
+        )
+    for field in ("max_water_depth_range", "max_mechanical_damage_rate"):
+        value = _number(
+            checks.get(field),
+            f"production_surface_config.system_checks.{field}",
+        )
+        if value < 0:
+            raise ValueError(
+                f"production_surface_config.system_checks.{field} must be >=0"
+            )
+
+    normalized_model = {
+        "z_levels": z_levels,
+        "ovule_count": ovules,
+        "fitness_between_plant_sd": fitness_between,
+        "fitness_residual_sd": fitness_residual,
+        "state_fitness_surfaces": surfaces,
+        "pollen_between_plant_sd": pollen_between,
+        "pollen_residual_sd": pollen_residual,
+        "pollen_state_models": pollen_models,
+        "initial_seed_between_plant_sd_fraction": seed_between,
+        "initial_seed_residual_sd_fraction": seed_residual,
+        "initial_seed_state_models": seed_models,
+        "early_attack_rate_excluded": attack_excluded,
+        "early_attack_rate_exposed": attack_exposed,
+        "water_depth": water_depth,
+        "realized_z_sd": realized_z_sd,
+        "minimum_expected_initial_minus_final_seed_count": (
+            min_expected_seed_margin
+        ),
+    }
+    truth_descriptor = _truth_gate_descriptor(
+        normalized_model,
+        surface_config,
+        target_truth_world,
+    )
+
     return {
         "planning_provenance": {
             **provenance,
@@ -319,25 +496,9 @@ def _validate_config(config: dict) -> dict:
         "simulation_seed": int(config.get("simulation_seed", 20261005)),
         "target_primary_surface_power": target_primary,
         "target_headline_w1_or_w2_power": target_headline,
-        "generating_model": {
-            "z_levels": z_levels,
-            "ovule_count": ovules,
-            "fitness_between_plant_sd": fitness_between,
-            "fitness_residual_sd": fitness_residual,
-            "state_fitness_surfaces": surfaces,
-            "pollen_between_plant_sd": pollen_between,
-            "pollen_residual_sd": pollen_residual,
-            "pollen_state_models": pollen_models,
-            "initial_seed_between_plant_sd_fraction": seed_between,
-            "initial_seed_residual_sd_fraction": seed_residual,
-            "initial_seed_state_models": seed_models,
-            "early_attack_rate_excluded": attack_excluded,
-            "early_attack_rate_exposed": attack_exposed,
-            "water_depth": water_depth,
-            "minimum_expected_initial_minus_final_seed_count": (
-                min_expected_seed_margin
-            ),
-        },
+        "target_truth_world": target_truth_world,
+        "truth_descriptor": truth_descriptor,
+        "generating_model": normalized_model,
         "production_surface_config": surface_config,
         "secondary_diagnostic_config": secondary_config,
     }
@@ -412,9 +573,13 @@ def generate_rows(
             float(model["initial_seed_between_plant_sd_fraction"]),
         )
 
-        for z_index, z in enumerate(z_levels):
+        for z_index, nominal_z in enumerate(z_levels):
             for state in STATES:
                 pollination, predator = STATE_TREATMENTS[state]
+                z = nominal_z + rng.gauss(
+                    0.0,
+                    float(model["realized_z_sd"]),
+                )
 
                 final_value = (
                     _state_mean(surfaces[state], z)
@@ -559,6 +724,7 @@ def simulate_power(
         initial_seed_success = 0
         headline_success = 0
         w1_success = 0
+        truth_world_success = 0
         analysis_failures = 0
         world_counts = {f"W{i}": 0 for i in range(6)}
         clip_sums = {
@@ -632,6 +798,9 @@ def simulate_power(
                 world_counts[world_id] += 1
                 headline_success += int(world_id in {"W1", "W2"})
                 w1_success += int(world_id == "W1")
+                truth_world_success += int(
+                    world_id == frozen["target_truth_world"]
+                )
             except (ValueError, KeyError, TypeError, ZeroDivisionError):
                 analysis_failures += 1
 
@@ -658,6 +827,7 @@ def simulate_power(
                 ),
                 "headline_W1_or_W2_power": headline_success / reps,
                 "strongest_W1_power": w1_success / reps,
+                "target_truth_world_power": truth_world_success / reps,
                 "world_probabilities": {
                     world: count / reps
                     for world, count in world_counts.items()
@@ -694,9 +864,8 @@ def simulate_power(
         "target_headline_w1_or_w2_power": frozen[
             "target_headline_w1_or_w2_power"
         ],
-        "generating_truth_descriptor": _truth_descriptor(
-            frozen["generating_model"]
-        ),
+        "target_truth_world": frozen["target_truth_world"],
+        "generating_truth_descriptor": frozen["truth_descriptor"],
         "candidate_results": candidate_results,
         "minimum_complete_block_plants_meeting_both_targets": (
             min(eligible) if eligible else None
