@@ -57,6 +57,9 @@ def test_planner_applies_same_prospective_hard_validity_n_to_candidates() -> Non
         "G_A2_POROUS_TUBING",
     ]
     assert result["initial_first_tier_total_paired_plant_assignments"] == 58
+    assert result["current_three_arm_manifest_compatible"] is True
+    assert result["minimum_distinct_plants_for_current_three_arm_manifest"] == 29
+    assert result["minimum_total_flowers_for_current_three_arm_manifest"] == 87
     assert result["hard_failure_unit"].startswith(
         "paired-plant candidate application fails if any"
     )
@@ -70,6 +73,8 @@ def test_stricter_five_percent_failure_tolerance_requires_59_per_candidate() -> 
     result = build(_config(0.05), _read_candidates(DEFAULT_CANDIDATES))
     assert result["minimum_paired_plants_per_tested_candidate"] == 59
     assert result["initial_first_tier_total_paired_plant_assignments"] == 118
+    assert result["minimum_distinct_plants_for_current_three_arm_manifest"] == 59
+    assert result["minimum_total_flowers_for_current_three_arm_manifest"] == 177
 
 
 def test_planner_does_not_select_candidate_or_effect_thresholds() -> None:
