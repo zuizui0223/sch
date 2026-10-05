@@ -72,9 +72,9 @@ shorter barrier-placement interval.
 
 ### Antagonist pressure is real but highly context dependent
 
-The same focal programme reports seed predation spanning roughly 1.36-27.42%
-among sampled populations, with strong geographic variation also recovered in
-the 2016 selection study.
+Sun, Armbruster & Huang (2016) report population-level seed predation spanning
+0.80-27.42% across 12 populations, with explicit examples from low- and
+high-predation populations.
 
 This supports two biological points:
 
@@ -141,7 +141,7 @@ but it recovers zero numeric F0 timing values.
 
 Likewise, the hard-validity pilot's
 `max_acceptable_per_plant_hard_failure_probability` remains a prospective
-method-reliability choice with its own rationale. The natural 1.36-27.42%
+method-reliability choice with its own rationale. The natural 0.80-27.42%
 predation range is not an eligible substitute.
 
 ## Ecological interpretation
