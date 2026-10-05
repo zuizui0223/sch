@@ -83,3 +83,35 @@ def test_primary_evidence_cannot_be_silently_promoted_to_failure_tolerance() -> 
 
     with pytest.raises(ValueError, match="hard-failure tolerance"):
         build(rows)
+
+
+def test_threshold_basis_keeps_both_hour_bounds_in_focal_method_pilot() -> None:
+    ledger_path = (
+        Path(__file__).resolve().parents[1]
+        / "empirical"
+        / "architecture"
+        / "PEDICULARIS_THRESHOLD_BASIS_LEDGER_V1.csv"
+    )
+    rows = _rows(ledger_path)
+    timing = {
+        row["gate_path"]: row
+        for row in rows
+        if row["lane"] == "G"
+        and row["gate_kind"] == "METHOD_TIMING_BOUND"
+    }
+
+    assert set(timing) == {
+        "method_gate.min_hours_after_anthesis_before_barrier",
+        "method_gate.max_hours_after_anthesis_before_barrier",
+    }
+    assert {
+        row["basis_status"] for row in timing.values()
+    } == {"NEEDS_METHOD_PILOT"}
+    assert {
+        row["basis_route"] for row in timing.values()
+    } == {"ORDINAL_PRIMARY_EVIDENCE_PLUS_FOCAL_EVENT_TIME_PILOT"}
+    assert all(
+        "SCH_PEDICULARIS_G_TIMING_PRIMARY_EVIDENCE_V1.md"
+        in row["basis_source"]
+        for row in timing.values()
+    )
