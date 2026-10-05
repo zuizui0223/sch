@@ -201,6 +201,46 @@ These negative outcomes do not erase the broader SCH conflict result. They
 show that observed opposing selection does not translate into the proposed
 enemy-induced pollination-performance cost in that context.
 
+## Predeclared outcome worlds
+
+The empirical interpretation is frozen before focal outcomes. Use
+`PEDICULARIS_EMPIRICAL_OUTCOME_WORLDS_V1.csv` rather than choosing a story
+after the surface is seen.
+
+```text
+W0  primary causal-compromise surface not recovered
+    -> focal displacement story is not opened
+
+W1  antagonist displacement + positive pollen slope + positive initial-seed slope
+    -> enemy-induced optimum displacement with pollination and pre-predation
+       reproductive cost
+
+W2  antagonist displacement + positive pollen slope, but no positive initial-seed slope
+    -> enemy-induced optimum displacement with pollen-receipt cost only
+
+W3  antagonist displacement, but no positive pollen slope
+    -> enemy shifts the reproductive optimum through some other pathway;
+       do not call it a pollination-performance constraint
+
+W4  positive pollen slope, but no antagonist optimum displacement
+    -> exsertion benefits pollination, but enemies do not measurably displace
+       the optimum in this context
+
+W5  neither predicted displacement nor positive pollen slope
+    -> the focal enemy-displacement mechanism is not recovered
+```
+
+These worlds are deliberately asymmetric. Initial seed set strengthens W1 over
+W2, but cannot rescue W3-W5. None of the worlds automatically identifies a pure
+pollinator optimum, historical adaptation, or antagonist maintenance of pollen
+limitation.
+
+Machine classifier:
+
+```text
+scripts/classify_pedicularis_empirical_outcome.py
+```
+
 ## Claim ladder
 
 ```text
