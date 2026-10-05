@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from scripts import analyze_pedicularis_full_surface as full_surface
 from scripts.analyze_pedicularis_antagonist_constrained_pollination import build
 
 
@@ -46,7 +47,8 @@ def _rows() -> list[dict[str, str]]:
     return rows
 
 
-def _surface_receipt() -> dict:
+def _surface_receipt(rows: list[dict[str, str]] | None = None) -> dict:
+    bound_rows = _rows() if rows is None else rows
     return {
         "receipt_schema_version": "SCH_CAUSAL_COMPROMISE_STATE_OPTIMA_V1",
         "system_wrapper_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2",
@@ -54,6 +56,8 @@ def _surface_receipt() -> dict:
         "population_id": "P_REX_TEST",
         "season_id": "S1",
         "status": "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE",
+        "surface_data_sha256": full_surface.surface_data_sha256(bound_rows),
+        "surface_data_n_rows": len(bound_rows),
         "observed_estimands": {
             "z_pollinator_context": 0.8,
             "z_combined": 0.5,
@@ -191,3 +195,25 @@ def test_predator_free_state_optimum_is_not_relabelled_as_pure_pollinator_optimu
         "predator_free_state_optimum_is_not_a_pure_pollinator_optimum"
         in result["claim_ceiling"]
     )
+
+
+def test_secondary_diagnostic_requires_same_raw_surface_as_positive_receipt() -> None:
+    original = _rows()
+    receipt = _surface_receipt(original)
+    changed = deepcopy(original)
+    changed[0]["pollen_grains"] = str(float(changed[0]["pollen_grains"]) + 1.0)
+
+    try:
+        build(changed, receipt, _config())
+    except ValueError as exc:
+        assert "same data used for the positive surface receipt" in str(exc)
+    else:
+        raise AssertionError("mismatched raw surface should fail closed")
+
+
+def test_secondary_receipt_records_surface_fingerprint_match() -> None:
+    rows = _rows()
+    result = build(rows, _surface_receipt(rows), _config())
+
+    assert result["surface_data_fingerprint_match"] is True
+    assert result["surface_data_sha256"] == full_surface.surface_data_sha256(rows)
