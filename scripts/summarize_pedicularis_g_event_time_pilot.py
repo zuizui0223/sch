@@ -114,6 +114,97 @@ def _summary(values: list[float]) -> dict[str, float | int | None]:
     }
 
 
+def _stable_half_crossing_interval(
+    profiles: list[dict[str, object]],
+    rate_field: str,
+) -> dict[str, float | bool | None]:
+    """Bracket the stable 50% crossing on the prospectively sampled time grid.
+
+    This is a descriptive schedule-grid interval, not an exact latent event-time
+    estimate. A crossing is accepted only when the observed rate is >=0.5 at
+    that time and at every later sampled time, so one noisy early crossing does
+    not define the median event time by itself.
+    """
+    if not profiles:
+        raise ValueError("cannot bracket a median crossing from no profiles")
+    ordered = sorted(profiles, key=lambda row: float(row["elapsed_hours"]))
+    for i, row in enumerate(ordered):
+        if (
+            float(row[rate_field]) >= 0.5
+            and all(float(later[rate_field]) >= 0.5 for later in ordered[i:])
+        ):
+            lower = 0.0 if i == 0 else float(ordered[i - 1]["elapsed_hours"])
+            return {
+                "lower_bound_hours": lower,
+                "lower_bound_open": i > 0,
+                "upper_bound_hours": float(row["elapsed_hours"]),
+                "upper_bound_closed": True,
+                "right_censored": False,
+            }
+    return {
+        "lower_bound_hours": float(ordered[-1]["elapsed_hours"]),
+        "lower_bound_open": True,
+        "upper_bound_hours": None,
+        "upper_bound_closed": False,
+        "right_censored": True,
+    }
+
+
+def _median_gap_descriptor(
+    pollination: dict[str, float | bool | None],
+    constraint: dict[str, float | bool | None],
+) -> dict[str, object]:
+    p_lower = float(pollination["lower_bound_hours"])
+    p_upper_raw = pollination["upper_bound_hours"]
+    c_lower = float(constraint["lower_bound_hours"])
+    c_upper_raw = constraint["upper_bound_hours"]
+    p_upper = float(p_upper_raw) if p_upper_raw is not None else None
+    c_upper = float(c_upper_raw) if c_upper_raw is not None else None
+
+    lower_gap = c_lower - p_upper if p_upper is not None else None
+    upper_gap = c_upper - p_lower if c_upper is not None else None
+
+    positive = (
+        p_upper is not None
+        and (
+            c_lower > p_upper
+            or (
+                c_lower == p_upper
+                and bool(constraint["lower_bound_open"])
+            )
+        )
+    )
+    negative = (
+        c_upper is not None
+        and (
+            p_lower > c_upper
+            or (
+                p_lower == c_upper
+                and bool(pollination["lower_bound_open"])
+            )
+        )
+    )
+
+    if positive:
+        state = "MEDIAN_TEMPORAL_SEPARATION_SUPPORTED_ON_SAMPLED_GRID"
+    elif negative:
+        state = "MEDIAN_TEMPORAL_ENTANGLEMENT_SUPPORTED_ON_SAMPLED_GRID"
+    else:
+        state = "MEDIAN_TEMPORAL_ORDERING_UNRESOLVED_ON_SAMPLED_GRID"
+
+    return {
+        "delta_t50_lower_bound_hours": lower_gap,
+        "delta_t50_upper_bound_hours": upper_gap,
+        "ordering_state": state,
+        "definition": (
+            "Delta_T50 = median onset of first attack-or-swelling constraint "
+            "minus median pollination-completion time, each bracketed on the "
+            "prospectively sampled time grid"
+        ),
+        "exact_individual_delta_t_estimated": False,
+    }
+
+
 def _validate_config(config: dict) -> tuple[str, str]:
     if config.get("schema") != SCHEMA:
         raise ValueError("event-time pilot schema mismatch")
@@ -389,6 +480,16 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
                 "ovary_not_swollen_rate": mean(
                     1 - int(row["ovary_swollen"]) for row in group
                 ),
+                "constraint_free_rate": mean(
+                    int(row["attack_present"]) == 0
+                    and int(row["ovary_swollen"]) == 0
+                    for row in group
+                ),
+                "constraint_present_rate": mean(
+                    int(row["attack_present"]) == 1
+                    or int(row["ovary_swollen"]) == 1
+                    for row in group
+                ),
             }
         )
 
@@ -446,10 +547,25 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
                 "pollination_complete_rate": p["pollination_complete_rate"],
                 "attack_free_rate": n["attack_free_rate"],
                 "ovary_not_swollen_rate": n["ovary_not_swollen_rate"],
+                "constraint_free_rate": n["constraint_free_rate"],
+                "constraint_present_rate": n["constraint_present_rate"],
                 "n_pollination_sentinels": p["n_flowers"],
                 "n_natural_history_flowers": n["n_flowers"],
             }
         )
+
+    pollination_median_interval = _stable_half_crossing_interval(
+        pollen_profiles,
+        "pollination_complete_rate",
+    )
+    constraint_median_interval = _stable_half_crossing_interval(
+        natural_profiles,
+        "constraint_present_rate",
+    )
+    median_gap = _median_gap_descriptor(
+        pollination_median_interval,
+        constraint_median_interval,
+    )
 
     return {
         "analysis": "pedicularis_g_event_time_pilot_v1",
@@ -480,19 +596,27 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
             else None
         ),
         "event_intervals_by_flower": event_intervals,
+        "median_pollination_completion_interval_hours": (
+            pollination_median_interval
+        ),
+        "median_constraint_onset_interval_hours": constraint_median_interval,
+        "median_temporal_separability_descriptor": median_gap,
         "timing_window_selected": False,
         "temporal_separability_inferred": False,
         "status": "G_EVENT_TIME_DESCRIPTORS_READY_NO_WINDOW_SELECTED",
         "interpretation": (
             "The pilot describes when prospectively defined pollination "
             "completion is observed and interval-censored onset of predator "
-            "attack or ovary swelling. Observation times are not automatically "
-            "the biological lower/upper timing gates."
+            "attack or ovary swelling. It also brackets the median pollination "
+            "completion and median first-constraint onset on the sampled time grid "
+            "and reports their interval difference (Delta_T50) without converting "
+            "that exploratory descriptor into a barrier timing gate."
         ),
         "claim_ceiling": [
             "natural_history_event_time_calibration_only",
             "pollination_completion_hours_are_cross_sectional_observation_times",
             "attack_and_swelling_onsets_are_interval_censored",
+            "delta_t50_is_a_schedule_grid_median_descriptor_not_an_exact_individual_gap",
             "does_not_use_barrier_application_time_as_natural_window",
             "does_not_select_minimum_or_maximum_barrier_hour",
             "does_not_validate_G",
