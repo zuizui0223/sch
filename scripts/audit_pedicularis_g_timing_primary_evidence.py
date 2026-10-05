@@ -83,7 +83,7 @@ def build(rows: list[dict[str, str]]) -> dict:
         row for row in focal
         if row["evidence_axis"] == "NATURAL_SEED_PREDATION"
     )
-    if predation["reported_value"] != "1.36 to 27.42":
+    if predation["reported_value"] != "0.80 to 27.42":
         raise ValueError("natural P. rex predation range changed unexpectedly")
 
     oviposition = next(
@@ -108,7 +108,7 @@ def build(rows: list[dict[str, str]]) -> dict:
         "focal_pollination_mechanism_recovered": True,
         "focal_hour_scale_lower_bound_recovered": False,
         "focal_hour_scale_upper_bound_recovered": False,
-        "natural_predation_range_percent": [1.36, 27.42],
+        "natural_predation_range_percent": [0.80, 27.42],
         "natural_predation_can_set_device_hard_failure_tolerance": False,
         "congeneric_flower_longevity_can_set_focal_timing_bound": False,
         "current_timing_gate_state": "FOCAL_HOUR_SCALE_TIMING_REQUIRES_METHOD_PILOT",
