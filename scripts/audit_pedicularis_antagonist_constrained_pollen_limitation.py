@@ -100,14 +100,18 @@ def build(rows: list[dict[str, str]]) -> dict:
         "p_rex_success_risk_coupling_recovered": True,
         "success_risk_coupling_causal": False,
         "predictive_cue_identity_resolved": False,
+        "pollinator_favored_optimum_identified": False,
+        "antagonist_maintenance_of_pollen_limitation_identified": False,
         "focal_hypothesis": (
-            "seed predators constrain floral exsertion below the pollinator-favored "
-            "state, thereby contributing to maintenance of pollen limitation"
+            "seed predators may shift the realized reproductive optimum toward "
+            "lower exsertion, away from trait states with greater pollen receipt; "
+            "whether this contributes to pollen limitation remains unresolved"
         ),
         "causal_surface_predictions": [
             "predator removal shifts the reproductive optimum toward greater exsertion",
-            "the predator-removed higher-exsertion state increases pollen receipt and/or initial seed set",
-            "with predators present, the combined optimum lies below the pollinator-favored optimum",
+            "the predator-removed natural-pollination state optimum is higher than the predator-exposed state optimum",
+            "higher randomized exsertion increases pollen receipt, with initial seed set evaluated separately",
+            "do not relabel the predator-free reproductive state optimum as a pure pollinator optimum",
         ],
         "falsifiers": [
             "predator removal does not shift the exsertion optimum upward",
@@ -120,7 +124,8 @@ def build(rows: list[dict[str, str]]) -> dict:
             "pollen_limitation_and_conflicting_selection_cooccur",
             "pollen_predation_coupling_is_observational",
             "do_not_claim_pollen_is_the_predator_cue",
-            "do_not_claim_antagonists_caused_pollen_limitation",
+            "do_not_claim_antagonists_caused_or_maintained_pollen_limitation",
+            "do_not_relabel_state_specific_optimum_as_pure_pollinator_optimum",
             "do_not_claim_adaptive_pollen_limitation_without_causal_surface_and_optimum_evidence",
         ],
     }
