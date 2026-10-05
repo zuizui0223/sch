@@ -6,7 +6,16 @@ This map fixes the ecological interpretation **before** the focal field outcomes
 exist. It keeps enabling calibration results, causal state-surface results and
 optional pure-function promotion separate.
 
-Machine implementation:
+Primary W0-W5 assignment has one source of truth:
+
+```text
+empirical/architecture/PEDICULARIS_EMPIRICAL_OUTCOME_WORLDS_V1.csv
+scripts/classify_pedicularis_empirical_outcome.py
+```
+
+The optional interpretation assembler does **not** reclassify the primary
+world. It attaches the independent temporal-separability result and optional
+pure-function promotion receipt to that frozen W0-W5 result:
 
 ```text
 scripts/map_pedicularis_empirical_outcomes.py
@@ -78,6 +87,11 @@ initial seed set in both G states:
 > performance.
 
 This is the strongest registered empirical tier.
+
+## W0-W5 is the primary biological decision
+
+The predeclared world classifier is authoritative for the primary empirical
+paper. The assembler may not rename, collapse or rescue a W0-W5 assignment.
 
 ## Temporal separability is orthogonal
 
