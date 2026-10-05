@@ -149,6 +149,22 @@ def build(
             "causal-compromise surface first"
         )
 
+    receipt_fingerprint = surface_receipt.get("surface_data_sha256")
+    receipt_n_rows = surface_receipt.get("surface_data_n_rows")
+    if not isinstance(receipt_fingerprint, str) or len(receipt_fingerprint) != 64:
+        raise ValueError(
+            "surface receipt lacks canonical surface_data_sha256 provenance"
+        )
+    if receipt_n_rows != len(rows):
+        raise ValueError(
+            "secondary diagnostic row count does not match the positive surface receipt"
+        )
+    observed_fingerprint = surface.surface_data_sha256(rows)
+    if observed_fingerprint != receipt_fingerprint:
+        raise ValueError(
+            "secondary diagnostic raw rows are not the same data used for the positive surface receipt"
+        )
+
     populations = {row["population_id"] for row in rows}
     seasons = {row["season_id"] for row in rows}
     if len(populations) != 1 or len(seasons) != 1:
@@ -236,6 +252,8 @@ def build(
         "population_id": population_id,
         "season_id": season_id,
         "surface_status": surface_receipt["status"],
+        "surface_data_sha256": receipt_fingerprint,
+        "surface_data_fingerprint_match": True,
         "z_predator_free_natural_pollination_state_optimum": z_predator_free_state,
         "z_predator_exposed_natural_pollination_state_optimum": z_combined_state,
         "state_optimum_semantics": (
@@ -261,6 +279,7 @@ def build(
         "cue_identity_identified": False,
         "status": status,
         "claim_ceiling": [
+            "same_positive_surface_data_fingerprint_required",
             "contemporary_state_optimum_shift_plus_randomized_z_pollination_response",
             "predator_free_state_optimum_is_not_a_pure_pollinator_optimum",
             "does_not_show_G_directly_changes_pollen_at_fixed_z",
