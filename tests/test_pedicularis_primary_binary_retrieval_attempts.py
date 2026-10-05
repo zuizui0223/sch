@@ -3,7 +3,7 @@ from scripts.audit_pedicularis_primary_binary_retrieval_attempts import build
 
 def test_retrieval_attempt_audit_covers_all_five_primary_assets() -> None:
     result = build()
-    assert result["n_attempts"] == 14
+    assert result["n_attempts"] == 15
     assert result["n_primary_assets_with_attempts"] == 5
     assert set(result["attempt_counts_by_asset"]) == {
         "PRIMARY_JING2013_METHODS",
@@ -78,7 +78,7 @@ def test_wang_exact_pdf_url_is_known_even_though_binary_get_is_blocked() -> None
         "?attachType=PDF&id=25287"
     )
     assert result["wang1998_direct_pdf_state"] == (
-        "EXACT_URL_KNOWN_DIRECT_GET_HTTP_403"
+        "EXACT_URL_KNOWN_ALL_KNOWN_PUBLIC_ENDPOINT_VARIANTS_HTTP_403"
     )
     assert result["primary_route_search_stop"]["PRIMARY_WANG1998_PDF"].startswith(
         "STOP_URL_DISCOVERY"
@@ -105,4 +105,13 @@ def test_tang_live_host_is_concretely_suspended() -> None:
     )
     assert result["primary_route_search_stop"]["PRIMARY_TANG2011_THESIS"].startswith(
         "STOP_GLOBETHESIS_RETRIES"
+    )
+
+
+def test_wang_public_url_variant_search_is_exhausted() -> None:
+    result = build()
+    wang = result["direct_gap_asset_states"]["PRIMARY_WANG1998_PDF"]
+    assert wang["n_attempts"] == 3
+    assert wang["latest_allowed_action"].startswith(
+        "Stop public URL-variant probing"
     )
