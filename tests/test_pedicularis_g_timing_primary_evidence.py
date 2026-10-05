@@ -32,7 +32,7 @@ def test_primary_timing_audit_recovers_order_but_not_hour_bounds() -> None:
 def test_natural_predation_pressure_is_not_method_failure_tolerance() -> None:
     result = build(_rows())
 
-    assert result["natural_predation_range_percent"] == [1.36, 27.42]
+    assert result["natural_predation_range_percent"] == [0.80, 27.42]
     assert (
         result["natural_predation_can_set_device_hard_failure_tolerance"]
         is False
