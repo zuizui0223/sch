@@ -6,6 +6,7 @@ from pathlib import Path
 
 from scripts.classify_pedicularis_empirical_outcome import (
     DEFAULT_WORLDS,
+    POSITIVE_SURFACE,
     _read_worlds,
     build as classify_world,
 )
@@ -108,6 +109,10 @@ def _pure_function_state(
             "status": "NOT_EVALUATED",
             "context_stable_component_optima_identified": False,
         }
+    if surface.get("status") != POSITIVE_SURFACE:
+        raise ValueError(
+            "pure-function upgrade is not admissible after a negative primary surface"
+        )
     if pure_function.get("surface_data_sha256") != surface.get(
         "surface_data_sha256"
     ):
