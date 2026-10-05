@@ -8,6 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PLACEHOLDER = "REQUIRED_BEFORE_USE"
 DEFAULT_TEMPLATE = (
     ROOT
     / "empirical"
@@ -133,6 +134,18 @@ def _validate_allocation_rows(rows: list[dict[str, str]]) -> tuple[str, str, int
             "allocation manifest must contain exactly one population and season"
         )
     population_id, season_id = next(iter(contexts))
+    if any(
+        not value or value == PLACEHOLDER
+        for value in (population_id, season_id)
+    ):
+        raise ValueError("allocation population_id and season_id must be resolved")
+
+    plant_ids = [row["plant_id"] for row in rows]
+    if any(
+        not value or value == PLACEHOLDER
+        for value in plant_ids
+    ):
+        raise ValueError("every allocation row needs a resolved plant_id")
 
     flower_ids = [row["flower_id"] for row in rows]
     if any(not value for value in flower_ids):
