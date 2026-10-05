@@ -631,82 +631,82 @@ def generate_rows(
             raise ValueError("balanced allocator produced a duplicate cell within plant")
 
         for z_index, nominal_z, state in selected_cells:
-                pollination, predator = STATE_TREATMENTS[state]
-                cell_counts[f"Z{z_index:02d}_{state}"] += 1
-                z = nominal_z + rng.gauss(
+            pollination, predator = STATE_TREATMENTS[state]
+            cell_counts[f"Z{z_index:02d}_{state}"] += 1
+            z = nominal_z + rng.gauss(
+                0.0,
+                float(model["realized_z_sd"]),
+            )
+
+            final_value = (
+                _state_mean(surfaces[state], z)
+                + fitness_plant
+                + rng.gauss(0.0, float(model["fitness_residual_sd"]))
+            )
+            clipped_final = min(ovules, max(0.0, final_value))
+            final_clip_count += int(clipped_final != final_value)
+
+            pollen_model = pollen_models[state]
+            pollen_value = (
+                pollen_model["intercept"]
+                + pollen_model["z_slope"] * z
+                + pollen_plant
+                + rng.gauss(0.0, float(model["pollen_residual_sd"]))
+            )
+            pollen_value = max(0.0, pollen_value)
+
+            seed_model = seed_models[state]
+            initial_fraction = (
+                seed_model["intercept_fraction"]
+                + seed_model["z_slope_fraction"] * z
+                + initial_plant
+                + rng.gauss(
                     0.0,
-                    float(model["realized_z_sd"]),
+                    float(model["initial_seed_residual_sd_fraction"]),
                 )
+            )
+            clipped_fraction = min(1.0, max(0.0, initial_fraction))
+            initial_clip_count += int(clipped_fraction != initial_fraction)
+            initial_count = ovules * clipped_fraction
 
-                final_value = (
-                    _state_mean(surfaces[state], z)
-                    + fitness_plant
-                    + rng.gauss(0.0, float(model["fitness_residual_sd"]))
-                )
-                clipped_final = min(ovules, max(0.0, final_value))
-                final_clip_count += int(clipped_final != final_value)
+            if initial_count < clipped_final:
+                initial_count = clipped_final
+                initial_floor_count += 1
 
-                pollen_model = pollen_models[state]
-                pollen_value = (
-                    pollen_model["intercept"]
-                    + pollen_model["z_slope"] * z
-                    + pollen_plant
-                    + rng.gauss(0.0, float(model["pollen_residual_sd"]))
-                )
-                pollen_value = max(0.0, pollen_value)
+            damaged = initial_count - clipped_final
+            attack_rate = (
+                float(model["early_attack_rate_exposed"])
+                if predator == "EXPOSED"
+                else float(model["early_attack_rate_excluded"])
+            )
+            attacked = int(rng.random() < attack_rate)
 
-                seed_model = seed_models[state]
-                initial_fraction = (
-                    seed_model["intercept_fraction"]
-                    + seed_model["z_slope_fraction"] * z
-                    + initial_plant
-                    + rng.gauss(
-                        0.0,
-                        float(model["initial_seed_residual_sd_fraction"]),
-                    )
-                )
-                clipped_fraction = min(1.0, max(0.0, initial_fraction))
-                initial_clip_count += int(clipped_fraction != initial_fraction)
-                initial_count = ovules * clipped_fraction
-
-                if initial_count < clipped_final:
-                    initial_count = clipped_final
-                    initial_floor_count += 1
-
-                damaged = initial_count - clipped_final
-                attack_rate = (
-                    float(model["early_attack_rate_exposed"])
-                    if predator == "EXPOSED"
-                    else float(model["early_attack_rate_excluded"])
-                )
-                attacked = int(rng.random() < attack_rate)
-
-                rows.append(
-                    {
-                        "population_id": population_id,
-                        "season_id": season_id,
-                        "plant_id": plant_id,
-                        "flower_id": (
-                            f"{plant_id}_Z{z_index}_{state}"
-                        ),
-                        "assigned_z_level": f"Z{z_index:02d}",
-                        "realized_exsertion": repr(float(z)),
-                        "pollination_treatment": pollination,
-                        "predator_treatment": predator,
-                        "exclusion_method": (
-                            "SIMULATED_QUALIFIED_PREDATOR_EXCLUSION"
-                            if predator == "EXCLUDED"
-                            else "SIMULATED_MATCHED_EXPOSED_SHAM"
-                        ),
-                        "water_depth": repr(float(model["water_depth"])),
-                        "ovule_count": repr(ovules),
-                        "undamaged_seed_count": repr(clipped_final),
-                        "damaged_seed_count": repr(damaged),
-                        "pollen_grains": repr(pollen_value),
-                        "early_predator_attack_present": str(attacked),
-                        "mechanical_damage": "0",
-                    }
-                )
+            rows.append(
+                {
+                    "population_id": population_id,
+                    "season_id": season_id,
+                    "plant_id": plant_id,
+                    "flower_id": (
+                        f"{plant_id}_Z{z_index}_{state}"
+                    ),
+                    "assigned_z_level": f"Z{z_index:02d}",
+                    "realized_exsertion": repr(float(z)),
+                    "pollination_treatment": pollination,
+                    "predator_treatment": predator,
+                    "exclusion_method": (
+                        "SIMULATED_QUALIFIED_PREDATOR_EXCLUSION"
+                        if predator == "EXCLUDED"
+                        else "SIMULATED_MATCHED_EXPOSED_SHAM"
+                    ),
+                    "water_depth": repr(float(model["water_depth"])),
+                    "ovule_count": repr(ovules),
+                    "undamaged_seed_count": repr(clipped_final),
+                    "damaged_seed_count": repr(damaged),
+                    "pollen_grains": repr(pollen_value),
+                    "early_predator_attack_present": str(attacked),
+                    "mechanical_damage": "0",
+                }
+            )
 
     n_rows = len(rows)
     return rows, {
