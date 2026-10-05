@@ -89,7 +89,7 @@ first causal partition of pollinator- and herbivore-mediated selection
 first demonstration that one agent changes selection imposed by another.
 ```
 
-## Other close context-manipulation precedent
+## Other close context-manipulation precedents
 
 In *Erysimum mediohispanicum*, Gómez (2003; doi:10.1086/376574) experimentally
 excluded ungulate herbivores and showed that the presence of herbivores weakened
@@ -98,6 +98,15 @@ context can strongly alter the realized selection regime.
 
 It does not manipulate pollination as the second crossed treatment, nor
 randomize the focal floral coordinate across multiple levels.
+
+In *Eurya japonica*, Tsuji & Ohgushi (2018; doi:10.1002/ece3.3921) combined
+artificial floral damage/petal removal with pollination controls. Petal removal
+reduced fruit and seed production under natural pollination but not under
+artificial pollination, directly demonstrating a florivory-mediated
+pollination-performance pathway. This is a close causal precedent for linking
+antagonist damage to pollination and reproduction, but it does not randomize one
+shared floral coordinate across a multi-level range or recover bounded
+consumer-state reproductive optima.
 
 ## The bounded gap
 
