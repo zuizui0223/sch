@@ -95,11 +95,30 @@ G_A2_POROUS_TUBING.
 ```
 
 At a 10% failure tolerance and 95% confidence, testing both requires 58
-paired-plant **candidate assignments**. At 5%, it requires 118.
+paired-plant **candidate assignments**. Under the current registered three-arm
+manifest from PR #161, both first-tier candidates plus one shared sham are
+randomized within every plant, so this corresponds to:
 
-Do not interpret those totals automatically as 58 or 118 distinct plants.
-Multiple candidate flowers may share a plant only if assignment and
-within-plant interference are prospectively controlled.
+```text
+29 distinct plants
+58 candidate flowers
+29 sham flowers
+87 total flowers.
+```
+
+At a 5% tolerance, the corresponding burden is:
+
+```text
+59 distinct plants
+118 candidate flowers
+59 sham flowers
+177 total flowers.
+```
+
+These distinct-plant counts apply only to the current within-plant three-arm
+design. If candidates are separated across plants or interference invalidates
+sharing a plant, recalculate the distinct-plant burden rather than treating
+58/118 candidate assignments as interchangeable with plants.
 
 ## Separation from effect/selectivity planning
 
