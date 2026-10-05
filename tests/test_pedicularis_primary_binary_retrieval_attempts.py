@@ -3,7 +3,7 @@ from scripts.audit_pedicularis_primary_binary_retrieval_attempts import build
 
 def test_retrieval_attempt_audit_covers_all_five_primary_assets() -> None:
     result = build()
-    assert result["n_attempts"] == 11
+    assert result["n_attempts"] == 14
     assert result["n_primary_assets_with_attempts"] == 5
     assert set(result["attempt_counts_by_asset"]) == {
         "PRIMARY_JING2013_METHODS",
@@ -64,8 +64,45 @@ def test_external_prior_assets_never_change_direct_gap_state() -> None:
 def test_tang_full_abstract_reduces_direct_g_expectation_without_closing_gap() -> None:
     result = build()
     tang = result["direct_gap_asset_states"]["PRIMARY_TANG2011_THESIS"]
-    assert tang["n_attempts"] == 3
+    assert tang["n_attempts"] == 4
     assert tang["states"] == [
         "G_UNRESOLVED",
         "G_UNRESOLVED_NATURAL_HISTORY_STRONGER",
     ]
+
+
+def test_wang_exact_pdf_url_is_known_even_though_binary_get_is_blocked() -> None:
+    result = build()
+    assert result["wang1998_exact_pdf_url"] == (
+        "https://www.jipb.net/EN/article/downloadArticleFile.do"
+        "?attachType=PDF&id=25287"
+    )
+    assert result["wang1998_direct_pdf_state"] == (
+        "EXACT_URL_KNOWN_DIRECT_GET_HTTP_403"
+    )
+    assert result["primary_route_search_stop"]["PRIMARY_WANG1998_PDF"].startswith(
+        "STOP_URL_DISCOVERY"
+    )
+
+
+def test_jing_primary_publisher_page_does_not_resolve_methods() -> None:
+    result = build()
+    assert result["jing2013_primary_page_state"] == (
+        "LIVE_PUBLISHER_PREVIEW_METHODS_NOT_PUBLICLY_EXPOSED"
+    )
+    jing = result["direct_gap_asset_states"]["PRIMARY_JING2013_METHODS"]
+    assert jing["n_attempts"] == 4
+    assert "P1_UNRESOLVED" in jing["states"]
+    assert result["primary_route_search_stop"]["PRIMARY_JING2013_METHODS"].startswith(
+        "STOP_ABSTRACT_AND_INDEX_SEARCH"
+    )
+
+
+def test_tang_live_host_is_concretely_suspended() -> None:
+    result = build()
+    assert result["tang2011_live_host_state"] == (
+        "GLOBETHESIS_REDIRECTS_TO_SUSPENDED_PAGE_NO_BINARY_LINKS"
+    )
+    assert result["primary_route_search_stop"]["PRIMARY_TANG2011_THESIS"].startswith(
+        "STOP_GLOBETHESIS_RETRIES"
+    )
