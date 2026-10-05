@@ -256,6 +256,9 @@ https://www.jipb.net/EN/article/downloadArticleFile.do?attachType=PDF&id=25287
 ```
 
 but direct public GET still returns HTTP 403 in the current fetch environment.
+The same article-id endpoint was also tested through JIPB CN,
+chinbullbotany CN and plant-ecology CN legacy mirrors; all four known variants
+returned HTTP 403. Public URL-variant probing for Wang1998 is therefore closed.
 Tang2011's live Globethesis URL now redirects to a suspended-account page with
 no binary links; its full English abstract remains the strongest accessible
 content and describes no predator exclusion. Dryad file `46101` is publicly
