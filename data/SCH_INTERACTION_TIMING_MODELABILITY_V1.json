@@ -1,0 +1,52 @@
+{
+  "analysis": "sch_interaction_timing_modelability_v1",
+  "claim_ceiling": [
+    "descriptive_timing_coverage_only",
+    "do_not_fit_interaction_timing_as_H1_moderator",
+    "do_not_claim_temporal_separation_generalizes_conflict_geometry",
+    "retain_P_rex_timing_as_focal_mechanistic_prediction"
+  ],
+  "fixed_role_timing_counts": {
+    "SIMULTANEOUS_OR_OVERLAPPING": 34,
+    "SPATIAL_CONTEXT": 1
+  },
+  "fixed_role_timing_levels": [
+    "SIMULTANEOUS_OR_OVERLAPPING",
+    "SPATIAL_CONTEXT"
+  ],
+  "n_canonical_axes": 48,
+  "n_fixed_role_axes": 35,
+  "n_fixed_role_axes_with_sequential_or_temporally_separated_timing": 0,
+  "n_static_axes_with_sequential_or_temporally_separated_timing": 0,
+  "n_static_resolved_fixed_role_axes": 19,
+  "n_static_resolved_fixed_role_clusters": 13,
+  "pedicularis_temporal_window_role": "focal_mechanism_hypothesis_not_cross_system_generalization",
+  "reasons": [
+    "34_of_35_fixed_role_axes_are_SIMULTANEOUS_OR_OVERLAPPING",
+    "18_of_19_static_resolved_fixed_role_axes_are_SIMULTANEOUS_OR_OVERLAPPING",
+    "zero_fixed_role_axes_use_SEQUENTIAL_LIFE_HISTORY_FILTER_or_TEMPORALLY_SEPARATED",
+    "the_single_other_fixed_role_axis_is_SPATIAL_CONTEXT_not_a_temporal_separation_contrast",
+    "current_data_cannot_estimate_a_timing_effect_without_posthoc_recoding"
+  ],
+  "static_geometry_by_timing": {
+    "SIMULTANEOUS_OR_OVERLAPPING": {
+      "ALIGNMENT_REINFORCEMENT": 2,
+      "CONFLICT": 9,
+      "ONE_SIDED_OR_NULL": 7
+    },
+    "SPATIAL_CONTEXT": {
+      "ONE_SIDED_OR_NULL": 1
+    }
+  },
+  "static_resolved_timing_counts": {
+    "SIMULTANEOUS_OR_OVERLAPPING": 18,
+    "SPATIAL_CONTEXT": 1
+  },
+  "static_resolved_timing_levels": [
+    "SIMULTANEOUS_OR_OVERLAPPING",
+    "SPATIAL_CONTEXT"
+  ],
+  "status": "TIMING_CONTRAST_NOT_MODELABLE_IN_CURRENT_CANONICAL_LEDGER",
+  "timing_generalization_supported": false,
+  "timing_moderator_modelable": false
+}
