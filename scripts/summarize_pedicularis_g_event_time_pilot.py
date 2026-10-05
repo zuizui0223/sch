@@ -38,6 +38,7 @@ REQUIRED_FIELDS = (
     "flower_id",
     "flower_role",
     "anthesis_time_hours",
+    "scheduled_elapsed_hours",
     "observation_time_hours",
     "pollen_grains",
     "pollination_complete",
@@ -222,7 +223,29 @@ def _median_gap_descriptor(
     }
 
 
-def _validate_config(config: dict) -> tuple[str, str]:
+def _schedule(config: dict, field: str) -> tuple[float, ...]:
+    value = config.get(field)
+    if not isinstance(value, list) or len(value) < 2:
+        raise ValueError(f"{field} must be a prospectively frozen list with >=2 times")
+    out: list[float] = []
+    for i, raw in enumerate(value):
+        if isinstance(raw, bool):
+            raise ValueError(f"{field}[{i}] must be numeric")
+        try:
+            number = float(raw)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"{field}[{i}] must be numeric") from exc
+        if not math.isfinite(number) or number < 0:
+            raise ValueError(f"{field}[{i}] must be finite and >=0")
+        out.append(number)
+    if out != sorted(out) or len(out) != len(set(out)):
+        raise ValueError(f"{field} must be strictly increasing with unique times")
+    return tuple(out)
+
+
+def _validate_config(
+    config: dict,
+) -> tuple[str, str, tuple[float, ...], tuple[float, ...], float]:
     if config.get("schema") != SCHEMA:
         raise ValueError("event-time pilot schema mismatch")
     if config.get("status") != FREEZE_STATUS:
@@ -270,7 +293,32 @@ def _validate_config(config: dict) -> tuple[str, str]:
     if parsed.tzinfo is None:
         raise ValueError("frozen_at_utc must be timezone-aware")
 
-    return population_id, season_id
+    pollination_schedule = _schedule(
+        config,
+        "pollination_sampling_elapsed_hours",
+    )
+    natural_schedule = _schedule(
+        config,
+        "attack_swelling_sampling_elapsed_hours",
+    )
+
+    max_deviation_raw = config.get("max_sampling_deviation_hours")
+    if isinstance(max_deviation_raw, bool):
+        raise ValueError("max_sampling_deviation_hours must be numeric")
+    try:
+        max_deviation = float(max_deviation_raw)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("max_sampling_deviation_hours must be numeric") from exc
+    if not math.isfinite(max_deviation) or max_deviation < 0:
+        raise ValueError("max_sampling_deviation_hours must be finite and >=0")
+
+    return (
+        population_id,
+        season_id,
+        pollination_schedule,
+        natural_schedule,
+        max_deviation,
+    )
 
 
 def _validate_rows(
@@ -278,6 +326,9 @@ def _validate_rows(
     *,
     population_id: str,
     season_id: str,
+    pollination_schedule: tuple[float, ...],
+    natural_schedule: tuple[float, ...],
+    max_sampling_deviation_hours: float,
 ) -> list[dict[str, object]]:
     normalized: list[dict[str, object]] = []
 
@@ -294,6 +345,10 @@ def _validate_rows(
             raise ValueError(f"row {i} has unregistered flower_role {role!r}")
 
         anthesis = _number(row["anthesis_time_hours"], f"row {i}.anthesis_time_hours")
+        scheduled = _number(
+            row["scheduled_elapsed_hours"],
+            f"row {i}.scheduled_elapsed_hours",
+        )
         observation = _number(
             row["observation_time_hours"],
             f"row {i}.observation_time_hours",
@@ -302,6 +357,21 @@ def _validate_rows(
         if elapsed < 0:
             raise ValueError(f"row {i} observation precedes anthesis")
 
+        allowed_schedule = (
+            pollination_schedule if role == POLLEN_ROLE else natural_schedule
+        )
+        if scheduled not in allowed_schedule:
+            raise ValueError(
+                f"row {i} scheduled_elapsed_hours={scheduled} is not in the "
+                f"prospectively frozen {role} schedule"
+            )
+        deviation = abs(elapsed - scheduled)
+        if deviation > max_sampling_deviation_hours + 1e-12:
+            raise ValueError(
+                f"row {i} sampling deviation {deviation} exceeds the "
+                "prospectively frozen maximum"
+            )
+
         base: dict[str, object] = {
             "population_id": population_id,
             "season_id": season_id,
@@ -309,8 +379,10 @@ def _validate_rows(
             "flower_id": row["flower_id"],
             "flower_role": role,
             "anthesis_time_hours": anthesis,
+            "scheduled_elapsed_hours": scheduled,
             "observation_time_hours": observation,
             "elapsed_hours": elapsed,
+            "sampling_deviation_hours": deviation,
         }
 
         if role == POLLEN_ROLE:
@@ -375,15 +447,25 @@ def _validate_rows(
                 )
             continue
 
-        if len(group) < 2:
+        scheduled_times = [
+            float(row["scheduled_elapsed_hours"]) for row in group
+        ]
+        if set(scheduled_times) != set(natural_schedule) or (
+            len(scheduled_times) != len(natural_schedule)
+        ):
             raise ValueError(
-                f"attack/swelling sentinel {flower_id} needs >=2 observations"
+                f"attack/swelling sentinel {flower_id} must contain exactly "
+                "the prospectively frozen natural-history schedule"
             )
-        ordered = sorted(group, key=lambda row: float(row["elapsed_hours"]))
-        times = [float(row["elapsed_hours"]) for row in ordered]
-        if len(times) != len(set(times)):
+        ordered = sorted(
+            group,
+            key=lambda row: float(row["scheduled_elapsed_hours"]),
+        )
+        actual_times = [float(row["elapsed_hours"]) for row in ordered]
+        if any(left >= right for left, right in zip(actual_times, actual_times[1:])):
             raise ValueError(
-                f"attack/swelling sentinel {flower_id} repeats an observation time"
+                f"attack/swelling sentinel {flower_id} actual observation times "
+                "must increase with the frozen schedule"
             )
         for field in ("attack_present", "ovary_swollen"):
             values = [int(row[field]) for row in ordered]
@@ -392,23 +474,59 @@ def _validate_rows(
                     f"{field} must be absorbing once observed for {flower_id}"
                 )
 
-    pollen_times = {
-        float(row["elapsed_hours"])
-        for row in normalized
+    pollen_rows = [
+        row for row in normalized
         if row["flower_role"] == POLLEN_ROLE
+    ]
+    natural_rows = [
+        row for row in normalized
+        if row["flower_role"] == NATURAL_ROLE
+    ]
+
+    pollen_by_plant_time: dict[tuple[str, float], int] = defaultdict(int)
+    for row in pollen_rows:
+        key = (
+            str(row["plant_id"]),
+            float(row["scheduled_elapsed_hours"]),
+        )
+        pollen_by_plant_time[key] += 1
+    pollen_plants = {str(row["plant_id"]) for row in pollen_rows}
+    for plant_id in pollen_plants:
+        for hours in pollination_schedule:
+            n = pollen_by_plant_time[(plant_id, hours)]
+            if n != 1:
+                raise ValueError(
+                    f"pollination sentinel plant {plant_id} needs exactly one "
+                    f"destructive flower at frozen time {hours}; observed {n}"
+                )
+
+    natural_by_plant: dict[str, set[str]] = defaultdict(set)
+    for row in natural_rows:
+        natural_by_plant[str(row["plant_id"])].add(str(row["flower_id"]))
+    if any(len(flowers) != 1 for flowers in natural_by_plant.values()):
+        raise ValueError(
+            "each event-time plant must contribute exactly one attack/swelling sentinel flower"
+        )
+
+    natural_plants = set(natural_by_plant)
+    if pollen_plants != natural_plants:
+        raise ValueError(
+            "pollination and attack/swelling sentinel lanes must use the same plant set"
+        )
+
+    pollen_times = {
+        float(row["scheduled_elapsed_hours"]) for row in pollen_rows
     }
     natural_times = {
-        float(row["elapsed_hours"])
-        for row in normalized
-        if row["flower_role"] == NATURAL_ROLE
+        float(row["scheduled_elapsed_hours"]) for row in natural_rows
     }
-    if len(pollen_times) < 2:
+    if pollen_times != set(pollination_schedule):
         raise ValueError(
-            "event-time pilot needs >=2 pollination sentinel time points"
+            "observed pollination sentinel slots do not match the frozen schedule"
         )
-    if len(natural_times) < 2:
+    if natural_times != set(natural_schedule):
         raise ValueError(
-            "event-time pilot needs >=2 attack/swelling observation time points"
+            "observed attack/swelling slots do not match the frozen schedule"
         )
 
     return normalized
@@ -445,11 +563,20 @@ def _event_interval(
 
 
 def build(config: dict, rows: list[dict[str, str]]) -> dict:
-    population_id, season_id = _validate_config(config)
+    (
+        population_id,
+        season_id,
+        pollination_schedule,
+        natural_schedule,
+        max_sampling_deviation_hours,
+    ) = _validate_config(config)
     normalized = _validate_rows(
         rows,
         population_id=population_id,
         season_id=season_id,
+        pollination_schedule=pollination_schedule,
+        natural_schedule=natural_schedule,
+        max_sampling_deviation_hours=max_sampling_deviation_hours,
     )
 
     pollen_rows = [
@@ -464,9 +591,9 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
     pollen_by_time: dict[float, list[dict[str, object]]] = defaultdict(list)
     natural_by_time: dict[float, list[dict[str, object]]] = defaultdict(list)
     for row in pollen_rows:
-        pollen_by_time[float(row["elapsed_hours"])].append(row)
+        pollen_by_time[float(row["scheduled_elapsed_hours"])].append(row)
     for row in natural_rows:
-        natural_by_time[float(row["elapsed_hours"])].append(row)
+        natural_by_time[float(row["scheduled_elapsed_hours"])].append(row)
 
     pollen_profiles = []
     for hours, group in sorted(pollen_by_time.items()):
@@ -475,6 +602,12 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
                 "elapsed_hours": hours,
                 "n_flowers": len(group),
                 "n_plants": len({str(row["plant_id"]) for row in group}),
+                "observed_elapsed_hours": _summary(
+                    [float(row["elapsed_hours"]) for row in group]
+                ),
+                "sampling_deviation_hours": _summary(
+                    [float(row["sampling_deviation_hours"]) for row in group]
+                ),
                 "pollination_complete_rate": mean(
                     int(row["pollination_complete"]) for row in group
                 ),
@@ -491,6 +624,12 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
                 "elapsed_hours": hours,
                 "n_observations": len(group),
                 "n_flowers": len({str(row["flower_id"]) for row in group}),
+                "observed_elapsed_hours": _summary(
+                    [float(row["elapsed_hours"]) for row in group]
+                ),
+                "sampling_deviation_hours": _summary(
+                    [float(row["sampling_deviation_hours"]) for row in group]
+                ),
                 "attack_free_rate": mean(
                     1 - int(row["attack_present"]) for row in group
                 ),
@@ -597,6 +736,11 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
         ],
         "attack_event_definition": config["attack_event_definition"],
         "ovary_swelling_definition": config["ovary_swelling_definition"],
+        "pollination_sampling_elapsed_hours": list(pollination_schedule),
+        "attack_swelling_sampling_elapsed_hours": list(natural_schedule),
+        "max_sampling_deviation_hours": max_sampling_deviation_hours,
+        "sampling_grid_prospectively_frozen": True,
+        "plant_blocking_enforced_across_time_and_roles": True,
         "n_rows": len(normalized),
         "n_pollination_sentinel_flowers": len(pollen_rows),
         "n_attack_swelling_sentinel_flowers": len(natural_by_flower),
@@ -631,6 +775,9 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
         ),
         "claim_ceiling": [
             "natural_history_event_time_calibration_only",
+            "sampling_grid_is_machine_frozen_before_event_time_data",
+            "one_pollination_sentinel_per_plant_per_frozen_time",
+            "one_repeated_attack_swelling_sentinel_per_plant",
             "pollination_completion_hours_are_cross_sectional_observation_times",
             "attack_and_swelling_onsets_are_interval_censored",
             "delta_t50_is_a_schedule_grid_median_descriptor_not_an_exact_individual_gap",
