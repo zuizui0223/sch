@@ -27,6 +27,11 @@ missing/incorrect sham handling on exposed flowers.
 Any observed hard failure prevents a zero-failure candidate from satisfying
 this planning rule as implemented.
 
+The planned failure probability is a **composite per-plant event**: a candidate
+application fails if any registered hard-validity condition fails on that
+paired plant. It is not six separate 5% or 10% error-rate guarantees, so no
+independence assumption among hard-failure modes is required.
+
 ## Exact zero-failure rule
 
 If `n` paired plants show zero hard failures, the one-sided exact upper bound
