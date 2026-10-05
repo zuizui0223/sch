@@ -61,6 +61,18 @@ Therefore preserving the natural pollination lane is a biological requirement,
 not just a method preference. A barrier that changes bee entry or stigma contact
 cannot be treated as independent G.
 
+### Existing pollen measurements provide an endpoint, not a clock
+
+Sun, Armbruster & Huang (2016) measured stigmatic pollen loads at the end of a
+flower's receptivity period, using flowers in late anthesis. This is useful
+because it supplies a focal biological endpoint for `T_poll`: the event-time
+pilot can ask when earlier time points converge toward the late-anthesis pollen
+state.
+
+It still does not give a time-to-completion value. The published design samples
+the endpoint rather than a within-flower pollen-accumulation trajectory, so no
+hours-after-anthesis cutoff can be recovered from it.
+
 ### The downstream reproductive clock is long
 
 Sun & Huang (2015) report that capsules generally mature approximately three
