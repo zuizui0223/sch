@@ -140,6 +140,41 @@ H1 binary conflict model = FAIL
 primary H1 output = descriptive canonical geometry
 ~~~
 
+## Interaction timing is not yet a comparative predictor
+
+The canonical ledger now has an explicit timing-modelability audit. Among the
+35 fixed-role axes, 34 are coded `SIMULTANEOUS_OR_OVERLAPPING` and the only
+other axis is `SPATIAL_CONTEXT`. Among the 19 static resolved fixed-role axes,
+18 are simultaneous/overlapping and one is spatial-context. There are currently
+**zero** fixed-role axes coded `SEQUENTIAL_LIFE_HISTORY_FILTER` or
+`TEMPORALLY_SEPARATED`.
+
+Within the simultaneous/overlapping resolved stratum, all three ecological
+geometries already occur:
+
+~~~text
+conflict                    9
+one-sided / null            7
+alignment / reinforcement   2
+~~~
+
+Thus overlap is not sufficient for conflict, but the current ledger contains no
+independent temporal contrast from which to estimate whether separation changes
+the probability or strength of conflict.
+
+Frozen consequence:
+
+~~~text
+interaction_timing moderator = NOT MODELABLE
+cross-system timing generalization = NOT SUPPORTED
+Pedicularis timing window = focal mechanistic hypothesis
+~~~
+
+This matters for the focal experiment. In *P. rex*, a temporal interval between
+pollination completion and predator attack may make selective antagonist removal
+possible. That is currently a mechanistic property to test in the focal system,
+not a comparative law inferred from the macroecological dataset.
+
 ## Pedicularis main-text pressure upgrade
 
 Four exact population seed-predation values are now materialized as LOCAL_ANTAGONIST_PRESSURE cases:
