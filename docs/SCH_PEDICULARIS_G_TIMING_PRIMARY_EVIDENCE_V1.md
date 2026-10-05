@@ -49,9 +49,10 @@ pollination, but it is not a focal *P. rex* clock.
 
 ### P. rex is strongly pollinator dependent
 
-Sun & Huang (2015; doi:10.1093/aobpla/plv019), drawing on focal pollination
-work, describe *P. rex* as self-compatible but lacking effective autogamous
-pollination and depending on bumblebees for seed production.
+Wang (1998), in a focal population-level pollination study of *P. rex*,
+reports that seed production depends exclusively on bumblebee pollination.
+Sun & Huang (2015; doi:10.1093/aobpla/plv019) independently summarize the
+species as self-compatible but lacking effective autogamous pollination.
 
 Tang, Xie & Sun (2007; doi:10.1016/j.flora.2006.09.001) describe bumblebees as
 the primary and effective pollinators of *P. rex* subsp. *rex*. During typical
