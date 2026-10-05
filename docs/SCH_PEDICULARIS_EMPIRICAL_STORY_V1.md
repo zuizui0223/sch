@@ -276,6 +276,29 @@ predator cue identity                              NO
 adaptive pollen limitation                         NO
 ```
 
+## Novelty boundary
+
+The paper is not novel because pollinators and enemies impose conflicting
+selection, because both consumer classes are manipulated, because a floral
+trait is manipulated over multiple levels, or because enemy context can move a
+floral optimum. All of those ingredients have close precedents.
+
+The bounded close-precedent audit in
+`SCH_PEDICULARIS_EMPIRICAL_NOVELTY_BOUNDARY_V1.md` places novelty on the joint
+design/estimand:
+
+```text
+randomized multi-level shared z
+x selective P
+x selective G
+-> W00(z), W10(z), W01(z), W11(z)
+-> bounded reproductive state optima
+-> direct antagonist-removal optimum displacement
+-> pollination-performance consequence of that displacement.
+```
+
+This is a bounded precedent claim, not a global "first ever" statement.
+
 ## Paper spine
 
 The empirical paper can therefore be written around one biological sentence:
