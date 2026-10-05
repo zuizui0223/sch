@@ -10,7 +10,7 @@ from scripts.audit_pedicularis_empirical_novelty import (
 def test_close_precedents_include_existing_factorial_consumer_experiments() -> None:
     result = build(_read(DEFAULT_MATRIX))
 
-    assert result["n_close_precedents_audited"] == 7
+    assert result["n_close_precedents_audited"] == 8
     assert result["n_factorial_consumer_manipulation_precedents"] == 2
     assert result["factorial_consumer_manipulation_precedent_ids"] == [
         "FRAGARIA_2021",
@@ -21,7 +21,7 @@ def test_close_precedents_include_existing_factorial_consumer_experiments() -> N
 def test_bounded_gap_is_multilevel_trait_by_consumer_state_optimum_design() -> None:
     result = build(_read(DEFAULT_MATRIX))
 
-    assert result["n_precedents_with_multilevel_trait_manipulation"] == 0
+    assert result["n_precedents_with_multilevel_trait_manipulation"] == 1
     assert result["n_precedents_with_state_specific_reproductive_optima"] == 0
     assert result["n_precedents_with_optimum_displacement_test"] == 0
     assert result["close_precedents_with_full_joint_design"] == []
@@ -55,6 +55,11 @@ def test_matrix_keeps_classic_conflict_and_trait_manipulation_precedents() -> No
     assert rows["EURYA_2018"]["pollination_manipulated"] == "YES"
     assert rows["EURYA_2018"]["antagonist_manipulated"] == "YES"
     assert rows["EURYA_2018"]["state_specific_reproductive_optima"] == "NO"
+    assert rows["ODONTONEMA_2021"]["trait_manipulated_multilevel"] == "YES"
+    assert rows["ODONTONEMA_2021"]["pollination_manipulated"] == "NO"
+    assert rows["ODONTONEMA_2021"]["antagonist_manipulated"] == "NO"
+    assert rows["ODONTONEMA_2021"]["state_specific_reproductive_optima"] == "NO"
+    assert rows["ODONTONEMA_2021"]["optimum_displacement_test"] == "NO"
 
 
 def test_registered_target_declares_full_intended_design_only() -> None:
