@@ -241,6 +241,14 @@ Machine classifier:
 scripts/classify_pedicularis_empirical_outcome.py
 ```
 
+For a final interpretation bundle that also carries the independent timing
+mechanism and optional pure-function upgrade without changing W0-W5, use:
+
+```text
+scripts/map_pedicularis_empirical_outcomes.py
+docs/SCH_PEDICULARIS_EMPIRICAL_OUTCOME_MAP_V1.md
+```
+
 ## Claim ladder
 
 ```text
