@@ -257,6 +257,30 @@ They must be compared with focal V4 exploratory rows and the registered
 fail-fast hard-validity screen. Whole-flower mesh remains ineligible during
 the open-pollination phase, and the chemical route remains last-priority.
 
+## Canonical field method codes
+
+The candidate matrix now owns the exact `exclusion_method` value used in V4
+field rows:
+
+```text
+G_A1_FINE_MESH        -> FINE_MESH_LOWER_FRUIT_SLEEVE
+G_A2_POROUS_TUBING    -> POROUS_TUBING_LOWER_FRUIT_SLEEVE
+G_B_LOCAL_SLEEVE      -> LOCAL_LOWER_COROLLA_SLEEVE
+G_C_WHOLE_FLOWER_MESH -> WHOLE_FLOWER_MESH
+G_D_CHEMICAL          -> LOCALIZED_CHEMICAL
+```
+
+Do not invent aliases. Run:
+
+```bash
+python scripts/screen_pedicularis_g_candidates.py <g_v4.csv>
+```
+
+The linked screen rejects unknown EXCLUDED method codes, carries candidate
+priority/precedent provenance into the hard-validity result, can retire a tested
+candidate after a hard-validity failure, and does not rank multiple hard passes
+from post hoc effect size.
+
 ## Stage-G pilot design
 
 Within the same focal population and season, randomize flowers within plants to:

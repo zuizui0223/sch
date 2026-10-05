@@ -334,6 +334,16 @@ This is a candidate-priority matrix only: the two first-tier methods remain tied
 until focal V4 rows pass the hard-validity screen. Run
 `python scripts/audit_pedicularis_g_exploratory_candidates.py`.
 
+Candidate identity is now carried into the field data through canonical
+`exclusion_method` codes (for example
+`FINE_MESH_LOWER_FRUIT_SLEEVE` and
+`POROUS_TUBING_LOWER_FRUIT_SLEEVE`). Run
+`python scripts/screen_pedicularis_g_candidates.py <g_v4.csv>` to require an
+exact candidate-to-field-code match before the fail-fast hard-validity screen.
+Unknown ad-hoc method labels fail closed; a hard-validity failure can retire the
+tested candidate as implemented, while multiple hard-validity passes remain
+unselected until prospective effect/selectivity targets exist.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
