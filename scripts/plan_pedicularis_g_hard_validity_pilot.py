@@ -165,9 +165,13 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
         "max_acceptable_per_plant_hard_failure_probability": max_failure,
         "planning_basis_note": basis,
         "frozen_at_utc": frozen_at,
+        "hard_failure_unit": (
+            "paired-plant candidate application fails if any registered "
+            "hard-validity condition fails"
+        ),
         "zero_failure_rule": (
-            "one-sided exact binomial upper bound: "
-            "1 - (1-confidence)^(1/n)"
+            "one-sided exact binomial upper bound on the composite per-plant "
+            "hard-failure probability: 1 - (1-confidence)^(1/n)"
         ),
         "minimum_paired_plants_per_tested_candidate": n,
         "achieved_zero_failure_upper_bound": achieved,
@@ -188,6 +192,7 @@ def build(config: dict, candidate_rows: list[dict[str, str]]) -> dict:
         "status": PLAN_STATUS,
         "claim_ceiling": [
             "hard_validity_failure_rate_planning_only",
+            "failure_probability_is_composite_any_registered_hard_failure_not_six_separate_error_rates",
             "zero_observed_hard_failures_required_for_this_plan",
             "does_not_establish_predator_exclusion_effectiveness",
             "does_not_establish_selectivity",
