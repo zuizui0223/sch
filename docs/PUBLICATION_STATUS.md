@@ -106,7 +106,10 @@ The primary empirical objects are the predator-free versus predator-exposed
 **state-specific reproductive optima** and the randomized z-to-pollen response.
 The predator-free state optimum is not a pure pollinator optimum by default.
 Temporal-separability and method-qualification work are enabling gates, not the
-headline result. See `docs/SCH_PEDICULARIS_EMPIRICAL_STORY_V1.md`.
+headline result. The biological interpretation is also frozen across six
+outcome worlds (W0-W5), separating primary-surface failure, enemy displacement
+with/without pollination-performance cost, and pollination benefit without
+enemy displacement. See `docs/SCH_PEDICULARIS_EMPIRICAL_STORY_V1.md`.
 
 ## Parallel macroecology extension
 
