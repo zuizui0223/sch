@@ -213,6 +213,23 @@ The wrapper validates the system-specific contract, checks that water-y stayed f
 scripts/analyze_sch_compromise_surface.py
 ```
 
+After—and only after—a positive primary causal-compromise receipt, an optional
+focal ecological diagnostic may be run:
+
+```bash
+python scripts/analyze_pedicularis_antagonist_constrained_pollination.py \
+  <pedicularis_surface_v2.csv> \
+  <sch_pedicularis_receipt.json>
+```
+
+This secondary diagnostic tests whether predator removal shifts the fitted
+reproductive optimum toward greater exsertion while randomized greater
+exsertion increases pollen receipt under natural pollination. It is downstream
+of the primary SCH surface and cannot rescue a negative compromise result.
+
+Even a positive secondary diagnostic is labelled contemporary
+antagonist-constrained pollination, not adaptive pollen limitation.
+
 The returned core receipt remains:
 
 ```text
