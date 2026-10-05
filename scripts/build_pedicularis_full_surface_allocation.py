@@ -63,6 +63,18 @@ def _positive_int(value: object, label: str) -> int:
     return int(numeric)
 
 
+def _nonnegative_int(value: object, label: str) -> int:
+    if value in (None, "", PLACEHOLDER):
+        raise ValueError(f"{label} must be prospectively resolved")
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{label} must be numeric") from exc
+    if not math.isfinite(numeric) or numeric < 0 or not numeric.is_integer():
+        raise ValueError(f"{label} must be a nonnegative integer")
+    return int(numeric)
+
+
 def _finite_number(value: object, label: str) -> float:
     if value in (None, "", PLACEHOLDER):
         raise ValueError(f"{label} must be prospectively resolved")
@@ -127,12 +139,10 @@ def _validate_config(config: dict) -> dict:
         label = _resolved_text(
             row.get("assigned_z_level"), "z_levels.assigned_z_level"
         )
-        rank = _positive_int(
-            int(row.get("assigned_z_rank")) + 1
-            if str(row.get("assigned_z_rank", "")).lstrip("-").isdigit()
-            else row.get("assigned_z_rank"),
+        rank = _nonnegative_int(
+            row.get("assigned_z_rank"),
             "z_levels.assigned_z_rank",
-        ) - 1
+        )
         target = _finite_number(
             row.get("target_exsertion"), "z_levels.target_exsertion"
         )
