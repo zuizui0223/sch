@@ -408,6 +408,18 @@ builder randomizes flower-to-level assignment within plant but does not choose
 manipulation strengths, plant count or thresholds. This makes the implemented
 field allocation match the registered P0 design.
 
+A second focal biological prediction is now registered from the 2016 P. rex
+selection study. In the seven populations with linked plant-level data, the
+best seed-predation model retained positive effects of exsertion, lower-lip
+width and stigmatic pollen load plus population; the source itself highlights
+the unexpectedly higher predation of better-pollinated flowers. This is treated
+as observational pollination-success/antagonist-risk coupling, not evidence that
+pollen is the predator cue. Combined with focal pollen limitation, it motivates
+a post-surface test of whether seed predators constrain exsertion below the
+pollinator-favoured state. The four-criterion adaptive-pollen-limitation map is
+fail-closed at 1/4 fully supported criteria until the causal surface is run.
+See `SCH_PEDICULARIS_ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION_V1.md`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
