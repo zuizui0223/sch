@@ -14,8 +14,8 @@ CONFIG_SCHEMA = "PEDICULARIS_FULL_SURFACE_ALLOCATION_CONFIG_V1"
 CONFIG_STATUS = "PEDICULARIS_FULL_SURFACE_ALLOCATION_PROSPECTIVELY_FROZEN"
 POWER_ANALYSIS = "pedicularis_W1_W2_full_surface_power_v1"
 POWER_STATUS = "PEDICULARIS_W1_W2_POWER_SIMULATION_COMPLETE"
-ALLOCATION_METHOD = "SHA256_BALANCED_CYCLIC_20_CELL_V1"
-CELL_STRATEGY = "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+ALLOCATION_METHOD = "SHA256_BALANCED_CYCLIC_Z_BY_P_BY_G_V1"
+CELL_STRATEGY = "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1"
 STATE_PLAN = (
     ("P0G0", "SUPPLEMENTED", "EXCLUDED"),
     ("P1G0", "NATURAL", "EXCLUDED"),
@@ -117,13 +117,7 @@ def _validate_config(config: dict) -> dict:
     flowers_per_plant = _positive_int(
         config.get("flowers_per_plant"), "flowers_per_plant"
     )
-    if flowers_per_plant > 20:
-        raise ValueError("flowers_per_plant cannot exceed 20")
     total = n_plants * flowers_per_plant
-    if total % 20 != 0:
-        raise ValueError(
-            "planned_n_plants x flowers_per_plant must be divisible by 20"
-        )
 
     z_rows = config.get("z_levels")
     if not isinstance(z_rows, list) or len(z_rows) < 5:
@@ -169,6 +163,17 @@ def _validate_config(config: dict) -> dict:
     ):
         raise ValueError("assigned_z_rank must form contiguous 0..k-1 ranks")
 
+    n_surface_cells = len(normalized_z) * len(STATE_PLAN)
+    if flowers_per_plant > n_surface_cells:
+        raise ValueError(
+            "flowers_per_plant cannot exceed the number of z x P x G cells"
+        )
+    if total % n_surface_cells != 0:
+        raise ValueError(
+            "planned_n_plants x flowers_per_plant must be divisible by the "
+            "number of z x P x G cells"
+        )
+
     excluded_method = _resolved_text(
         config.get("excluded_method_code"), "excluded_method_code"
     )
@@ -185,7 +190,8 @@ def _validate_config(config: dict) -> dict:
         "season_id": season_id,
         "planned_n_plants": n_plants,
         "flowers_per_plant": flowers_per_plant,
-        "replicates_per_cell": total // 20,
+        "n_surface_cells": n_surface_cells,
+        "replicates_per_cell": total // n_surface_cells,
         "z_levels": normalized_z,
         "excluded_method_code": excluded_method,
         "exposed_method_code": exposed_method,
@@ -452,7 +458,7 @@ def build(
 
     expected_per_cell = config["replicates_per_cell"]
     if set(cell_counts) != {cell["cell_id"] for cell in cells}:
-        raise ValueError("not all 20 full-surface cells were allocated")
+        raise ValueError("not all full-surface z x P x G cells were allocated")
     if set(cell_counts.values()) != {expected_per_cell}:
         raise ValueError("full-surface allocation is not exactly cell-balanced")
 
@@ -473,7 +479,7 @@ def build(
         "n_plants": config["planned_n_plants"],
         "flowers_per_plant": config["flowers_per_plant"],
         "n_allocated_flowers": len(allocations),
-        "n_surface_cells": len(cells),
+        "n_surface_cells": config["n_surface_cells"],
         "replicates_per_cell": expected_per_cell,
         "exact_cell_balance": True,
         "cell_counts": dict(sorted(cell_counts.items())),
@@ -501,7 +507,7 @@ def build(
             "field_allocation_only",
             "power_design_to_field_execution_binding",
             "treatment_blind_flower_registration_before_assignment",
-            "exact_global_20_cell_balance",
+            "exact_global_z_by_P_by_G_cell_balance",
             "no_duplicate_cell_within_plant",
             "does_not_choose_sample_size",
             "does_not_choose_z_levels",
