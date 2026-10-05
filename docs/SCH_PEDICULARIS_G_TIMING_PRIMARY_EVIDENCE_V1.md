@@ -121,6 +121,42 @@ T_poll < barrier time < min(T_attack, T_swell)
 for enough focal flowers to support the registered method-reliability
 requirement.
 
+This also defines a focal ecological quantity that is useful before any device
+is chosen:
+
+```text
+Delta_T = min(T_attack, T_swell) - T_poll
+```
+
+Interpretation:
+
+```text
+Delta_T > 0
+  mutualistic service can finish before antagonist commitment / swelling;
+  a temporally separable interaction window exists.
+
+Delta_T <= 0
+  the pollination and antagonist windows overlap too strongly for a clean
+  late-barrier separation on that flower/block.
+```
+
+The first biological readout should be the distribution of `Delta_T` and the
+frequency of positive gaps across plants/flowers, not a post-hoc choice of one
+convenient application hour. Only after that nonconfirmatory readout may the
+registered lower/upper barrier bounds be prospectively frozen.
+
+This result has two distinct interpretations. A consistently positive gap would
+show **temporal separability of an otherwise conflicting multifunctional
+interaction in focal P. rex**. A zero/negative gap would show **temporal
+entanglement**: pollinator service and seed-predator commitment cannot be cleanly
+separated by waiting until pollination is over. Either outcome is biological;
+only the former licenses the current late-barrier G route.
+
+The current comparative ledger cannot tell us whether temporal separability is
+a general predictor of conflict geometry: almost all fixed-role canonical axes
+are coded simultaneous/overlapping. Therefore `Delta_T` is a focal mechanistic
+estimand, not a cross-system SCH law.
+
 The pilot should therefore estimate these event-time distributions rather than
 start by choosing an arbitrary number of hours.
 
