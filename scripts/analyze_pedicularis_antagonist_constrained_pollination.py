@@ -201,8 +201,8 @@ def build(
         raise ValueError("surface receipt lacks shift_remove_antagonist_95_ci")
 
     observed = surface_receipt.get("observed_estimands", {})
-    z_p = float(observed["z_pollinator_context"])
-    z_c = float(observed["z_combined"])
+    z_predator_free_state = float(observed["z_pollinator_context"])
+    z_combined_state = float(observed["z_combined"])
     observed_shift = float(observed["shift_remove_antagonist"])
 
     optimum_shift_up = float(shift_ci[0]) > 0
@@ -215,15 +215,33 @@ def build(
         for state in diagnostics
     )
 
-    contemporary_chain = optimum_shift_up and pollen_positive_both
+    pollen_cost_chain = optimum_shift_up and pollen_positive_both
+    initial_seed_cost_chain = pollen_cost_chain and initial_seed_positive_both
+
+    if initial_seed_cost_chain:
+        status = (
+            "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_"
+            "POLLEN_AND_INITIAL_SEED_COST_SUPPORTED"
+        )
+    elif pollen_cost_chain:
+        status = (
+            "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_"
+            "POLLEN_COST_SUPPORTED"
+        )
+    else:
+        status = "CONTEMPORARY_ANTAGONIST_POLLINATION_COST_CHAIN_NOT_RECOVERED"
 
     return {
         "analysis": "pedicularis_antagonist_constrained_pollination_surface_v1",
         "population_id": population_id,
         "season_id": season_id,
         "surface_status": surface_receipt["status"],
-        "z_pollinator_context": z_p,
-        "z_combined": z_c,
+        "z_predator_free_natural_pollination_state_optimum": z_predator_free_state,
+        "z_predator_exposed_natural_pollination_state_optimum": z_combined_state,
+        "state_optimum_semantics": (
+            "reproductive_state_optima_not_pure_function_optima"
+        ),
+        "pollinator_favored_optimum_identified": False,
         "observed_shift_remove_antagonist": observed_shift,
         "shift_remove_antagonist_95_ci": [
             float(shift_ci[0]),
@@ -233,18 +251,20 @@ def build(
         "natural_pollination_secondary_slopes": diagnostics,
         "higher_z_increases_pollen_receipt_in_both_G_states": pollen_positive_both,
         "higher_z_increases_initial_seed_set_in_both_G_states": initial_seed_positive_both,
-        "contemporary_antagonist_constrained_pollination_chain_supported": contemporary_chain,
+        "antagonist_shift_away_from_higher_pollen_receipt_supported": pollen_cost_chain,
+        "antagonist_shift_away_from_higher_initial_seed_set_supported": (
+            initial_seed_cost_chain
+        ),
+        "antagonist_contribution_to_pollen_limitation_identified": False,
         "adaptive_pollen_limitation_supported": False,
         "evolutionary_maintenance_identified": False,
         "cue_identity_identified": False,
-        "status": (
-            "CONTEMPORARY_ANTAGONIST_CONSTRAINED_POLLINATION_SUPPORTED"
-            if contemporary_chain
-            else "CONTEMPORARY_ANTAGONIST_CONSTRAINED_POLLINATION_NOT_RECOVERED"
-        ),
+        "status": status,
         "claim_ceiling": [
-            "contemporary_causal_trait_optimum_shift_plus_randomized_z_pollination_response",
+            "contemporary_state_optimum_shift_plus_randomized_z_pollination_response",
+            "predator_free_state_optimum_is_not_a_pure_pollinator_optimum",
             "does_not_show_G_directly_changes_pollen_at_fixed_z",
+            "does_not_identify_antagonist_maintenance_of_pollen_limitation",
             "does_not_identify_historical_adaptation",
             "does_not_identify_genetic_response",
             "does_not_identify_predator_cue",
@@ -256,8 +276,8 @@ def build(
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Diagnose whether a positive P. rex causal surface supports the "
-            "contemporary antagonist-constrained pollination mechanism"
+            "Diagnose whether predator exposure shifts the P. rex reproductive "
+            "state optimum away from trait states with greater pollination performance"
         )
     )
     parser.add_argument("surface_csv", type=Path)
