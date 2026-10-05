@@ -53,7 +53,7 @@ first floral trait trade-off between pollination and defence.
 
 ## Consumer-factorial experiments are also not new
 
-Two particularly close precedents already manipulate both ecological agents.
+Three particularly close precedents already manipulate both ecological agents.
 
 ### Gymnadenia conopsea
 
