@@ -106,6 +106,14 @@ def build_package(
     g_timing_config = gtiming._read_json(g_timing_config_path)
     g_timing_rows = gtiming._read_csv(g_timing_path)
     g_timing_summary = gtiming.build(g_timing_config, g_timing_rows)
+    if g_timing_summary["pollination_complete_observation_hours"] is None:
+        raise ValueError(
+            "G event-time calibration has no observed pollination-complete sentinels"
+        )
+    if g_timing_summary["first_constraint_positive_observation_hours"] is None:
+        raise ValueError(
+            "G event-time calibration has no observed attack/swelling constraint onset"
+        )
 
     datasets = {
         "repeatability": repeatability_rows,
