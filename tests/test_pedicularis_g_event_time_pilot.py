@@ -133,6 +133,11 @@ def test_event_time_pilot_describes_biology_without_selecting_window() -> None:
     assert gap["ordering_state"] == (
         "MEDIAN_TEMPORAL_SEPARATION_SUPPORTED_ON_SAMPLED_GRID"
     )
+    assert gap["method_development_route_implication"] == (
+        "POSTPOLLINATION_BARRIER_ROUTE_BIOLOGICALLY_PLAUSIBLE_"
+        "AT_MEDIAN_SCALE"
+    )
+    assert gap["candidate_selected"] is False
     assert gap["exact_individual_delta_t_estimated"] is False
 
 
@@ -274,6 +279,11 @@ def test_median_gap_descriptor_can_detect_temporal_entanglement_on_grid() -> Non
     assert gap["ordering_state"] == (
         "MEDIAN_TEMPORAL_ENTANGLEMENT_SUPPORTED_ON_SAMPLED_GRID"
     )
+    assert gap["method_development_route_implication"] == (
+        "LATE_BARRIER_ROUTE_NOT_SUPPORTED_AT_MEDIAN_SCALE_"
+        "TEST_OVERLAP_COMPATIBLE_LOCAL_BARRIER"
+    )
+    assert gap["candidate_selected"] is False
 
 
 def test_delta_t50_remains_exploratory_and_does_not_select_barrier_hours() -> None:
