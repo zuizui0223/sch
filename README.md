@@ -312,6 +312,14 @@ threshold. This allows mechanically invalid barrier designs to be retired
 before confirmatory G planning. Run
 `python scripts/screen_pedicularis_g_exploratory_methods.py <g_v4.csv>`.
 
+The exploratory device space is bounded before field data. First-tier candidates
+are a post-pollination fine-mesh lower-fruit sleeve and a soft porous/dialysis-
+style sleeve; a lower-corolla local sleeve is second-tier when pollination and
+oviposition timing overlap. Whole-flower mesh and chemical routes are fallbacks.
+This is a candidate-priority matrix only: the two first-tier methods remain tied
+until focal V4 rows pass the hard-validity screen. Run
+`python scripts/audit_pedicularis_g_exploratory_candidates.py`.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
