@@ -46,7 +46,7 @@ def _power() -> dict:
             "realized_z_sd": 0.1,
             "field_design": {
                 "flowers_per_plant": 4,
-                "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL",
+                "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1",
             },
         },
         "candidate_results": [
@@ -230,3 +230,51 @@ def test_power_context_must_match_allocation_context() -> None:
 
     with pytest.raises(ValueError, match="power and allocation season_id"):
         build(_manifest(), _config(), power, "SEED")
+
+
+def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
+    config = _config()
+    config["planned_n_plants"] = 8
+    config["flowers_per_plant"] = 6
+    config["z_levels"] = [
+        {
+            "assigned_z_level": f"Z{i}",
+            "assigned_z_rank": i,
+            "target_exsertion": value,
+        }
+        for i, value in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0, 3.0))
+    ]
+    power = _power()
+    power["powered_design"]["nominal_z_levels"] = [
+        -2.0, -1.0, 0.0, 1.0, 2.0, 3.0
+    ]
+    power["powered_design"]["field_design"]["flowers_per_plant"] = 6
+    power["powered_design"]["field_design"]["n_surface_cells"] = 24
+    power["candidate_results"] = [
+        {
+            "plants": 8,
+            "flowers_per_plant": 6,
+            "flowers_per_treatment_cell": 2,
+            "total_full_surface_flowers": 48,
+            "primary_surface_power": 0.90,
+            "headline_W1_or_W2_power": 0.85,
+        }
+    ]
+    manifest = [
+        {
+            "population_id": "P_REX_TEST",
+            "season_id": "S1",
+            "plant_id": f"P{plant:02d}",
+            "flower_id": f"P{plant:02d}_F{flower:02d}",
+        }
+        for plant in range(8)
+        for flower in range(6)
+    ]
+
+    allocations, receipt = build(manifest, config, power, "SEED-24")
+
+    assert len(allocations) == 48
+    assert receipt["n_surface_cells"] == 24
+    assert receipt["replicates_per_cell"] == 2
+    assert len(receipt["cell_counts"]) == 24
+    assert set(receipt["cell_counts"].values()) == {2}
