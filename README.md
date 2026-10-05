@@ -415,9 +415,12 @@ width and stigmatic pollen load plus population; the source itself highlights
 the unexpectedly higher predation of better-pollinated flowers. This is treated
 as observational pollination-success/antagonist-risk coupling, not evidence that
 pollen is the predator cue. Combined with focal pollen limitation, it motivates
-a post-surface test of whether seed predators constrain exsertion below the
-pollinator-favoured state. The four-criterion adaptive-pollen-limitation map is
-fail-closed at 1/4 fully supported criteria until the causal surface is run.
+a post-surface test of whether seed predators shift the NATURAL-pollination
+reproductive optimum toward lower exsertion, away from trait states with higher
+pollen receipt. That is a state-optimum/pollination-performance result, not a
+pure pollinator optimum and not yet evidence that antagonists maintain pollen
+limitation. The four-criterion adaptive-pollen-limitation map remains fail-closed
+at 1/4 fully supported criteria.
 See `SCH_PEDICULARIS_ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION_V1.md`.
 
 The next primary objective is to close one same-system causal chain. The active
