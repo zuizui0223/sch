@@ -192,10 +192,27 @@ def _median_gap_descriptor(
     else:
         state = "MEDIAN_TEMPORAL_ORDERING_UNRESOLVED_ON_SAMPLED_GRID"
 
+    if state == "MEDIAN_TEMPORAL_SEPARATION_SUPPORTED_ON_SAMPLED_GRID":
+        route_implication = (
+            "POSTPOLLINATION_BARRIER_ROUTE_BIOLOGICALLY_PLAUSIBLE_"
+            "AT_MEDIAN_SCALE"
+        )
+    elif state == "MEDIAN_TEMPORAL_ENTANGLEMENT_SUPPORTED_ON_SAMPLED_GRID":
+        route_implication = (
+            "LATE_BARRIER_ROUTE_NOT_SUPPORTED_AT_MEDIAN_SCALE_"
+            "TEST_OVERLAP_COMPATIBLE_LOCAL_BARRIER"
+        )
+    else:
+        route_implication = (
+            "TEMPORAL_ROUTE_UNRESOLVED_REFINE_EVENT_TIME_SCHEDULE"
+        )
+
     return {
         "delta_t50_lower_bound_hours": lower_gap,
         "delta_t50_upper_bound_hours": upper_gap,
         "ordering_state": state,
+        "method_development_route_implication": route_implication,
+        "candidate_selected": False,
         "definition": (
             "Delta_T50 = median onset of first attack-or-swelling constraint "
             "minus median pollination-completion time, each bracketed on the "
@@ -617,6 +634,7 @@ def build(config: dict, rows: list[dict[str, str]]) -> dict:
             "pollination_completion_hours_are_cross_sectional_observation_times",
             "attack_and_swelling_onsets_are_interval_censored",
             "delta_t50_is_a_schedule_grid_median_descriptor_not_an_exact_individual_gap",
+            "route_implication_is_predeclared_method_development_triage_not_candidate_selection",
             "does_not_use_barrier_application_time_as_natural_window",
             "does_not_select_minimum_or_maximum_barrier_hour",
             "does_not_validate_G",
