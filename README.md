@@ -247,13 +247,24 @@ field calibration is the primary path. Run
 `python scripts/audit_pedicularis_primary_binary_frontier.py`.
 
 Concrete retrieval attempts are now frozen separately. Jing2013 remains
-treatment-identity unresolved after Springer/author-copy/index routes; Wang1998
-is a listed 611-KB PDF not retrievable through the current JIPB route; Tang2011
-now has its full English abstract recovered (11-plot visitation, predator
-behavior/preference and phenotypic-selection analyses) but no predator
-exclusion manipulation is described; and Dryad file `46101` is publicly
-identified but the current file-download API requires authentication. Run
-`python scripts/audit_pedicularis_primary_binary_retrieval_attempts.py`.
+treatment-identity unresolved after Springer/author-copy/index routes; the live
+Springer primary page exposes the abstract but not Methods. Wang1998 has now
+advanced from a generic "611-KB PDF listed" state to an exact publisher PDF URL:
+
+```text
+https://www.jipb.net/EN/article/downloadArticleFile.do?attachType=PDF&id=25287
+```
+
+but direct public GET still returns HTTP 403 in the current fetch environment.
+Tang2011's live Globethesis URL now redirects to a suspended-account page with
+no binary links; its full English abstract remains the strongest accessible
+content and describes no predator exclusion. Dryad file `46101` is publicly
+identified but the current file-download API requires authentication.
+
+Accordingly, abstract/index search is stopped for Jing2013, PDF-URL discovery is
+stopped for Wang1998, and Globethesis retries are stopped for Tang2011. Only
+legitimate primary/library/repository binary access can change those states.
+Run `python scripts/audit_pedicularis_primary_binary_retrieval_attempts.py`.
 
 Primary-binary interpretation is now fail-closed as well. If Jing2013,
 Wang1998 or Tang2011 is ever retrieved, its Methods/Table facts must be entered
