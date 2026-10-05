@@ -62,6 +62,41 @@ randomize flower-to-level assignment within plant.
 
 The evaluator does not infer this ordering from observed outcomes.
 
+### Treatment-blind field allocation
+
+Do not type flower IDs directly into treatment-labelled Stage-P0 rows before
+randomization. Freeze the intended level plan separately in:
+
+```text
+empirical/architecture/PEDICULARIS_P0_LEVEL_PLAN_TEMPLATE_V1.csv
+```
+
+and register treatment-blind flowers in:
+
+```text
+empirical/architecture/PEDICULARIS_P0_FLOWER_MANIFEST_TEMPLATE_V1.csv
+```
+
+Then run:
+
+```bash
+python scripts/build_pedicularis_p0_randomized_assignment.py \\
+  <flower_manifest.csv> <level_plan.csv> \\
+  --allocation-seed <precommitted_seed> \\
+  --allocations-out <p0_allocations.csv> \\
+  --receipt-out <p0_allocation_receipt.json>
+```
+
+The level plan owns the prospectively specified z labels, ranks and single sham
+rank. The builder never chooses manipulation strengths, sample size or gate
+thresholds. It only randomizes treatment-blind flower IDs within each plant to
+the frozen level plan using reproducible SHA-256 ranking. Every included plant
+must contribute exactly one flower per planned z level.
+
+Merge measured Stage-P0 fields onto that allocation by `flower_id` before
+running the evaluator. Do not replace or relabel flowers after allocation is
+revealed.
+
 ## Required fields
 
 ```text

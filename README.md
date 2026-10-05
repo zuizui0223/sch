@@ -364,6 +364,14 @@ shared sham on every plant, those examples correspond to 29 or 59 distinct
 plants (87 or 177 total flowers), not 58 or 118 distinct plants. Run
 `python scripts/plan_pedicularis_g_hard_validity_pilot.py`.
 
+Stage-P0 uses the same treatment-blind allocation discipline. Freeze the
+ordered z-level/sham plan separately, register flower IDs without treatment
+labels, then run `build_pedicularis_p0_randomized_assignment.py` with a
+precommitted seed. Every plant supplies one flower per planned z level; the
+builder randomizes flower-to-level assignment within plant but does not choose
+manipulation strengths, plant count or thresholds. This makes the implemented
+field allocation match the registered P0 design.
+
 The next primary objective is to close one same-system causal chain. The active
 Pedicularis route is:
 
