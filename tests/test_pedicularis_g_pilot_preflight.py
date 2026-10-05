@@ -218,7 +218,8 @@ def test_preflight_rejects_receipt_digest_or_unready_plan() -> None:
 def test_preflight_rejects_unresolved_allocation_context() -> None:
     rows = _allocation_rows(3)
     receipt = _receipt(3)
-    rows[0]["population_id"] = ""
+    for row in rows:
+        row["population_id"] = ""
     with pytest.raises(ValueError, match="population_id and season_id"):
         build(
             _plan(3),
