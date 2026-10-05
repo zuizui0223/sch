@@ -119,6 +119,21 @@ def test_event_time_pilot_describes_biology_without_selecting_window() -> None:
     assert profile[12.0]["pollination_complete_rate"] == pytest.approx(1.0)
     assert profile[12.0]["attack_free_rate"] == pytest.approx(0.5)
     assert profile[12.0]["ovary_not_swollen_rate"] == pytest.approx(0.5)
+    assert profile[12.0]["constraint_present_rate"] == pytest.approx(1.0)
+
+    poll = result["median_pollination_completion_interval_hours"]
+    constraint = result["median_constraint_onset_interval_hours"]
+    gap = result["median_temporal_separability_descriptor"]
+    assert poll["lower_bound_hours"] == pytest.approx(4.0)
+    assert poll["upper_bound_hours"] == pytest.approx(8.0)
+    assert constraint["lower_bound_hours"] == pytest.approx(8.0)
+    assert constraint["upper_bound_hours"] == pytest.approx(12.0)
+    assert gap["delta_t50_lower_bound_hours"] == pytest.approx(0.0)
+    assert gap["delta_t50_upper_bound_hours"] == pytest.approx(8.0)
+    assert gap["ordering_state"] == (
+        "MEDIAN_TEMPORAL_SEPARATION_SUPPORTED_ON_SAMPLED_GRID"
+    )
+    assert gap["exact_individual_delta_t_estimated"] is False
 
 
 def test_event_onsets_are_interval_censored_not_exact_event_times() -> None:
@@ -220,3 +235,52 @@ def test_context_and_minimum_time_coverage_fail_closed() -> None:
     ]
     with pytest.raises(ValueError, match=">=2 pollination sentinel time points"):
         build(_config(), rows)
+
+
+def test_median_gap_descriptor_can_detect_temporal_entanglement_on_grid() -> None:
+    rows = _rows()
+
+    for row in rows:
+        if (
+            row["flower_role"] == "POLLINATION_SENTINEL"
+            and row["observation_time_hours"] == "8"
+        ):
+            row["pollination_complete"] = "0"
+
+    p01_at_8 = next(
+        row
+        for row in rows
+        if row["flower_id"] == "P01_N"
+        and row["observation_time_hours"] == "8"
+    )
+    p01_at_8["attack_present"] = "1"
+
+    result = build(_config(), rows)
+    gap = result["median_temporal_separability_descriptor"]
+
+    assert result["median_pollination_completion_interval_hours"][
+        "lower_bound_hours"
+    ] == pytest.approx(8.0)
+    assert result["median_pollination_completion_interval_hours"][
+        "upper_bound_hours"
+    ] == pytest.approx(12.0)
+    assert result["median_constraint_onset_interval_hours"][
+        "lower_bound_hours"
+    ] == pytest.approx(4.0)
+    assert result["median_constraint_onset_interval_hours"][
+        "upper_bound_hours"
+    ] == pytest.approx(8.0)
+    assert gap["delta_t50_upper_bound_hours"] == pytest.approx(0.0)
+    assert gap["ordering_state"] == (
+        "MEDIAN_TEMPORAL_ENTANGLEMENT_SUPPORTED_ON_SAMPLED_GRID"
+    )
+
+
+def test_delta_t50_remains_exploratory_and_does_not_select_barrier_hours() -> None:
+    result = build(_config(), _rows())
+    assert result["temporal_separability_inferred"] is False
+    assert result["timing_window_selected"] is False
+    assert (
+        "delta_t50_is_a_schedule_grid_median_descriptor_not_an_exact_individual_gap"
+        in result["claim_ceiling"]
+    )
