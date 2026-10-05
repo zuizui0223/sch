@@ -372,6 +372,13 @@ shared sham on every plant, those examples correspond to 29 or 59 distinct
 plants (87 or 177 total flowers), not 58 or 118 distinct plants. Run
 `python scripts/plan_pedicularis_g_hard_validity_pilot.py`.
 
+Before field collection starts, bind the hard-validity plan, randomized
+allocation, allocation receipt and V4 identity lock with
+`audit_pedicularis_g_pilot_preflight.py`. The preflight requires one
+population/season, verifies the allocation/receipt/seed/identity digests, and
+checks that the actual number of distinct plants meets the prospectively frozen
+hard-validity plan. An under-sized packet remains explicitly not field-ready.
+
 Stage-P0 uses the same treatment-blind allocation discipline. Freeze the
 ordered z-level/sham plan separately, register flower IDs without treatment
 labels, then run `build_pedicularis_p0_randomized_assignment.py` with a
