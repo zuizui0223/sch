@@ -52,8 +52,12 @@ This remains an expectation until causal multi-level manipulation is completed.
 The observational programme suggests a stronger downstream hypothesis than
 generic compromise:
 
-> seed predators constrain exsertion below the pollinator-favoured state,
-> thereby contributing to maintenance of pollen limitation.
+> seed predators may shift the natural-pollination reproductive optimum toward
+> lower exsertion, away from trait states with greater pollen receipt.
+
+Whether that contemporary shift contributes to the observed pollen limitation
+is a stricter downstream question and is not identified by the state-optimum
+shift alone.
 
 This is a partial match to the antagonist-induced adaptive pollen-limitation
 framework of Fitch & Vandermeer (2021), not a completed example of that
@@ -62,11 +66,14 @@ mechanism.
 The causal surface gives a direct contemporary prediction:
 
 ```text
-z_P* = optimum under NATURAL pollination + predator EXCLUDED
-z_C* = optimum under NATURAL pollination + predator EXPOSED
+z_P* = state-specific reproductive optimum under NATURAL pollination + predator EXCLUDED
+z_C* = state-specific reproductive optimum under NATURAL pollination + predator EXPOSED
 
 prediction:
 z_P* > z_C*
+
+This is an antagonist-induced shift between reproductive states. It does not
+make z_P* a pure pollinator optimum.
 ```
 
 and the randomized z manipulation should independently show:
@@ -87,9 +94,11 @@ After a positive primary causal-compromise surface, run:
 scripts/analyze_pedicularis_antagonist_constrained_pollination.py
 ```
 
-A positive secondary receipt supports a contemporary antagonist-constrained
-pollination mechanism only. It does not establish historical adaptation,
-heritability, genetic response, cue identity, or adaptive pollen limitation.
+A positive secondary receipt supports a contemporary antagonist-induced
+downward shift away from trait states with greater pollination performance.
+It does not establish a pure pollinator optimum, antagonist maintenance of
+pollen limitation, historical adaptation, heritability, genetic response, cue
+identity, or adaptive pollen limitation.
 
 ## Stage CAL-A/B/C — nonconfirmatory threshold-basis programme
 

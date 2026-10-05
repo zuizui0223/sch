@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 from collections import defaultdict
@@ -100,6 +101,27 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         if undamaged + damaged > ovules:
             raise ValueError("undamaged_seed_count + damaged_seed_count cannot exceed ovule_count")
     return rows
+
+
+def surface_data_sha256(rows: list[dict[str, str]]) -> str:
+    canonical = [
+        {field: row[field].strip() for field in RAW_FIELDS}
+        for row in rows
+    ]
+    canonical.sort(
+        key=lambda row: (
+            row["population_id"],
+            row["season_id"],
+            row["plant_id"],
+            row["flower_id"],
+        )
+    )
+    payload = json.dumps(
+        canonical,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _context(rows: list[dict[str, str]]) -> tuple[str, str]:
@@ -220,6 +242,8 @@ def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     result = analyze_sch_surface(to_sch_rows(rows), sch_config)
     result["system_wrapper_schema_version"] = SYSTEM_WRAPPER_SCHEMA
     result["system"] = "Pedicularis rex"
+    result["surface_data_sha256"] = surface_data_sha256(rows)
+    result["surface_data_n_rows"] = len(rows)
     result["population_id"] = population
     result["season_id"] = season
     result["pedicularis_state_mapping"] = {

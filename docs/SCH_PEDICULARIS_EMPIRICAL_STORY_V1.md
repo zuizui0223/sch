@@ -1,0 +1,249 @@
+# Pedicularis rex empirical story v1
+
+## One biological question
+
+> **Do seed predators displace the reproductive optimum of floral exsertion
+> toward lower values, away from trait states that deliver greater pollination
+> performance?**
+
+This is the focal biological paper that becomes available if the registered
+P. rex execution chain is completed.
+
+It is not a paper about how to qualify a barrier, estimate a threshold, or
+calculate a generic conflict index. Those are enabling steps.
+
+## Why P. rex is unusually informative
+
+The existing natural-history programme already supplies three independent
+pieces of biological motivation.
+
+### 1. One floral coordinate is pulled in opposite directions
+
+Greater corolla exsertion above the water-bearing bract predicts greater
+stigmatic pollen receipt, while the same exposed floral geometry increases
+pre-dispersal seed-predator risk.
+
+Thus the system already has a real pollinator-antagonist conflict signature.
+
+### 2. Pollination success and antagonist risk are coupled
+
+In the seven populations with linked plant-level morphology, pollen and
+seed-outcome data, the 2016 best seed-predation model retained positive
+exsertion, lower-lip width and pollen-load terms plus population.
+
+The admissible observation is:
+
+```text
+flowers/plants with greater pollen receipt
+also tend to incur greater later seed-predation risk.
+```
+
+This does not show that pollen is the predator cue.
+
+### 3. The two functions may be separable in time
+
+Pollination occurs during the open-flower phase. Predator oviposition occurs
+after flowers open and before ovary swelling.
+
+The event-time pilot therefore asks whether a natural interval exists between
+pollination completion and antagonist commitment:
+
+```text
+Delta_T = min(T_attack, T_swell) - T_poll.
+```
+
+A positive interval makes selective late antagonist removal biologically
+possible. A non-positive interval indicates temporal entanglement and redirects
+method development.
+
+Delta_T is an enabling ecological mechanism, not the main paper endpoint.
+
+## Primary causal hypothesis
+
+The registered full surface gives two directly identified state-specific
+reproductive optima under natural pollination:
+
+```text
+z_P* = predator excluded
+z_C* = predator exposed.
+```
+
+The primary directional prediction is:
+
+```text
+z_P* > z_C*.
+```
+
+In words:
+
+> removing seed predators should move the reproductive optimum toward greater
+> floral exsertion.
+
+This is **enemy-induced optimum displacement**.
+
+The claim remains on the reproductive-state scale. `z_P*` is not renamed a
+pure pollinator optimum.
+
+## Pollination-performance consequence
+
+Randomized multi-level exsertion is measured with pollen receipt in both
+predator states.
+
+The nested prediction is:
+
+```text
+higher randomized z
+-> greater pollen receipt.
+```
+
+Therefore, if both predictions hold:
+
+```text
+predator exposure
+-> lower state-specific optimum
+
+and
+
+lower z
+-> lower pollen receipt.
+```
+
+The biological conclusion is:
+
+> seed-predator pressure displaces the realized reproductive optimum away from
+> trait states that provide greater pollination performance.
+
+This is stronger and more ecological than the generic statement that
+pollinators and enemies exert opposing selection.
+
+## Stronger reproductive tier
+
+Initial seed set is analyzed separately.
+
+If greater randomized exsertion also increases initial seed set in both G
+states, then the antagonist-induced downward optimum shift has a
+pre-predation reproductive cost as well as a pollen-receipt cost.
+
+This gives a two-tier result:
+
+```text
+Tier 1
+enemy-induced optimum displacement
++ pollen-receipt cost
+
+Tier 2
+enemy-induced optimum displacement
++ pollen-receipt cost
++ initial-seed-set cost.
+```
+
+Tier 2 is stronger, but neither tier by itself proves that seed predators
+historically maintain pollen limitation.
+
+## What would be genuinely surprising
+
+The interesting result is not simply that mutualists and antagonists disagree.
+That is already known observationally.
+
+The sharper result would be:
+
+```text
+the trait value maximizing reproduction changes when the enemy is removed,
+and the enemy-present optimum lies in a region that performs worse for
+pollination.
+```
+
+That connects antagonism to an actual displacement of the adaptive surface,
+rather than to two separate selection coefficients.
+
+## Natural-phenotype check
+
+The sham/natural exsertion level provides a descriptive check:
+
+```text
+is the realized natural phenotype closer to z_C* than z_P*?
+```
+
+If yes, the observed phenotype is consistent with the current
+mutualist-antagonist reproductive state rather than the predator-free state.
+
+This is not evidence of historical adaptation or heritable evolutionary
+response.
+
+## Success-risk coupling as a secondary mechanism
+
+After randomized z is controlled, the experiment can ask whether stronger
+pollination performance still predicts antagonist risk.
+
+If the pollen-risk association persists, it supports a success-risk coupling
+that is not explained solely by exsertion.
+
+It still does not identify the predator cue. Floral odour, phenology, reward,
+plant quality or another correlated state would require a separate assay.
+
+## Falsifiers
+
+The focal hypothesis is rejected for the tested population/season if any core
+link fails:
+
+```text
+predator removal does not shift the reproductive state optimum upward;
+
+or
+
+higher randomized exsertion does not increase pollen receipt.
+```
+
+A stronger seed-set version is rejected if higher z does not increase initial
+seed set.
+
+These negative outcomes do not erase the broader SCH conflict result. They
+show that observed opposing selection does not translate into the proposed
+enemy-induced pollination-performance cost in that context.
+
+## Claim ladder
+
+```text
+existing evidence
+shared exsertion conflict                         RECOVERED
+geographic antagonist-weight variation            RECOVERED
+pollination-success / predation-risk coupling      OBSERVATIONAL
+
+natural timing pilot
+temporal separability Delta_T                      TO TEST
+
+full causal surface
+enemy-induced state-optimum displacement           TO TEST
+higher z -> pollen receipt                         TO TEST
+higher z -> initial seed set                       TO TEST
+
+secondary
+success-risk coupling after randomized z control   TO TEST
+
+not identified by the above
+pure pollinator optimum                            NO
+antagonist maintenance of pollen limitation        NO
+historical adaptation                              NO
+predator cue identity                              NO
+adaptive pollen limitation                         NO
+```
+
+## Paper spine
+
+The empirical paper can therefore be written around one biological sentence:
+
+> **A floral enemy can shift the reproductive optimum of a multifunctional
+> trait away from phenotypes that perform better for pollination.**
+
+The supporting sequence is:
+
+```text
+natural conflict and success-risk coupling
+-> temporal qualification of selective enemy removal
+-> randomized exsertion x pollination x predator surface
+-> enemy-induced optimum displacement
+-> pollination-performance cost of that displacement.
+```
+
+The methodological machinery remains in Methods and validation supplements.
+The ecological result stays in the title, abstract, Results and Discussion.

@@ -6,7 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from scripts.analyze_pedicularis_full_surface import RAW_FIELDS, analyze, to_sch_rows
+from scripts.analyze_pedicularis_full_surface import (
+    RAW_FIELDS,
+    analyze,
+    surface_data_sha256,
+    to_sch_rows,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +123,8 @@ def test_v2_mapping_recovers_non_circular_pedicularis_compromise_surface() -> No
     result = analyze(_rows(), _readiness(), _config())
     assert result["status"] == "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
     assert result["system_wrapper_schema_version"] == "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2"
+    assert result["surface_data_sha256"] == surface_data_sha256(_rows())
+    assert result["surface_data_n_rows"] == len(_rows())
     mapping = result["pedicularis_state_mapping"]
     assert mapping["G0"] == "SEED_PREDATOR_INDEPENDENTLY_EXCLUDED"
     assert mapping["G1"] == "SEED_PREDATOR_EXPOSED"

@@ -92,6 +92,22 @@ theory / identification mechanism
 
 The literature synthesis is the primary empirical reality layer. The focal multi-level crossed experiment is a residual-identification programme for quantities the literature structurally does not recover; it is not the premise required to publish the Viewpoint.
 
+## Focal empirical upgrade
+
+The current New Phytologist Viewpoint remains independently submission-ready.
+If the registered P. rex causal chain is executed, it supports a separate
+biology-first empirical upgrade whose headline question is:
+
+> Do seed predators displace the reproductive optimum of floral exsertion
+> toward lower values, away from trait states that deliver greater pollination
+> performance?
+
+The primary empirical objects are the predator-free versus predator-exposed
+**state-specific reproductive optima** and the randomized z-to-pollen response.
+The predator-free state optimum is not a pure pollinator optimum by default.
+Temporal-separability and method-qualification work are enabling gates, not the
+headline result. See `docs/SCH_PEDICULARIS_EMPIRICAL_STORY_V1.md`.
+
 ## Parallel macroecology extension
 
 The Viewpoint package remains frozen and submission-ready, while SCH carries an active comparative macroecology programme.

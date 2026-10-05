@@ -86,3 +86,17 @@ def test_source_model_details_are_locked() -> None:
     assert "pollen*" in coupling["focal_evidence"]
     assert "population***" in coupling["focal_evidence"]
     assert "AICc -156.11" in coupling["focal_evidence"]
+
+
+def test_aipl_audit_does_not_promote_state_optimum_or_pollen_limitation_maintenance() -> None:
+    result = build(_read(DEFAULT_LEDGER))
+
+    assert result["pollinator_favored_optimum_identified"] is False
+    assert result[
+        "antagonist_maintenance_of_pollen_limitation_identified"
+    ] is False
+    assert "remains unresolved" in result["focal_hypothesis"]
+    assert (
+        "do_not_relabel_state_specific_optimum_as_pure_pollinator_optimum"
+        in result["claim_ceiling"]
+    )

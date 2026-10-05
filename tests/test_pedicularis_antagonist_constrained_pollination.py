@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from scripts import analyze_pedicularis_full_surface as full_surface
 from scripts.analyze_pedicularis_antagonist_constrained_pollination import build
 
 
@@ -46,7 +47,8 @@ def _rows() -> list[dict[str, str]]:
     return rows
 
 
-def _surface_receipt() -> dict:
+def _surface_receipt(rows: list[dict[str, str]] | None = None) -> dict:
+    bound_rows = _rows() if rows is None else rows
     return {
         "receipt_schema_version": "SCH_CAUSAL_COMPROMISE_STATE_OPTIMA_V1",
         "system_wrapper_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2",
@@ -54,6 +56,8 @@ def _surface_receipt() -> dict:
         "population_id": "P_REX_TEST",
         "season_id": "S1",
         "status": "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE",
+        "surface_data_sha256": full_surface.surface_data_sha256(bound_rows),
+        "surface_data_n_rows": len(bound_rows),
         "observed_estimands": {
             "z_pollinator_context": 0.8,
             "z_combined": 0.5,
@@ -77,12 +81,24 @@ def test_positive_surface_supports_contemporary_antagonist_constraint() -> None:
     assert result["higher_z_increases_initial_seed_set_in_both_G_states"] is True
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is True
     )
+    assert (
+        result[
+            "antagonist_shift_away_from_higher_initial_seed_set_supported"
+        ]
+        is True
+    )
+    assert result["pollinator_favored_optimum_identified"] is False
+    assert result["antagonist_contribution_to_pollen_limitation_identified"] is False
+    assert result["state_optimum_semantics"] == (
+        "reproductive_state_optima_not_pure_function_optima"
+    )
     assert result["status"] == (
-        "CONTEMPORARY_ANTAGONIST_CONSTRAINED_POLLINATION_SUPPORTED"
+        "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_"
+        "POLLEN_AND_INITIAL_SEED_COST_SUPPORTED"
     )
 
 
@@ -106,7 +122,7 @@ def test_optimum_shift_ci_crossing_zero_fails_chain() -> None:
     assert result["predator_removal_shifts_optimum_upward"] is False
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is False
     )
@@ -119,12 +135,12 @@ def test_nonpositive_z_to_pollen_response_fails_chain() -> None:
             z = float(row["realized_exsertion"])
             row["pollen_grains"] = str(30.0 - 20.0 * z)
 
-    result = build(rows, _surface_receipt(), _config())
+    result = build(rows, _surface_receipt(rows), _config())
 
     assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is False
     assert (
         result[
-            "contemporary_antagonist_constrained_pollination_chain_supported"
+            "antagonist_shift_away_from_higher_pollen_receipt_supported"
         ]
         is False
     )
@@ -140,3 +156,64 @@ def test_requires_positive_primary_causal_surface() -> None:
         assert "positive causal-compromise surface" in str(exc)
     else:
         raise AssertionError("negative primary surface should fail closed")
+
+
+def test_pollen_cost_can_be_supported_without_claiming_seed_set_or_pollen_limitation() -> None:
+    rows = deepcopy(_rows())
+    for row in rows:
+        z = float(row["realized_exsertion"])
+        row["undamaged_seed_count"] = str(int(round(30 - 10 * z)))
+        row["damaged_seed_count"] = "0"
+
+    result = build(rows, _surface_receipt(rows), _config())
+
+    assert result["higher_z_increases_pollen_receipt_in_both_G_states"] is True
+    assert result["higher_z_increases_initial_seed_set_in_both_G_states"] is False
+    assert result[
+        "antagonist_shift_away_from_higher_pollen_receipt_supported"
+    ] is True
+    assert result[
+        "antagonist_shift_away_from_higher_initial_seed_set_supported"
+    ] is False
+    assert result["antagonist_contribution_to_pollen_limitation_identified"] is False
+    assert result["status"] == (
+        "CONTEMPORARY_ANTAGONIST_DOWNWARD_STATE_SHIFT_WITH_POLLEN_COST_SUPPORTED"
+    )
+
+
+def test_predator_free_state_optimum_is_not_relabelled_as_pure_pollinator_optimum() -> None:
+    result = build(_rows(), _surface_receipt(), _config())
+
+    assert result[
+        "z_predator_free_natural_pollination_state_optimum"
+    ] == 0.8
+    assert result[
+        "z_predator_exposed_natural_pollination_state_optimum"
+    ] == 0.5
+    assert result["pollinator_favored_optimum_identified"] is False
+    assert (
+        "predator_free_state_optimum_is_not_a_pure_pollinator_optimum"
+        in result["claim_ceiling"]
+    )
+
+
+def test_secondary_diagnostic_requires_same_raw_surface_as_positive_receipt() -> None:
+    original = _rows()
+    receipt = _surface_receipt(original)
+    changed = deepcopy(original)
+    changed[0]["pollen_grains"] = str(float(changed[0]["pollen_grains"]) + 1.0)
+
+    try:
+        build(changed, receipt, _config())
+    except ValueError as exc:
+        assert "same data used for the positive surface receipt" in str(exc)
+    else:
+        raise AssertionError("mismatched raw surface should fail closed")
+
+
+def test_secondary_receipt_records_surface_fingerprint_match() -> None:
+    rows = _rows()
+    result = build(rows, _surface_receipt(rows), _config())
+
+    assert result["surface_data_fingerprint_match"] is True
+    assert result["surface_data_sha256"] == full_surface.surface_data_sha256(rows)

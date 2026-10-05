@@ -80,8 +80,11 @@ PREDICTIVE_OVIPOSITION = HYPOTHESIS
 ```
 
 This creates a stronger focal ecological hypothesis: antagonist selection may
-not only oppose the pollinator-favoured exsertion state, but may constrain the
-trait below that state while the population remains pollen limited.
+shift the natural-pollination reproductive optimum toward lower exsertion,
+away from trait states with greater pollen receipt. The predator-free state
+optimum is not automatically a pure pollinator optimum, and the contemporary
+shift does not by itself show that antagonists maintain the observed pollen
+limitation.
 
 See
 `docs/SCH_PEDICULARIS_ANTAGONIST_CONSTRAINED_POLLEN_LIMITATION_V1.md`.
