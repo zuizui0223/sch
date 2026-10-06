@@ -7,5 +7,7 @@
   "selection_mode": "REQUIRED_BEFORE_USE",
   "inference_scope": "REQUIRED_BEFORE_USE",
   "selection_basis_note": "REQUIRED_BEFORE_USE",
-  "declared_before_full_surface_outcomes": "REQUIRED_BEFORE_USE"
+  "declared_before_full_surface_outcomes": "REQUIRED_BEFORE_USE",
+  "historical_mapping_status": "REQUIRED_BEFORE_USE",
+  "historical_mapping_source": "REQUIRED_BEFORE_USE_OR_NONE"
 }
