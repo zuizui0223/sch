@@ -57,6 +57,85 @@ W2  enemy-induced optimum displacement
 Thus the sample size is not chosen from a generic t test or from intervention
 validation alone.
 
+## Evidence-basis gate before any registered n
+
+A mathematically runnable power configuration is not automatically a
+scientifically admissible sample-size plan.
+
+The generating model contains quantities that the intervention-validity
+calibration programme does not identify, especially:
+
+```text
+four randomized z x P x G reproductive surfaces
+between-plant and residual variance of the final fitness endpoint
+state-specific z -> pollen slopes
+state-specific z -> initial-seed slopes.
+```
+
+The basis ledger is:
+
+```text
+empirical/architecture/PEDICULARIS_W1_W2_POWER_BASIS_LEDGER_V1.csv
+scripts/audit_pedicularis_w1_w2_power_basis.py
+```
+
+Current bounded state:
+
+```text
+POWER_BASIS_ROWS                         30
+REGISTERED_N_BLOCKERS                    21
+CAUSAL_GEOMETRY_ROWS                     12
+CAUSAL_GEOMETRY_ROWS_READY                0
+REGISTERED_SINGLE_SCENARIO_N             BLOCKED
+```
+
+The focal 2016 programme supports the directions
+`higher exsertion -> greater pollen receipt` and
+`higher exsertion -> greater seed-predator risk`, but it does not identify the
+randomized four-state quadratic surfaces, their bounded optima or their
+curvatures. Those observational relationships are therefore sensitivity
+context, not direct generating truth.
+
+Two routes can remove the block:
+
+```text
+A. SEPARATE_NONCONFIRMATORY_P2_GEOMETRY_PILOT
+   estimate same-context geometry/variance on data that never enter the
+   confirmatory P2 inference;
+
+B. PROSPECTIVELY_FROZEN_ROBUST_MULTI_SCENARIO_ENVELOPE
+   freeze a biologically justified scenario set and require the chosen n to
+   meet the power targets in every scenario.
+```
+
+A single convenient generating scenario with no basis is not a registered
+route.
+
+For a registered power run, first materialize a basis-audit receipt whose state
+is:
+
+```text
+PEDICULARIS_W1_W2_POWER_BASIS_READY_FOR_REGISTERED_N
+```
+
+with zero blockers. Then pass it to:
+
+```bash
+python scripts/simulate_pedicularis_w1_w2_power.py \
+  <frozen_power_config.json> \
+  --basis-receipt <power_basis_receipt.json> \
+  --output <w1_w2_power_receipt.json>
+```
+
+If the basis is still blocked, the same simulator may only be run with:
+
+```text
+status = PEDICULARIS_W1_W2_POWER_SENSITIVITY_SCENARIO_ONLY.
+```
+
+Such a run reports candidate powers but returns no registered minimum n and is
+rejected by the P2 field allocator.
+
 ## Truth world must be frozen
 
 The generating scenario must declare:

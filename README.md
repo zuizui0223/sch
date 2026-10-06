@@ -452,8 +452,11 @@ Stage P0   validate >=5 realized exsertion levels
 Stage P1   validate selective pollination-weight supplementation
 Stage G    validate independent seed-predator exclusion with water-y fixed
 readiness  -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
-P2 power   simulate production surface -> enemy-displacement -> W0-W5 pipeline
-P2 alloc   bind a passing powered design to treatment-blind flower IDs
+P2 basis   audit generating-model provenance; direct single-scenario n is blocked
+           until causal geometry/variance has an admissible basis
+P2 power   only after basis-ready: simulate production surface -> enemy-displacement
+           -> W0-W5 pipeline; blocked-basis runs are sensitivity-only
+P2 alloc   bind a passing registered powered design to treatment-blind flower IDs
 P2 lock    verify exact z/P/G/method identity and completed surface SHA-256
 Stage P2   run the verified z x P x G surface
 Stage P3   test context-stable component optima
@@ -461,7 +464,14 @@ Stage P4   export the fitness-scale conflict budget L
 ```
 
 The final P2 replication now has a second prospective power layer in addition
-to CAL-C. `simulate_pedicularis_w1_w2_power.py` powers the actual production
+to CAL-C, but its evidence basis is audited first. The current basis ledger has
+30 rows, with 21 blocking inputs and 0/12 causal-geometry rows ready for a
+registered single-scenario n. `audit_pedicularis_w1_w2_power_basis.py`
+therefore keeps the registered n fail-closed until either an independent
+nonconfirmatory geometry pilot or a prospectively frozen robust scenario
+envelope supplies the missing basis. Blocked-basis simulations are explicitly
+sensitivity-only and cannot feed P2 allocation.
+`simulate_pedicularis_w1_w2_power.py` then powers the actual production
 full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
 plants and flowers-per-plant design are then bound to treatment-blind flower
 IDs by `build_pedicularis_full_surface_allocation.py`. The completed P2 field

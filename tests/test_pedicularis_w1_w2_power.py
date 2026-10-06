@@ -9,7 +9,9 @@ import pytest
 
 from scripts.simulate_pedicularis_w1_w2_power import (
     FROZEN_STATUS,
+    SENSITIVITY_STATUS,
     TEST_STATUS,
+    _validate_basis_receipt,
     _validate_config,
     generate_rows,
     simulate_power,
@@ -246,3 +248,66 @@ def test_six_z_levels_use_twenty_four_cells_not_hardcoded_twenty() -> None:
     assert diagnostics["replicates_per_cell"] == 2
     assert diagnostics["exact_cell_balance"] is True
     assert set(diagnostics["cell_counts"].values()) == {2}
+
+
+def _blocked_basis() -> dict:
+    return {
+        "analysis": "pedicularis_w1_w2_power_basis_audit_v1",
+        "registered_power_status": "PEDICULARIS_W1_W2_POWER_BASIS_BLOCKED",
+        "registered_single_scenario_n_basis_ready": False,
+        "n_blocking_rows": 21,
+    }
+
+
+def _ready_basis() -> dict:
+    return {
+        "analysis": "pedicularis_w1_w2_power_basis_audit_v1",
+        "registered_power_status": (
+            "PEDICULARIS_W1_W2_POWER_BASIS_READY_FOR_REGISTERED_N"
+        ),
+        "registered_single_scenario_n_basis_ready": True,
+        "n_blocking_rows": 0,
+    }
+
+
+def test_registered_power_rejects_blocked_basis_receipt() -> None:
+    with pytest.raises(ValueError, match="blocked until"):
+        _validate_basis_receipt(
+            _blocked_basis(),
+            status=FROZEN_STATUS,
+        )
+
+
+def test_registered_power_accepts_only_zero_blocker_ready_basis() -> None:
+    result = _validate_basis_receipt(
+        _ready_basis(),
+        status=FROZEN_STATUS,
+    )
+    assert result is not None
+    assert result["n_blocking_rows"] == 0
+
+
+def test_sensitivity_run_with_blocked_basis_cannot_emit_registered_n() -> None:
+    config = _config()
+    config["status"] = SENSITIVITY_STATUS
+
+    result = simulate_power(
+        config,
+        basis_receipt=_blocked_basis(),
+    )
+
+    assert result["status"] == "PEDICULARIS_W1_W2_POWER_SENSITIVITY_ONLY"
+    assert result["basis_blocker_count"] == 21
+    assert result["minimum_plants_meeting_both_targets"] is None
+    assert result[
+        "minimum_total_full_surface_flowers_meeting_both_targets"
+    ] is None
+    assert result["registered_field_allocation_recommendation_allowed"] is False
+
+
+def test_non_test_power_run_requires_basis_receipt() -> None:
+    config = _config()
+    config["status"] = SENSITIVITY_STATUS
+
+    with pytest.raises(ValueError, match="requires a power-basis audit receipt"):
+        simulate_power(config)
