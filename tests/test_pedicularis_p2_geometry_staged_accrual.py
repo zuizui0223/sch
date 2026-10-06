@@ -247,7 +247,7 @@ def test_unbalanced_precision_look_is_rejected_before_allocation() -> None:
         allocate(
             _manifest(),
             config,
-            _readiness(config),
+            _binding(config),
             "STAGED-SEED",
         )
 
