@@ -167,8 +167,17 @@ Use:
 
 ```text
 docs/SCH_PEDICULARIS_POLLINATION_WEIGHT_AND_4_STATE_MAPPING_V1.md
+scripts/build_pedicularis_p1_randomized_assignment.py
 scripts/evaluate_pedicularis_pollination_weight.py
 ```
+
+Current V1 is `WITHIN_PLANT_PAIRED_FLOWERS`: register treatment-blind flower
+IDs before assignment, randomize equal NATURAL/SUPPLEMENTED flowers within each
+plant using the precommitted allocation seed, and retain the matching sham
+stigma-contact versus donor-mixed cross-pollen handling role in the raw table.
+The confirmatory evaluator requires the exact allocation receipt and frozen
+field-config digest. Whole-plant supplementation requires a separate registered
+analysis version rather than being mixed into V1.
 
 A positive receipt must show both effectiveness and selectivity:
 
