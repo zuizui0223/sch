@@ -1,0 +1,13 @@
+{
+  "schema": "PEDICULARIS_G_CONFIRMATORY_METHOD_FREEZE_V1",
+  "status": "PEDICULARIS_G_CONFIRMATORY_METHOD_PROSPECTIVELY_FROZEN",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "selected_candidate_id": "REQUIRED_BEFORE_USE",
+  "selected_exclusion_method": "REQUIRED_BEFORE_USE",
+  "exposed_sham_method_code": "REQUIRED_BEFORE_USE",
+  "planned_n_plants": "REQUIRED_BEFORE_USE",
+  "flowers_per_treatment_per_plant": "REQUIRED_BEFORE_USE",
+  "selection_basis_note": "REQUIRED_BEFORE_USE",
+  "frozen_before_confirmatory_G_data": "REQUIRED_BEFORE_USE"
+}
