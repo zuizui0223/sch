@@ -50,6 +50,31 @@ def materialize(
         raise ValueError("geometry-pilot point estimates are incomplete")
     if geometry_summary.get("n_power_basis_paths_resolved") != 18:
         raise ValueError("geometry pilot must resolve exactly 18 power-basis paths")
+    readiness_sha = geometry_summary.get("readiness_receipt_sha256")
+    binding_sha = geometry_summary.get("intervention_plan_binding_sha256")
+    matches = geometry_summary.get("readiness_intervention_plan_match")
+    required_match_keys = {
+        "z_levels",
+        "p1_experimental_unit",
+        "g_exclusion_method",
+        "p0_level_plan_sha256",
+        "p0_field_config_sha256",
+        "p1_field_config_sha256",
+        "g_field_config_sha256",
+        "g_method_selection_sha256",
+    }
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError("geometry summary lacks later readiness SHA-256")
+    if not isinstance(binding_sha, str) or len(binding_sha) != 64:
+        raise ValueError("geometry summary lacks preoutcome intervention binding")
+    if (
+        not isinstance(matches, dict)
+        or set(matches) != required_match_keys
+        or not all(matches.values())
+    ):
+        raise ValueError(
+            "geometry summary is not admissible under the later readiness plan"
+        )
 
     if precision_receipt.get("receipt_schema") != PRECISION_SCHEMA:
         raise ValueError("geometry-pilot precision receipt schema mismatch")
