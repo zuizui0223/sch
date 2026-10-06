@@ -328,6 +328,11 @@ def build(
         raise ValueError("allocation_seed must be precommitted and resolved")
 
     config = _validate_config(config_payload)
+    surface._validate_readiness(
+        readiness_receipt,
+        config["population_id"],
+        config["season_id"],
+    )
 
     if readiness_receipt.get("receipt_schema_version") != (
         "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3"
