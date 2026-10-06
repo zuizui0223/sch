@@ -69,7 +69,11 @@ def _p1_rows(season: str = "S1") -> list[dict[str, str]]:
             rows.append({
                 "population_id":"P_REX_TEST","season_id":season,
                 "plant_id":f"B{plant:02d}","flower_id":f"B{plant:02d}_{treatment}",
-                "pollination_treatment":treatment,"realized_exsertion":"0.55",
+                "pollination_treatment":treatment,
+                "pollination_handling_role":(
+                    "DONOR_MIXED_CROSS_POLLEN" if treatment=="SUPPLEMENTED"
+                    else "SHAM_STIGMA_CONTACT"
+                ),"realized_exsertion":"0.55",
                 "water_depth":"5.0","bract_height":"20.0","corolla_opening_width":"8.0",
                 "mechanical_damage":"0","pollen_grains_post_treatment":"24" if sup else "10",
                 "early_predator_attack_present":"0","ovule_count":"20",
