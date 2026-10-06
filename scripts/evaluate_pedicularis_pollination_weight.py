@@ -23,6 +23,7 @@ REQUIRED_FIELDS = (
     "plant_id",
     "flower_id",
     "pollination_treatment",
+    "pollination_handling_role",
     "realized_exsertion",
     "water_depth",
     "bract_height",
@@ -35,6 +36,13 @@ REQUIRED_FIELDS = (
     "damaged_seed_count",
 )
 TREATMENTS = ("NATURAL", "SUPPLEMENTED")
+EXPERIMENTAL_UNIT = "WITHIN_PLANT_PAIRED_FLOWERS"
+HANDLING_ROLE = {
+    "NATURAL": "SHAM_STIGMA_CONTACT",
+    "SUPPLEMENTED": "DONOR_MIXED_CROSS_POLLEN",
+}
+ALLOCATION_SCHEMA = "PEDICULARIS_P1_RANDOMIZED_ALLOCATION_V1"
+ALLOCATION_STATUS = "P1_FLOWERS_RANDOMIZED_NOT_YET_MEASURED"
 RECEIPT_SCHEMA_VERSION = "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1"
 
 
@@ -88,6 +96,11 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
         seen.add(row["flower_id"])
         if row["pollination_treatment"] not in TREATMENTS:
             raise ValueError("pollination_treatment must be NATURAL or SUPPLEMENTED")
+        expected_handling = HANDLING_ROLE[row["pollination_treatment"]]
+        if row["pollination_handling_role"] != expected_handling:
+            raise ValueError(
+                "pollination_handling_role does not match pollination_treatment"
+            )
         for field in (
             "realized_exsertion",
             "water_depth",
@@ -215,6 +228,73 @@ def _bootstrap_paired(rows: list[dict[str, str]], statistic: Callable[[list[dict
     return out
 
 
+def _allocation_identity(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    normalized = [
+        {
+            "population_id": row["population_id"],
+            "season_id": row["season_id"],
+            "plant_id": row["plant_id"],
+            "flower_id": row["flower_id"],
+            "pollination_treatment": row["pollination_treatment"],
+            "pollination_handling_role": row["pollination_handling_role"],
+        }
+        for row in rows
+    ]
+    return sorted(
+        normalized,
+        key=lambda row: (
+            row["population_id"],
+            row["season_id"],
+            row["plant_id"],
+            row["flower_id"],
+        ),
+    )
+
+
+def validate_randomized_allocation(
+    rows: list[dict[str, str]],
+    allocation_receipt: dict,
+) -> None:
+    if allocation_receipt.get("receipt_schema") != ALLOCATION_SCHEMA:
+        raise ValueError("P1 randomized allocation receipt schema mismatch")
+    if allocation_receipt.get("status") != ALLOCATION_STATUS:
+        raise ValueError("P1 randomized allocation receipt is not pre-field positive")
+    expected = allocation_receipt.get("expected_assignments")
+    if not isinstance(expected, list):
+        raise ValueError("P1 randomized allocation receipt lacks expected assignments")
+    observed = _allocation_identity(rows)
+    if observed != expected:
+        raise ValueError(
+            "P1 flower identity/treatment/handling rows drifted from randomized allocation"
+        )
+    population_id, season_id = _check_context(rows)
+    if allocation_receipt.get("population_id") != population_id:
+        raise ValueError("P1 allocation population does not match data")
+    if allocation_receipt.get("season_id") != season_id:
+        raise ValueError("P1 allocation season does not match data")
+    if int(allocation_receipt.get("n_allocated_flowers", -1)) != len(rows):
+        raise ValueError("P1 allocation row count does not match data")
+
+
+def evaluate_locked(
+    rows: list[dict[str, str]],
+    config: dict,
+    allocation_receipt: dict,
+) -> dict:
+    validate_randomized_allocation(rows, allocation_receipt)
+    result = evaluate(rows, config)
+    result["field_allocation_verification"] = {
+        "receipt_schema": allocation_receipt["receipt_schema"],
+        "allocation_identity_sha256": allocation_receipt.get(
+            "allocation_identity_sha256"
+        ),
+        "assignment_method": allocation_receipt.get("assignment_method"),
+        "experimental_unit": allocation_receipt.get("experimental_unit"),
+        "identity_treatment_handling_match": True,
+    }
+    return result
+
+
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
     freeze = validate_prospective_freeze(config, "P1")
     population_id, season_id = _check_context(rows)
@@ -222,6 +302,12 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
     groups = _groups(rows)
     plants = _paired_plants(rows)
     cfg = config["pollination_weight"]
+    if cfg.get("experimental_unit") != EXPERIMENTAL_UNIT:
+        raise ValueError(
+            "current P1 evaluator supports only "
+            "WITHIN_PLANT_PAIRED_FLOWERS; whole-plant supplementation requires "
+            "a separate registered evaluator"
+        )
     reps = int(config["bootstrap_reps"])
     if reps < 200:
         raise ValueError("bootstrap_reps must be >= 200")
@@ -285,11 +371,23 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Fail-closed Pedicularis pollination-weight evaluator")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("config_path", type=Path)
+    parser.add_argument(
+        "--allocation-receipt",
+        type=Path,
+        required=True,
+        help=(
+            "PEDICULARIS_P1_RANDOMIZED_ALLOCATION_V1 receipt for the exact "
+            "confirmatory flower IDs and treatments"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     rows = _read_csv(args.csv_path)
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
-    result = evaluate(rows, config)
+    allocation_receipt = json.loads(
+        args.allocation_receipt.read_text(encoding="utf-8")
+    )
+    result = evaluate_locked(rows, config, allocation_receipt)
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")
