@@ -88,6 +88,82 @@ Flower IDs remain globally unique.
 
 Thus no geometry-pilot row can later enter the confirmatory P2 dataset.
 
+## Prospectively staged accrual
+
+The geometry pilot must not choose one arbitrary pilot n and then add plants
+post hoc if precision is disappointing.
+
+Before any geometry outcome is read, freeze:
+
+~~~text
+planned_n_plants
+  = maximum geometry-pilot cohort
+
+candidate_cumulative_plants
+  = ordered cumulative precision looks, for example [n1, n2, ..., nmax].
+~~~
+
+The final candidate must equal `planned_n_plants`. Every candidate look must
+satisfy:
+
+~~~text
+candidate_n x flowers_per_plant
+  divisible by
+n_z_levels x 2 P x 2 G.
+~~~
+
+Therefore every precision look is an exact-balanced prefix of the same maximum
+randomized allocation.
+
+The SHA-256 allocator freezes one plant accrual order for the maximum cohort.
+Each flower carries:
+
+~~~text
+plant_accrual_rank
+first_precision_look_n.
+~~~
+
+No treatment is reassigned when the pilot continues.
+
+Materialize one registered cumulative look with:
+
+~~~bash
+python scripts/materialize_pedicularis_p2_geometry_stage.py \
+  <maximum_geometry_field_sheet.csv> \
+  <maximum_geometry_allocation_receipt.json> \
+  --stage-n <REGISTERED_CUMULATIVE_N> \
+  --stage-sheet-out <geometry_stage.csv> \
+  --stage-receipt-out <geometry_stage_allocation.json>
+~~~
+
+After the stage summary and precision audit, adjudicate continuation with:
+
+~~~bash
+python scripts/adjudicate_pedicularis_p2_geometry_accrual.py \
+  <geometry_pilot_config.json> \
+  <current_geometry_summary.json> \
+  <current_geometry_precision.json> \
+  --prior-precision <earlier_precision.json> \
+  --output <geometry_accrual_decision.json>
+~~~
+
+The only allowed decisions are:
+
+~~~text
+STOP_GEOMETRY_PILOT_AND_MATERIALIZE_BASIS
+CONTINUE_TO_NEXT_REGISTERED_GEOMETRY_STAGE
+STOP_MAXIMUM_GEOMETRY_PILOT_BASIS_NOT_QUALIFIED.
+~~~
+
+Every earlier look must have a formal insufficient-precision receipt before a
+later look can be evaluated. Once any earlier look passes, later collection is
+not authorized.
+
+Thus the stopping rule is:
+
+> stop at the first preregistered cumulative look that passes the frozen
+> precision gate.
+
 ## Allocation
 
 Config template:
@@ -261,12 +337,14 @@ after a precision receipt authorizes materialization:
 python scripts/materialize_pedicularis_w1_w2_basis_from_geometry_pilot.py \
   <geometry_pilot_summary.json> \
   <geometry_precision.json> \
+  <geometry_accrual_decision.json> \
   --ledger-out <w1_w2_basis_after_geometry.csv> \
   --receipt-out <geometry_basis_materialization.json>
 ~~~
 
-Only when both point estimability and the frozen precision gate pass are exactly
-18 geometry/variance paths promoted to:
+Only when point estimability and the frozen precision gate pass at the **first
+eligible preregistered cumulative look**, and the staged-accrual decision
+authorizes stopping, are exactly 18 geometry/variance paths promoted to:
 
 ~~~text
 DIRECT_SAME_CONTEXT_READY
