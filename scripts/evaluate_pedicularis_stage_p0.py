@@ -15,6 +15,11 @@ from scripts.pedicularis_config_freeze import (
     validate_freeze_context,
     validate_prospective_freeze,
 )
+from scripts.build_pedicularis_p0_randomized_assignment import (
+    RECEIPT_SCHEMA as P0_ALLOCATION_SCHEMA,
+    FROZEN_FIELDS as P0_ALLOCATION_FROZEN_FIELDS,
+    _semantic_sha256 as p0_allocation_sha256,
+)
 
 
 REQUIRED_FIELDS = (
@@ -262,6 +267,64 @@ def _maximum_damage(rows: list[dict[str, str]]) -> float:
     return float(_offtarget_metrics(rows)["maximum_damage_rate"])
 
 
+def validate_randomized_allocation(
+    rows: list[dict[str, str]],
+    allocation_receipt: dict,
+) -> None:
+    if allocation_receipt.get("receipt_schema") != P0_ALLOCATION_SCHEMA:
+        raise ValueError("P0 randomized allocation receipt schema mismatch")
+    if allocation_receipt.get("status") != "P0_FLOWERS_RANDOMIZED_NOT_YET_MEASURED":
+        raise ValueError("P0 randomized allocation receipt is not valid")
+
+    population_id, season_id = _check_single_context(rows)
+    if allocation_receipt.get("population_id") != population_id:
+        raise ValueError("P0 allocation population does not match data")
+    if allocation_receipt.get("season_id") != season_id:
+        raise ValueError("P0 allocation season does not match data")
+    if int(allocation_receipt.get("n_allocated_flowers", -1)) != len(rows):
+        raise ValueError("P0 allocation row count does not match data")
+
+    frozen_rows = sorted(
+        [
+            {
+                field: row[field].strip()
+                for field in P0_ALLOCATION_FROZEN_FIELDS
+            }
+            for row in rows
+        ],
+        key=lambda row: (row["plant_id"], row["flower_id"]),
+    )
+    expected = allocation_receipt.get("expected_frozen_rows")
+    if not isinstance(expected, list):
+        raise ValueError("P0 allocation receipt lacks expected frozen rows")
+    if frozen_rows != expected:
+        raise ValueError(
+            "P0 flower identity / z-level / sham assignment drifted from randomized allocation"
+        )
+    if p0_allocation_sha256(frozen_rows) != allocation_receipt.get(
+        "allocation_identity_sha256"
+    ):
+        raise ValueError("P0 allocation identity digest does not match data")
+
+
+def evaluate_locked(
+    rows: list[dict[str, str]],
+    config: dict,
+    allocation_receipt: dict,
+) -> dict:
+    validate_randomized_allocation(rows, allocation_receipt)
+    result = evaluate(rows, config)
+    result["field_allocation_verification"] = {
+        "receipt_schema": allocation_receipt["receipt_schema"],
+        "allocation_identity_sha256": allocation_receipt[
+            "allocation_identity_sha256"
+        ],
+        "assignment_method": allocation_receipt.get("allocation_algorithm"),
+        "identity_z_assignment_match": True,
+    }
+    return result
+
+
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
     freeze = validate_prospective_freeze(config, "P0")
     population_id, season_id = _check_single_context(rows)
@@ -352,12 +415,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Fail-closed Pedicularis Stage-P0 exsertion-manipulation evaluator")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("config_path", type=Path)
+    parser.add_argument(
+        "--allocation-receipt",
+        type=Path,
+        required=True,
+        help=(
+            "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1 receipt for the exact "
+            "confirmatory flower IDs and z/sham assignments"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     rows = _read_csv(args.csv_path)
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
-    result = evaluate(rows, config)
+    allocation_receipt = json.loads(
+        args.allocation_receipt.read_text(encoding="utf-8")
+    )
+    result = evaluate_locked(rows, config, allocation_receipt)
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")
