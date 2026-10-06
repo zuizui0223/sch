@@ -448,28 +448,29 @@ CAL-A      measurement/equivalence/handling calibration
 CAL-B      exploratory P/G effects + G timing pilot
 CAL-C      intervention-validity/selectivity power planning
 Stage F0   freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
-P0 alloc   register treatment-blind IDs and SHA-256 randomize the frozen z/sham plan
-Stage P0   validate >=5 realized exsertion levels on the exact locked allocation
-P1 alloc   current V1 = paired flowers; register treatment-blind IDs and
-           SHA-256 randomize NATURAL sham vs SUPPLEMENTED donor-mixed pollen
-Stage P1   validate selective pollination-weight supplementation on locked allocation
-G select   freeze one exploratory hard-pass method before confirmatory G outcomes
-G alloc    SHA-256 randomize paired EXPOSED-sham vs EXCLUDED-selected-method flowers
-Stage G    validate independent seed-predator exclusion on the exact locked allocation
-readiness  -> V3 only when randomized P0/P1/G all pass in one population/season
-P2 basis   audit generating-model provenance; direct single-scenario n is blocked
-           until causal geometry/variance has an admissible basis
-P2 envelope run prospectively declared sensitivity worlds; report worst-case power
-           and scenario-specific n spread to assess geometry information value
-P2 geometry if information value is high, run a separate POWER_GEOMETRY_PILOT
-           mini-surface; it can resolve 18/21 current power-basis blockers
-P2 power   only after basis-ready: simulate production surface -> enemy-displacement
-           -> W0-W5 pipeline; blocked-basis runs are sensitivity-only
-P2 alloc   bind a passing registered powered design to treatment-blind flower IDs
-P2 lock    verify exact z/P/G/method identity and completed surface SHA-256
-Stage P2   run the verified z x P x G surface
-Stage P3   test context-stable component optima
-Stage P4   export the fitness-scale conflict budget L
+G select   freeze one exploratory hard-pass G method before confirmatory outcomes
+P2 bind    bind frozen P0 z plan + P0/P1/G configs + selected G method to
+           a separate geometry-pilot config before confirmatory outcomes
+           |
+           +-----------------------------+
+           |                             |
+P0/P1/G confirmatory                 POWER_GEOMETRY_PILOT
+randomized collection               separate-cohort collection
+           |                             |
+           v                             |  not yet admissible
+readiness V3 when randomized             |
+P0/P1/G all pass                         |
+           +---------- exact plan SHA ---+
+                           |
+P2 geometry              only now summarize / precision-qualify geometry;
+                         failed readiness or plan mismatch discards it for power basis
+P2 basis                 resolve up to 18/21 blockers from qualified geometry
+P2 power                 after zero-blocker basis, run production W0-W5 power
+P2 alloc                 bind passing powered design to treatment-blind flower IDs
+P2 lock                  verify exact z/P/G/method identity + surface SHA-256
+Stage P2                 run verified z x P x G surface
+Stage P3                 test context-stable component optima
+Stage P4                 export fitness-scale conflict budget L
 ```
 
 Current P1 V1 is explicitly `WITHIN_PLANT_PAIRED_FLOWERS`, matching the
@@ -501,14 +502,23 @@ scale/range constraints and 11 inputs with no numerical bound. Thus a narrow
 Route-B scenario set cannot be attributed to the current focal evidence alone;
 see `docs/SCH_PEDICULARIS_W1_W2_ENVELOPE_BOUNDABILITY_V1.md`.
 If geometry uncertainty materially changes the field decision, Route A is now
-executable with `build_pedicularis_p2_geometry_pilot.py`,
-`summarize_pedicularis_p2_geometry_pilot.py`, and
-`evaluate_pedicularis_p2_geometry_precision.py`. The precision gate is frozen
-before pilot outcomes; point-estimable geometry alone cannot promote the 18
-power-basis paths. Geometry-pilot n is also prospective:
-`candidate_cumulative_plants` freezes exact-balanced cumulative looks and
-`adjudicate_pedicularis_p2_geometry_accrual.py` stops at the first precision
-pass; later looks require every earlier look to have formally failed precision.
+executable without placing an unnecessary second fruit-maturation wait on the
+critical path. After F0 and pre-outcome G-method selection,
+`bind_pedicularis_geometry_intervention_plan.py` freezes the exact P0 z plan,
+P0/P1/G configs, selected G method and geometry config. A disjoint
+`POWER_GEOMETRY_PILOT` cohort may then be **collected in parallel** with
+randomized confirmatory P0/P1/G. Its data remain inadmissible until later
+readiness V3 is positive and all bound plan hashes match exactly.
+`summarize_pedicularis_p2_geometry_pilot.py` therefore requires that later
+readiness receipt before any point estimate is exposed for power basis. See
+`docs/SCH_PEDICULARIS_PARALLEL_GEOMETRY_COLLECTION_V1.md`.
+
+The precision gate remains frozen before pilot outcomes; point-estimable geometry
+alone cannot promote the 18 power-basis paths. Geometry-pilot n is also
+prospective: `candidate_cumulative_plants` freezes exact-balanced cumulative
+looks and `adjudicate_pedicularis_p2_geometry_accrual.py` stops at the first
+precision pass; later looks require every earlier look to have formally failed
+precision.
 After precision qualifies and the remaining P0/F0 basis rows
 are resolved, `bind_pedicularis_w1_w2_geometry_config.py` requires all 18
 values in the frozen registered power config to exactly match that qualified
