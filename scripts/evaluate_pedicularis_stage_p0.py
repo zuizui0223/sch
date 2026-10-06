@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import random
@@ -50,6 +51,8 @@ ABSOLUTE_OFFTARGET_FIELDS = (
 )
 
 RECEIPT_SCHEMA_VERSION = "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1"
+ALLOCATION_SCHEMA = "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
+ALLOCATION_STATUS = "P0_FLOWERS_RANDOMIZED_NOT_YET_MEASURED"
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -262,6 +265,90 @@ def _maximum_damage(rows: list[dict[str, str]]) -> float:
     return float(_offtarget_metrics(rows)["maximum_damage_rate"])
 
 
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _allocation_identity(
+    rows: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    return sorted(
+        [
+            {
+                "population_id": row["population_id"],
+                "season_id": row["season_id"],
+                "plant_id": row["plant_id"],
+                "flower_id": row["flower_id"],
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": row["assigned_z_rank"],
+                "sham_control": row["sham_control"],
+            }
+            for row in rows
+        ],
+        key=lambda row: (
+            row["population_id"],
+            row["season_id"],
+            row["plant_id"],
+            row["flower_id"],
+        ),
+    )
+
+
+def validate_randomized_allocation(
+    rows: list[dict[str, str]],
+    allocation_receipt: dict,
+    config: dict,
+) -> None:
+    if allocation_receipt.get("receipt_schema") != ALLOCATION_SCHEMA:
+        raise ValueError("P0 randomized allocation receipt schema mismatch")
+    if allocation_receipt.get("status") != ALLOCATION_STATUS:
+        raise ValueError("P0 randomized allocation receipt is not pre-field positive")
+    expected = allocation_receipt.get("expected_assignments")
+    if not isinstance(expected, list):
+        raise ValueError("P0 randomized allocation receipt lacks expected assignments")
+    observed = _allocation_identity(rows)
+    if observed != expected:
+        raise ValueError(
+            "P0 flower identity/z-rank/sham rows drifted from randomized allocation"
+        )
+    population_id, season_id = _check_single_context(rows)
+    if allocation_receipt.get("population_id") != population_id:
+        raise ValueError("P0 allocation population does not match data")
+    if allocation_receipt.get("season_id") != season_id:
+        raise ValueError("P0 allocation season does not match data")
+    if int(allocation_receipt.get("n_allocated_flowers", -1)) != len(rows):
+        raise ValueError("P0 allocation row count does not match data")
+    if allocation_receipt.get("p0_field_config_sha256") != _semantic_sha256(config):
+        raise ValueError(
+            "P0 allocation receipt is not bound to the exact analyzed field config"
+        )
+
+
+def evaluate_locked(
+    rows: list[dict[str, str]],
+    config: dict,
+    allocation_receipt: dict,
+) -> dict:
+    validate_randomized_allocation(rows, allocation_receipt, config)
+    result = evaluate(rows, config)
+    result["field_allocation_verification"] = {
+        "receipt_schema": allocation_receipt["receipt_schema"],
+        "allocation_identity_sha256": allocation_receipt.get(
+            "allocation_identity_sha256"
+        ),
+        "level_plan_sha256": allocation_receipt.get("level_plan_sha256"),
+        "assignment_method": allocation_receipt.get("allocation_algorithm"),
+        "identity_z_rank_sham_match": True,
+    }
+    return result
+
+
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
     freeze = validate_prospective_freeze(config, "P0")
     population_id, season_id = _check_single_context(rows)
@@ -352,12 +439,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Fail-closed Pedicularis Stage-P0 exsertion-manipulation evaluator")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("config_path", type=Path)
+    parser.add_argument(
+        "--allocation-receipt",
+        type=Path,
+        required=True,
+        help=(
+            "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1 receipt for the exact "
+            "confirmatory flower IDs and z-level assignments"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     rows = _read_csv(args.csv_path)
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
-    result = evaluate(rows, config)
+    allocation_receipt = json.loads(
+        args.allocation_receipt.read_text(encoding="utf-8")
+    )
+    result = evaluate_locked(rows, config, allocation_receipt)
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")
