@@ -412,6 +412,7 @@ def test_precision_gate_must_be_frozen_before_allocation() -> None:
         allocate(
             _manifest(),
             config,
+            _readiness(config),
             "GEOMETRY-PILOT-SEED",
         )
 
@@ -463,7 +464,7 @@ def test_geometry_pilot_requires_positive_readiness_v3() -> None:
     readiness = _readiness(config)
     readiness["status"] = "PEDICULARIS_FULL_SURFACE_NOT_READY"
 
-    with pytest.raises(ValueError, match="requires positive P0/P1/G"):
+    with pytest.raises(ValueError, match="readiness status is not positive"):
         allocate(
             _manifest(),
             config,
