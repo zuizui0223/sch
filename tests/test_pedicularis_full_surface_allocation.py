@@ -70,6 +70,33 @@ def _power() -> dict:
     }
 
 
+def _context() -> dict:
+    return {
+        "analysis": "pedicularis_p2_context_freeze_v1",
+        "receipt_schema": "PEDICULARIS_P2_CONTEXT_FREEZE_V1",
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "selection_mode": "CURRENT_CONTEXT_ONLY",
+        "inference_scope": "PRIMARY_TESTED_CONTEXT_ONLY",
+        "selection_basis_note": "SYNTHETIC_TEST",
+        "historical_context_prior": None,
+        "current_season_context": {
+            "pollination_lane_validated": True,
+            "antagonist_lane_validated": True,
+            "z_manipulation_validated": True,
+            "same_population_and_season": True,
+            "readiness_receipt_sha256": "a" * 64,
+        },
+        "same_season_pollination_and_antagonist_lanes_validated": True,
+        "context_selected_before_full_surface_outcomes": True,
+        "readiness_receipt_sha256": "a" * 64,
+        "context_config_sha256": "b" * 64,
+        "status": (
+            "P2_CONTEXT_FROZEN_CURRENT_SEASON_BOTH_FUNCTIONAL_LANES_VALIDATED"
+        ),
+    }
+
+
 def _manifest() -> list[dict[str, str]]:
     return [
         {
@@ -88,6 +115,7 @@ def test_balanced_incomplete_block_allocation_matches_powered_design() -> None:
         _manifest(),
         _config(),
         _power(),
+        _context(),
         "PRECOMMITTED-SEED-1",
     )
 
@@ -111,9 +139,9 @@ def test_balanced_incomplete_block_allocation_matches_powered_design() -> None:
 
 
 def test_same_seed_is_reproducible_and_new_seed_changes_assignment() -> None:
-    a1, r1 = build(_manifest(), _config(), _power(), "SEED-A")
-    a2, r2 = build(_manifest(), _config(), _power(), "SEED-A")
-    a3, r3 = build(_manifest(), _config(), _power(), "SEED-B")
+    a1, r1 = build(_manifest(), _config(), _power(), _context(), "SEED-A")
+    a2, r2 = build(_manifest(), _config(), _power(), _context(), "SEED-A")
+    a3, r3 = build(_manifest(), _config(), _power(), _context(), "SEED-B")
 
     assert a1 == a2
     assert r1["allocation_identity_sha256"] == r2[
@@ -131,14 +159,14 @@ def test_duplicate_flower_id_fails_closed() -> None:
     manifest[1]["flower_id"] = manifest[0]["flower_id"]
 
     with pytest.raises(ValueError, match="flower_id must be unique"):
-        build(manifest, _config(), _power(), "SEED")
+        build(manifest, _config(), _power(), _context(), "SEED")
 
 
 def test_wrong_flower_count_per_plant_fails_closed() -> None:
     manifest = _manifest()[:-1]
 
     with pytest.raises(ValueError, match="exactly flowers_per_plant"):
-        build(manifest, _config(), _power(), "SEED")
+        build(manifest, _config(), _power(), _context(), "SEED")
 
 
 def test_manifest_context_mismatch_fails_closed() -> None:
@@ -146,7 +174,7 @@ def test_manifest_context_mismatch_fails_closed() -> None:
     manifest[0]["season_id"] = "S2"
 
     with pytest.raises(ValueError, match="season_id does not match config"):
-        build(manifest, _config(), _power(), "SEED")
+        build(manifest, _config(), _power(), _context(), "SEED")
 
 
 def test_z_grid_must_match_powered_design() -> None:
@@ -154,7 +182,7 @@ def test_z_grid_must_match_powered_design() -> None:
     config["z_levels"][4]["target_exsertion"] = 2.5
 
     with pytest.raises(ValueError, match="does not match powered z levels"):
-        build(_manifest(), config, _power(), "SEED")
+        build(_manifest(), config, _power(), _context(), "SEED")
 
 
 def test_flowers_per_plant_must_match_powered_design() -> None:
@@ -174,7 +202,7 @@ def test_flowers_per_plant_must_match_powered_design() -> None:
     ]
 
     with pytest.raises(ValueError, match="flowers_per_plant does not match"):
-        build(manifest, config, _power(), "SEED")
+        build(manifest, config, _power(), _context(), "SEED")
 
 
 def test_planned_n_must_be_an_evaluated_power_candidate() -> None:
@@ -192,7 +220,7 @@ def test_planned_n_must_be_an_evaluated_power_candidate() -> None:
     ]
 
     with pytest.raises(ValueError, match="exactly one evaluated power candidate"):
-        build(manifest, config, _power(), "SEED")
+        build(manifest, config, _power(), _context(), "SEED")
 
 
 def test_candidate_below_headline_target_cannot_be_allocated() -> None:
@@ -200,7 +228,7 @@ def test_candidate_below_headline_target_cannot_be_allocated() -> None:
     power["candidate_results"][1]["headline_W1_or_W2_power"] = 0.79
 
     with pytest.raises(ValueError, match="headline power target"):
-        build(_manifest(), _config(), power, "SEED")
+        build(_manifest(), _config(), power, _context(), "SEED")
 
 
 def test_candidate_below_primary_target_cannot_be_allocated() -> None:
@@ -208,12 +236,12 @@ def test_candidate_below_primary_target_cannot_be_allocated() -> None:
     power["candidate_results"][1]["primary_surface_power"] = 0.79
 
     with pytest.raises(ValueError, match="primary-surface power target"):
-        build(_manifest(), _config(), power, "SEED")
+        build(_manifest(), _config(), power, _context(), "SEED")
 
 
 def test_unresolved_allocation_seed_fails_closed() -> None:
     with pytest.raises(ValueError, match="allocation_seed"):
-        build(_manifest(), _config(), _power(), "REQUIRED_BEFORE_USE")
+        build(_manifest(), _config(), _power(), _context(), "REQUIRED_BEFORE_USE")
 
 
 def test_zero_based_z_ranks_must_be_contiguous() -> None:
@@ -221,7 +249,7 @@ def test_zero_based_z_ranks_must_be_contiguous() -> None:
     config["z_levels"][4]["assigned_z_rank"] = 6
 
     with pytest.raises(ValueError, match="contiguous 0..k-1"):
-        build(_manifest(), config, _power(), "SEED")
+        build(_manifest(), config, _power(), _context(), "SEED")
 
 
 def test_power_context_must_match_allocation_context() -> None:
@@ -229,7 +257,7 @@ def test_power_context_must_match_allocation_context() -> None:
     power["planning_provenance"]["season_id"] = "S2"
 
     with pytest.raises(ValueError, match="power and allocation season_id"):
-        build(_manifest(), _config(), power, "SEED")
+        build(_manifest(), _config(), power, _context(), "SEED")
 
 
 def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
@@ -271,10 +299,69 @@ def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
         for flower in range(6)
     ]
 
-    allocations, receipt = build(manifest, config, power, "SEED-24")
+    allocations, receipt = build(manifest, config, power, _context(), "SEED-24")
 
     assert len(allocations) == 48
     assert receipt["n_surface_cells"] == 24
     assert receipt["replicates_per_cell"] == 2
     assert len(receipt["cell_counts"]) == 24
     assert set(receipt["cell_counts"].values()) == {2}
+
+
+def test_allocation_requires_positive_same_season_context_freeze() -> None:
+    context = _context()
+    context["same_season_pollination_and_antagonist_lanes_validated"] = False
+
+    with pytest.raises(ValueError, match="same-season validated pollination"):
+        build(
+            _manifest(),
+            _config(),
+            _power(),
+            context,
+            "SEED",
+        )
+
+
+def test_context_population_must_match_allocation_context() -> None:
+    context = _context()
+    context["population_id"] = "OTHER_POP"
+
+    with pytest.raises(ValueError, match="context and allocation population_id"):
+        build(
+            _manifest(),
+            _config(),
+            _power(),
+            context,
+            "SEED",
+        )
+
+
+def test_context_historical_prior_remains_prior_in_allocation_receipt() -> None:
+    context = _context()
+    context["selection_mode"] = "HISTORICAL_CONTEXT_PRIOR"
+    context["inference_scope"] = "PRIMARY_HIGH_ANTAGONISM_ENRICHED_CONTEXT"
+    context["historical_context_prior"] = {
+        "historical_population_code": "POP5",
+        "individual_linkage_retained": True,
+        "exact_main_text_seed_predation_percent": 27.42,
+        "exact_pressure_rank_among_four": 1,
+        "history_class": "HIGHEST_EXACT_PRESSURE_LINKED",
+        "allowed_use": "HISTORICAL_ENRICHMENT_PRIOR_ONLY",
+        "source": "Sun_Armbruster_Huang_2016_mcw097",
+        "mapping_status": "SOURCE_VERIFIED",
+        "mapping_source": "SYNTHETIC_VERIFIED_TABLE_S1_MAPPING",
+        "historical_value_is_current_season_measurement": False,
+    }
+
+    _, receipt = build(
+        _manifest(),
+        _config(),
+        _power(),
+        context,
+        "SEED",
+    )
+
+    historical = receipt["context_binding"]["historical_context_prior"]
+    assert historical["historical_population_code"] == "POP5"
+    assert historical["exact_main_text_seed_predation_percent"] == 27.42
+    assert historical["history_class"] == "HIGHEST_EXACT_PRESSURE_LINKED"
