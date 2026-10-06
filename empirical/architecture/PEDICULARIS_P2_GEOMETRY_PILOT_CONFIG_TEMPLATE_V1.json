@@ -16,5 +16,12 @@
   "exposed_method_code": "REQUIRED_BEFORE_USE",
   "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1",
   "frozen_before_geometry_outcomes": "REQUIRED_BEFORE_USE",
-  "pilot_role": "POWER_BASIS_ONLY_NEVER_CONFIRMATORY"
+  "pilot_role": "POWER_BASIS_ONLY_NEVER_CONFIRMATORY",
+  "precision_gate": {
+    "bootstrap_reps": "REQUIRED_BEFORE_USE",
+    "random_seed": 20261006,
+    "min_valid_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+    "min_interior_concave_fraction_per_state": "REQUIRED_BEFORE_USE",
+    "max_normalized_95ci_width_per_power_basis_path": "REQUIRED_BEFORE_USE"
+  }
 }
