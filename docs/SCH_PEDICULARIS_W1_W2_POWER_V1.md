@@ -106,11 +106,14 @@ full-surface result is seen.
 
 ## Plant-level blocking
 
-The full surface contains 20 nominal treatment cells:
+The full surface contains:
 
 ```text
->=5 z levels x 2 P states x 2 G states.
+n_surface_cells = n_z_levels x 2 P states x 2 G states,
+with n_z_levels >= 5.
 ```
+
+Five z levels therefore give 20 cells, six give 24, and so on.
 
 The simulator no longer assumes that every plant can provide 20 focal flowers.
 
@@ -119,7 +122,7 @@ Freeze:
 ```text
 field_design.flowers_per_plant
 field_design.allocation_strategy =
-  BALANCED_CYCLIC_RANDOMIZED_20_CELL.
+  BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1.
 ```
 
 For each candidate plant count:
@@ -128,13 +131,13 @@ For each candidate plant count:
 n_plants x flowers_per_plant
 ```
 
-must be divisible by 20.
+must be divisible by `n_surface_cells`.
 
 The simulator randomizes the 20-cell order, assigns each plant a consecutive
 non-repeated block on that cyclic order, and therefore gives every cell exactly
 the same total replication.
 
-Examples:
+Examples for five z levels (20 cells):
 
 ```text
 6 plants x 20 flowers = 120 flowers = 6/cell  (complete block)
@@ -142,6 +145,12 @@ Examples:
 10 plants x 4 flowers = 40 flowers = 2/cell   (incomplete block)
 
 20 plants x 5 flowers = 100 flowers = 5/cell  (incomplete block).
+```
+
+For six z levels (24 cells), for example:
+
+```text
+8 plants x 6 flowers = 48 flowers = 2/cell.
 ```
 
 Plant ID remains the bootstrap cluster, so incomplete blocking is propagated

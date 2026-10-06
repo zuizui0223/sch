@@ -38,7 +38,7 @@ def _config() -> dict:
         "candidate_plants": [6],
         "field_design": {
             "flowers_per_plant": 20,
-            "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL",
+            "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1",
         },
         "simulation_reps": 1,
         "simulation_seed": 17,
@@ -221,5 +221,28 @@ def test_unbalanced_candidate_design_is_rejected_before_power() -> None:
     config["candidate_plants"] = [7]
     config["field_design"]["flowers_per_plant"] = 4
 
-    with pytest.raises(ValueError, match="divisible by 20"):
+    with pytest.raises(ValueError, match="divisible.*number of z x P x G cells"):
         _validate_config(config)
+
+
+def test_six_z_levels_use_twenty_four_cells_not_hardcoded_twenty() -> None:
+    config = _config()
+    config["generating_model"]["z_levels"] = [-2, -1, 0, 1, 2, 3]
+    config["candidate_plants"] = [8]
+    config["field_design"]["flowers_per_plant"] = 6
+    frozen = _validate_config(config)
+
+    rows, diagnostics = generate_rows(
+        frozen["generating_model"],
+        8,
+        random.Random(29),
+        flowers_per_plant=6,
+        population_id="P_REX_POWER_TEST",
+        season_id="S1",
+    )
+
+    assert len(rows) == 48
+    assert diagnostics["n_surface_cells"] == 24
+    assert diagnostics["replicates_per_cell"] == 2
+    assert diagnostics["exact_cell_balance"] is True
+    assert set(diagnostics["cell_counts"].values()) == {2}

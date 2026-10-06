@@ -229,6 +229,66 @@ def _secondary_summary(rows: list[dict[str, str]]) -> dict:
     return out
 
 
+def _validate_field_verification(
+    rows: list[dict[str, str]],
+    verification: dict,
+) -> None:
+    if verification.get("receipt_schema") != (
+        "PEDICULARIS_FULL_SURFACE_FIELD_VERIFICATION_V1"
+    ):
+        raise ValueError(
+            "full-surface analysis requires the P2 field-verification receipt"
+        )
+    if verification.get("status") != (
+        "P2_FULL_SURFACE_FIELD_PACKET_VERIFIED_COMPLETE"
+    ):
+        raise ValueError(
+            "P2 field packet must be identity-verified and complete before analysis"
+        )
+    if verification.get("identity_and_treatment_match") is not True:
+        raise ValueError("P2 field verification lacks identity/treatment match")
+    if verification.get("canonical_outcomes_complete") is not True:
+        raise ValueError("P2 field verification is not outcome-complete")
+
+    population, season = _context(rows)
+    if verification.get("population_id") != population:
+        raise ValueError("P2 field verification population does not match raw data")
+    if verification.get("season_id") != season:
+        raise ValueError("P2 field verification season does not match raw data")
+    if int(verification.get("n_rows", -1)) != len(rows):
+        raise ValueError("P2 field verification row count does not match raw data")
+
+    observed_digest = surface_data_sha256(rows)
+    if verification.get("surface_data_sha256") != observed_digest:
+        raise ValueError(
+            "raw full-surface data do not match the verified field-packet fingerprint"
+        )
+
+
+def analyze_locked(
+    rows: list[dict[str, str]],
+    readiness: dict,
+    config: dict,
+    field_verification: dict,
+) -> dict:
+    _validate_field_verification(rows, field_verification)
+    result = analyze(rows, readiness, config)
+    result["field_execution_verification"] = {
+        "receipt_schema": field_verification["receipt_schema"],
+        "status": field_verification["status"],
+        "allocation_identity_sha256": field_verification.get(
+            "allocation_identity_sha256"
+        ),
+        "field_identity_sha256": field_verification.get(
+            "field_identity_sha256"
+        ),
+        "surface_data_sha256": field_verification["surface_data_sha256"],
+        "identity_and_treatment_match": True,
+        "canonical_outcomes_complete": True,
+    }
+    return result
+
+
 def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     population, season = _context(rows)
     _validate_readiness(readiness, population, season)
@@ -279,13 +339,30 @@ def main() -> None:
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("readiness_receipt", type=Path)
     parser.add_argument("config_path", type=Path)
+    parser.add_argument(
+        "--field-verification",
+        type=Path,
+        required=True,
+        help=(
+            "Complete PEDICULARIS_FULL_SURFACE_FIELD_VERIFICATION_V1 receipt "
+            "for this exact flower-level CSV"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     rows = read_rows(args.csv_path)
     readiness = json.loads(args.readiness_receipt.read_text(encoding="utf-8"))
     config = json.loads(args.config_path.read_text(encoding="utf-8"))
-    result = analyze(rows, readiness, config)
+    field_verification = json.loads(
+        args.field_verification.read_text(encoding="utf-8")
+    )
+    result = analyze_locked(
+        rows,
+        readiness,
+        config,
+        field_verification,
+    )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")

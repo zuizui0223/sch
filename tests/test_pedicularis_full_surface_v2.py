@@ -9,6 +9,7 @@ import pytest
 from scripts.analyze_pedicularis_full_surface import (
     RAW_FIELDS,
     analyze,
+    analyze_locked,
     surface_data_sha256,
     to_sch_rows,
 )
@@ -46,6 +47,21 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
         },
         "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
         "predator_method_requirement": "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED",
+    }
+
+
+def _field_verification(rows: list[dict[str, str]]) -> dict:
+    return {
+        "receipt_schema": "PEDICULARIS_FULL_SURFACE_FIELD_VERIFICATION_V1",
+        "status": "P2_FULL_SURFACE_FIELD_PACKET_VERIFIED_COMPLETE",
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "n_rows": len(rows),
+        "allocation_identity_sha256": "a" * 64,
+        "field_identity_sha256": "b" * 64,
+        "surface_data_sha256": surface_data_sha256(rows),
+        "identity_and_treatment_match": True,
+        "canonical_outcomes_complete": True,
     }
 
 
@@ -188,3 +204,40 @@ def test_v2_rejects_readiness_without_threshold_freeze_provenance() -> None:
     receipt["source_receipts"]["p"].pop("threshold_freeze_status")
     with pytest.raises(ValueError, match="threshold-freeze provenance"):
         analyze(_rows(), receipt, _config())
+
+
+def test_production_locked_analysis_accepts_exact_verified_surface() -> None:
+    rows = _rows()
+    result = analyze_locked(
+        rows,
+        _readiness(),
+        _config(),
+        _field_verification(rows),
+    )
+
+    assert result["field_execution_verification"]["identity_and_treatment_match"] is True
+    assert result["field_execution_verification"]["canonical_outcomes_complete"] is True
+    assert result["field_execution_verification"]["surface_data_sha256"] == (
+        result["surface_data_sha256"]
+    )
+
+
+def test_production_locked_analysis_rejects_surface_changed_after_verify() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    changed = [dict(row) for row in rows]
+    changed[0]["pollen_grains"] = str(float(changed[0]["pollen_grains"]) + 1.0)
+
+    with pytest.raises(ValueError, match="verified field-packet fingerprint"):
+        analyze_locked(changed, _readiness(), _config(), verification)
+
+
+def test_production_locked_analysis_rejects_identity_only_verification() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    verification["status"] = "P2_FULL_SURFACE_FIELD_IDENTITY_VERIFIED"
+    verification["canonical_outcomes_complete"] = False
+    verification["surface_data_sha256"] = None
+
+    with pytest.raises(ValueError, match="identity-verified and complete"):
+        analyze_locked(rows, _readiness(), _config(), verification)

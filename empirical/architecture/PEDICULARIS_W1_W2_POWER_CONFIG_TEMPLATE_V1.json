@@ -107,6 +107,6 @@
   "candidate_plants": "REQUIRED_BEFORE_USE",
   "field_design": {
     "flowers_per_plant": "REQUIRED_BEFORE_USE",
-    "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_20_CELL"
+    "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1"
   }
 }
