@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import random
@@ -61,6 +62,30 @@ def _binary(row: dict[str, str], field: str) -> int:
     if raw not in {"0", "1"}:
         raise ValueError(f"{field} must be coded 0/1, got {raw!r}")
     return int(raw)
+
+
+def _validate_handling_roles(rows: list[dict[str, str]]) -> None:
+    for row in rows:
+        treatment = row.get("pollination_treatment", "").strip()
+        if treatment not in TREATMENTS:
+            raise ValueError(
+                "pollination_treatment must be NATURAL or SUPPLEMENTED"
+            )
+        expected = HANDLING_ROLE[treatment]
+        if row.get("pollination_handling_role", "").strip() != expected:
+            raise ValueError(
+                "pollination_handling_role does not match pollination_treatment"
+            )
+
+
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _validate_seed_counts(row: dict[str, str]) -> None:
@@ -254,6 +279,7 @@ def _allocation_identity(rows: list[dict[str, str]]) -> list[dict[str, str]]:
 def validate_randomized_allocation(
     rows: list[dict[str, str]],
     allocation_receipt: dict,
+    config: dict,
 ) -> None:
     if allocation_receipt.get("receipt_schema") != ALLOCATION_SCHEMA:
         raise ValueError("P1 randomized allocation receipt schema mismatch")
@@ -274,6 +300,12 @@ def validate_randomized_allocation(
         raise ValueError("P1 allocation season does not match data")
     if int(allocation_receipt.get("n_allocated_flowers", -1)) != len(rows):
         raise ValueError("P1 allocation row count does not match data")
+    if allocation_receipt.get("experimental_unit") != EXPERIMENTAL_UNIT:
+        raise ValueError("P1 allocation experimental_unit does not match evaluator")
+    if allocation_receipt.get("p1_field_config_sha256") != _semantic_sha256(config):
+        raise ValueError(
+            "P1 allocation receipt is not bound to the exact analyzed field config"
+        )
 
 
 def evaluate_locked(
@@ -281,7 +313,7 @@ def evaluate_locked(
     config: dict,
     allocation_receipt: dict,
 ) -> dict:
-    validate_randomized_allocation(rows, allocation_receipt)
+    validate_randomized_allocation(rows, allocation_receipt, config)
     result = evaluate(rows, config)
     result["field_allocation_verification"] = {
         "receipt_schema": allocation_receipt["receipt_schema"],
@@ -296,6 +328,7 @@ def evaluate_locked(
 
 
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
+    _validate_handling_roles(rows)
     freeze = validate_prospective_freeze(config, "P1")
     population_id, season_id = _check_context(rows)
     validate_freeze_context(freeze, population_id, season_id)
