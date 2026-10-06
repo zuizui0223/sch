@@ -111,6 +111,13 @@ B. PROSPECTIVELY_FROZEN_ROBUST_MULTI_SCENARIO_ENVELOPE
 A single convenient generating scenario with no basis is not a registered
 route.
 
+Before committing to Route A, use the Route-B sensitivity diagnostic in
+`docs/SCH_PEDICULARIS_W1_W2_POWER_ENVELOPE_V1.md`. It keeps all scenarios
+sensitivity-only, reports the worst-case power at each candidate n and the
+scenario-specific minimum-n range, and never promotes its own result to a
+registered field allocation. This asks whether geometry uncertainty is
+operationally important enough to justify the extra pilot cohort.
+
 For a registered power run, first materialize a basis-audit receipt whose state
 is:
 
