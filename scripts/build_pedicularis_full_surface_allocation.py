@@ -14,6 +14,10 @@ CONFIG_SCHEMA = "PEDICULARIS_FULL_SURFACE_ALLOCATION_CONFIG_V1"
 CONFIG_STATUS = "PEDICULARIS_FULL_SURFACE_ALLOCATION_PROSPECTIVELY_FROZEN"
 POWER_ANALYSIS = "pedicularis_W1_W2_full_surface_power_v1"
 POWER_STATUS = "PEDICULARIS_W1_W2_POWER_SIMULATION_COMPLETE"
+CONTEXT_SCHEMA = "PEDICULARIS_P2_CONTEXT_FREEZE_V1"
+CONTEXT_STATUS = (
+    "P2_CONTEXT_FROZEN_CURRENT_SEASON_BOTH_FUNCTIONAL_LANES_VALIDATED"
+)
 ALLOCATION_METHOD = "SHA256_BALANCED_CYCLIC_Z_BY_P_BY_G_V1"
 CELL_STRATEGY = "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1"
 STATE_PLAN = (
@@ -195,6 +199,71 @@ def _validate_config(config: dict) -> dict:
         "z_levels": normalized_z,
         "excluded_method_code": excluded_method,
         "exposed_method_code": exposed_method,
+    }
+
+
+def _validate_context(context: dict, config: dict) -> dict:
+    if context.get("receipt_schema") != CONTEXT_SCHEMA:
+        raise ValueError("P2 allocation requires a valid context-freeze receipt")
+    if context.get("status") != CONTEXT_STATUS:
+        raise ValueError("P2 context is not positively frozen")
+    if context.get("population_id") != config["population_id"]:
+        raise ValueError("context and allocation population_id do not match")
+    if context.get("season_id") != config["season_id"]:
+        raise ValueError("context and allocation season_id do not match")
+    if context.get(
+        "same_season_pollination_and_antagonist_lanes_validated"
+    ) is not True:
+        raise ValueError(
+            "P2 context lacks same-season validated pollination and antagonist lanes"
+        )
+    if context.get("context_selected_before_full_surface_outcomes") is not True:
+        raise ValueError(
+            "P2 context must be frozen before full-surface outcomes"
+        )
+    current = context.get("current_season_context")
+    if not isinstance(current, dict):
+        raise ValueError("P2 context receipt lacks current-season validation")
+    for field in (
+        "pollination_lane_validated",
+        "antagonist_lane_validated",
+        "z_manipulation_validated",
+        "same_population_and_season",
+    ):
+        if current.get(field) is not True:
+            raise ValueError(
+                f"P2 context current-season field {field} is not positive"
+            )
+    readiness_sha = context.get("readiness_receipt_sha256")
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError("P2 context receipt lacks readiness SHA-256 provenance")
+
+    historical = context.get("historical_context_prior")
+    historical_summary = None
+    if historical is not None:
+        if not isinstance(historical, dict):
+            raise ValueError("historical_context_prior must be an object or null")
+        if historical.get("historical_value_is_current_season_measurement") is not False:
+            raise ValueError(
+                "historical context prior must remain distinct from current-season evidence"
+            )
+        historical_summary = {
+            "historical_population_code": historical.get(
+                "historical_population_code"
+            ),
+            "history_class": historical.get("history_class"),
+            "exact_main_text_seed_predation_percent": historical.get(
+                "exact_main_text_seed_predation_percent"
+            ),
+            "mapping_status": historical.get("mapping_status"),
+        }
+
+    return {
+        "selection_mode": context.get("selection_mode"),
+        "inference_scope": context.get("inference_scope"),
+        "historical_context_prior": historical_summary,
+        "readiness_receipt_sha256": readiness_sha,
+        "context_receipt_sha256": _semantic_sha256(context),
     }
 
 
@@ -387,6 +456,7 @@ def build(
     manifest_rows: list[dict[str, str]],
     config_payload: dict,
     power_receipt: dict,
+    context_receipt: dict,
     allocation_seed: str,
 ) -> tuple[list[dict[str, str]], dict]:
     allocation_seed = allocation_seed.strip()
@@ -394,6 +464,7 @@ def build(
         raise ValueError("allocation_seed must be precommitted and resolved")
 
     config = _validate_config(config_payload)
+    context = _validate_context(context_receipt, config)
     power = _validate_power(power_receipt, config)
     by_plant = _validate_manifest(manifest_rows, config)
 
@@ -494,6 +565,7 @@ def build(
         ).hexdigest(),
         "allocation_identity_sha256": allocation_digest,
         "allocation_config_sha256": _semantic_sha256(config_payload),
+        "context_binding": context,
         "power_binding": power,
         "sample_size_chosen_by_script": False,
         "flowers_per_plant_chosen_by_script": False,
@@ -505,6 +577,7 @@ def build(
         ),
         "claim_ceiling": [
             "field_allocation_only",
+            "same_season_biological_context_to_power_to_field_execution_binding",
             "power_design_to_field_execution_binding",
             "treatment_blind_flower_registration_before_assignment",
             "exact_global_z_by_P_by_G_cell_balance",
@@ -536,6 +609,7 @@ def main() -> None:
     parser.add_argument("flower_manifest_csv", type=Path)
     parser.add_argument("allocation_config_json", type=Path)
     parser.add_argument("power_receipt_json", type=Path)
+    parser.add_argument("context_freeze_json", type=Path)
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--allocations-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -545,6 +619,7 @@ def main() -> None:
         _read_csv(args.flower_manifest_csv),
         _load_json(args.allocation_config_json),
         _load_json(args.power_receipt_json),
+        _load_json(args.context_freeze_json),
         args.allocation_seed,
     )
     _write_csv(args.allocations_out, allocations)
