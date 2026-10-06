@@ -302,3 +302,15 @@ def test_parallel_binding_requires_current_paired_p1_plan() -> None:
             g_method_selection=_g_selection(g),
             f0_assembly_receipt=_f0_receipt(),
         )
+
+
+def test_preoutcome_binding_contains_no_readiness_or_lane_outcomes() -> None:
+    result = _build()
+
+    assert "readiness_receipt_sha256" not in result
+    assert "readiness_status" not in result
+    assert "P0_status" not in result
+    assert "P1_status" not in result
+    assert "G_status" not in result
+    assert result["geometry_collection_may_run_before_lane_validation"] is True
+    assert result["geometry_analysis_requires_later_positive_readiness_v3"] is True
