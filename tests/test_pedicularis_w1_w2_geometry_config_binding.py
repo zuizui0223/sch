@@ -1,0 +1,146 @@
+from __future__ import annotations
+
+from copy import deepcopy
+
+import pytest
+
+from scripts.bind_pedicularis_w1_w2_geometry_config import (
+    BINDING_STATUS,
+    build as bind_geometry,
+)
+from scripts.simulate_pedicularis_w1_w2_power import (
+    FROZEN_STATUS,
+    _validate_geometry_binding,
+    simulate_power,
+)
+from tests.test_pedicularis_w1_w2_power import _config, _ready_basis
+
+
+def _frozen_config() -> dict:
+    config = _config()
+    config["status"] = FROZEN_STATUS
+    config["simulation_reps"] = 200
+    config["planning_provenance"]["basis_document"] = (
+        "FROZEN_GEOMETRY_BINDING_TEST"
+    )
+    return config
+
+
+def _geometry_summary(config: dict) -> dict:
+    model = config["generating_model"]
+    values = {
+        "generating_model.fitness_between_plant_sd": model[
+            "fitness_between_plant_sd"
+        ],
+        "generating_model.fitness_residual_sd": model[
+            "fitness_residual_sd"
+        ],
+        "generating_model.pollen_between_plant_sd": model[
+            "pollen_between_plant_sd"
+        ],
+        "generating_model.pollen_residual_sd": model[
+            "pollen_residual_sd"
+        ],
+        "generating_model.initial_seed_between_plant_sd_fraction": model[
+            "initial_seed_between_plant_sd_fraction"
+        ],
+        "generating_model.initial_seed_residual_sd_fraction": model[
+            "initial_seed_residual_sd_fraction"
+        ],
+    }
+    for state in ("P0G0", "P1G0", "P0G1", "P1G1"):
+        values[f"generating_model.state_fitness_surfaces.{state}"] = deepcopy(
+            model["state_fitness_surfaces"][state]
+        )
+        values[f"generating_model.pollen_state_models.{state}"] = deepcopy(
+            model["pollen_state_models"][state]
+        )
+        values[
+            f"generating_model.initial_seed_state_models.{state}"
+        ] = deepcopy(model["initial_seed_state_models"][state])
+
+    assert len(values) == 18
+    return {
+        "receipt_schema": "PEDICULARIS_P2_GEOMETRY_PILOT_SUMMARY_V1",
+        "status": "PEDICULARIS_P2_GEOMETRY_PILOT_POWER_BASIS_READY",
+        "geometry_and_variance_basis_complete": True,
+        "population_id": config["planning_provenance"]["population_id"],
+        "season_id": config["planning_provenance"]["season_id"],
+        "resolved_power_basis_values": values,
+    }
+
+
+def test_binding_certifies_all_eighteen_geometry_variance_paths() -> None:
+    config = _frozen_config()
+    basis = _ready_basis()
+    summary = _geometry_summary(config)
+
+    binding = bind_geometry(config, summary, basis)
+
+    assert binding["status"] == BINDING_STATUS
+    assert binding["n_geometry_variance_paths_bound"] == 18
+    assert binding["all_geometry_variance_paths_match"] is True
+    assert all(
+        row["matches_geometry_summary"]
+        for row in binding["path_checks"]
+    )
+
+
+def test_binding_rejects_single_geometry_value_drift() -> None:
+    config = _frozen_config()
+    summary = _geometry_summary(config)
+    config["generating_model"]["state_fitness_surfaces"]["P1G1"][
+        "curvature"
+    ] += 0.1
+
+    with pytest.raises(ValueError, match="drift from geometry summary"):
+        bind_geometry(config, summary, _ready_basis())
+
+
+def test_registered_power_rejects_missing_geometry_binding_before_simulation() -> None:
+    config = _frozen_config()
+
+    with pytest.raises(ValueError, match="requires an exact geometry-config binding"):
+        simulate_power(
+            config,
+            basis_receipt=_ready_basis(),
+        )
+
+
+def test_registered_binding_detects_config_edit_after_binding() -> None:
+    config = _frozen_config()
+    basis = _ready_basis()
+    binding = bind_geometry(config, _geometry_summary(config), basis)
+
+    changed = deepcopy(config)
+    changed["candidate_plants"] = [10]
+
+    with pytest.raises(ValueError, match="power config has changed"):
+        _validate_geometry_binding(changed, basis, binding)
+
+
+def test_registered_binding_detects_basis_receipt_edit_after_binding() -> None:
+    config = _frozen_config()
+    basis = _ready_basis()
+    binding = bind_geometry(config, _geometry_summary(config), basis)
+
+    changed_basis = deepcopy(basis)
+    changed_basis["extra_note"] = "post-binding edit"
+
+    with pytest.raises(ValueError, match="power-basis receipt has changed"):
+        _validate_geometry_binding(config, changed_basis, binding)
+
+
+def test_sensitivity_run_does_not_require_geometry_binding() -> None:
+    config = _frozen_config()
+    config["status"] = (
+        "PEDICULARIS_W1_W2_POWER_SENSITIVITY_SCENARIO_ONLY"
+    )
+    config["simulation_reps"] = 1
+
+    result = _validate_geometry_binding(
+        config,
+        {"anything": "allowed because sensitivity only"},
+        None,
+    )
+    assert result is None
