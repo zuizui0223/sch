@@ -62,6 +62,25 @@ def _config(
     }
 
 
+def _readiness(config: dict) -> dict:
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+    }
+
+
 def _manifest(
     *,
     n_plants: int = 10,
@@ -165,6 +184,7 @@ def _packet(
             flowers_per_plant=flowers_per_plant,
         ),
         config,
+        _readiness(config),
         "GEOMETRY-PILOT-SEED",
     )
     completed = _complete(allocated)
@@ -407,3 +427,45 @@ def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
 
     with pytest.raises(ValueError, match="exact config frozen at allocation"):
         evaluate_precision(completed, summary, posthoc)
+
+
+def test_geometry_pilot_requires_positive_readiness_v3() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["status"] = "PEDICULARIS_FULL_SURFACE_NOT_READY"
+
+    with pytest.raises(ValueError, match="requires positive P0/P1/G"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )
+
+
+def test_geometry_pilot_z_grid_must_match_validated_p0_readiness() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["z_levels"][-1] = "DIFFERENT_Z"
+
+    with pytest.raises(ValueError, match="z-level labels do not match"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )
+
+
+def test_geometry_pilot_g_method_must_match_validated_g_readiness() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["g_exclusion_method"] = "DIFFERENT_METHOD"
+
+    with pytest.raises(ValueError, match="excluded method does not match"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )
