@@ -28,21 +28,40 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
         "population_id": population,
         "season_id": season,
         "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": ["Z-2", "Z-1", "Z+0", "Z+1", "Z+2"],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
         "source_receipts": {
             "z": {
                 "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
                 "status": "PEDICULARIS_Z_MANIPULATION_VALIDATED",
                 "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
             },
             "p": {
                 "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
                 "status": "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED",
                 "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
             },
             "g": {
                 "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
                 "status": "PEDICULARIS_PREDATOR_METHOD_VALIDATED",
                 "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
             },
         },
         "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
@@ -241,3 +260,29 @@ def test_production_locked_analysis_rejects_identity_only_verification() -> None
 
     with pytest.raises(ValueError, match="identity-verified and complete"):
         analyze_locked(rows, _readiness(), _config(), verification)
+
+
+def test_v2_rejects_raw_z_grid_not_matching_validated_p0() -> None:
+    rows = _rows()
+    rows[0]["assigned_z_level"] = "UNVALIDATED_Z"
+
+    with pytest.raises(ValueError, match="z-level labels do not match"):
+        analyze(rows, _readiness(), _config())
+
+
+def test_v2_rejects_raw_excluded_method_not_matching_validated_g() -> None:
+    rows = _rows()
+    for row in rows:
+        if row["predator_treatment"] == "EXCLUDED":
+            row["exclusion_method"] = "UNVALIDATED_G_METHOD"
+
+    with pytest.raises(ValueError, match="EXCLUDED method does not match"):
+        analyze(rows, _readiness(), _config())
+
+
+def test_v2_rejects_readiness_without_randomized_execution_checks() -> None:
+    receipt = _readiness()
+    receipt["checks"]["p_randomized_allocation_verified"] = False
+
+    with pytest.raises(ValueError, match="randomized execution checks"):
+        analyze(_rows(), receipt, _config())
