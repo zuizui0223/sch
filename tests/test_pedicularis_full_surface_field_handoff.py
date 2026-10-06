@@ -69,6 +69,31 @@ def _power() -> dict:
     }
 
 
+def _context() -> dict:
+    return {
+        "analysis": "pedicularis_p2_context_freeze_v1",
+        "receipt_schema": "PEDICULARIS_P2_CONTEXT_FREEZE_V1",
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "selection_mode": "CURRENT_CONTEXT_ONLY",
+        "inference_scope": "PRIMARY_TESTED_CONTEXT_ONLY",
+        "historical_context_prior": None,
+        "current_season_context": {
+            "pollination_lane_validated": True,
+            "antagonist_lane_validated": True,
+            "z_manipulation_validated": True,
+            "same_population_and_season": True,
+            "readiness_receipt_sha256": "a" * 64,
+        },
+        "same_season_pollination_and_antagonist_lanes_validated": True,
+        "context_selected_before_full_surface_outcomes": True,
+        "readiness_receipt_sha256": "a" * 64,
+        "status": (
+            "P2_CONTEXT_FROZEN_CURRENT_SEASON_BOTH_FUNCTIONAL_LANES_VALIDATED"
+        ),
+    }
+
+
 def _manifest() -> list[dict[str, str]]:
     return [
         {
@@ -87,6 +112,7 @@ def _allocation_packet() -> tuple[list[dict[str, str]], dict]:
         _manifest(),
         _allocation_config(),
         _power(),
+        _context(),
         "LOCKED-P2-SEED",
     )
 
