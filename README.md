@@ -502,7 +502,11 @@ executable with `build_pedicularis_p2_geometry_pilot.py`,
 `summarize_pedicularis_p2_geometry_pilot.py`, and
 `evaluate_pedicularis_p2_geometry_precision.py`. The precision gate is frozen
 before pilot outcomes; point-estimable geometry alone cannot promote the 18
-power-basis paths. The separate
+power-basis paths. After precision qualifies and the remaining P0/F0 basis rows
+are resolved, `bind_pedicularis_w1_w2_geometry_config.py` requires all 18
+values in the frozen registered power config to exactly match that qualified
+pilot and binds the summary, precision receipt, basis receipt and config by
+SHA-256. The separate
 `POWER_GEOMETRY_PILOT` cohort never enters confirmatory inference and can
 materialize 18 same-estimand geometry/variance basis rows, reducing the current
 21 blockers to the three P0/F0-dependent rows. See

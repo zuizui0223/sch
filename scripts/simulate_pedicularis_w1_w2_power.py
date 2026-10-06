@@ -14,6 +14,11 @@ from scripts.classify_pedicularis_empirical_outcome import (
     build as classify_world,
 )
 from scripts.pedicularis_config_freeze import FREEZE_STATUS
+from scripts.bind_pedicularis_w1_w2_geometry_config import (
+    BINDING_SCHEMA,
+    BINDING_STATUS,
+    _semantic_sha256,
+)
 
 
 SCHEMA = "PEDICULARIS_W1_W2_POWER_CONFIG_V1"
@@ -253,6 +258,60 @@ def _validate_basis_receipt(
         raise ValueError("unrecognized W1/W2 power run status")
 
     return basis_receipt
+
+
+def _validate_geometry_binding(
+    config: dict,
+    basis_receipt: dict | None,
+    geometry_binding: dict | None,
+) -> dict | None:
+    status = config.get("status")
+    if status in {TEST_STATUS, SENSITIVITY_STATUS}:
+        return None
+    if status != FROZEN_STATUS:
+        raise ValueError("unrecognized W1/W2 power run status")
+    if basis_receipt is None:
+        raise ValueError(
+            "registered W1/W2 power requires a basis receipt before geometry binding"
+        )
+    if geometry_binding is None:
+        raise ValueError(
+            "registered W1/W2 power requires an exact precision-qualified "
+            "geometry-config binding receipt"
+        )
+    if geometry_binding.get("receipt_schema") != BINDING_SCHEMA:
+        raise ValueError("geometry-config binding receipt schema mismatch")
+    if geometry_binding.get("status") != BINDING_STATUS:
+        raise ValueError("geometry-config binding receipt is not ready")
+    if geometry_binding.get("all_geometry_variance_paths_match") is not True:
+        raise ValueError("geometry-config binding does not certify all 18 paths")
+    if geometry_binding.get("geometry_precision_qualified") is not True:
+        raise ValueError(
+            "geometry-config binding does not certify precision-qualified geometry"
+        )
+    if int(geometry_binding.get("n_geometry_variance_paths_bound", -1)) != 18:
+        raise ValueError("geometry-config binding must certify exactly 18 paths")
+
+    provenance = config.get("planning_provenance", {})
+    if geometry_binding.get("population_id") != provenance.get("population_id"):
+        raise ValueError(
+            "geometry-config binding population does not match power config"
+        )
+    if geometry_binding.get("season_id") != provenance.get("season_id"):
+        raise ValueError(
+            "geometry-config binding season does not match power config"
+        )
+    if geometry_binding.get("power_config_sha256") != _semantic_sha256(config):
+        raise ValueError(
+            "frozen power config has changed since geometry-config binding"
+        )
+    if geometry_binding.get("power_basis_receipt_sha256") != _semantic_sha256(
+        basis_receipt
+    ):
+        raise ValueError(
+            "power-basis receipt has changed since geometry-config binding"
+        )
+    return geometry_binding
 
 
 def _validate_config(config: dict) -> dict:
@@ -783,11 +842,17 @@ def simulate_power(
     *,
     world_rows: list[dict[str, str]] | None = None,
     basis_receipt: dict | None = None,
+    geometry_binding: dict | None = None,
 ) -> dict:
     frozen = _validate_config(config)
     validated_basis = _validate_basis_receipt(
         basis_receipt,
         status=config["status"],
+    )
+    validated_geometry_binding = _validate_geometry_binding(
+        config,
+        validated_basis,
+        geometry_binding,
     )
     worlds = _read_worlds(DEFAULT_WORLDS) if world_rows is None else world_rows
     provenance = frozen["planning_provenance"]
@@ -979,6 +1044,15 @@ def simulate_power(
             if validated_basis is not None
             else 0
         ),
+        "geometry_config_binding_status": (
+            validated_geometry_binding.get("status")
+            if validated_geometry_binding is not None
+            else (
+                "NOT_REQUIRED_FOR_SENSITIVITY_OR_SYNTHETIC_TEST"
+                if config["status"] in {SENSITIVITY_STATUS, TEST_STATUS}
+                else "MISSING"
+            )
+        ),
         "minimum_plants_meeting_both_targets": recommended_n,
         "minimum_total_full_surface_flowers_meeting_both_targets": (
             recommended_n * frozen["field_design"]["flowers_per_plant"]
@@ -990,6 +1064,8 @@ def simulate_power(
             and validated_basis is not None
             and validated_basis.get("registered_power_status")
             == BASIS_READY_STATUS
+            and validated_geometry_binding is not None
+            and validated_geometry_binding.get("status") == BINDING_STATUS
         ),
         "status": result_status,
         "claim_ceiling": [
@@ -1000,6 +1076,7 @@ def simulate_power(
             "flowers_per_plant_and_balanced_allocation_must_match_field_design_before_using_n",
             "Monte_Carlo_power_is_conditional_on_frozen_generating_scenario",
             "sensitivity_only_runs_cannot_supply_a_P2_field_allocation_n",
+            "registered_runs_require_precision_qualified_exact_18_path_geometry_binding",
         ],
     }
 
@@ -1021,6 +1098,14 @@ def main() -> None:
             "non-test runs"
         ),
     )
+    parser.add_argument(
+        "--geometry-binding",
+        type=Path,
+        help=(
+            "PEDICULARIS_W1_W2_GEOMETRY_CONFIG_BINDING_V2 receipt; required "
+            "for registered frozen runs and not required for sensitivity/test runs"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -1030,10 +1115,16 @@ def main() -> None:
         if args.basis_receipt is not None
         else None
     )
+    geometry_binding = (
+        json.loads(args.geometry_binding.read_text(encoding="utf-8"))
+        if args.geometry_binding is not None
+        else None
+    )
     result = simulate_power(
         config,
         world_rows=_read_worlds(args.worlds),
         basis_receipt=basis_receipt,
+        geometry_binding=geometry_binding,
     )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:

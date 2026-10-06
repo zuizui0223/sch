@@ -30,6 +30,50 @@ scripts/simulate_pedicularis_w1_w2_power.py
 tests/test_pedicularis_w1_w2_power.py
 ```
 
+## Precision-qualified geometry must match the actual power config
+
+A zero-blocker basis receipt certifies that admissible evidence exists. It does
+not, by itself, prove that the 18 geometry/variance numbers typed into the final
+power config are the values measured by the independent geometry pilot.
+
+For a registered `FROZEN` run, first create an exact binding:
+
+~~~bash
+python scripts/bind_pedicularis_w1_w2_geometry_config.py \
+  <frozen_power_config.json> \
+  <geometry_pilot_summary.json> \
+  <geometry_precision.json> \
+  <zero_blocker_power_basis_receipt.json> \
+  --output <geometry_config_binding.json>
+~~~
+
+The binding requires:
+
+~~~text
+geometry point summary                 complete
+geometry precision receipt             READY_FOR_BASIS
+all 18 precision gates                 pass
+all 18 frozen config values            exactly match pilot summary
+population / season                    identical
+~~~
+
+and stores semantic SHA-256 digests of the exact geometry summary, precision
+receipt, zero-blocker basis receipt and entire frozen power config.
+
+The registered simulator then requires both:
+
+~~~bash
+--basis-receipt <zero_blocker_power_basis_receipt.json>
+--geometry-binding <geometry_config_binding.json>
+~~~
+
+Any later edit to the power config or basis receipt invalidates the binding.
+Synthetic TEST and sensitivity-envelope runs remain exempt because they cannot
+authorize registered P2 field allocation.
+
+This is provenance control after precision qualification; it is not a substitute
+for the precision gate itself.
+
 ## What is powered
 
 Two power targets are frozen independently:

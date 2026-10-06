@@ -277,6 +277,29 @@ No other row is changed.
 
 The normal power-basis audit is then rerun on the derived ledger.
 
+## Bind qualified pilot values to the final power configuration
+
+After the geometry point estimates and precision receipt pass, and after the
+remaining P0/F0 basis blockers are resolved so the canonical power-basis audit
+has zero blockers, bind the final frozen power configuration to the exact pilot:
+
+~~~bash
+python scripts/bind_pedicularis_w1_w2_geometry_config.py \
+  <frozen_power_config.json> \
+  <geometry_pilot_summary.json> \
+  <geometry_precision.json> \
+  <zero_blocker_power_basis_receipt.json> \
+  --output <geometry_config_binding.json>
+~~~
+
+All 18 geometry/variance values in the power config must equal the exact
+precision-qualified pilot point estimates. The binding also fingerprints the
+summary, precision receipt, basis receipt and power config.
+
+This prevents the geometry pilot from becoming a nominal citation while a
+different, more convenient optimum, curvature, slope or variance is used for
+sample-size planning.
+
 ## What the pilot does not do
 
 The geometry pilot does not:
