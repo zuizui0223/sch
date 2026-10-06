@@ -342,6 +342,38 @@ dropped, treatment/method identity drifts, or any V4 timing/outcome cell remains
 blank. Passing this handoff only licenses the existing exploratory
 hard-validity screen; it does not establish G effectiveness or selectivity.
 
+## Confirmatory G method freeze and paired randomization
+
+The exploratory first-tier screen does not select the confirmatory method.
+After hard-validity screening, freeze one hard-pass candidate **before any
+confirmatory G outcomes** with:
+
+```text
+empirical/architecture/PEDICULARIS_G_CONFIRMATORY_METHOD_FREEZE_TEMPLATE_V1.json
+scripts/freeze_pedicularis_g_confirmatory_method.py
+```
+
+The freeze records the selected candidate/method, exposed sham code, planned
+paired-plant sample size and an explicit pre-outcome selection-basis note. If
+multiple candidates passed hard validity, the code still does not rank them by
+post-hoc effect size.
+
+Register treatment-blind confirmatory flowers in
+`PEDICULARIS_G_CONFIRMATORY_FLOWER_MANIFEST_TEMPLATE_V1.csv` and randomize
+EXPOSED-sham versus EXCLUDED-selected-method flowers within plants with:
+
+```bash
+python scripts/build_pedicularis_g_confirmatory_assignment.py \
+  <treatment_blind_confirmatory_g_flowers.csv> \
+  <g_method_selection_receipt.json> \
+  --allocation-seed <PRECOMMITTED_SEED> \
+  --allocations-out <confirmatory_g_allocation.csv> \
+  --receipt-out <confirmatory_g_allocation.json>
+```
+
+The production V4 evaluator then requires this exact allocation receipt. Flower
+substitution, treatment/method/sham drift or G-field-config drift fails closed.
+
 ## Stage-G pilot design
 
 Within the same focal population and season, randomize flowers within plants to:
@@ -351,11 +383,17 @@ EXPOSED + sham handling
 EXCLUDED + candidate physical barrier
 ```
 
-The existing registered evaluator remains:
+The confirmatory method/selectivity evaluator is:
 
-```text
-scripts/evaluate_pedicularis_predator_weight.py
+```bash
+python scripts/evaluate_pedicularis_predator_method.py \
+  <completed_confirmatory_g_v4.csv> <frozen_g_config.json> \
+  --allocation-receipt <confirmatory_g_allocation.json>
 ```
+
+The lower-level predator-weight calculation remains nested inside that method
+qualification; it is not a substitute for the randomized confirmatory V4
+receipt.
 
 The pilot must recover:
 
