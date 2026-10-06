@@ -45,6 +45,7 @@ def _power() -> dict:
         "target_truth_world": "W1",
         "target_primary_surface_power": 0.80,
         "target_headline_w1_or_w2_power": 0.80,
+        "registered_field_allocation_recommendation_allowed": True,
         "powered_design": {
             "nominal_z_levels": [-2.0, -1.0, 0.0, 1.0, 2.0],
             "realized_z_sd": 0.1,
