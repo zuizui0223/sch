@@ -143,6 +143,41 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
         raise ValueError("V2 readiness receipt does not require water-y to remain fixed")
     if readiness.get("predator_method_requirement") != "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_WITH_POLLINATOR_ACCESS_PRESERVED":
         raise ValueError("V2 readiness receipt lacks the timed predator-method qualification requirement")
+    checks = readiness.get("checks")
+    if not isinstance(checks, dict):
+        raise ValueError("V2 readiness receipt lacks explicit readiness checks")
+    required_randomized_checks = (
+        "same_population_and_season",
+        "z_randomized_allocation_verified",
+        "z_levels_validated",
+        "p_randomized_allocation_verified",
+        "g_randomized_allocation_verified",
+        "g_method_timing_validated",
+    )
+    missing_or_false = [
+        name
+        for name in required_randomized_checks
+        if checks.get(name) is not True
+    ]
+    if missing_or_false:
+        raise ValueError(
+            "V2 readiness lacks positive randomized execution checks: "
+            + ", ".join(missing_or_false)
+        )
+
+    validated = readiness.get("validated_execution")
+    if not isinstance(validated, dict):
+        raise ValueError("V2 readiness lacks validated execution provenance")
+    z_levels = validated.get("z_levels")
+    if not isinstance(z_levels, list) or len(z_levels) < 5:
+        raise ValueError("V2 readiness lacks validated multi-level z design")
+    if validated.get("p_experimental_unit") != "WITHIN_PLANT_PAIRED_FLOWERS":
+        raise ValueError("V2 readiness lacks validated paired-flower P1 design")
+    if not isinstance(validated.get("g_exclusion_method"), str) or not validated.get(
+        "g_exclusion_method"
+    ):
+        raise ValueError("V2 readiness lacks validated G exclusion method")
+
     source_receipts = readiness.get("source_receipts", {})
     source_g = source_receipts.get("g", {})
     if source_g.get("schema") != "SCH_PEDICULARIS_PREDATOR_METHOD_V4":
@@ -154,6 +189,34 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
                 "V2 readiness lacks positive prospective threshold-freeze provenance "
                 f"for lane {lane}"
             )
+        receipt_sha = source.get("receipt_sha256")
+        if not isinstance(receipt_sha, str) or len(receipt_sha) != 64:
+            raise ValueError(
+                f"V2 readiness lacks source receipt SHA-256 for lane {lane}"
+            )
+
+
+def _validate_rows_against_validated_execution(
+    rows: list[dict[str, str]],
+    readiness: dict,
+) -> None:
+    validated = readiness["validated_execution"]
+    expected_z = set(validated["z_levels"])
+    observed_z = {row["assigned_z_level"] for row in rows}
+    if observed_z != expected_z:
+        raise ValueError(
+            "raw P2 z-level labels do not match the validated P0 readiness grid"
+        )
+
+    excluded_methods = {
+        row["exclusion_method"]
+        for row in rows
+        if row["predator_treatment"] == "EXCLUDED"
+    }
+    if excluded_methods != {validated["g_exclusion_method"]}:
+        raise ValueError(
+            "raw P2 EXCLUDED method does not match the validated G readiness method"
+        )
 
 
 def _system_checks(rows: list[dict[str, str]], config: dict) -> dict:
@@ -292,6 +355,7 @@ def analyze_locked(
 def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     population, season = _context(rows)
     _validate_readiness(readiness, population, season)
+    _validate_rows_against_validated_execution(rows, readiness)
     checks = _system_checks(rows, config)
     if checks["status"] != "PEDICULARIS_V2_SYSTEM_CHECKS_PASS":
         raise ValueError("Pedicularis V2 system checks failed; water-y or handling was not held fixed")

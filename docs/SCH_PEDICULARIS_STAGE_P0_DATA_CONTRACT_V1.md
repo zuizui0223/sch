@@ -93,9 +93,19 @@ thresholds. It only randomizes treatment-blind flower IDs within each plant to
 the frozen level plan using reproducible SHA-256 ranking. Every included plant
 must contribute exactly one flower per planned z level.
 
-Merge measured Stage-P0 fields onto that allocation by `flower_id` before
-running the evaluator. Do not replace or relabel flowers after allocation is
-revealed.
+Merge measured Stage-P0 fields onto that allocation by `flower_id`. The
+production evaluator must be run with the exact allocation receipt:
+
+```bash
+python scripts/evaluate_pedicularis_stage_p0.py \
+  <completed_p0.csv> <frozen_p0_config.json> \
+  --allocation-receipt <p0_allocation_receipt.json> \
+  --output <p0_receipt.json>
+```
+
+The evaluator reconstructs the flower-to-z/sham mapping and fails if a flower,
+z label/rank or sham identity differs from the randomized allocation. Do not
+replace or relabel flowers after allocation is revealed.
 
 ## Required fields
 

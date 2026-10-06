@@ -67,6 +67,21 @@ predator_method_requirement = TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_
 
 Earlier readiness receipts are rejected.
 
+V3 now also means **randomized execution provenance is positive**, not merely
+that three biological gate statuses are positive. The assembled receipt must
+show:
+
+```text
+P0  exact treatment-blind flower -> z/sham allocation verified
+P1  exact paired NATURAL-sham vs SUPPLEMENTED allocation verified
+G   exact preselected-method EXPOSED-sham vs EXCLUDED allocation verified
+```
+
+It carries SHA-256 provenance for all three source receipts and stores the
+validated z-level labels, paired P1 experimental unit and selected G exclusion
+method. The P2 analyzer rechecks this provenance and rejects a raw P2 dataset
+whose z labels or EXCLUDED method differ from the validated interventions.
+
 ## Registered state mapping
 
 The shared coordinate is:

@@ -90,10 +90,13 @@ def test_complete_block_randomizes_each_plant_across_all_levels() -> None:
     assert receipt["n_plants"] == 4
     assert receipt["n_z_levels"] == 5
     assert receipt["n_allocated_flowers"] == 20
+    assert receipt["receipt_schema"] == "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
     assert receipt["assignment_randomized_within_plant"] is True
     assert receipt["allocation_algorithm"] == ASSIGNMENT_METHOD
     assert receipt["sample_size_chosen_by_script"] is False
     assert receipt["z_level_values_chosen_by_script"] is False
+    assert len(receipt["allocation_identity_sha256"]) == 64
+    assert len(receipt["expected_frozen_rows"]) == 20
 
     for plant in {row["plant_id"] for row in allocations}:
         subset = [row for row in allocations if row["plant_id"] == plant]

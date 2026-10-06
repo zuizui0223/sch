@@ -320,6 +320,7 @@ def _cells(config: dict, allocation_seed: str) -> list[dict[str, str]]:
 def build(
     manifest_rows: list[dict[str, str]],
     config_payload: dict,
+    readiness_receipt: dict,
     allocation_seed: str,
 ) -> tuple[list[dict[str, str]], dict]:
     allocation_seed = allocation_seed.strip()
@@ -327,6 +328,44 @@ def build(
         raise ValueError("allocation_seed must be precommitted and resolved")
 
     config = _validate_config(config_payload)
+    surface._validate_readiness(
+        readiness_receipt,
+        config["population_id"],
+        config["season_id"],
+    )
+
+    if readiness_receipt.get("receipt_schema_version") != (
+        "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3"
+    ):
+        raise ValueError("geometry pilot requires readiness V3")
+    if readiness_receipt.get("status") != "PEDICULARIS_FULL_SURFACE_READY":
+        raise ValueError(
+            "geometry pilot requires positive P0/P1/G full-surface readiness"
+        )
+    if readiness_receipt.get("population_id") != config["population_id"]:
+        raise ValueError("geometry pilot readiness population does not match config")
+    if readiness_receipt.get("season_id") != config["season_id"]:
+        raise ValueError("geometry pilot readiness season does not match config")
+
+    validated = readiness_receipt.get("validated_execution")
+    if not isinstance(validated, dict):
+        raise ValueError("readiness V3 lacks validated execution provenance")
+    expected_z_levels = [
+        row["assigned_z_level"] for row in config["z_levels"]
+    ]
+    if validated.get("z_levels") != expected_z_levels:
+        raise ValueError(
+            "geometry-pilot z-level labels do not match validated P0 readiness"
+        )
+    if validated.get("p_experimental_unit") != "WITHIN_PLANT_PAIRED_FLOWERS":
+        raise ValueError(
+            "geometry pilot requires validated paired-flower P1 intervention"
+        )
+    if validated.get("g_exclusion_method") != config["excluded_method_code"]:
+        raise ValueError(
+            "geometry-pilot excluded method does not match validated G readiness"
+        )
+
     by_plant = _validate_manifest(manifest_rows, config)
 
     plant_order = _rank(
@@ -447,6 +486,13 @@ def build(
             allocation_seed.encode("utf-8")
         ).hexdigest(),
         "config_sha256": _semantic_sha256(config_payload),
+        "readiness_receipt_sha256": _semantic_sha256(readiness_receipt),
+        "readiness_status": readiness_receipt["status"],
+        "validated_execution": {
+            "z_levels": list(validated["z_levels"]),
+            "p_experimental_unit": validated["p_experimental_unit"],
+            "g_exclusion_method": validated["g_exclusion_method"],
+        },
         "precision_gate": config["precision_gate"],
         "precision_gate_frozen_before_outcomes": True,
         "frozen_identity_sha256": _semantic_sha256(frozen_rows),
@@ -457,6 +503,7 @@ def build(
         "status": "P2_GEOMETRY_PILOT_ALLOCATED_NOT_YET_MEASURED",
         "claim_ceiling": [
             "nonconfirmatory_power_basis_only",
+            "requires_positive_randomized_P0_P1_G_readiness_V3",
             "precision_gate_frozen_before_any_geometry_outcomes",
             "cumulative_precision_looks_frozen_before_any_geometry_outcomes",
             "exact_balanced_randomized_z_P_G_allocation",
@@ -485,6 +532,7 @@ def main() -> None:
     )
     parser.add_argument("flower_manifest_csv", type=Path)
     parser.add_argument("pilot_config_json", type=Path)
+    parser.add_argument("readiness_v3_json", type=Path)
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--field-sheet-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -493,6 +541,7 @@ def main() -> None:
     rows, receipt = build(
         _read_csv(args.flower_manifest_csv),
         _load_json(args.pilot_config_json),
+        _load_json(args.readiness_v3_json),
         args.allocation_seed,
     )
     _write_csv(args.field_sheet_out, rows)

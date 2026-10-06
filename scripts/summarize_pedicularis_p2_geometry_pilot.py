@@ -237,6 +237,14 @@ def _validate_execution(
         raise ValueError("geometry-pilot allocation receipt is not valid")
     if allocation_receipt.get("pilot_role") != PILOT_ROLE:
         raise ValueError("geometry-pilot allocation role mismatch")
+    if allocation_receipt.get("readiness_status") != "PEDICULARIS_FULL_SURFACE_READY":
+        raise ValueError("geometry-pilot allocation lacks positive readiness provenance")
+    readiness_sha = allocation_receipt.get("readiness_receipt_sha256")
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError("geometry-pilot allocation lacks readiness receipt digest")
+    validated_execution = allocation_receipt.get("validated_execution")
+    if not isinstance(validated_execution, dict):
+        raise ValueError("geometry-pilot allocation lacks validated execution provenance")
 
     cohort_receipt = cohort.validate(registry_rows)
     registry = {row["flower_id"]: row for row in registry_rows}
@@ -445,6 +453,10 @@ def build(
             "frozen_identity_sha256"
         ),
         "pilot_config_sha256": allocation_receipt.get("config_sha256"),
+        "readiness_receipt_sha256": allocation_receipt.get(
+            "readiness_receipt_sha256"
+        ),
+        "validated_execution": allocation_receipt.get("validated_execution"),
         "precision_gate_frozen_at_allocation": allocation_receipt.get(
             "precision_gate"
         ),
@@ -472,6 +484,7 @@ def build(
         ),
         "claim_ceiling": [
             "nonconfirmatory_power_basis_only",
+            "geometry_basis_conditioned_on_positive_randomized_P0_P1_G_readiness",
             "pilot_rows_never_enter_confirmatory_P2_inference",
             "does_not_assign_W0_W5",
             "does_not_test_causal_compromise",

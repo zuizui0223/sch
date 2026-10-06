@@ -62,6 +62,54 @@ def _config(
     }
 
 
+def _readiness(config: dict) -> dict:
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+        "source_receipts": {
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
+            },
+        },
+        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": (
+            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
+            "WITH_POLLINATOR_ACCESS_PRESERVED"
+        ),
+    }
+
 def _manifest(
     *,
     n_plants: int = 10,
@@ -165,6 +213,7 @@ def _packet(
             flowers_per_plant=flowers_per_plant,
         ),
         config,
+        _readiness(config),
         "GEOMETRY-PILOT-SEED",
     )
     completed = _complete(allocated)
@@ -363,6 +412,7 @@ def test_precision_gate_must_be_frozen_before_allocation() -> None:
         allocate(
             _manifest(),
             config,
+            _readiness(config),
             "GEOMETRY-PILOT-SEED",
         )
 
@@ -407,3 +457,45 @@ def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
 
     with pytest.raises(ValueError, match="exact config frozen at allocation"):
         evaluate_precision(completed, summary, posthoc)
+
+
+def test_geometry_pilot_requires_positive_readiness_v3() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["status"] = "PEDICULARIS_FULL_SURFACE_NOT_READY"
+
+    with pytest.raises(ValueError, match="readiness status is not positive"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )
+
+
+def test_geometry_pilot_z_grid_must_match_validated_p0_readiness() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["z_levels"][-1] = "DIFFERENT_Z"
+
+    with pytest.raises(ValueError, match="z-level labels do not match"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )
+
+
+def test_geometry_pilot_g_method_must_match_validated_g_readiness() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["g_exclusion_method"] = "DIFFERENT_METHOD"
+
+    with pytest.raises(ValueError, match="excluded method does not match"):
+        allocate(
+            _manifest(),
+            config,
+            readiness,
+            "GEOMETRY-PILOT-SEED",
+        )

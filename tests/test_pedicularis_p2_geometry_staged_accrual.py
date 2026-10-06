@@ -51,6 +51,54 @@ def _config() -> dict:
     }
 
 
+def _readiness(config: dict) -> dict:
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+        "source_receipts": {
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
+            },
+        },
+        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": (
+            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
+            "WITH_POLLINATOR_ACCESS_PRESERVED"
+        ),
+    }
+
 def _manifest() -> list[dict[str, str]]:
     return [
         {
@@ -100,7 +148,12 @@ def _precision(
 
 def test_maximum_allocation_contains_nested_exact_balanced_prefixes() -> None:
     config = _config()
-    rows, receipt = allocate(_manifest(), config, "STAGED-SEED")
+    rows, receipt = allocate(
+        _manifest(),
+        config,
+        _readiness(config),
+        "STAGED-SEED",
+    )
 
     assert receipt["candidate_cumulative_plants"] == [5, 10]
     assert receipt["plant_accrual_order"]
@@ -204,11 +257,22 @@ def test_unbalanced_precision_look_is_rejected_before_allocation() -> None:
     config["candidate_cumulative_plants"] = [6, 10]
 
     with pytest.raises(ValueError, match="every planned precision look"):
-        allocate(_manifest(), config, "STAGED-SEED")
+        allocate(
+            _manifest(),
+            config,
+            _readiness(config),
+            "STAGED-SEED",
+        )
 
 
 def test_stage_n_must_be_preregistered() -> None:
-    rows, receipt = allocate(_manifest(), _config(), "STAGED-SEED")
+    config = _config()
+    rows, receipt = allocate(
+        _manifest(),
+        config,
+        _readiness(config),
+        "STAGED-SEED",
+    )
 
     with pytest.raises(ValueError, match="prospectively frozen cumulative looks"):
         materialize_stage(rows, receipt, 7)

@@ -638,12 +638,33 @@ def _validate_config(config: dict) -> dict:
     }
 
 
-def _readiness(population_id: str, season_id: str) -> dict:
+def _readiness(
+    population_id: str,
+    season_id: str,
+    n_z_levels: int,
+) -> dict:
+    z_levels = [f"Z{i:02d}" for i in range(n_z_levels)]
     return {
         "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
         "status": "PEDICULARIS_FULL_SURFACE_READY",
         "population_id": population_id,
         "season_id": season_id,
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": z_levels,
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": "SIMULATED_QUALIFIED_PREDATOR_EXCLUSION",
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
         "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
         "predator_method_requirement": (
             "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
@@ -653,14 +674,17 @@ def _readiness(population_id: str, season_id: str) -> dict:
             "z": {
                 "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
                 "threshold_freeze_status": FREEZE_STATUS,
+                "receipt_sha256": "d" * 64,
             },
             "p": {
                 "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
                 "threshold_freeze_status": FREEZE_STATUS,
+                "receipt_sha256": "e" * 64,
             },
             "g": {
                 "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
                 "threshold_freeze_status": FREEZE_STATUS,
+                "receipt_sha256": "f" * 64,
             },
         },
     }
@@ -894,7 +918,11 @@ def simulate_power(
             try:
                 surface_receipt = full_surface.analyze(
                     rows,
-                    _readiness(population_id, season_id),
+                    _readiness(
+                        population_id,
+                        season_id,
+                        len(frozen["generating_model"]["z_levels"]),
+                    ),
                     frozen["production_surface_config"],
                 )
                 is_primary = surface_receipt.get("status") == POSITIVE_SURFACE
