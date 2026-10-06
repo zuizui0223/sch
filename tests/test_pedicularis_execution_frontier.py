@@ -70,6 +70,16 @@ def test_three_same_context_frozen_configs_advance_to_receipt_collection(tmp_pat
     assert "locked_P0_P1_G_production_evaluators" in (
         result["confirmatory_execution_requirements"]
     )
+    assert (
+        "geometry_intervention_plan_binding_frozen_before_confirmatory_outcomes"
+        in result["confirmatory_execution_requirements"]
+    )
+    assert (
+        "POWER_GEOMETRY_PILOT_may_collect_in_parallel_on_disjoint_cohort"
+        in result["confirmatory_execution_requirements"]
+    )
+    assert "collect the disjoint geometry cohort in parallel" in result["next_action"]
+    assert "positive exact-plan-matching readiness V3" in result["next_action"]
 
 
 def test_frozen_configs_from_different_seasons_fail_closed(tmp_path: Path) -> None:
