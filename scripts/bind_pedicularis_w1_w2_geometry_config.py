@@ -80,6 +80,33 @@ def _validate_geometry_and_precision(
         raise ValueError("geometry point summary lacks complete 18-path estimates")
     if geometry_summary.get("n_power_basis_paths_resolved") != 18:
         raise ValueError("geometry point summary must expose exactly 18 paths")
+    readiness_sha = geometry_summary.get("readiness_receipt_sha256")
+    binding_sha = geometry_summary.get("intervention_plan_binding_sha256")
+    matches = geometry_summary.get("readiness_intervention_plan_match")
+    required_match_keys = {
+        "z_levels",
+        "p1_experimental_unit",
+        "g_exclusion_method",
+        "p0_level_plan_sha256",
+        "p0_field_config_sha256",
+        "p1_field_config_sha256",
+        "g_field_config_sha256",
+        "g_method_selection_sha256",
+    }
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError("geometry point summary lacks later readiness SHA-256")
+    if not isinstance(binding_sha, str) or len(binding_sha) != 64:
+        raise ValueError(
+            "geometry point summary lacks preoutcome intervention binding"
+        )
+    if (
+        not isinstance(matches, dict)
+        or set(matches) != required_match_keys
+        or not all(matches.values())
+    ):
+        raise ValueError(
+            "geometry point summary is not admissible under later readiness"
+        )
 
     if precision_receipt.get("receipt_schema") != PRECISION_SCHEMA:
         raise ValueError("geometry precision receipt schema mismatch")
@@ -204,6 +231,9 @@ def build(
         "n_geometry_variance_paths_bound": len(checks),
         "all_geometry_variance_paths_match": True,
         "geometry_precision_qualified": True,
+        "later_readiness_exact_plan_match": True,
+        "readiness_receipt_sha256": readiness_sha,
+        "intervention_plan_binding_sha256": binding_sha,
         "geometry_summary_sha256": geometry_digest,
         "geometry_precision_sha256": precision_digest,
         "pilot_data_sha256": geometry_summary["pilot_data_sha256"],
