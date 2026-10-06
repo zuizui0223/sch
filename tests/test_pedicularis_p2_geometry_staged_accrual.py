@@ -51,6 +51,25 @@ def _config() -> dict:
     }
 
 
+def _readiness(config: dict) -> dict:
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+    }
+
+
 def _manifest() -> list[dict[str, str]]:
     return [
         {
@@ -100,7 +119,12 @@ def _precision(
 
 def test_maximum_allocation_contains_nested_exact_balanced_prefixes() -> None:
     config = _config()
-    rows, receipt = allocate(_manifest(), config, "STAGED-SEED")
+    rows, receipt = allocate(
+        _manifest(),
+        config,
+        _readiness(config),
+        "STAGED-SEED",
+    )
 
     assert receipt["candidate_cumulative_plants"] == [5, 10]
     assert receipt["plant_accrual_order"]
