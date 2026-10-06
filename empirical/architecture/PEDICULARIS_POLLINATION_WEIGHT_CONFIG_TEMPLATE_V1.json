@@ -11,7 +11,8 @@
     "max_bract_height_relative_change": "REQUIRED_BEFORE_USE",
     "max_opening_width_relative_change": "REQUIRED_BEFORE_USE",
     "max_water_depth_change": "REQUIRED_BEFORE_USE",
-    "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+    "max_mechanical_damage_rate": "REQUIRED_BEFORE_USE",
+    "experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS"
   },
   "status": "TEMPLATE_ONLY_DO_NOT_RUN_UNTIL_THRESHOLDS_ARE_PROSPECTIVELY_FROZEN",
   "prospective_freeze": {
