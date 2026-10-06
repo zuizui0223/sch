@@ -181,12 +181,19 @@ The pilot freezes before outcomes:
 - already-qualified exposed / excluded G methods;
 - balanced cyclic allocation strategy.
 
+The geometry pilot is admissible only **after** the same population/season has
+a positive `SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3` receipt grounded in
+the randomized P0, paired-randomized P1 and preselected/paired-randomized G
+confirmatory qualifications. The pilot must use exactly the validated P0 z
+labels and validated G exclusion method.
+
 The allocation script is:
 
 ~~~bash
 python scripts/build_pedicularis_p2_geometry_pilot.py \
   <treatment_blind_flower_manifest.csv> \
   <geometry_pilot_config.json> \
+  <readiness_v3.json> \
   --allocation-seed <PRECOMMITTED_SEED> \
   --field-sheet-out <geometry_pilot_field_sheet.csv> \
   --receipt-out <geometry_pilot_allocation.json>
