@@ -96,6 +96,34 @@ def _validate_config(config: dict) -> dict:
     if config.get("allocation_strategy") != CELL_STRATEGY:
         raise ValueError(f"allocation_strategy must be {CELL_STRATEGY}")
 
+    precision_gate = config.get("precision_gate")
+    if not isinstance(precision_gate, dict):
+        raise ValueError("precision_gate must be frozen before geometry allocation")
+    bootstrap_reps = _positive_int(
+        precision_gate.get("bootstrap_reps"),
+        "precision_gate.bootstrap_reps",
+    )
+    if bootstrap_reps < 200:
+        raise ValueError("precision_gate.bootstrap_reps must be >=200")
+    for field in (
+        "min_valid_bootstrap_fraction",
+        "min_interior_concave_fraction_per_state",
+    ):
+        value = _number(
+            precision_gate.get(field),
+            f"precision_gate.{field}",
+        )
+        if not 0 < value <= 1:
+            raise ValueError(f"precision_gate.{field} must lie in (0,1]")
+    max_width = _number(
+        precision_gate.get("max_normalized_95ci_width_per_power_basis_path"),
+        "precision_gate.max_normalized_95ci_width_per_power_basis_path",
+    )
+    if max_width <= 0:
+        raise ValueError(
+            "precision_gate.max_normalized_95ci_width_per_power_basis_path must be >0"
+        )
+
     population_id = _text(config.get("population_id"), "population_id")
     season_id = _text(config.get("season_id"), "season_id")
     n_plants = _positive_int(config.get("planned_n_plants"), "planned_n_plants")
@@ -165,6 +193,17 @@ def _validate_config(config: dict) -> dict:
         "excluded_method_code": excluded_method,
         "exposed_method_code": exposed_method,
         "pilot_role": "POWER_BASIS_ONLY_NEVER_CONFIRMATORY",
+        "precision_gate": {
+            "bootstrap_reps": bootstrap_reps,
+            "random_seed": int(precision_gate.get("random_seed", 20261006)),
+            "min_valid_bootstrap_fraction": float(
+                precision_gate["min_valid_bootstrap_fraction"]
+            ),
+            "min_interior_concave_fraction_per_state": float(
+                precision_gate["min_interior_concave_fraction_per_state"]
+            ),
+            "max_normalized_95ci_width_per_power_basis_path": max_width,
+        },
     }
 
 
@@ -359,6 +398,8 @@ def build(
             allocation_seed.encode("utf-8")
         ).hexdigest(),
         "config_sha256": _semantic_sha256(config_payload),
+        "precision_gate": config["precision_gate"],
+        "precision_gate_frozen_before_outcomes": True,
         "frozen_identity_sha256": _semantic_sha256(frozen_rows),
         "expected_frozen_rows": frozen_rows,
         "pilot_role": config["pilot_role"],
@@ -367,6 +408,7 @@ def build(
         "status": "P2_GEOMETRY_PILOT_ALLOCATED_NOT_YET_MEASURED",
         "claim_ceiling": [
             "nonconfirmatory_power_basis_only",
+            "precision_gate_frozen_before_any_geometry_outcomes",
             "exact_balanced_randomized_z_P_G_allocation",
             "never_enters_confirmatory_P2_inference",
             "does_not_choose_pilot_sample_size",
