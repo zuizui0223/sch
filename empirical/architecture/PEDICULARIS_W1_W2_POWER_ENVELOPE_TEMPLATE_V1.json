@@ -1,0 +1,16 @@
+{
+  "schema": "PEDICULARIS_W1_W2_POWER_ENVELOPE_V1",
+  "status": "PEDICULARIS_W1_W2_POWER_ENVELOPE_PROSPECTIVELY_DECLARED",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "envelope_basis_note": "REQUIRED_BEFORE_USE",
+  "frozen_before_full_surface_outcomes": "REQUIRED_BEFORE_USE",
+  "scenarios": [
+    {
+      "scenario_id": "REQUIRED_BEFORE_USE",
+      "config_path": "REQUIRED_BEFORE_USE",
+      "scenario_role": "REQUIRED_BEFORE_USE",
+      "basis_note": "REQUIRED_BEFORE_USE"
+    }
+  ]
+}
