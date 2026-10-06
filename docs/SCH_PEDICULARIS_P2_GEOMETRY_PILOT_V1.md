@@ -207,6 +207,32 @@ No other row is changed.
 
 The normal power-basis audit is then rerun on the derived ledger.
 
+## Bind pilot values to the final power configuration
+
+After all remaining P0/F0 basis blockers are resolved and the canonical
+power-basis audit reaches zero blockers, do not manually copy the geometry
+pilot values into a power config without verification.
+
+Run:
+
+```bash
+python scripts/bind_pedicularis_w1_w2_geometry_config.py \
+  <frozen_power_config.json> \
+  <geometry_pilot_summary.json> \
+  <zero_blocker_power_basis_receipt.json> \
+  --output <geometry_config_binding.json>
+```
+
+All 18 geometry/variance values in the frozen config must exactly match the
+summary. The binding also locks the entire config and basis receipt by semantic
+SHA-256. Registered W1/W2 power refuses to run without this receipt.
+
+This prevents a direct pilot from serving only as a nominal citation while a
+different, more convenient geometry is used for sample-size planning.
+
+The binding does not make pilot point estimates perfectly known. Pilot
+sampling uncertainty remains a separate design issue.
+
 ## What the pilot does not do
 
 The geometry pilot does not:
