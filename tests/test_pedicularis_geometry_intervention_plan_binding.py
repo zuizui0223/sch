@@ -166,30 +166,49 @@ def _g_selection(g_config: dict) -> dict:
     }
 
 
-def _f0_receipt() -> dict:
+def _f0_receipt(
+    *,
+    p0_config: dict | None = None,
+    p1_config: dict | None = None,
+    g_config: dict | None = None,
+) -> dict:
+    p0_config = _p0() if p0_config is None else p0_config
+    p1_config = _p1() if p1_config is None else p1_config
+    g_config = _g() if g_config is None else g_config
     return {
         "receipt_schema_version": "SCH_PEDICULARIS_F0_CONFIG_ASSEMBLY_V1",
         "population_id": POP,
         "season_id": SEASON,
         "assembled_config_status": {
-            "P0": "PEDICULARIS_P0_FIELD_CONFIG_FROZEN",
-            "P1": "PEDICULARIS_P1_FIELD_CONFIG_FROZEN",
-            "G": "PEDICULARIS_G_FIELD_CONFIG_FROZEN",
+            "P0": p0_config["status"],
+            "P1": p1_config["status"],
+            "G": g_config["status"],
+        },
+        "assembled_config_sha256": {
+            "P0": _semantic_sha256(p0_config),
+            "P1": _semantic_sha256(p1_config),
+            "G": _semantic_sha256(g_config),
         },
         "status": "PEDICULARIS_F0_CONFIGS_ASSEMBLED_AND_FROZEN",
     }
 
 
 def _build() -> dict:
+    p0 = _p0()
+    p1 = _p1()
     g = _g()
     return build(
         geometry_config=_geometry(),
         p0_level_plan=_levels(),
-        p0_field_config=_p0(),
-        p1_field_config=_p1(),
+        p0_field_config=p0,
+        p1_field_config=p1,
         g_field_config=g,
         g_method_selection=_g_selection(g),
-        f0_assembly_receipt=_f0_receipt(),
+        f0_assembly_receipt=_f0_receipt(
+            p0_config=p0,
+            p1_config=p1,
+            g_config=g,
+        ),
     )
 
 
@@ -266,7 +285,7 @@ def test_g_selection_must_be_bound_to_exact_g_field_config() -> None:
             p1_field_config=_p1(),
             g_field_config=changed_g,
             g_method_selection=selection,
-            f0_assembly_receipt=_f0_receipt(),
+            f0_assembly_receipt=_f0_receipt(g_config=changed_g),
         )
 
 
@@ -314,3 +333,27 @@ def test_preoutcome_binding_contains_no_readiness_or_lane_outcomes() -> None:
     assert "G_status" not in result
     assert result["geometry_collection_may_run_before_lane_validation"] is True
     assert result["geometry_analysis_requires_later_positive_readiness_v3"] is True
+
+
+def test_hand_edited_lane_config_with_same_status_is_rejected_by_f0_digest() -> None:
+    p0 = _p0()
+    p1 = _p1()
+    g = _g()
+    receipt = _f0_receipt(
+        p0_config=p0,
+        p1_config=p1,
+        g_config=g,
+    )
+    changed_p0 = deepcopy(p0)
+    changed_p0["stage_p0"]["min_adjacent_exsertion_gap"] = 0.12345
+
+    with pytest.raises(ValueError, match="exact configs produced by F0 assembly"):
+        build(
+            geometry_config=_geometry(),
+            p0_level_plan=_levels(),
+            p0_field_config=changed_p0,
+            p1_field_config=p1,
+            g_field_config=g,
+            g_method_selection=_g_selection(g),
+            f0_assembly_receipt=receipt,
+        )
