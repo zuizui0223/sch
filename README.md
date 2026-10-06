@@ -491,6 +491,12 @@ geometry-pilot cohort, `evaluate_pedicularis_w1_w2_power_envelope.py` can run
 multiple prospectively declared sensitivity worlds and report worst-case power
 plus the scenario-specific minimum-n range. The envelope is a
 value-of-information diagnostic only: it cannot register n or unlock P2.
+The current-evidence boundability audit shows why this remains a diagnostic:
+among the 18 blocking geometry/variance inputs there are currently 0 direct
+same-estimand numeric bounds, 3 direction-only constraints, 4 endpoint
+scale/range constraints and 11 inputs with no numerical bound. Thus a narrow
+Route-B scenario set cannot be attributed to the current focal evidence alone;
+see `docs/SCH_PEDICULARIS_W1_W2_ENVELOPE_BOUNDABILITY_V1.md`.
 If geometry uncertainty materially changes the field decision, Route A is now
 executable with `build_pedicularis_p2_geometry_pilot.py` and
 `summarize_pedicularis_p2_geometry_pilot.py`. The separate
