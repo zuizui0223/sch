@@ -14,6 +14,9 @@ GEOMETRY_READY_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_POINT_ESTIMATES_READY_NOT
 PRECISION_SCHEMA = "PEDICULARIS_P2_GEOMETRY_PILOT_PRECISION_V1"
 PRECISION_READY_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_PRECISION_READY_FOR_BASIS"
 PROMOTED_STATUS = "DIRECT_SAME_CONTEXT_READY"
+ACCRUAL_SCHEMA = "PEDICULARIS_P2_GEOMETRY_PILOT_ACCRUAL_DECISION_V1"
+ACCRUAL_STATUS = "PEDICULARIS_P2_GEOMETRY_STAGED_ACCRUAL_DECISION_READY"
+ACCRUAL_STOP_READY = "STOP_GEOMETRY_PILOT_AND_MATERIALIZE_BASIS"
 PROMOTED_GROUPS = {
     "FITNESS_VARIANCE",
     "FITNESS_GEOMETRY",
@@ -35,6 +38,7 @@ def materialize(
     rows: list[dict[str, str]],
     geometry_summary: dict,
     precision_receipt: dict,
+    accrual_decision: dict,
 ) -> tuple[list[dict[str, str]], dict]:
     if geometry_summary.get("receipt_schema") != GEOMETRY_SUMMARY_SCHEMA:
         raise ValueError("geometry-pilot summary schema mismatch")
@@ -76,6 +80,26 @@ def materialize(
             "geometry-pilot precision and summary data fingerprints do not match"
         )
 
+    if accrual_decision.get("receipt_schema") != ACCRUAL_SCHEMA:
+        raise ValueError("geometry-pilot accrual decision schema mismatch")
+    if accrual_decision.get("status") != ACCRUAL_STATUS:
+        raise ValueError("geometry-pilot accrual decision is not ready")
+    if accrual_decision.get("decision") != ACCRUAL_STOP_READY:
+        raise ValueError(
+            "geometry-pilot basis can materialize only at the first registered precision pass"
+        )
+    if accrual_decision.get("basis_materialization_authorized") is not True:
+        raise ValueError("geometry-pilot accrual decision does not authorize materialization")
+    if accrual_decision.get("current_geometry_summary_sha256") != summary_digest:
+        raise ValueError("geometry-pilot accrual decision is not bound to this summary")
+    precision_digest = _semantic_sha256(precision_receipt)
+    if accrual_decision.get("current_precision_sha256") != precision_digest:
+        raise ValueError("geometry-pilot accrual decision is not bound to this precision receipt")
+    if int(accrual_decision.get("current_precision_look_n", -1)) != int(
+        precision_receipt.get("current_precision_look_n", -2)
+    ):
+        raise ValueError("geometry-pilot accrual decision and precision look differ")
+
     values = geometry_summary.get("resolved_power_basis_values")
     if not isinstance(values, dict):
         raise ValueError("geometry-pilot summary lacks resolved power-basis values")
@@ -97,7 +121,7 @@ def materialize(
             f"missing={missing}, extra={extra}"
         )
 
-    precision_digest = _semantic_sha256(precision_receipt)
+    accrual_digest = _semantic_sha256(accrual_decision)
     updated = []
     promoted = []
     for row in rows:
@@ -125,7 +149,11 @@ def materialize(
         "season_id": geometry_summary["season_id"],
         "geometry_summary_sha256": summary_digest,
         "geometry_precision_sha256": precision_digest,
+        "geometry_accrual_decision_sha256": accrual_digest,
         "precision_status": precision_receipt["status"],
+        "materialized_at_cumulative_plants": int(
+            precision_receipt["current_precision_look_n"]
+        ),
         "n_paths_promoted": len(promoted),
         "promoted_config_paths": sorted(promoted),
         "basis_audit_after_materialization": audit,
@@ -138,6 +166,7 @@ def materialize(
         "claim_ceiling": [
             "power_basis_materialization_only",
             "requires_point_estimability_plus_prospectively_frozen_precision_gate",
+            "requires_first_passing_preregistered_cumulative_look",
             "does_not_freeze_remaining_P0_or_primary_threshold_inputs",
             "does_not_register_final_n_until_all_blockers_are_zero",
             "does_not_use_geometry_pilot_rows_in_confirmatory_inference",
@@ -162,6 +191,7 @@ def main() -> None:
     )
     parser.add_argument("geometry_summary_json", type=Path)
     parser.add_argument("geometry_precision_json", type=Path)
+    parser.add_argument("geometry_accrual_decision_json", type=Path)
     parser.add_argument("--ledger", type=Path, default=basis.DEFAULT_LEDGER)
     parser.add_argument("--ledger-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path)
@@ -171,6 +201,7 @@ def main() -> None:
         basis._read(args.ledger),
         _load(args.geometry_summary_json),
         _load(args.geometry_precision_json),
+        _load(args.geometry_accrual_decision_json),
     )
     _write_csv(args.ledger_out, updated)
     if args.receipt_out:
