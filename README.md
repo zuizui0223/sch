@@ -498,8 +498,11 @@ scale/range constraints and 11 inputs with no numerical bound. Thus a narrow
 Route-B scenario set cannot be attributed to the current focal evidence alone;
 see `docs/SCH_PEDICULARIS_W1_W2_ENVELOPE_BOUNDABILITY_V1.md`.
 If geometry uncertainty materially changes the field decision, Route A is now
-executable with `build_pedicularis_p2_geometry_pilot.py` and
-`summarize_pedicularis_p2_geometry_pilot.py`. The separate
+executable with `build_pedicularis_p2_geometry_pilot.py`,
+`summarize_pedicularis_p2_geometry_pilot.py`, and
+`evaluate_pedicularis_p2_geometry_precision.py`. The precision gate is frozen
+before pilot outcomes; point-estimable geometry alone cannot promote the 18
+power-basis paths. The separate
 `POWER_GEOMETRY_PILOT` cohort never enters confirmatory inference and can
 materialize 18 same-estimand geometry/variance basis rows, reducing the current
 21 blockers to the three P0/F0-dependent rows. See
