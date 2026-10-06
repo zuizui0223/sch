@@ -6,6 +6,7 @@ import pytest
 
 from scripts import audit_pedicularis_w1_w2_power_basis as basis
 from scripts.build_pedicularis_p2_geometry_pilot import build as allocate
+from scripts.build_pedicularis_full_surface_allocation import _semantic_sha256
 from scripts.evaluate_pedicularis_p2_geometry_precision import (
     READY_STATUS as PRECISION_READY_STATUS,
     build as evaluate_precision,
@@ -62,7 +63,42 @@ def _config(
     }
 
 
-def _readiness(config: dict) -> dict:
+def _binding(config: dict) -> dict:
+    z_plan = [
+        {
+            "assigned_z_level": row["assigned_z_level"],
+            "assigned_z_rank": str(row["assigned_z_rank"]),
+            "sham_control": "1" if i == len(config["z_levels"]) - 1 else "0",
+        }
+        for i, row in enumerate(config["z_levels"])
+    ]
+    return {
+        "receipt_schema": "PEDICULARIS_GEOMETRY_INTERVENTION_PLAN_BINDING_V1",
+        "status": (
+            "PEDICULARIS_GEOMETRY_INTERVENTION_PLAN_"
+            "FROZEN_BEFORE_CONFIRMATORY_OUTCOMES"
+        ),
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "geometry_config_sha256": _semantic_sha256(config),
+        "p0_level_plan_sha256": "1" * 64,
+        "p0_field_config_sha256": "2" * 64,
+        "p1_field_config_sha256": "3" * 64,
+        "g_field_config_sha256": "4" * 64,
+        "g_method_selection_sha256": "5" * 64,
+        "f0_assembly_receipt_sha256": "6" * 64,
+        "z_level_plan": z_plan,
+        "p1_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+        "g_selected_candidate_id": "G_TEST",
+        "g_exclusion_method": config["excluded_method_code"],
+        "g_exposed_sham_method": config["exposed_method_code"],
+        "geometry_collection_may_run_before_lane_validation": True,
+        "geometry_analysis_requires_later_positive_readiness_v3": True,
+    }
+
+
+def _readiness(config: dict, binding: dict | None = None) -> dict:
+    binding = _binding(config) if binding is None else binding
     return {
         "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
         "population_id": config["population_id"],
@@ -71,8 +107,11 @@ def _readiness(config: dict) -> dict:
         "checks": {
             "same_population_and_season": True,
             "z_randomized_allocation_verified": True,
+            "z_plan_provenance_bound": True,
             "z_levels_validated": True,
+            "p_plan_provenance_bound": True,
             "p_randomized_allocation_verified": True,
+            "g_plan_provenance_bound": True,
             "g_randomized_allocation_verified": True,
             "g_method_timing_validated": True,
         },
@@ -85,6 +124,11 @@ def _readiness(config: dict) -> dict:
             "z_allocation_identity_sha256": "a" * 64,
             "p_allocation_identity_sha256": "b" * 64,
             "g_allocation_identity_sha256": "c" * 64,
+            "p0_level_plan_sha256": binding["p0_level_plan_sha256"],
+            "p0_field_config_sha256": binding["p0_field_config_sha256"],
+            "p1_field_config_sha256": binding["p1_field_config_sha256"],
+            "g_field_config_sha256": binding["g_field_config_sha256"],
+            "g_method_selection_sha256": binding["g_method_selection_sha256"],
         },
         "source_receipts": {
             "z": {
@@ -109,6 +153,19 @@ def _readiness(config: dict) -> dict:
             "WITH_POLLINATOR_ACCESS_PRESERVED"
         ),
     }
+
+
+def _summarize(
+    rows: list[dict[str, str]],
+    receipt: dict,
+    registry: list[dict[str, str]],
+    config: dict,
+    readiness: dict | None = None,
+) -> dict:
+    binding = _binding(config)
+    readiness = _readiness(config, binding) if readiness is None else readiness
+    return summarize(rows, receipt, registry, readiness)
+
 
 def _manifest(
     *,
@@ -213,7 +270,7 @@ def _packet(
             flowers_per_plant=flowers_per_plant,
         ),
         config,
-        _readiness(config),
+        _binding(config),
         "GEOMETRY-PILOT-SEED",
     )
     completed = _complete(allocated)
@@ -242,8 +299,8 @@ def test_geometry_pilot_is_exact_balanced_nonconfirmatory_surface() -> None:
 
 
 def test_geometry_pilot_summary_is_point_ready_but_not_precision_ready() -> None:
-    completed, receipt, registry, _ = _packet()
-    result = summarize(completed, receipt, registry)
+    completed, receipt, registry, config = _packet()
+    result = _summarize(completed, receipt, registry, config)
 
     assert result["status"] == READY_STATUS
     assert result["geometry_and_variance_point_estimates_complete"] is True
@@ -265,8 +322,8 @@ def test_geometry_pilot_summary_is_point_ready_but_not_precision_ready() -> None
 
 
 def test_point_estimates_alone_cannot_materialize_basis() -> None:
-    completed, receipt, registry, _ = _packet()
-    summary = summarize(completed, receipt, registry)
+    completed, receipt, registry, config = _packet()
+    summary = _summarize(completed, receipt, registry, config)
 
     with pytest.raises(ValueError, match="precision receipt schema mismatch"):
         materialize(
@@ -288,7 +345,12 @@ def test_complete_block_geometry_pilot_can_pass_precision_and_reduce_blockers() 
         receipt,
         3,
     )
-    summary = summarize(stage_rows, stage_receipt, _registry(stage_rows))
+    summary = _summarize(
+        stage_rows,
+        stage_receipt,
+        _registry(stage_rows),
+        config,
+    )
     precision = evaluate_precision(stage_rows, summary, config)
     decision = adjudicate_accrual(
         config,
@@ -341,7 +403,7 @@ def test_small_incomplete_pilot_does_not_gain_precision_authorization_for_free()
         flowers_per_plant=4,
         max_width=0.10,
     )
-    summary = summarize(completed, receipt, registry)
+    summary = _summarize(completed, receipt, registry, config)
     precision = evaluate_precision(completed, summary, config)
 
     assert precision["basis_materialization_authorized"] is False
@@ -357,7 +419,7 @@ def test_small_incomplete_pilot_does_not_gain_precision_authorization_for_free()
 
 
 def test_completed_rows_cannot_drift_from_randomized_geometry_allocation() -> None:
-    completed, receipt, registry, _ = _packet()
+    completed, receipt, registry, config = _packet()
     completed[0]["pollination_treatment"] = (
         "SUPPLEMENTED"
         if completed[0]["pollination_treatment"] == "NATURAL"
@@ -365,16 +427,16 @@ def test_completed_rows_cannot_drift_from_randomized_geometry_allocation() -> No
     )
 
     with pytest.raises(ValueError, match="drifted from randomized allocation"):
-        summarize(completed, receipt, registry)
+        _summarize(completed, receipt, registry, config)
 
 
 def test_wrong_cohort_role_cannot_supply_power_basis() -> None:
-    completed, receipt, registry, _ = _packet()
+    completed, receipt, registry, config = _packet()
     registry[0]["cohort_role"] = "FULL_SURFACE"
     registry[0]["confirmatory_eligible"] = "YES"
 
     with pytest.raises(ValueError, match="POWER_GEOMETRY_PILOT"):
-        summarize(completed, receipt, registry)
+        _summarize(completed, receipt, registry, config)
 
 
 def test_boundary_or_nonconcave_state_blocks_even_point_estimate_readiness() -> None:
@@ -390,7 +452,7 @@ def test_boundary_or_nonconcave_state_blocks_even_point_estimate_readiness() -> 
                 initial - float(row["undamaged_seed_count"])
             )
 
-    summary = summarize(completed, receipt, registry)
+    summary = _summarize(completed, receipt, registry, config)
 
     assert summary["status"] != READY_STATUS
     assert summary["geometry_and_variance_point_estimates_complete"] is False
@@ -412,7 +474,7 @@ def test_precision_gate_must_be_frozen_before_allocation() -> None:
         allocate(
             _manifest(),
             config,
-            _readiness(config),
+            _binding(config),
             "GEOMETRY-PILOT-SEED",
         )
 
@@ -428,7 +490,12 @@ def test_precision_receipt_cannot_be_reused_with_different_summary() -> None:
         receipt,
         3,
     )
-    summary = summarize(stage_rows, stage_receipt, _registry(stage_rows))
+    summary = _summarize(
+        stage_rows,
+        stage_receipt,
+        _registry(stage_rows),
+        config,
+    )
     precision = evaluate_precision(stage_rows, summary, config)
     decision = adjudicate_accrual(config, summary, precision, [])
     changed_summary = deepcopy(summary)
@@ -449,7 +516,7 @@ def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
         flowers_per_plant=20,
         max_width=0.10,
     )
-    summary = summarize(completed, receipt, registry)
+    summary = _summarize(completed, receipt, registry, config)
     posthoc = deepcopy(config)
     posthoc["precision_gate"][
         "max_normalized_95ci_width_per_power_basis_path"
@@ -459,43 +526,78 @@ def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
         evaluate_precision(completed, summary, posthoc)
 
 
-def test_geometry_pilot_requires_positive_readiness_v3() -> None:
+def test_geometry_collection_can_be_allocated_before_readiness_is_known() -> None:
     config = _config()
+    rows, receipt = allocate(
+        _manifest(),
+        config,
+        _binding(config),
+        "GEOMETRY-PILOT-SEED",
+    )
+
+    assert len(rows) == 40
+    assert receipt["intervention_plan_binding_status"] == (
+        "PEDICULARIS_GEOMETRY_INTERVENTION_PLAN_"
+        "FROZEN_BEFORE_CONFIRMATORY_OUTCOMES"
+    )
+    assert "readiness_status" not in receipt
+
+
+def test_geometry_summary_requires_later_positive_readiness_v3() -> None:
+    completed, receipt, registry, config = _packet()
     readiness = _readiness(config)
     readiness["status"] = "PEDICULARIS_FULL_SURFACE_NOT_READY"
 
     with pytest.raises(ValueError, match="readiness status is not positive"):
-        allocate(
-            _manifest(),
+        _summarize(
+            completed,
+            receipt,
+            registry,
             config,
-            readiness,
-            "GEOMETRY-PILOT-SEED",
+            readiness=readiness,
         )
 
 
-def test_geometry_pilot_z_grid_must_match_validated_p0_readiness() -> None:
-    config = _config()
+def test_later_readiness_z_grid_must_match_preoutcome_binding() -> None:
+    completed, receipt, registry, config = _packet()
     readiness = _readiness(config)
     readiness["validated_execution"]["z_levels"][-1] = "DIFFERENT_Z"
 
-    with pytest.raises(ValueError, match="z-level labels do not match"):
-        allocate(
-            _manifest(),
+    with pytest.raises(ValueError, match="does not match the preoutcome"):
+        _summarize(
+            completed,
+            receipt,
+            registry,
             config,
-            readiness,
-            "GEOMETRY-PILOT-SEED",
+            readiness=readiness,
         )
 
 
-def test_geometry_pilot_g_method_must_match_validated_g_readiness() -> None:
-    config = _config()
+def test_later_readiness_g_method_must_match_preoutcome_binding() -> None:
+    completed, receipt, registry, config = _packet()
     readiness = _readiness(config)
     readiness["validated_execution"]["g_exclusion_method"] = "DIFFERENT_METHOD"
 
-    with pytest.raises(ValueError, match="excluded method does not match"):
-        allocate(
-            _manifest(),
+    with pytest.raises(ValueError, match="does not match the preoutcome"):
+        _summarize(
+            completed,
+            receipt,
+            registry,
             config,
-            readiness,
-            "GEOMETRY-PILOT-SEED",
+            readiness=readiness,
+        )
+
+
+def test_later_readiness_config_hashes_must_match_preoutcome_binding() -> None:
+    completed, receipt, registry, config = _packet()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["p1_field_config_sha256"] = "9" * 64
+
+    with pytest.raises(ValueError, match="p1_field_config_sha256"):
+        _summarize(
+            completed,
+            receipt,
+            registry,
+            config,
+            readiness=readiness,
         )

@@ -141,8 +141,18 @@ A positive assembly receipt has:
 ```text
 receipt_schema_version = SCH_PEDICULARIS_F0_CONFIG_ASSEMBLY_V1
 status = PEDICULARIS_F0_CONFIGS_ASSEMBLED_AND_FROZEN
-n_gate_values = 40.
+n_gate_values = 40
+
+assembled_config_sha256:
+  P0 = SHA256(exact emitted P0 config)
+  P1 = SHA256(exact emitted P1 config)
+  G  = SHA256(exact emitted G config).
 ```
+
+Those hashes make the assembly receipt a provenance anchor rather than a
+status-only receipt. Any later hand edit to a lane config changes its digest.
+Pre-outcome geometry-plan binding therefore accepts only the exact P0/P1/G
+configs emitted by this F0 assembly.
 
 ## What F0 assembly unlocks
 
@@ -167,7 +177,8 @@ F0 must not:
 - resolve a conflict between CAL-A/B/C by overwrite order;
 - change a target after seeing confirmatory data;
 - detach a CAL-C sample size from its planning provenance;
-- infer that an assembled config will pass empirically.
+- infer that an assembled config will pass empirically;
+- substitute a hand-edited config that merely reuses the same frozen status.
 
 ## Claim ceiling
 

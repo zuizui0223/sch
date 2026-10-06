@@ -11,6 +11,7 @@ from scripts.assemble_pedicularis_f0_configs import (
     ASSEMBLY_SCHEMA,
     ASSEMBLY_STATUS,
     DEFAULT_TEMPLATES,
+    _semantic_sha256,
     assemble,
 )
 from scripts.freeze_pedicularis_cal_a_targets import EXPECTED as CAL_A_EXPECTED
@@ -166,6 +167,14 @@ def test_f0_assembler_closes_exactly_40_gate_fields() -> None:
     }
     assert receipt["lane_gate_counts"] == {"P0": 11, "P1": 10, "G": 19}
     assert len(receipt["gate_sources"]) == 40
+    assert receipt["assembled_config_sha256"] == {
+        lane: _semantic_sha256(outputs[lane])
+        for lane in ("P0", "P1", "G")
+    }
+    assert all(
+        len(receipt["assembled_config_sha256"][lane]) == 64
+        for lane in ("P0", "P1", "G")
+    )
 
     for lane in ("P0", "P1", "G"):
         freeze = validate_prospective_freeze(outputs[lane], lane)
@@ -300,3 +309,17 @@ def test_assembly_freeze_timestamp_must_be_timezone_aware() -> None:
             assembly_config=config,
             templates=_templates(),
         )
+
+
+def test_f0_receipt_config_digests_change_when_a_lane_config_changes() -> None:
+    outputs, receipt = assemble(
+        cal_a_receipt=_cal_a_receipt(),
+        cal_b_receipt=_cal_b_receipt(),
+        cal_c_plan=_cal_c_plan(),
+        assembly_config=_assembly_config(),
+        templates=_templates(),
+    )
+    changed = deepcopy(outputs["P0"])
+    changed["stage_p0"]["min_adjacent_exsertion_gap"] += 0.01
+
+    assert _semantic_sha256(changed) != receipt["assembled_config_sha256"]["P0"]

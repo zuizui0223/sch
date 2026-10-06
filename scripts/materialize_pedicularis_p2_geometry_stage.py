@@ -160,11 +160,15 @@ def build(
         "allocation_algorithm": allocation_receipt["allocation_algorithm"],
         "allocation_seed_sha256": allocation_receipt["allocation_seed_sha256"],
         "config_sha256": config_sha,
-        "readiness_receipt_sha256": allocation_receipt.get(
-            "readiness_receipt_sha256"
+        "intervention_plan_binding_sha256": allocation_receipt.get(
+            "intervention_plan_binding_sha256"
         ),
-        "readiness_status": allocation_receipt.get("readiness_status"),
-        "validated_execution": allocation_receipt.get("validated_execution"),
+        "intervention_plan_binding_status": allocation_receipt.get(
+            "intervention_plan_binding_status"
+        ),
+        "bound_intervention_plan": allocation_receipt.get(
+            "bound_intervention_plan"
+        ),
         "precision_gate": allocation_receipt["precision_gate"],
         "precision_gate_frozen_before_outcomes": True,
         "frozen_identity_sha256": _semantic_sha256(observed_stage),
@@ -177,7 +181,8 @@ def build(
             "cumulative_precision_look_only",
             "stage_n_predeclared_before_geometry_outcomes",
             "exact_prefix_of_maximum_randomized_geometry_allocation",
-            "inherits_positive_randomized_P0_P1_G_readiness_from_maximum_allocation",
+            "inherits_preoutcome_intervention_plan_binding_from_maximum_allocation",
+            "later_geometry_analysis_still_requires_positive_readiness_V3",
             "does_not_change_any_prior_treatment_assignment",
             "does_not_authorize_collection_beyond_next_registered_stage",
         ],

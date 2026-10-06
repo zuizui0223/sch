@@ -322,6 +322,9 @@ def evaluate_locked(
         ),
         "assignment_method": allocation_receipt.get("assignment_method"),
         "experimental_unit": allocation_receipt.get("experimental_unit"),
+        "p1_field_config_sha256": allocation_receipt.get(
+            "p1_field_config_sha256"
+        ),
         "identity_treatment_handling_match": True,
     }
     return result

@@ -287,6 +287,7 @@ def build(
             allocation_seed.encode("utf-8")
         ).hexdigest(),
         "allocation_identity_sha256": _semantic_sha256(frozen_rows),
+        "level_plan_sha256": _semantic_sha256(sorted_levels),
         "expected_frozen_rows": frozen_rows,
         "sample_size_chosen_by_script": False,
         "z_level_values_chosen_by_script": False,

@@ -228,6 +228,32 @@ def _bind_inputs(
     if summary.get("precision_qualification_required") is not True:
         raise ValueError("geometry summary does not require precision qualification")
 
+    readiness_sha = summary.get("readiness_receipt_sha256")
+    binding_sha = summary.get("intervention_plan_binding_sha256")
+    matches = summary.get("readiness_intervention_plan_match")
+    required_match_keys = {
+        "z_levels",
+        "p1_experimental_unit",
+        "g_exclusion_method",
+        "p0_level_plan_sha256",
+        "p0_field_config_sha256",
+        "p1_field_config_sha256",
+        "g_field_config_sha256",
+        "g_method_selection_sha256",
+    }
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError("geometry summary lacks later readiness SHA-256")
+    if not isinstance(binding_sha, str) or len(binding_sha) != 64:
+        raise ValueError("geometry summary lacks preoutcome intervention-binding SHA-256")
+    if (
+        not isinstance(matches, dict)
+        or set(matches) != required_match_keys
+        or not all(matches.values())
+    ):
+        raise ValueError(
+            "geometry summary does not have a complete exact readiness/intervention-plan match"
+        )
+
     if summary.get("pilot_data_sha256") != surface.surface_data_sha256(rows):
         raise ValueError("geometry precision rows do not match summary data fingerprint")
     if summary.get("pilot_config_sha256") != _semantic_sha256(config):

@@ -34,6 +34,8 @@ def _z() -> dict:
         "receipt_schema": "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1",
         "allocation_identity_sha256": "a" * 64,
         "assignment_method": "SHA256_RANK_V1",
+        "level_plan_sha256": "1" * 64,
+        "p0_field_config_sha256": "2" * 64,
         "identity_z_assignment_match": True,
     }
     return receipt
@@ -50,6 +52,7 @@ def _p() -> dict:
         "allocation_identity_sha256": "b" * 64,
         "identity_treatment_handling_match": True,
         "experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+        "p1_field_config_sha256": "3" * 64,
     }
     return receipt
 
@@ -69,6 +72,8 @@ def _g() -> dict:
         "identity_treatment_method_sham_match": True,
         "selected_candidate_id": "G_TEST",
         "selected_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+        "g_field_config_sha256": "4" * 64,
+        "selection_receipt_sha256": "5" * 64,
     }
     receipt["gates"] = {
         "method_single_exclusion_method": True,
@@ -103,6 +108,11 @@ def test_three_valid_same_context_receipts_unlock_full_surface() -> None:
     assert result["validated_execution"]["g_exclusion_method"] == (
         "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
     )
+    assert result["validated_execution"]["p0_level_plan_sha256"] == "1" * 64
+    assert result["validated_execution"]["p0_field_config_sha256"] == "2" * 64
+    assert result["validated_execution"]["p1_field_config_sha256"] == "3" * 64
+    assert result["validated_execution"]["g_field_config_sha256"] == "4" * 64
+    assert result["validated_execution"]["g_method_selection_sha256"] == "5" * 64
     assert all(
         len(result["source_receipts"][lane]["receipt_sha256"]) == 64
         for lane in ("z", "p", "g")
@@ -193,3 +203,21 @@ def test_g_method_identity_must_match_randomized_allocation() -> None:
 
     assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
     assert result["checks"]["g_randomized_allocation_verified"] is False
+
+
+def test_missing_frozen_plan_hash_blocks_readiness() -> None:
+    z = _z()
+    z["field_allocation_verification"].pop("p0_field_config_sha256")
+    result = assemble(z, _p(), _g())
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["z_plan_provenance_bound"] is False
+
+
+def test_missing_g_selection_hash_blocks_readiness() -> None:
+    g = _g()
+    g["field_allocation_verification"].pop("selection_receipt_sha256")
+    result = assemble(_z(), _p(), g)
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["g_plan_provenance_bound"] is False

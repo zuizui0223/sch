@@ -89,6 +89,9 @@ def build(
             "G_treatment_blind_SHA256_paired_EXPOSED_vs_EXCLUDED_allocation",
             "locked_P0_P1_G_production_evaluators",
             "readiness_V3_requires_all_three_randomized_provenance_blocks",
+            "geometry_intervention_plan_binding_frozen_before_confirmatory_outcomes",
+            "POWER_GEOMETRY_PILOT_may_collect_in_parallel_on_disjoint_cohort",
+            "geometry_summary_requires_later_positive_matching_readiness_V3",
         ],
         "current_blocker": blocker,
         "next_action": (
@@ -98,11 +101,14 @@ def build(
                 "Re-freeze all three lane configs for one common population and season before collecting confirmatory data."
                 if blocker == "FROZEN_CONFIG_CONTEXT_MISMATCH"
                 else (
-                    "Register treatment-blind P0/P1/G flower IDs; run the "
-                    "prospectively frozen randomized P0 allocation, paired P1 "
-                    "allocation, and preselected-method paired G allocation; "
-                    "then collect same-context confirmatory outcomes and run the "
-                    "three locked production evaluators."
+                    "Register treatment-blind P0/P1/G flower IDs and preselect "
+                    "one hard-validity-pass G method. Before outcomes, bind the "
+                    "frozen P0 z plan plus P0/P1/G configs and selected G method "
+                    "to any planned POWER_GEOMETRY_PILOT. Then collect the "
+                    "disjoint geometry cohort in parallel with randomized "
+                    "confirmatory P0/P1/G. Use geometry only after the locked "
+                    "lane evaluators produce a positive exact-plan-matching "
+                    "readiness V3 receipt."
                 )
             )
         ),

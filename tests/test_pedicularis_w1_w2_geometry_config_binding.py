@@ -169,6 +169,18 @@ def _geometry_summary(config: dict) -> dict:
         "season_id": config["planning_provenance"]["season_id"],
         "pilot_data_sha256": "d" * 64,
         "pilot_config_sha256": "c" * 64,
+        "readiness_receipt_sha256": "r" * 64,
+        "intervention_plan_binding_sha256": "i" * 64,
+        "readiness_intervention_plan_match": {
+            "z_levels": True,
+            "p1_experimental_unit": True,
+            "g_exclusion_method": True,
+            "p0_level_plan_sha256": True,
+            "p0_field_config_sha256": True,
+            "p1_field_config_sha256": True,
+            "g_field_config_sha256": True,
+            "g_method_selection_sha256": True,
+        },
         "resolved_power_basis_values": values,
     }
 
@@ -206,6 +218,9 @@ def test_binding_certifies_precision_qualified_eighteen_paths() -> None:
 
     assert binding["status"] == BINDING_STATUS
     assert binding["geometry_precision_qualified"] is True
+    assert binding["later_readiness_exact_plan_match"] is True
+    assert binding["readiness_receipt_sha256"] == "r" * 64
+    assert binding["intervention_plan_binding_sha256"] == "i" * 64
     assert binding["n_geometry_variance_paths_bound"] == 18
     assert binding["all_geometry_variance_paths_match"] is True
     assert all(
@@ -303,3 +318,13 @@ def test_sensitivity_run_does_not_require_geometry_binding() -> None:
         None,
     )
     assert result is None
+
+
+def test_binding_rejects_geometry_summary_without_later_readiness_match() -> None:
+    config = _frozen_config()
+    summary = _geometry_summary(config)
+    summary["readiness_intervention_plan_match"]["g_field_config_sha256"] = False
+    precision = _precision(summary)
+
+    with pytest.raises(ValueError, match="not admissible under later readiness"):
+        bind_geometry(config, summary, precision, _ready_basis())

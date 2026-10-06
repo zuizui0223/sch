@@ -320,6 +320,8 @@ def evaluate_locked(
             "allocation_identity_sha256"
         ],
         "assignment_method": allocation_receipt.get("allocation_algorithm"),
+        "level_plan_sha256": allocation_receipt.get("level_plan_sha256"),
+        "p0_field_config_sha256": p0_allocation_sha256(config),
         "identity_z_assignment_match": True,
     }
     return result

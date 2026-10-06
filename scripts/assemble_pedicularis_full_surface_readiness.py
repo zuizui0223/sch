@@ -57,6 +57,23 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         == "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
         and z_allocation.get("identity_z_assignment_match") is True
     )
+    z_level_plan_sha = (
+        z_allocation.get("level_plan_sha256")
+        if isinstance(z_allocation, dict)
+        else None
+    )
+    z_field_config_sha = (
+        z_allocation.get("p0_field_config_sha256")
+        if isinstance(z_allocation, dict)
+        else None
+    )
+    checks["z_plan_provenance_bound"] = (
+        isinstance(z_level_plan_sha, str)
+        and len(z_level_plan_sha) == 64
+        and isinstance(z_field_config_sha, str)
+        and len(z_field_config_sha) == 64
+    )
+
     z_levels = z_receipt.get("z_levels")
     checks["z_levels_validated"] = (
         isinstance(z_levels, list)
@@ -66,6 +83,15 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
     )
 
     p_allocation = p_receipt.get("field_allocation_verification")
+    p_field_config_sha = (
+        p_allocation.get("p1_field_config_sha256")
+        if isinstance(p_allocation, dict)
+        else None
+    )
+    checks["p_plan_provenance_bound"] = (
+        isinstance(p_field_config_sha, str)
+        and len(p_field_config_sha) == 64
+    )
     checks["p_randomized_allocation_verified"] = (
         isinstance(p_allocation, dict)
         and p_allocation.get("receipt_schema")
@@ -77,6 +103,22 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
 
     g_allocation = g_receipt.get("field_allocation_verification")
     g_method_summary = g_receipt.get("method_summary")
+    g_field_config_sha = (
+        g_allocation.get("g_field_config_sha256")
+        if isinstance(g_allocation, dict)
+        else None
+    )
+    g_selection_sha = (
+        g_allocation.get("selection_receipt_sha256")
+        if isinstance(g_allocation, dict)
+        else None
+    )
+    checks["g_plan_provenance_bound"] = (
+        isinstance(g_field_config_sha, str)
+        and len(g_field_config_sha) == 64
+        and isinstance(g_selection_sha, str)
+        and len(g_selection_sha) == 64
+    )
     validated_g_method = (
         g_method_summary.get("exclusion_method")
         if isinstance(g_method_summary, dict)
@@ -146,6 +188,31 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
             "g_allocation_identity_sha256": (
                 g_allocation.get("allocation_identity_sha256")
                 if checks["g_randomized_allocation_verified"]
+                else None
+            ),
+            "p0_level_plan_sha256": (
+                z_level_plan_sha
+                if checks["z_plan_provenance_bound"]
+                else None
+            ),
+            "p0_field_config_sha256": (
+                z_field_config_sha
+                if checks["z_plan_provenance_bound"]
+                else None
+            ),
+            "p1_field_config_sha256": (
+                p_field_config_sha
+                if checks["p_plan_provenance_bound"]
+                else None
+            ),
+            "g_field_config_sha256": (
+                g_field_config_sha
+                if checks["g_plan_provenance_bound"]
+                else None
+            ),
+            "g_method_selection_sha256": (
+                g_selection_sha
+                if checks["g_plan_provenance_bound"]
                 else None
             ),
         },

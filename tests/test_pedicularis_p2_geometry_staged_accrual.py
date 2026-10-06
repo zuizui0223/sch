@@ -51,53 +51,40 @@ def _config() -> dict:
     }
 
 
-def _readiness(config: dict) -> dict:
+def _binding(config: dict) -> dict:
     return {
-        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "receipt_schema": "PEDICULARIS_GEOMETRY_INTERVENTION_PLAN_BINDING_V1",
+        "status": (
+            "PEDICULARIS_GEOMETRY_INTERVENTION_PLAN_"
+            "FROZEN_BEFORE_CONFIRMATORY_OUTCOMES"
+        ),
         "population_id": config["population_id"],
         "season_id": config["season_id"],
-        "status": "PEDICULARIS_FULL_SURFACE_READY",
-        "checks": {
-            "same_population_and_season": True,
-            "z_randomized_allocation_verified": True,
-            "z_levels_validated": True,
-            "p_randomized_allocation_verified": True,
-            "g_randomized_allocation_verified": True,
-            "g_method_timing_validated": True,
-        },
-        "validated_execution": {
-            "z_levels": [
-                row["assigned_z_level"] for row in config["z_levels"]
-            ],
-            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
-            "g_exclusion_method": config["excluded_method_code"],
-            "z_allocation_identity_sha256": "a" * 64,
-            "p_allocation_identity_sha256": "b" * 64,
-            "g_allocation_identity_sha256": "c" * 64,
-        },
-        "source_receipts": {
-            "z": {
-                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
-                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
-                "receipt_sha256": "d" * 64,
-            },
-            "p": {
-                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
-                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
-                "receipt_sha256": "e" * 64,
-            },
-            "g": {
-                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
-                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
-                "receipt_sha256": "f" * 64,
-            },
-        },
-        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
-        "predator_method_requirement": (
-            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
-            "WITH_POLLINATOR_ACCESS_PRESERVED"
-        ),
+        "geometry_config_sha256": _semantic_sha256(config),
+        "p0_level_plan_sha256": "1" * 64,
+        "p0_field_config_sha256": "2" * 64,
+        "p1_field_config_sha256": "3" * 64,
+        "g_field_config_sha256": "4" * 64,
+        "g_method_selection_sha256": "5" * 64,
+        "f0_assembly_receipt_sha256": "6" * 64,
+        "z_level_plan": [
+            {
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": str(row["assigned_z_rank"]),
+                "sham_control": (
+                    "1" if i == len(config["z_levels"]) - 1 else "0"
+                ),
+            }
+            for i, row in enumerate(config["z_levels"])
+        ],
+        "p1_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+        "g_selected_candidate_id": "G_TEST",
+        "g_exclusion_method": config["excluded_method_code"],
+        "g_exposed_sham_method": config["exposed_method_code"],
+        "geometry_collection_may_run_before_lane_validation": True,
+        "geometry_analysis_requires_later_positive_readiness_v3": True,
     }
+
 
 def _manifest() -> list[dict[str, str]]:
     return [
@@ -151,7 +138,7 @@ def test_maximum_allocation_contains_nested_exact_balanced_prefixes() -> None:
     rows, receipt = allocate(
         _manifest(),
         config,
-        _readiness(config),
+        _binding(config),
         "STAGED-SEED",
     )
 
@@ -260,7 +247,7 @@ def test_unbalanced_precision_look_is_rejected_before_allocation() -> None:
         allocate(
             _manifest(),
             config,
-            _readiness(config),
+            _binding(config),
             "STAGED-SEED",
         )
 
@@ -270,7 +257,7 @@ def test_stage_n_must_be_preregistered() -> None:
     rows, receipt = allocate(
         _manifest(),
         config,
-        _readiness(config),
+        _binding(config),
         "STAGED-SEED",
     )
 

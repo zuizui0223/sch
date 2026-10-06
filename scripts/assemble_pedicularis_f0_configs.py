@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from collections import Counter
@@ -43,6 +44,16 @@ CAL_B_SCHEMA = "SCH_PEDICULARIS_CAL_B_TARGET_FREEZE_V1"
 CAL_B_STATUS = "PEDICULARIS_CAL_B_TARGETS_FROZEN"
 CAL_C_ANALYSIS = "pedicularis_cal_c_sample_size_plan_v1"
 CAL_C_STATUS = "PEDICULARIS_CAL_C_SAMPLE_SIZE_PLAN_READY"
+
+
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _load_json(path: Path) -> dict:
@@ -390,6 +401,10 @@ def assemble(
             lane: outputs[lane]["status"]
             for lane in ("P0", "P1", "G")
         },
+        "assembled_config_sha256": {
+            lane: _semantic_sha256(outputs[lane])
+            for lane in ("P0", "P1", "G")
+        },
         "status": ASSEMBLY_STATUS,
         "unlocked_next_step": (
             "collect same-context confirmatory P0/P1/G data using these frozen configs"
@@ -399,6 +414,7 @@ def assemble(
             "does_not_generate_empirical_validation",
             "does_not_use_confirmatory_outcomes",
             "all_40_gate_values_have_explicit_source_provenance",
+            "receipt_binds_exact_P0_P1_G_config_SHA256",
         ],
     }
     return outputs, receipt
