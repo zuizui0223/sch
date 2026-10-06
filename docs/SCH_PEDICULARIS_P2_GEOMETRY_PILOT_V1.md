@@ -181,23 +181,55 @@ The pilot freezes before outcomes:
 - already-qualified exposed / excluded G methods;
 - balanced cyclic allocation strategy.
 
-The geometry pilot is admissible only **after** the same population/season has
-a positive `SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3` receipt grounded in
-the randomized P0, paired-randomized P1 and preselected/paired-randomized G
-confirmatory qualifications. The pilot must use exactly the validated P0 z
-labels and validated G exclusion method.
+### Collection may run in parallel with confirmatory P0/P1/G
 
-The allocation script is:
+P. rex fruit endpoints mature on an approximately three-week timescale, while
+the focal flowering window is limited to roughly June-early August. Requiring
+P0/P1/G final outcomes before **collecting** the geometry pilot would therefore
+place two fruit-maturation waits serially on the critical path before P2.
+
+The safer and faster rule is:
+
+~~~text
+F0 + selected G method frozen before outcomes
+-> bind exact P0/P1/G intervention plan to geometry config
+-> collect geometry on a disjoint cohort in parallel with confirmatory P0/P1/G
+-> wait for confirmatory readiness
+-> only then allow geometry analysis / precision / basis materialization.
+~~~
+
+Use:
+
+~~~bash
+python scripts/bind_pedicularis_geometry_intervention_plan.py \
+  <geometry_pilot_config.json> \
+  <p0_level_plan.csv> \
+  <p0_field_config.json> \
+  <p1_field_config.json> \
+  <g_field_config.json> \
+  <g_method_selection.json> \
+  <f0_assembly_receipt.json> \
+  --output <geometry_intervention_binding.json>
+~~~
+
+The binding freezes the P0 z labels/ranks, P1 experimental unit, selected G
+method and exact P0/P1/G field-config SHA-256 values before confirmatory
+outcomes.
+
+The allocation script is then:
 
 ~~~bash
 python scripts/build_pedicularis_p2_geometry_pilot.py \
   <treatment_blind_flower_manifest.csv> \
   <geometry_pilot_config.json> \
-  <readiness_v3.json> \
+  <geometry_intervention_binding.json> \
   --allocation-seed <PRECOMMITTED_SEED> \
   --field-sheet-out <geometry_pilot_field_sheet.csv> \
   --receipt-out <geometry_pilot_allocation.json>
 ~~~
+
+This authorizes **collection only**. It does not make the geometry data
+admissible for power.
 
 The allocator uses the same z x P x G state definitions as confirmatory P2,
 but it does not require or create a registered P2 sample-size recommendation.
@@ -237,8 +269,16 @@ python scripts/summarize_pedicularis_p2_geometry_pilot.py \
   <completed_geometry_pilot.csv> \
   <geometry_pilot_allocation.json> \
   <cohort_registry.csv> \
+  <readiness_v3.json> \
   --output <geometry_pilot_summary.json>
 ~~~
+
+At this point, and not earlier, the later readiness receipt must be positive.
+The summarizer verifies that its validated z labels, P1 experimental unit,
+selected G method, P0 level-plan SHA and P0/P1/G config/method-selection SHA
+values exactly match the pre-outcome intervention binding carried by the
+geometry allocation. Any mismatch makes the geometry data inadmissible for
+registered W1/W2 power basis.
 
 The summary:
 
@@ -409,11 +449,18 @@ current basis audit
 -> scientifically justified sensitivity envelope
 -> inspect how much geometry uncertainty changes n
 -> if information value is high:
-     run separate POWER_GEOMETRY_PILOT
-     -> resolve 18 power-basis blockers
-     -> finish P0/F0 remaining 3 blockers
-     -> registered W1/W2 power
-     -> powered confirmatory P2
+     F0 + pre-outcome G method selection
+     -> bind exact intervention plan
+     -> collect separate POWER_GEOMETRY_PILOT in parallel with P0/P1/G
+     -> obtain randomized P0/P1/G readiness V3
+     -> if readiness fails or plan SHA mismatches:
+          discard geometry for registered power basis
+        else:
+          evaluate staged geometry precision
+          -> resolve 18 power-basis blockers
+          -> finish remaining P0/F0 basis
+          -> registered W1/W2 power
+          -> powered confirmatory P2
    else:
      continue only through a prospectively justified robust-envelope route.
 ~~~
