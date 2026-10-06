@@ -278,3 +278,12 @@ def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
     assert receipt["replicates_per_cell"] == 2
     assert len(receipt["cell_counts"]) == 24
     assert set(receipt["cell_counts"].values()) == {2}
+
+
+def test_sensitivity_only_power_receipt_cannot_allocate_p2() -> None:
+    power = _power()
+    power["status"] = "PEDICULARIS_W1_W2_POWER_SENSITIVITY_ONLY"
+    power["minimum_plants_meeting_both_targets"] = None
+
+    with pytest.raises(ValueError, match="power receipt is not complete"):
+        build(_manifest(), _config(), power, "SEED")
