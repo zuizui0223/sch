@@ -14,6 +14,10 @@ from scripts.build_pedicularis_full_surface_allocation import (
     STATE_PLAN,
     _semantic_sha256,
 )
+from scripts.bind_pedicularis_geometry_intervention_plan import (
+    SCHEMA as INTERVENTION_BINDING_SCHEMA,
+    STATUS as INTERVENTION_BINDING_STATUS,
+)
 
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
@@ -320,7 +324,7 @@ def _cells(config: dict, allocation_seed: str) -> list[dict[str, str]]:
 def build(
     manifest_rows: list[dict[str, str]],
     config_payload: dict,
-    readiness_receipt: dict,
+    intervention_binding: dict,
     allocation_seed: str,
 ) -> tuple[list[dict[str, str]], dict]:
     allocation_seed = allocation_seed.strip()
@@ -328,42 +332,67 @@ def build(
         raise ValueError("allocation_seed must be precommitted and resolved")
 
     config = _validate_config(config_payload)
-    surface._validate_readiness(
-        readiness_receipt,
-        config["population_id"],
-        config["season_id"],
-    )
 
-    if readiness_receipt.get("receipt_schema_version") != (
-        "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3"
+    if intervention_binding.get("receipt_schema") != INTERVENTION_BINDING_SCHEMA:
+        raise ValueError("geometry intervention-plan binding schema mismatch")
+    if intervention_binding.get("status") != INTERVENTION_BINDING_STATUS:
+        raise ValueError("geometry intervention plan is not prospectively frozen")
+    if intervention_binding.get("population_id") != config["population_id"]:
+        raise ValueError(
+            "geometry intervention binding population does not match pilot config"
+        )
+    if intervention_binding.get("season_id") != config["season_id"]:
+        raise ValueError(
+            "geometry intervention binding season does not match pilot config"
+        )
+    if intervention_binding.get("geometry_config_sha256") != _semantic_sha256(
+        config_payload
     ):
-        raise ValueError("geometry pilot requires readiness V3")
-    if readiness_receipt.get("status") != "PEDICULARIS_FULL_SURFACE_READY":
         raise ValueError(
-            "geometry pilot requires positive P0/P1/G full-surface readiness"
+            "geometry intervention binding is not tied to the exact pilot config"
         )
-    if readiness_receipt.get("population_id") != config["population_id"]:
-        raise ValueError("geometry pilot readiness population does not match config")
-    if readiness_receipt.get("season_id") != config["season_id"]:
-        raise ValueError("geometry pilot readiness season does not match config")
 
-    validated = readiness_receipt.get("validated_execution")
-    if not isinstance(validated, dict):
-        raise ValueError("readiness V3 lacks validated execution provenance")
-    expected_z_levels = [
-        row["assigned_z_level"] for row in config["z_levels"]
+    expected_z = [
+        {
+            "assigned_z_level": row["assigned_z_level"],
+            "assigned_z_rank": str(row["assigned_z_rank"]),
+        }
+        for row in config["z_levels"]
     ]
-    if validated.get("z_levels") != expected_z_levels:
+    bound_z = [
+        {
+            "assigned_z_level": row["assigned_z_level"],
+            "assigned_z_rank": str(row["assigned_z_rank"]),
+        }
+        for row in intervention_binding.get("z_level_plan", [])
+    ]
+    if expected_z != bound_z:
         raise ValueError(
-            "geometry-pilot z-level labels do not match validated P0 readiness"
+            "geometry intervention binding z plan does not match pilot config"
         )
-    if validated.get("p_experimental_unit") != "WITHIN_PLANT_PAIRED_FLOWERS":
+    if intervention_binding.get("p1_experimental_unit") != (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    ):
         raise ValueError(
-            "geometry pilot requires validated paired-flower P1 intervention"
+            "geometry intervention binding lacks current paired-flower P1 plan"
         )
-    if validated.get("g_exclusion_method") != config["excluded_method_code"]:
+    if intervention_binding.get("g_exclusion_method") != config[
+        "excluded_method_code"
+    ]:
         raise ValueError(
-            "geometry-pilot excluded method does not match validated G readiness"
+            "geometry excluded method does not match bound confirmatory G method"
+        )
+    if intervention_binding.get("g_exposed_sham_method") != config[
+        "exposed_method_code"
+    ]:
+        raise ValueError(
+            "geometry exposed method does not match bound confirmatory G sham"
+        )
+    if intervention_binding.get(
+        "geometry_analysis_requires_later_positive_readiness_v3"
+    ) is not True:
+        raise ValueError(
+            "geometry intervention binding must defer analysis until readiness V3"
         )
 
     by_plant = _validate_manifest(manifest_rows, config)
@@ -486,12 +515,36 @@ def build(
             allocation_seed.encode("utf-8")
         ).hexdigest(),
         "config_sha256": _semantic_sha256(config_payload),
-        "readiness_receipt_sha256": _semantic_sha256(readiness_receipt),
-        "readiness_status": readiness_receipt["status"],
-        "validated_execution": {
-            "z_levels": list(validated["z_levels"]),
-            "p_experimental_unit": validated["p_experimental_unit"],
-            "g_exclusion_method": validated["g_exclusion_method"],
+        "intervention_plan_binding_sha256": _semantic_sha256(
+            intervention_binding
+        ),
+        "intervention_plan_binding_status": intervention_binding["status"],
+        "bound_intervention_plan": {
+            "p0_level_plan_sha256": intervention_binding[
+                "p0_level_plan_sha256"
+            ],
+            "p0_field_config_sha256": intervention_binding[
+                "p0_field_config_sha256"
+            ],
+            "p1_field_config_sha256": intervention_binding[
+                "p1_field_config_sha256"
+            ],
+            "g_field_config_sha256": intervention_binding[
+                "g_field_config_sha256"
+            ],
+            "g_method_selection_sha256": intervention_binding[
+                "g_method_selection_sha256"
+            ],
+            "z_levels": [
+                row["assigned_z_level"]
+                for row in intervention_binding["z_level_plan"]
+            ],
+            "p1_experimental_unit": intervention_binding[
+                "p1_experimental_unit"
+            ],
+            "g_exclusion_method": intervention_binding[
+                "g_exclusion_method"
+            ],
         },
         "precision_gate": config["precision_gate"],
         "precision_gate_frozen_before_outcomes": True,
@@ -503,7 +556,8 @@ def build(
         "status": "P2_GEOMETRY_PILOT_ALLOCATED_NOT_YET_MEASURED",
         "claim_ceiling": [
             "nonconfirmatory_power_basis_only",
-            "requires_positive_randomized_P0_P1_G_readiness_V3",
+            "collection_allowed_after_preoutcome_intervention_plan_binding",
+            "analysis_and_basis_use_still_require_later_positive_readiness_V3",
             "precision_gate_frozen_before_any_geometry_outcomes",
             "cumulative_precision_looks_frozen_before_any_geometry_outcomes",
             "exact_balanced_randomized_z_P_G_allocation",
@@ -532,7 +586,7 @@ def main() -> None:
     )
     parser.add_argument("flower_manifest_csv", type=Path)
     parser.add_argument("pilot_config_json", type=Path)
-    parser.add_argument("readiness_v3_json", type=Path)
+    parser.add_argument("intervention_plan_binding_json", type=Path)
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--field-sheet-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -541,7 +595,7 @@ def main() -> None:
     rows, receipt = build(
         _read_csv(args.flower_manifest_csv),
         _load_json(args.pilot_config_json),
-        _load_json(args.readiness_v3_json),
+        _load_json(args.intervention_plan_binding_json),
         args.allocation_seed,
     )
     _write_csv(args.field_sheet_out, rows)
