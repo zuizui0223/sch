@@ -230,6 +230,10 @@ def _bind_inputs(
 
     if summary.get("pilot_data_sha256") != surface.surface_data_sha256(rows):
         raise ValueError("geometry precision rows do not match summary data fingerprint")
+    if summary.get("pilot_config_sha256") != _semantic_sha256(config):
+        raise ValueError(
+            "geometry precision config is not the exact config frozen at allocation"
+        )
 
     pilot = validate_pilot_config(config)
     if summary.get("population_id") != pilot["population_id"]:
@@ -500,6 +504,7 @@ def build(
         "season_id": summary["season_id"],
         "geometry_summary_sha256": _semantic_sha256(summary),
         "pilot_data_sha256": summary["pilot_data_sha256"],
+        "pilot_config_sha256": summary["pilot_config_sha256"],
         "n_plants": summary["n_plants"],
         "n_rows": summary["n_rows"],
         "normalization_scales": scales,
