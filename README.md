@@ -502,7 +502,11 @@ executable with `build_pedicularis_p2_geometry_pilot.py`,
 `summarize_pedicularis_p2_geometry_pilot.py`, and
 `evaluate_pedicularis_p2_geometry_precision.py`. The precision gate is frozen
 before pilot outcomes; point-estimable geometry alone cannot promote the 18
-power-basis paths. After precision qualifies and the remaining P0/F0 basis rows
+power-basis paths. Geometry-pilot n is also prospective:
+`candidate_cumulative_plants` freezes exact-balanced cumulative looks and
+`adjudicate_pedicularis_p2_geometry_accrual.py` stops at the first precision
+pass; later looks require every earlier look to have formally failed precision.
+After precision qualifies and the remaining P0/F0 basis rows
 are resolved, `bind_pedicularis_w1_w2_geometry_config.py` requires all 18
 values in the frozen registered power config to exactly match that qualified
 pilot and binds the summary, precision receipt, basis receipt and config by
