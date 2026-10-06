@@ -11,8 +11,10 @@ The focal programme requires one population and one season for:
 - ultimately the confirmatory P2 surface.
 
 A strictly serial order is biologically awkward because the focal P. rex
-programme reports capsules maturing roughly three weeks after anthesis. The
-published flowering window is June to early August / late June to early August.
+programme reports capsules maturing roughly three weeks after anthesis (Sun &
+Huang 2015, doi:10.1093/aobpla/plv019). The published flowering window is June
+to early August / late June to early August in the focal programme (Sun &
+Huang 2015; Sun, Armbruster & Huang 2016, doi:10.1093/aob/mcw097).
 
 Therefore the naive sequence:
 
