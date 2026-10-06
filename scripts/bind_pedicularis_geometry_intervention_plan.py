@@ -180,6 +180,17 @@ def build(
     }:
         raise ValueError("F0 assembly lane statuses do not match supplied field configs")
 
+    supplied_config_sha = {
+        "P0": _semantic_sha256(p0_field_config),
+        "P1": _semantic_sha256(p1_field_config),
+        "G": _semantic_sha256(g_field_config),
+    }
+    assembled_config_sha = f0_assembly_receipt.get("assembled_config_sha256")
+    if assembled_config_sha != supplied_config_sha:
+        raise ValueError(
+            "supplied P0/P1/G configs are not the exact configs produced by F0 assembly"
+        )
+
     p0_plan_sha = _semantic_sha256(normalized_plan)
     config_sha = _semantic_sha256(geometry_config)
 
@@ -190,9 +201,9 @@ def build(
         "season_id": season_id,
         "geometry_config_sha256": config_sha,
         "p0_level_plan_sha256": p0_plan_sha,
-        "p0_field_config_sha256": _semantic_sha256(p0_field_config),
-        "p1_field_config_sha256": _semantic_sha256(p1_field_config),
-        "g_field_config_sha256": _semantic_sha256(g_field_config),
+        "p0_field_config_sha256": supplied_config_sha["P0"],
+        "p1_field_config_sha256": supplied_config_sha["P1"],
+        "g_field_config_sha256": supplied_config_sha["G"],
         "g_method_selection_sha256": _semantic_sha256(g_method_selection),
         "f0_assembly_receipt_sha256": _semantic_sha256(f0_assembly_receipt),
         "z_level_plan": normalized_plan,
@@ -207,6 +218,7 @@ def build(
         "status": STATUS,
         "claim_ceiling": [
             "preoutcome_intervention_plan_identity_only",
+            "P0_P1_G_configs_must_match_exact_F0_assembly_digests",
             "does_not_validate_P0_P1_or_G",
             "does_not_authorize_geometry_basis_use_before_readiness",
             "parallel_collection_is_wasted_if_any_lane_fails_readiness",
