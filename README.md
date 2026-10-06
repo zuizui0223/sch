@@ -448,12 +448,15 @@ CAL-A      measurement/equivalence/handling calibration
 CAL-B      exploratory P/G effects + G timing pilot
 CAL-C      intervention-validity/selectivity power planning
 Stage F0   freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
-Stage P0   validate >=5 realized exsertion levels
+P0 alloc   register treatment-blind IDs and SHA-256 randomize the frozen z/sham plan
+Stage P0   validate >=5 realized exsertion levels on the exact locked allocation
 P1 alloc   current V1 = paired flowers; register treatment-blind IDs and
            SHA-256 randomize NATURAL sham vs SUPPLEMENTED donor-mixed pollen
 Stage P1   validate selective pollination-weight supplementation on locked allocation
-Stage G    validate independent seed-predator exclusion with water-y fixed
-readiness  -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
+G select   freeze one exploratory hard-pass method before confirmatory G outcomes
+G alloc    SHA-256 randomize paired EXPOSED-sham vs EXCLUDED-selected-method flowers
+Stage G    validate independent seed-predator exclusion on the exact locked allocation
+readiness  -> V3 only when randomized P0/P1/G all pass in one population/season
 P2 basis   audit generating-model provenance; direct single-scenario n is blocked
            until causal geometry/variance has an admissible basis
 P2 envelope run prospectively declared sensitivity worlds; report worst-case power
