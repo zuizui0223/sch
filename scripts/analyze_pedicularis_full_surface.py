@@ -196,6 +196,29 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
             )
 
 
+def _validate_rows_against_validated_execution(
+    rows: list[dict[str, str]],
+    readiness: dict,
+) -> None:
+    validated = readiness["validated_execution"]
+    expected_z = set(validated["z_levels"])
+    observed_z = {row["assigned_z_level"] for row in rows}
+    if observed_z != expected_z:
+        raise ValueError(
+            "raw P2 z-level labels do not match the validated P0 readiness grid"
+        )
+
+    excluded_methods = {
+        row["exclusion_method"]
+        for row in rows
+        if row["predator_treatment"] == "EXCLUDED"
+    }
+    if excluded_methods != {validated["g_exclusion_method"]}:
+        raise ValueError(
+            "raw P2 EXCLUDED method does not match the validated G readiness method"
+        )
+
+
 def _system_checks(rows: list[dict[str, str]], config: dict) -> dict:
     checks = config.get("system_checks")
     if not isinstance(checks, dict):
@@ -332,6 +355,7 @@ def analyze_locked(
 def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
     population, season = _context(rows)
     _validate_readiness(readiness, population, season)
+    _validate_rows_against_validated_execution(rows, readiness)
     checks = _system_checks(rows, config)
     if checks["status"] != "PEDICULARIS_V2_SYSTEM_CHECKS_PASS":
         raise ValueError("Pedicularis V2 system checks failed; water-y or handling was not held fixed")
