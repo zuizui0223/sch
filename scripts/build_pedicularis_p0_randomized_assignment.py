@@ -9,6 +9,26 @@ from pathlib import Path
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
 ASSIGNMENT_METHOD = "SHA256_RANK_V1"
+RECEIPT_SCHEMA = "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
+FROZEN_FIELDS = (
+    "population_id",
+    "season_id",
+    "plant_id",
+    "flower_id",
+    "assigned_z_level",
+    "assigned_z_rank",
+    "sham_control",
+)
+
+
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -237,8 +257,17 @@ def build(
                 }
             )
 
+    frozen_rows = sorted(
+        [
+            {field: row[field] for field in FROZEN_FIELDS}
+            for row in allocations
+        ],
+        key=lambda row: (row["plant_id"], row["flower_id"]),
+    )
+
     receipt = {
         "analysis": "pedicularis_p0_randomized_allocation_v1",
+        "receipt_schema": RECEIPT_SCHEMA,
         "population_id": population_id,
         "season_id": season_id,
         "n_plants": len(by_plant),
@@ -257,6 +286,8 @@ def build(
         "allocation_seed_sha256": hashlib.sha256(
             allocation_seed.encode("utf-8")
         ).hexdigest(),
+        "allocation_identity_sha256": _semantic_sha256(frozen_rows),
+        "expected_frozen_rows": frozen_rows,
         "sample_size_chosen_by_script": False,
         "z_level_values_chosen_by_script": False,
         "status": "P0_FLOWERS_RANDOMIZED_NOT_YET_MEASURED",
