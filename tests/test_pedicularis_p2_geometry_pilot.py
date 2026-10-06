@@ -361,3 +361,19 @@ def test_precision_receipt_cannot_be_reused_with_different_summary() -> None:
             changed_summary,
             precision,
         )
+
+
+def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
+    completed, receipt, registry, config = _packet(
+        n_plants=6,
+        flowers_per_plant=20,
+        max_width=0.10,
+    )
+    summary = summarize(completed, receipt, registry)
+    posthoc = deepcopy(config)
+    posthoc["precision_gate"][
+        "max_normalized_95ci_width_per_power_basis_path"
+    ] = 10.0
+
+    with pytest.raises(ValueError, match="exact config frozen at allocation"):
+        evaluate_precision(completed, summary, posthoc)
