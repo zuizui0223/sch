@@ -458,6 +458,8 @@ P2 basis   audit generating-model provenance; direct single-scenario n is blocke
            until causal geometry/variance has an admissible basis
 P2 envelope run prospectively declared sensitivity worlds; report worst-case power
            and scenario-specific n spread to assess geometry information value
+P2 geometry if information value is high, run a separate POWER_GEOMETRY_PILOT
+           mini-surface; it can resolve 18/21 current power-basis blockers
 P2 power   only after basis-ready: simulate production surface -> enemy-displacement
            -> W0-W5 pipeline; blocked-basis runs are sensitivity-only
 P2 alloc   bind a passing registered powered design to treatment-blind flower IDs
@@ -489,6 +491,13 @@ geometry-pilot cohort, `evaluate_pedicularis_w1_w2_power_envelope.py` can run
 multiple prospectively declared sensitivity worlds and report worst-case power
 plus the scenario-specific minimum-n range. The envelope is a
 value-of-information diagnostic only: it cannot register n or unlock P2.
+If geometry uncertainty materially changes the field decision, Route A is now
+executable with `build_pedicularis_p2_geometry_pilot.py` and
+`summarize_pedicularis_p2_geometry_pilot.py`. The separate
+`POWER_GEOMETRY_PILOT` cohort never enters confirmatory inference and can
+materialize 18 same-estimand geometry/variance basis rows, reducing the current
+21 blockers to the three P0/F0-dependent rows. See
+`docs/SCH_PEDICULARIS_P2_GEOMETRY_PILOT_V1.md`.
 `simulate_pedicularis_w1_w2_power.py` then powers the actual production
 full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
 plants and flowers-per-plant design are then bound to treatment-blind flower
