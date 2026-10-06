@@ -37,6 +37,7 @@ def _config() -> dict:
         "bootstrap_reps": 300,
         "random_seed": 31,
         "pollination_weight": {
+            "experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "min_paired_plants": 15,
             "min_flowers_per_treatment": 15,
             "min_pollen_grain_delta": 5.0,
@@ -65,6 +66,11 @@ def _rows() -> list[dict[str, str]]:
                     "plant_id": f"P{plant:02d}",
                     "flower_id": f"P{plant:02d}_{treatment}",
                     "pollination_treatment": treatment,
+                    "pollination_handling_role": (
+                        "DONOR_MIXED_CROSS_POLLEN"
+                        if treatment == "SUPPLEMENTED"
+                        else "SHAM_STIGMA_CONTACT"
+                    ),
                     "realized_exsertion": f"{0.55 + shift:.4f}",
                     "water_depth": f"{5.0 + shift:.4f}",
                     "bract_height": f"{20.0 + shift:.4f}",
@@ -84,6 +90,7 @@ def test_template_and_config_are_fail_closed() -> None:
     with TEMPLATE.open(encoding="utf-8", newline="") as handle:
         assert tuple(next(csv.reader(handle))) == REQUIRED_FIELDS
     config = json.loads(CONFIG_TEMPLATE.read_text(encoding="utf-8"))
+    assert config["pollination_weight"]["experimental_unit"] == "WITHIN_PLANT_PAIRED_FLOWERS"
     assert config["pollination_weight"]["min_initial_seed_set_delta"] == "REQUIRED_BEFORE_USE"
     assert "DO_NOT_RUN" in config["status"]
 
