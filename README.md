@@ -449,7 +449,9 @@ CAL-B      exploratory P/G effects + G timing pilot
 CAL-C      intervention-validity/selectivity power planning
 Stage F0   freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
 Stage P0   validate >=5 realized exsertion levels
-Stage P1   validate selective pollination-weight supplementation
+P1 alloc   current V1 = paired flowers; register treatment-blind IDs and
+           SHA-256 randomize NATURAL sham vs SUPPLEMENTED donor-mixed pollen
+Stage P1   validate selective pollination-weight supplementation on locked allocation
 Stage G    validate independent seed-predator exclusion with water-y fixed
 readiness  -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
 P2 basis   audit generating-model provenance; direct single-scenario n is blocked
@@ -464,6 +466,16 @@ Stage P2   run the verified z x P x G surface
 Stage P3   test context-stable component optima
 Stage P4   export the fitness-scale conflict budget L
 ```
+
+Current P1 V1 is explicitly `WITHIN_PLANT_PAIRED_FLOWERS`, matching the
+registered CAL-C paired-plant sample-size fields and paired bootstrap estimator.
+Whole-plant supplementation remains a literature-supported alternative, but
+cannot be substituted into V1 without a separate prospective protocol/evaluator.
+For confirmatory P1, `build_pedicularis_p1_randomized_assignment.py` binds
+treatment-blind flower IDs to equal NATURAL sham-handling and SUPPLEMENTED
+donor-mixed-cross-pollen arms within each plant using a precommitted SHA-256
+seed. The production P1 CLI requires that allocation receipt and rejects
+flower/treatment/handling or frozen-config drift.
 
 The final P2 replication now has a second prospective power layer in addition
 to CAL-C, but its evidence basis is audited first. The current basis ledger has
