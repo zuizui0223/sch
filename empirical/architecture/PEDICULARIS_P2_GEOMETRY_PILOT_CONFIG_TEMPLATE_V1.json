@@ -1,0 +1,20 @@
+{
+  "schema": "PEDICULARIS_P2_GEOMETRY_PILOT_CONFIG_V1",
+  "status": "PEDICULARIS_P2_GEOMETRY_PILOT_PROSPECTIVELY_FROZEN",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "planned_n_plants": "REQUIRED_BEFORE_USE",
+  "flowers_per_plant": "REQUIRED_BEFORE_USE",
+  "z_levels": [
+    {
+      "assigned_z_level": "REQUIRED_BEFORE_USE",
+      "assigned_z_rank": "REQUIRED_BEFORE_USE",
+      "target_exsertion": "REQUIRED_BEFORE_USE"
+    }
+  ],
+  "excluded_method_code": "REQUIRED_BEFORE_USE",
+  "exposed_method_code": "REQUIRED_BEFORE_USE",
+  "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1",
+  "frozen_before_geometry_outcomes": "REQUIRED_BEFORE_USE",
+  "pilot_role": "POWER_BASIS_ONLY_NEVER_CONFIRMATORY"
+}

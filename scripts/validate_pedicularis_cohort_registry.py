@@ -55,6 +55,12 @@ ROLE_RULES = {
         "confirmatory_eligible": "YES",
         "phase": "FULL_SURFACE",
     },
+    "POWER_GEOMETRY_PILOT": {
+        "lane": "P0_P1_G",
+        "threshold_basis_eligible": "NO",
+        "confirmatory_eligible": "NO",
+        "phase": "POWER_BASIS",
+    },
 }
 
 REQUIRED_FIELDS = (
@@ -109,6 +115,7 @@ def validate(rows: list[dict[str, str]]) -> dict:
 
     phases: dict[str, set[str]] = {
         "CALIBRATION": set(),
+        "POWER_BASIS": set(),
         "CONFIRMATORY": set(),
         "FULL_SURFACE": set(),
     }
@@ -137,8 +144,17 @@ def validate(rows: list[dict[str, str]]) -> dict:
         role_counts[role] = role_counts.get(role, 0) + 1
 
     calibration_plants = phases["CALIBRATION"]
+    power_basis_plants = phases["POWER_BASIS"]
     confirmatory_plants = phases["CONFIRMATORY"] | phases["FULL_SURFACE"]
     shared_plants = sorted(calibration_plants & confirmatory_plants)
+    power_basis_overlap = sorted(
+        power_basis_plants & (calibration_plants | confirmatory_plants)
+    )
+    if power_basis_overlap:
+        raise ValueError(
+            "POWER_GEOMETRY_PILOT plants must be disjoint from calibration and "
+            "confirmatory/full-surface plants: " + ", ".join(power_basis_overlap)
+        )
 
     if not shared_plants:
         independence = "PLANT_AND_FLOWER_LEVEL_DISJOINT"
@@ -153,8 +169,10 @@ def validate(rows: list[dict[str, str]]) -> dict:
         "n_records": len(rows),
         "role_counts": dict(sorted(role_counts.items())),
         "n_calibration_plants": len(calibration_plants),
+        "n_power_geometry_pilot_plants": len(power_basis_plants),
         "n_confirmatory_or_surface_plants": len(confirmatory_plants),
         "n_shared_plants_across_calibration_and_confirmatory": len(shared_plants),
+        "power_geometry_pilot_plant_overlap_detected": False,
         "shared_plant_ids": shared_plants,
         "flower_level_reuse_detected": False,
         "independence_status": independence,
@@ -163,6 +181,8 @@ def validate(rows: list[dict[str, str]]) -> dict:
             "flower_level_data_reuse_is_prohibited",
             "plant_level_overlap_is_reported_not_silently_ignored",
             "plant_level_overlap_does_not_make_calibration_data_confirmatory",
+            "power_geometry_pilot_plants_are_disjoint_from_all_other_phases",
+            "power_geometry_pilot_rows_are_neither_threshold_basis_nor_confirmatory",
             "threshold_basis_rows_cannot_be_confirmatory_rows",
         ],
     }
