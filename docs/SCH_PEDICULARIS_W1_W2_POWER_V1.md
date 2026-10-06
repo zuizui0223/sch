@@ -118,6 +118,13 @@ scenario-specific minimum-n range, and never promotes its own result to a
 registered field allocation. This asks whether geometry uncertainty is
 operationally important enough to justify the extra pilot cohort.
 
+Route A is implemented in
+`docs/SCH_PEDICULARIS_P2_GEOMETRY_PILOT_V1.md`. It uses a separate,
+nonconfirmatory randomized z x P x G cohort registered as
+`POWER_GEOMETRY_PILOT`. A valid pilot can directly materialize the 18
+same-estimand fitness/pollen/initial-seed geometry and variance rows, leaving
+only the z-grid, realized-z SD and primary-threshold basis rows unresolved.
+
 For a registered power run, first materialize a basis-audit receipt whose state
 is:
 
