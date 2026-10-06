@@ -109,3 +109,72 @@ def test_g_event_time_role_is_threshold_basis_only() -> None:
     row["confirmatory_eligible"] = "YES"
     with pytest.raises(ValueError, match="confirmatory_eligible mismatch"):
         validate([row])
+
+
+def test_power_geometry_pilot_role_is_nonconfirmatory_and_nonthreshold() -> None:
+    row = _row(
+        "PG1",
+        "GP01",
+        "GP01_F1",
+        "POWER_GEOMETRY_PILOT",
+        "P0_P1_G",
+        "NO",
+        "NO",
+    )
+    result = validate([row])
+
+    assert result["role_counts"]["POWER_GEOMETRY_PILOT"] == 1
+    assert result["n_power_geometry_pilot_plants"] == 1
+    assert result["power_geometry_pilot_plant_overlap_detected"] is False
+
+
+def test_power_geometry_pilot_plant_cannot_reappear_in_full_surface() -> None:
+    rows = [
+        _row(
+            "PG1",
+            "P01",
+            "P01_GP",
+            "POWER_GEOMETRY_PILOT",
+            "P0_P1_G",
+            "NO",
+            "NO",
+        ),
+        _row(
+            "FS1",
+            "P01",
+            "P01_FS",
+            "FULL_SURFACE",
+            "P0_P1_G",
+            "NO",
+            "YES",
+        ),
+    ]
+
+    with pytest.raises(ValueError, match="POWER_GEOMETRY_PILOT plants must be disjoint"):
+        validate(rows)
+
+
+def test_power_geometry_pilot_plant_cannot_reappear_in_calibration() -> None:
+    rows = [
+        _row(
+            "PG1",
+            "P01",
+            "P01_GP",
+            "POWER_GEOMETRY_PILOT",
+            "P0_P1_G",
+            "NO",
+            "NO",
+        ),
+        _row(
+            "CA1",
+            "P01",
+            "P01_CA",
+            "CAL_A",
+            "MULTI",
+            "YES",
+            "NO",
+        ),
+    ]
+
+    with pytest.raises(ValueError, match="POWER_GEOMETRY_PILOT plants must be disjoint"):
+        validate(rows)
