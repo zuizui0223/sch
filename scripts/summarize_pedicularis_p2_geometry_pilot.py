@@ -428,6 +428,10 @@ def build(
         "allocation_frozen_identity_sha256": allocation_receipt.get(
             "frozen_identity_sha256"
         ),
+        "pilot_config_sha256": allocation_receipt.get("config_sha256"),
+        "precision_gate_frozen_at_allocation": allocation_receipt.get(
+            "precision_gate"
+        ),
         "surface_specs": surface_specs,
         "all_four_fitness_surfaces_usable_for_power_basis": surfaces_usable,
         "pollen_state_models": pollen_models,
