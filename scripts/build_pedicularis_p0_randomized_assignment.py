@@ -6,9 +6,74 @@ import hashlib
 import json
 from pathlib import Path
 
+from scripts.pedicularis_config_freeze import (
+    FREEZE_STATUS,
+    validate_prospective_freeze,
+)
+
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
 ASSIGNMENT_METHOD = "SHA256_RANK_V1"
+ALLOCATION_SCHEMA = "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
+ALLOCATION_STATUS = "P0_FLOWERS_RANDOMIZED_NOT_YET_MEASURED"
+P0_FIELD_CONFIG_STATUS = "PEDICULARIS_P0_FIELD_CONFIG_FROZEN"
+
+
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _validate_p0_field_config(
+    config: dict,
+    *,
+    population_id: str,
+    season_id: str,
+    n_levels: int,
+    n_plants: int,
+) -> dict:
+    if config.get("status") != P0_FIELD_CONFIG_STATUS:
+        raise ValueError(
+            "P0 randomized allocation requires the F0-assembled "
+            "PEDICULARIS_P0_FIELD_CONFIG_FROZEN config"
+        )
+    freeze = validate_prospective_freeze(config, "P0")
+    if freeze["status"] != FREEZE_STATUS:
+        raise ValueError("P0 threshold freeze is not positive")
+    if freeze.get("population_id") != population_id:
+        raise ValueError("P0 field config and allocation population_id differ")
+    if freeze.get("season_id") != season_id:
+        raise ValueError("P0 field config and allocation season_id differ")
+
+    block = config.get("stage_p0")
+    if not isinstance(block, dict):
+        raise ValueError("P0 field config lacks stage_p0 block")
+    min_levels = int(block["min_z_levels"])
+    min_plants = int(block["min_plants"])
+    min_flowers_per_level = int(block["min_flowers_per_level"])
+
+    if n_levels < min_levels:
+        raise ValueError("planned z levels are below frozen P0 min_z_levels")
+    if n_plants < min_plants:
+        raise ValueError("manifest plants are below frozen P0 min_plants")
+    if n_plants < min_flowers_per_level:
+        raise ValueError(
+            "complete-block P0 allocation gives too few flowers per level "
+            "for frozen min_flowers_per_level"
+        )
+
+    return {
+        "freeze": freeze,
+        "min_z_levels": min_levels,
+        "min_plants": min_plants,
+        "min_flowers_per_level": min_flowers_per_level,
+        "p0_field_config_sha256": _semantic_sha256(config),
+    }
 
 
 def _read_csv(path: Path) -> list[dict[str, str]]:
@@ -142,6 +207,7 @@ def _randomized_order(
 def build(
     flowers: list[dict[str, str]],
     levels: list[dict[str, str]],
+    p0_field_config: dict,
     allocation_seed: str,
 ) -> tuple[list[dict[str, str]], dict]:
     allocation_seed = allocation_seed.strip()
@@ -208,6 +274,14 @@ def build(
             + details
         )
 
+    field_basis = _validate_p0_field_config(
+        p0_field_config,
+        population_id=population_id,
+        season_id=season_id,
+        n_levels=n_levels,
+        n_plants=len(by_plant),
+    )
+
     sorted_levels = sorted(levels, key=lambda row: int(row["assigned_z_rank"]))
     allocations: list[dict[str, str]] = []
     for plant_id in sorted(by_plant):
@@ -237,13 +311,42 @@ def build(
                 }
             )
 
+    expected_assignments = sorted(
+        [
+            {
+                "population_id": row["population_id"],
+                "season_id": row["season_id"],
+                "plant_id": row["plant_id"],
+                "flower_id": row["flower_id"],
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": row["assigned_z_rank"],
+                "sham_control": row["sham_control"],
+            }
+            for row in allocations
+        ],
+        key=lambda row: (
+            row["population_id"],
+            row["season_id"],
+            row["plant_id"],
+            row["flower_id"],
+        ),
+    )
+
     receipt = {
         "analysis": "pedicularis_p0_randomized_allocation_v1",
+        "receipt_schema": ALLOCATION_SCHEMA,
         "population_id": population_id,
         "season_id": season_id,
         "n_plants": len(by_plant),
         "n_z_levels": n_levels,
         "n_allocated_flowers": len(allocations),
+        "minimum_z_levels_gate": field_basis["min_z_levels"],
+        "minimum_plants_gate": field_basis["min_plants"],
+        "minimum_flowers_per_level_gate": field_basis["min_flowers_per_level"],
+        "p0_field_config_sha256": field_basis["p0_field_config_sha256"],
+        "level_plan_sha256": _semantic_sha256(sorted_levels),
+        "allocation_identity_sha256": _semantic_sha256(expected_assignments),
+        "expected_assignments": expected_assignments,
         "z_levels": [row["assigned_z_level"] for row in sorted_levels],
         "z_ranks": [int(row["assigned_z_rank"]) for row in sorted_levels],
         "sham_z_rank": next(
@@ -259,7 +362,7 @@ def build(
         ).hexdigest(),
         "sample_size_chosen_by_script": False,
         "z_level_values_chosen_by_script": False,
-        "status": "P0_FLOWERS_RANDOMIZED_NOT_YET_MEASURED",
+        "status": ALLOCATION_STATUS,
         "next_step": (
             "apply the prospectively specified graded manipulation, collect "
             "Stage-P0 outcome fields, and merge them with this allocation "
@@ -294,6 +397,7 @@ def main() -> None:
     )
     parser.add_argument("flower_manifest_csv", type=Path)
     parser.add_argument("level_plan_csv", type=Path)
+    parser.add_argument("p0_field_config_json", type=Path)
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--allocations-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -301,9 +405,13 @@ def main() -> None:
 
     flowers, _, _ = _read_flowers(args.flower_manifest_csv)
     levels = _read_level_plan(args.level_plan_csv)
+    p0_field_config = json.loads(
+        args.p0_field_config_json.read_text(encoding="utf-8")
+    )
     allocations, receipt = build(
         flowers,
         levels,
+        p0_field_config,
         allocation_seed=args.allocation_seed,
     )
     _write_csv(args.allocations_out, allocations)
