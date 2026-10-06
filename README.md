@@ -444,18 +444,32 @@ Pedicularis route is:
 
 ```text
 same population + same season
-CAL-A     measurement/equivalence/handling calibration
-CAL-B     exploratory P/G effects + G timing pilot
-CAL-C     prospective power/precision planning
-Stage F0  freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
-Stage P0  validate >=5 realized exsertion levels
-Stage P1  validate selective pollination-weight supplementation
-Stage G   validate independent seed-predator exclusion with water-y fixed
-readiness -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
-Stage P2  run the z x P x G surface
-Stage P3  test context-stable component optima
-Stage P4  export the fitness-scale conflict budget L
+CAL-A      measurement/equivalence/handling calibration
+CAL-B      exploratory P/G effects + G timing pilot
+CAL-C      intervention-validity/selectivity power planning
+Stage F0   freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
+Stage P0   validate >=5 realized exsertion levels
+Stage P1   validate selective pollination-weight supplementation
+Stage G    validate independent seed-predator exclusion with water-y fixed
+readiness  -> SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
+P2 power   simulate production surface -> enemy-displacement -> W0-W5 pipeline
+P2 alloc   bind a passing powered design to treatment-blind flower IDs
+P2 lock    verify exact z/P/G/method identity and completed surface SHA-256
+Stage P2   run the verified z x P x G surface
+Stage P3   test context-stable component optima
+Stage P4   export the fitness-scale conflict budget L
 ```
+
+The final P2 replication now has a second prospective power layer in addition
+to CAL-C. `simulate_pedicularis_w1_w2_power.py` powers the actual production
+full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
+plants and flowers-per-plant design are then bound to treatment-blind flower
+IDs by `build_pedicularis_full_surface_allocation.py`. The completed P2 field
+packet must pass
+`prepare_pedicularis_full_surface_field_sheet.py verify --require-complete`;
+the production analyzer rejects a CSV whose SHA-256 differs from that verified
+packet. See `docs/SCH_PEDICULARIS_W1_W2_POWER_V1.md` and
+`docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
 Until that chain produces a valid full-surface receipt (or fails a preregistered
 stop rule), additional TA3 remainder screening is secondary. Screening records
