@@ -57,6 +57,14 @@ def _readiness(config: dict) -> dict:
         "population_id": config["population_id"],
         "season_id": config["season_id"],
         "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
         "validated_execution": {
             "z_levels": [
                 row["assigned_z_level"] for row in config["z_levels"]
@@ -67,8 +75,29 @@ def _readiness(config: dict) -> dict:
             "p_allocation_identity_sha256": "b" * 64,
             "g_allocation_identity_sha256": "c" * 64,
         },
+        "source_receipts": {
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
+            },
+        },
+        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": (
+            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
+            "WITH_POLLINATOR_ACCESS_PRESERVED"
+        ),
     }
-
 
 def _manifest() -> list[dict[str, str]]:
     return [
