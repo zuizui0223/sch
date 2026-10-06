@@ -257,11 +257,22 @@ def test_unbalanced_precision_look_is_rejected_before_allocation() -> None:
     config["candidate_cumulative_plants"] = [6, 10]
 
     with pytest.raises(ValueError, match="every planned precision look"):
-        allocate(_manifest(), config, "STAGED-SEED")
+        allocate(
+            _manifest(),
+            config,
+            _readiness(config),
+            "STAGED-SEED",
+        )
 
 
 def test_stage_n_must_be_preregistered() -> None:
-    rows, receipt = allocate(_manifest(), _config(), "STAGED-SEED")
+    config = _config()
+    rows, receipt = allocate(
+        _manifest(),
+        config,
+        _readiness(config),
+        "STAGED-SEED",
+    )
 
     with pytest.raises(ValueError, match="prospectively frozen cumulative looks"):
         materialize_stage(rows, receipt, 7)
