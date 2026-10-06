@@ -10,6 +10,12 @@ from scripts.evaluate_pedicularis_p2_geometry_precision import (
     READY_STATUS as PRECISION_READY_STATUS,
     build as evaluate_precision,
 )
+from scripts.materialize_pedicularis_p2_geometry_stage import (
+    build as materialize_stage,
+)
+from scripts.adjudicate_pedicularis_p2_geometry_accrual import (
+    build as adjudicate_accrual,
+)
 from scripts.materialize_pedicularis_w1_w2_basis_from_geometry_pilot import (
     materialize,
 )
@@ -31,6 +37,7 @@ def _config(
         "population_id": "P_REX_TEST",
         "season_id": "S1",
         "planned_n_plants": n_plants,
+        "candidate_cumulative_plants": [n_plants // 2, n_plants],
         "flowers_per_plant": flowers_per_plant,
         "z_levels": [
             {
@@ -217,6 +224,7 @@ def test_point_estimates_alone_cannot_materialize_basis() -> None:
             basis._read(basis.DEFAULT_LEDGER),
             summary,
             {},
+            {},
         )
 
 
@@ -226,14 +234,27 @@ def test_complete_block_geometry_pilot_can_pass_precision_and_reduce_blockers() 
         flowers_per_plant=20,
         max_width=0.10,
     )
-    summary = summarize(completed, receipt, registry)
-    precision = evaluate_precision(completed, summary, config)
+    stage_rows, stage_receipt = materialize_stage(
+        completed,
+        receipt,
+        3,
+    )
+    summary = summarize(stage_rows, stage_receipt, _registry(stage_rows))
+    precision = evaluate_precision(stage_rows, summary, config)
+    decision = adjudicate_accrual(
+        config,
+        summary,
+        precision,
+        [],
+    )
 
     assert precision["status"] == PRECISION_READY_STATUS
     assert precision["basis_materialization_authorized"] is True
     assert precision["bootstrap_valid_all_18_path_fraction"] == 1.0
     assert precision["n_power_basis_paths_precision_evaluated"] == 18
     assert precision["failing_precision_paths"] == []
+    assert decision["decision"] == "STOP_GEOMETRY_PILOT_AND_MATERIALIZE_BASIS"
+    assert decision["current_precision_look_n"] == 3
     assert all(
         value >= 0.80
         for value in precision[
@@ -245,6 +266,7 @@ def test_complete_block_geometry_pilot_can_pass_precision_and_reduce_blockers() 
         basis._read(basis.DEFAULT_LEDGER),
         summary,
         precision,
+        decision,
     )
     audit = materialization["basis_audit_after_materialization"]
 
@@ -281,6 +303,7 @@ def test_small_incomplete_pilot_does_not_gain_precision_authorization_for_free()
             basis._read(basis.DEFAULT_LEDGER),
             summary,
             precision,
+            {},
         )
 
 
@@ -350,8 +373,14 @@ def test_precision_receipt_cannot_be_reused_with_different_summary() -> None:
         flowers_per_plant=20,
         max_width=0.10,
     )
-    summary = summarize(completed, receipt, registry)
-    precision = evaluate_precision(completed, summary, config)
+    stage_rows, stage_receipt = materialize_stage(
+        completed,
+        receipt,
+        3,
+    )
+    summary = summarize(stage_rows, stage_receipt, _registry(stage_rows))
+    precision = evaluate_precision(stage_rows, summary, config)
+    decision = adjudicate_accrual(config, summary, precision, [])
     changed_summary = deepcopy(summary)
     changed_summary["pilot_ovule_count_mean"] = 99.0
 
@@ -360,6 +389,7 @@ def test_precision_receipt_cannot_be_reused_with_different_summary() -> None:
             basis._read(basis.DEFAULT_LEDGER),
             changed_summary,
             precision,
+            decision,
         )
 
 

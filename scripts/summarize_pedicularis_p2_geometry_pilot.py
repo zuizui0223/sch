@@ -421,6 +421,22 @@ def build(
         "cohort_independence_status": cohort_receipt["independence_status"],
         "n_rows": len(rows),
         "n_plants": len({row["plant_id"] for row in rows}),
+        "candidate_cumulative_plants": allocation_receipt.get(
+            "candidate_cumulative_plants"
+        ),
+        "current_precision_look_n": int(
+            allocation_receipt.get(
+                "current_precision_look_n",
+                allocation_receipt["n_plants"],
+            )
+        ),
+        "allocation_scope": allocation_receipt.get(
+            "allocation_scope",
+            "MAXIMUM_PILOT_ALLOCATION",
+        ),
+        "parent_allocation_sha256": allocation_receipt.get(
+            "parent_allocation_sha256"
+        ),
         "n_z_levels": len({row["assigned_z_level"] for row in rows}),
         "n_surface_cells": allocation_receipt["n_surface_cells"],
         "replicates_per_cell": allocation_receipt["replicates_per_cell"],

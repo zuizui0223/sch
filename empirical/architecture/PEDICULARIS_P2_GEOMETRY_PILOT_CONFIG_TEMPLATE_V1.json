@@ -23,5 +23,8 @@
     "min_valid_bootstrap_fraction": "REQUIRED_BEFORE_USE",
     "min_interior_concave_fraction_per_state": "REQUIRED_BEFORE_USE",
     "max_normalized_95ci_width_per_power_basis_path": "REQUIRED_BEFORE_USE"
-  }
+  },
+  "candidate_cumulative_plants": [
+    "REQUIRED_BEFORE_USE"
+  ]
 }

@@ -27,6 +27,8 @@ PROVENANCE_FIELDS = (
     "allocation_cell_id",
     "assignment_method",
     "pilot_role",
+    "plant_accrual_rank",
+    "first_precision_look_n",
 )
 OUTPUT_FIELDS = (*surface.RAW_FIELDS, *PROVENANCE_FIELDS)
 
@@ -130,6 +132,23 @@ def _validate_config(config: dict) -> dict:
     flowers_per_plant = _positive_int(
         config.get("flowers_per_plant"), "flowers_per_plant"
     )
+    raw_looks = config.get("candidate_cumulative_plants")
+    if not isinstance(raw_looks, list) or not raw_looks:
+        raise ValueError(
+            "candidate_cumulative_plants must be a non-empty prospectively frozen list"
+        )
+    cumulative_looks = [
+        _positive_int(value, "candidate_cumulative_plants")
+        for value in raw_looks
+    ]
+    if cumulative_looks != sorted(set(cumulative_looks)):
+        raise ValueError(
+            "candidate_cumulative_plants must be strictly increasing and unique"
+        )
+    if cumulative_looks[-1] != n_plants:
+        raise ValueError(
+            "planned_n_plants must equal the final candidate_cumulative_plants value"
+        )
 
     z_rows = config.get("z_levels")
     if not isinstance(z_rows, list) or len(z_rows) < 5:
@@ -172,6 +191,13 @@ def _validate_config(config: dict) -> dict:
             "planned_n_plants x flowers_per_plant must be divisible by "
             "n_z_levels x 2 P x 2 G for exact balance"
         )
+    for stage_n in cumulative_looks:
+        if (stage_n * flowers_per_plant) % n_cells != 0:
+            raise ValueError(
+                "every candidate_cumulative_plants value x flowers_per_plant "
+                "must be divisible by n_z_levels x 2 P x 2 G so every planned "
+                "precision look is exactly balanced"
+            )
 
     excluded_method = _text(
         config.get("excluded_method_code"), "excluded_method_code"
@@ -186,6 +212,7 @@ def _validate_config(config: dict) -> dict:
         "population_id": population_id,
         "season_id": season_id,
         "planned_n_plants": n_plants,
+        "candidate_cumulative_plants": cumulative_looks,
         "flowers_per_plant": flowers_per_plant,
         "z_levels": normalized_z,
         "n_surface_cells": n_cells,
@@ -317,6 +344,12 @@ def build(
     rows = []
     counts: Counter[str] = Counter()
     for plant_rank, plant_id in enumerate(plant_order):
+        one_based_rank = plant_rank + 1
+        first_precision_look_n = next(
+            stage_n
+            for stage_n in config["candidate_cumulative_plants"]
+            if stage_n >= one_based_rank
+        )
         start = (plant_rank * k) % len(cells)
         selected = [cells[(start + offset) % len(cells)] for offset in range(k)]
         if len({row["cell_id"] for row in selected}) != k:
@@ -350,6 +383,8 @@ def build(
                     "allocation_cell_id": cell["cell_id"],
                     "assignment_method": ALLOCATION_METHOD,
                     "pilot_role": config["pilot_role"],
+                    "plant_accrual_rank": str(one_based_rank),
+                    "first_precision_look_n": str(first_precision_look_n),
                 }
             )
             rows.append(row)
@@ -384,12 +419,26 @@ def build(
         "population_id": config["population_id"],
         "season_id": config["season_id"],
         "n_plants": config["planned_n_plants"],
+        "candidate_cumulative_plants": config["candidate_cumulative_plants"],
+        "plant_accrual_order": plant_order,
         "flowers_per_plant": config["flowers_per_plant"],
         "n_surface_cells": config["n_surface_cells"],
         "replicates_per_cell": config["replicates_per_cell"],
         "n_allocated_flowers": len(rows),
         "exact_cell_balance": True,
         "cell_counts": dict(sorted(counts.items())),
+        "precision_look_designs": [
+            {
+                "cumulative_plants": stage_n,
+                "cumulative_flowers": stage_n * config["flowers_per_plant"],
+                "replicates_per_cell": (
+                    stage_n
+                    * config["flowers_per_plant"]
+                    // config["n_surface_cells"]
+                ),
+            }
+            for stage_n in config["candidate_cumulative_plants"]
+        ],
         "z_levels": config["z_levels"],
         "allocation_strategy": CELL_STRATEGY,
         "allocation_algorithm": ALLOCATION_METHOD,
@@ -409,6 +458,7 @@ def build(
         "claim_ceiling": [
             "nonconfirmatory_power_basis_only",
             "precision_gate_frozen_before_any_geometry_outcomes",
+            "cumulative_precision_looks_frozen_before_any_geometry_outcomes",
             "exact_balanced_randomized_z_P_G_allocation",
             "never_enters_confirmatory_P2_inference",
             "does_not_choose_pilot_sample_size",
