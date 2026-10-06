@@ -148,6 +148,8 @@ def build(
         geometry_summary,
         precision_receipt,
     )
+    readiness_sha = geometry_summary["readiness_receipt_sha256"]
+    binding_sha = geometry_summary["intervention_plan_binding_sha256"]
 
     if basis_receipt.get("analysis") != BASIS_ANALYSIS:
         raise ValueError("power-basis receipt analysis schema mismatch")
