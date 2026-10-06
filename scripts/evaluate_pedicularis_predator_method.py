@@ -7,6 +7,11 @@ import math
 from pathlib import Path
 
 from scripts.evaluate_pedicularis_predator_weight import evaluate as evaluate_predator_weight
+from scripts.build_pedicularis_full_surface_allocation import _semantic_sha256
+from scripts.build_pedicularis_g_confirmatory_assignment import (
+    FROZEN_FIELDS as G_ALLOCATION_FROZEN_FIELDS,
+    RECEIPT_SCHEMA as G_ALLOCATION_SCHEMA,
+)
 from scripts.pedicularis_config_freeze import (
     validate_freeze_context,
     validate_prospective_freeze,
@@ -194,6 +199,82 @@ def _method_gates(rows: list[dict[str, str]], config: dict) -> tuple[dict[str, b
     return gates, summary
 
 
+def validate_randomized_allocation(
+    rows: list[dict[str, str]],
+    allocation_receipt: dict,
+    config: dict,
+) -> None:
+    if allocation_receipt.get("receipt_schema") != G_ALLOCATION_SCHEMA:
+        raise ValueError("confirmatory G allocation receipt schema mismatch")
+    if allocation_receipt.get("status") != (
+        "G_CONFIRMATORY_FLOWERS_RANDOMIZED_NOT_YET_MEASURED"
+    ):
+        raise ValueError("confirmatory G allocation receipt is not valid")
+
+    population, season = _context(rows)
+    if allocation_receipt.get("population_id") != population:
+        raise ValueError("confirmatory G allocation population does not match data")
+    if allocation_receipt.get("season_id") != season:
+        raise ValueError("confirmatory G allocation season does not match data")
+    if int(allocation_receipt.get("n_allocated_flowers", -1)) != len(rows):
+        raise ValueError("confirmatory G allocation row count does not match data")
+    if allocation_receipt.get("g_field_config_sha256") != _semantic_sha256(config):
+        raise ValueError(
+            "confirmatory G allocation receipt is not bound to the exact G field config"
+        )
+
+    frozen_rows = sorted(
+        [
+            {
+                field: row[field].strip()
+                for field in G_ALLOCATION_FROZEN_FIELDS
+            }
+            for row in rows
+        ],
+        key=lambda row: (row["plant_id"], row["flower_id"]),
+    )
+    expected = allocation_receipt.get("expected_frozen_rows")
+    if not isinstance(expected, list):
+        raise ValueError(
+            "confirmatory G allocation receipt lacks expected frozen rows"
+        )
+    if frozen_rows != expected:
+        raise ValueError(
+            "confirmatory G flower/treatment/method/sham assignment drifted "
+            "from randomized allocation"
+        )
+    if _semantic_sha256(frozen_rows) != allocation_receipt.get(
+        "allocation_identity_sha256"
+    ):
+        raise ValueError("confirmatory G allocation identity digest mismatch")
+
+
+def evaluate_locked(
+    rows: list[dict[str, str]],
+    config: dict,
+    allocation_receipt: dict,
+) -> dict:
+    validate_randomized_allocation(rows, allocation_receipt, config)
+    result = evaluate(rows, config)
+    result["field_allocation_verification"] = {
+        "receipt_schema": allocation_receipt["receipt_schema"],
+        "allocation_identity_sha256": allocation_receipt[
+            "allocation_identity_sha256"
+        ],
+        "selection_receipt_sha256": allocation_receipt.get(
+            "selection_receipt_sha256"
+        ),
+        "selected_candidate_id": allocation_receipt.get(
+            "selected_candidate_id"
+        ),
+        "selected_exclusion_method": allocation_receipt.get(
+            "selected_exclusion_method"
+        ),
+        "identity_treatment_method_sham_match": True,
+    }
+    return result
+
+
 def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
     freeze = validate_prospective_freeze(config, "G")
     population, season = _context(rows)
@@ -229,10 +310,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Qualify a timed Pedicularis seed-predator exclusion method")
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("config_path", type=Path)
+    parser.add_argument(
+        "--allocation-receipt",
+        type=Path,
+        required=True,
+        help=(
+            "PEDICULARIS_G_CONFIRMATORY_RANDOMIZED_ALLOCATION_V1 receipt "
+            "for the exact confirmatory flower IDs and EXPOSED/EXCLUDED arms"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
-    result = evaluate(read_rows(args.csv_path), json.loads(args.config_path.read_text(encoding="utf-8")))
+    rows = read_rows(args.csv_path)
+    config = json.loads(args.config_path.read_text(encoding="utf-8"))
+    allocation_receipt = json.loads(
+        args.allocation_receipt.read_text(encoding="utf-8")
+    )
+    result = evaluate_locked(rows, config, allocation_receipt)
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")
