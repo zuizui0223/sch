@@ -70,19 +70,35 @@ within-plant resource-reallocation bias. The literature therefore justifies
 the **supplementation treatment family**, but not one universally preferred
 experimental unit.
 
-Before F0, the P1 basis document must prospectively choose between:
+The literature supports two legitimate experimental-unit families:
 
 ```text
 WITHIN_PLANT_PAIRED_FLOWERS
-or
 WHOLE_PLANT_SUPPLEMENTATION
 ```
 
-and justify the choice with respect to:
+but the **current registered V1 analysis is explicitly the paired-flower
+route**. CAL-C plans `min_paired_plants`, the confirmatory evaluator uses
+plant-paired differences/bootstrap resampling, and the P1 config therefore
+freezes:
+
+```text
+pollination_weight.experimental_unit = WITHIN_PLANT_PAIRED_FLOWERS.
+```
+
+This is an implementation/estimand boundary, not a claim that paired flowers
+are universally biologically superior. The whole-plant precedent remains
+important because it reduces within-plant resource-reallocation concerns. If
+the focal field programme chooses whole-plant supplementation instead, it must
+be registered as a scientifically distinct P1 protocol with its own
+sample-size calculation, allocator and evaluator **before** confirmatory
+outcomes are read. It must not be silently substituted into V1.
+
+The current paired route should still justify, in the P1 basis document:
 
 ```text
 individual-level blocking
-resource-reallocation bias
+resource-reallocation risk
 donor-pollen demand
 ability to measure early predator contamination
 and compatibility with the final reproductive endpoint.
@@ -319,12 +335,28 @@ field cutoffs.
 
 ## Machine implementation
 
-Pollination-weight pilot:
+Confirmatory paired-flower allocation and pollination-weight evaluation:
 
 ```text
+empirical/architecture/PEDICULARIS_P1_FLOWER_MANIFEST_TEMPLATE_V1.csv
+empirical/architecture/PEDICULARIS_P1_ALLOCATION_CONFIG_TEMPLATE_V1.json
+scripts/build_pedicularis_p1_randomized_assignment.py
 scripts/evaluate_pedicularis_pollination_weight.py
 receipt = SCH_PEDICULARIS_POLLINATION_WEIGHT_V1.
 ```
+
+Register flower IDs before treatment labels are assigned. The allocator uses a
+precommitted SHA-256 seed to assign equal NATURAL and SUPPLEMENTED flowers
+within every plant. The raw P1 table records:
+
+```text
+NATURAL      -> SHAM_STIGMA_CONTACT
+SUPPLEMENTED -> DONOR_MIXED_CROSS_POLLEN.
+```
+
+The production CLI requires the randomized allocation receipt and rejects
+flower/treatment/handling drift or a P1 config whose SHA-256 differs from the
+config used at allocation.
 
 Independent antagonist method:
 
