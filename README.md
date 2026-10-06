@@ -504,6 +504,11 @@ executable with `build_pedicularis_p2_geometry_pilot.py` and
 materialize 18 same-estimand geometry/variance basis rows, reducing the current
 21 blockers to the three P0/F0-dependent rows. See
 `docs/SCH_PEDICULARIS_P2_GEOMETRY_PILOT_V1.md`.
+Once all remaining blockers are resolved,
+`bind_pedicularis_w1_w2_geometry_config.py` requires the 18 actual numbers in
+the frozen power config to match the exact geometry-pilot summary and binds the
+config plus basis receipt by SHA-256. A registered power run cannot proceed
+without that binding.
 `simulate_pedicularis_w1_w2_power.py` then powers the actual production
 full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
 plants and flowers-per-plant design are then bound to treatment-blind flower
