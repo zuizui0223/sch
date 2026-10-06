@@ -82,6 +82,14 @@ def build(
         "frozen_lanes": frozen_lanes,
         "all_three_lane_configs_frozen": all_frozen,
         "same_population_and_season_after_freeze": same_context,
+        "confirmatory_execution_requirements": [
+            "P0_treatment_blind_SHA256_z_sham_allocation",
+            "P1_treatment_blind_SHA256_paired_NATURAL_vs_SUPPLEMENTED_allocation",
+            "G_preoutcome_hard_pass_method_freeze",
+            "G_treatment_blind_SHA256_paired_EXPOSED_vs_EXCLUDED_allocation",
+            "locked_P0_P1_G_production_evaluators",
+            "readiness_V3_requires_all_three_randomized_provenance_blocks",
+        ],
         "current_blocker": blocker,
         "next_action": (
             "Complete nonconfirmatory CAL-A (measurement/equivalence), CAL-B (exploratory effects/G timing), and CAL-C (power/precision), then freeze P0/P1/G gate values with one basis note per gate before reading confirmatory outcomes."
@@ -89,7 +97,13 @@ def build(
             else (
                 "Re-freeze all three lane configs for one common population and season before collecting confirmatory data."
                 if blocker == "FROZEN_CONFIG_CONTEXT_MISMATCH"
-                else "Collect same-context P0/P1/G confirmatory data and generate the three positive evaluator receipts."
+                else (
+                    "Register treatment-blind P0/P1/G flower IDs; run the "
+                    "prospectively frozen randomized P0 allocation, paired P1 "
+                    "allocation, and preselected-method paired G allocation; "
+                    "then collect same-context confirmatory outcomes and run the "
+                    "three locked production evaluators."
+                )
             )
         ),
         "claim_ceiling": (
