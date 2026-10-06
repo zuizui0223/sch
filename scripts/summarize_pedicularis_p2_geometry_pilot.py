@@ -20,8 +20,8 @@ from scripts.build_pedicularis_p2_geometry_pilot import (
 
 PILOT_ROLE = "POWER_BASIS_ONLY_NEVER_CONFIRMATORY"
 COHORT_ROLE = "POWER_GEOMETRY_PILOT"
-READY_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_POWER_BASIS_READY"
-INCOMPLETE_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_POWER_BASIS_INCOMPLETE"
+READY_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_POINT_ESTIMATES_READY_NOT_YET_PRECISION_QUALIFIED"
+INCOMPLETE_STATUS = "PEDICULARIS_P2_GEOMETRY_PILOT_POINT_ESTIMATES_INCOMPLETE"
 STATE_KEYS = ("P0G0", "P1G0", "P0G1", "P1G1")
 FROZEN_FIELDS = (
     "population_id",
@@ -424,6 +424,14 @@ def build(
         "n_z_levels": len({row["assigned_z_level"] for row in rows}),
         "n_surface_cells": allocation_receipt["n_surface_cells"],
         "replicates_per_cell": allocation_receipt["replicates_per_cell"],
+        "pilot_data_sha256": surface.surface_data_sha256(rows),
+        "allocation_frozen_identity_sha256": allocation_receipt.get(
+            "frozen_identity_sha256"
+        ),
+        "pilot_config_sha256": allocation_receipt.get("config_sha256"),
+        "precision_gate_frozen_at_allocation": allocation_receipt.get(
+            "precision_gate"
+        ),
         "surface_specs": surface_specs,
         "all_four_fitness_surfaces_usable_for_power_basis": surfaces_usable,
         "pollen_state_models": pollen_models,
@@ -436,9 +444,11 @@ def build(
         "resolved_power_basis_values": resolved_paths,
         "n_power_basis_paths_resolved": n_resolved,
         "expected_geometry_and_variance_paths": 18,
-        "geometry_and_variance_basis_complete": (
+        "geometry_and_variance_point_estimates_complete": (
             surfaces_usable and n_resolved == 18
         ),
+        "geometry_and_variance_basis_complete": False,
+        "precision_qualification_required": True,
         "status": (
             READY_STATUS
             if surfaces_usable and n_resolved == 18
@@ -451,6 +461,8 @@ def build(
             "does_not_test_causal_compromise",
             "pilot_realized_z_error_is_descriptive_not_a_replacement_for_registered_P0_basis",
             "pilot_ovule_mean_is_descriptive_context",
+            "point_estimability_does_not_imply_precision_sufficiency",
+            "precision_qualification_required_before_basis_materialization",
             "registered_power_still_requires_remaining_P0_and_threshold_basis_rows",
         ],
     }

@@ -169,10 +169,10 @@ The summary:
 
 No W0-W5 outcome is assigned.
 
-## Surface fail-closed rule
+## Point-estimability fail-closed rule
 
-A fitness-state model is usable as direct registered power basis only when its
-quadratic optimum is:
+A fitness-state point estimate is structurally usable only when its quadratic
+optimum is:
 
 ~~~text
 concave
@@ -180,23 +180,93 @@ AND
 interior to the sampled realized-z range.
 ~~~
 
-If any state is boundary/nonconcave, the pilot summary remains
-POWER_BASIS_INCOMPLETE.
+If any state is boundary/nonconcave, the point-estimate summary remains
+incomplete.
 
-The code does not invent a quadratic optimum outside the observed z range.
+That structural check is **not enough** to promote the pilot into registered
+power basis. A tiny pilot can return four interior quadratic vertices while
+still estimating all geometry/variance inputs far too imprecisely for a
+sample-size decision.
+
+## Precision qualification
+
+The pilot config must freeze the precision gate **before geometry outcomes are
+collected**:
+
+~~~text
+precision_gate.bootstrap_reps
+precision_gate.random_seed
+precision_gate.min_valid_bootstrap_fraction
+precision_gate.min_interior_concave_fraction_per_state
+precision_gate.max_normalized_95ci_width_per_power_basis_path.
+~~~
+
+Run:
+
+~~~bash
+python scripts/evaluate_pedicularis_p2_geometry_precision.py \
+  <completed_geometry_pilot.csv> \
+  <geometry_pilot_summary.json> \
+  <geometry_pilot_config.json> \
+  --output <geometry_precision.json>
+~~~
+
+Whole plants are resampled. The evaluator requires enough bootstrap replicates
+to recover all 18 power-basis paths simultaneously and separately records how
+often each of the four fitness surfaces remains interior-concave.
+
+For the 18 path-level precision checks, 95% interval widths are normalized to
+biological scales:
+
+~~~text
+fitness surface peak
+  CI width / mean ovule count
+
+fitness surface optimum
+  CI width / realized-z span
+
+fitness surface curvature
+  CI width x z-span^2 / mean ovule count
+
+pollen model
+  max(
+    CI width of predicted pollen at z-center,
+    CI width of predicted change across z-span
+  ) / observed pollen SD
+
+initial-seed model
+  analogous quantities / observed initial-seed-fraction SD
+
+between-plant or residual SD
+  CI width / observed endpoint SD.
+~~~
+
+This yields one dimensionless precision width for every canonical power-basis
+path. All 18 must be within the prospectively frozen maximum.
+
+Thus:
+
+~~~text
+point estimate exists
+!=
+precision sufficient for registered power basis.
+~~~
 
 ## Basis materialization
 
-A positive summary may be applied to the canonical basis ledger with:
+A point-estimate summary may be applied to the canonical basis ledger only
+after a precision receipt authorizes materialization:
 
 ~~~bash
 python scripts/materialize_pedicularis_w1_w2_basis_from_geometry_pilot.py \
   <geometry_pilot_summary.json> \
+  <geometry_precision.json> \
   --ledger-out <w1_w2_basis_after_geometry.csv> \
   --receipt-out <geometry_basis_materialization.json>
 ~~~
 
-Exactly 18 geometry/variance paths are promoted to:
+Only when both point estimability and the frozen precision gate pass are exactly
+18 geometry/variance paths promoted to:
 
 ~~~text
 DIRECT_SAME_CONTEXT_READY
@@ -211,6 +281,7 @@ The normal power-basis audit is then rerun on the derived ledger.
 
 The geometry pilot does not:
 
+- become basis-ready merely because a model can be fitted;
 - test the paper's causal compromise hypothesis;
 - assign W0-W5;
 - contribute rows or plants to confirmatory P2;

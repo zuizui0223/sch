@@ -6,6 +6,10 @@ import pytest
 
 from scripts import audit_pedicularis_w1_w2_power_basis as basis
 from scripts.build_pedicularis_p2_geometry_pilot import build as allocate
+from scripts.evaluate_pedicularis_p2_geometry_precision import (
+    READY_STATUS as PRECISION_READY_STATUS,
+    build as evaluate_precision,
+)
 from scripts.materialize_pedicularis_w1_w2_basis_from_geometry_pilot import (
     materialize,
 )
@@ -15,14 +19,19 @@ from scripts.summarize_pedicularis_p2_geometry_pilot import (
 )
 
 
-def _config() -> dict:
+def _config(
+    *,
+    n_plants: int = 10,
+    flowers_per_plant: int = 4,
+    max_width: float = 0.5,
+) -> dict:
     return {
         "schema": "PEDICULARIS_P2_GEOMETRY_PILOT_CONFIG_V1",
         "status": "PEDICULARIS_P2_GEOMETRY_PILOT_PROSPECTIVELY_FROZEN",
         "population_id": "P_REX_TEST",
         "season_id": "S1",
-        "planned_n_plants": 10,
-        "flowers_per_plant": 4,
+        "planned_n_plants": n_plants,
+        "flowers_per_plant": flowers_per_plant,
         "z_levels": [
             {
                 "assigned_z_level": f"Z{i}",
@@ -36,10 +45,21 @@ def _config() -> dict:
         "allocation_strategy": "BALANCED_CYCLIC_RANDOMIZED_Z_BY_P_BY_G_V1",
         "frozen_before_geometry_outcomes": True,
         "pilot_role": "POWER_BASIS_ONLY_NEVER_CONFIRMATORY",
+        "precision_gate": {
+            "bootstrap_reps": 200,
+            "random_seed": 31,
+            "min_valid_bootstrap_fraction": 0.80,
+            "min_interior_concave_fraction_per_state": 0.80,
+            "max_normalized_95ci_width_per_power_basis_path": max_width,
+        },
     }
 
 
-def _manifest() -> list[dict[str, str]]:
+def _manifest(
+    *,
+    n_plants: int = 10,
+    flowers_per_plant: int = 4,
+) -> list[dict[str, str]]:
     return [
         {
             "population_id": "P_REX_TEST",
@@ -47,8 +67,8 @@ def _manifest() -> list[dict[str, str]]:
             "plant_id": f"GP{plant:02d}",
             "flower_id": f"GP{plant:02d}_F{flower:02d}",
         }
-        for plant in range(10)
-        for flower in range(4)
+        for plant in range(n_plants)
+        for flower in range(flowers_per_plant)
     ]
 
 
@@ -121,18 +141,31 @@ def _complete(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     return completed
 
 
-def _packet() -> tuple[list[dict[str, str]], dict, list[dict[str, str]]]:
+def _packet(
+    *,
+    n_plants: int = 10,
+    flowers_per_plant: int = 4,
+    max_width: float = 0.5,
+) -> tuple[list[dict[str, str]], dict, list[dict[str, str]], dict]:
+    config = _config(
+        n_plants=n_plants,
+        flowers_per_plant=flowers_per_plant,
+        max_width=max_width,
+    )
     allocated, receipt = allocate(
-        _manifest(),
-        _config(),
+        _manifest(
+            n_plants=n_plants,
+            flowers_per_plant=flowers_per_plant,
+        ),
+        config,
         "GEOMETRY-PILOT-SEED",
     )
     completed = _complete(allocated)
-    return completed, receipt, _registry(completed)
+    return completed, receipt, _registry(completed), config
 
 
 def test_geometry_pilot_is_exact_balanced_nonconfirmatory_surface() -> None:
-    completed, receipt, registry = _packet()
+    completed, receipt, registry, _ = _packet()
 
     assert len(completed) == 40
     assert receipt["n_surface_cells"] == 20
@@ -140,6 +173,7 @@ def test_geometry_pilot_is_exact_balanced_nonconfirmatory_surface() -> None:
     assert receipt["exact_cell_balance"] is True
     assert receipt["confirmatory_eligible"] is False
     assert receipt["threshold_basis_eligible"] is False
+    assert receipt["precision_gate_frozen_before_outcomes"] is True
     assert set(receipt["cell_counts"].values()) == {2}
     assert all(
         row["pilot_role"] == "POWER_BASIS_ONLY_NEVER_CONFIRMATORY"
@@ -151,14 +185,17 @@ def test_geometry_pilot_is_exact_balanced_nonconfirmatory_surface() -> None:
     )
 
 
-def test_geometry_pilot_summary_resolves_eighteen_power_basis_paths() -> None:
-    completed, receipt, registry = _packet()
+def test_geometry_pilot_summary_is_point_ready_but_not_precision_ready() -> None:
+    completed, receipt, registry, _ = _packet()
     result = summarize(completed, receipt, registry)
 
     assert result["status"] == READY_STATUS
-    assert result["geometry_and_variance_basis_complete"] is True
+    assert result["geometry_and_variance_point_estimates_complete"] is True
+    assert result["geometry_and_variance_basis_complete"] is False
+    assert result["precision_qualification_required"] is True
     assert result["n_power_basis_paths_resolved"] == 18
     assert len(result["resolved_power_basis_values"]) == 18
+    assert len(result["pilot_data_sha256"]) == 64
     assert all(
         spec["usable_for_registered_power_basis"]
         for spec in result["surface_specs"].values()
@@ -171,13 +208,43 @@ def test_geometry_pilot_summary_resolves_eighteen_power_basis_paths() -> None:
     ] == pytest.approx(0.02)
 
 
-def test_geometry_pilot_materialization_reduces_twenty_one_blockers_to_three() -> None:
-    completed, receipt, registry = _packet()
+def test_point_estimates_alone_cannot_materialize_basis() -> None:
+    completed, receipt, registry, _ = _packet()
     summary = summarize(completed, receipt, registry)
+
+    with pytest.raises(ValueError, match="precision receipt schema mismatch"):
+        materialize(
+            basis._read(basis.DEFAULT_LEDGER),
+            summary,
+            {},
+        )
+
+
+def test_complete_block_geometry_pilot_can_pass_precision_and_reduce_blockers() -> None:
+    completed, receipt, registry, config = _packet(
+        n_plants=6,
+        flowers_per_plant=20,
+        max_width=0.10,
+    )
+    summary = summarize(completed, receipt, registry)
+    precision = evaluate_precision(completed, summary, config)
+
+    assert precision["status"] == PRECISION_READY_STATUS
+    assert precision["basis_materialization_authorized"] is True
+    assert precision["bootstrap_valid_all_18_path_fraction"] == 1.0
+    assert precision["n_power_basis_paths_precision_evaluated"] == 18
+    assert precision["failing_precision_paths"] == []
+    assert all(
+        value >= 0.80
+        for value in precision[
+            "surface_interior_concave_fraction_by_state"
+        ].values()
+    )
 
     updated, materialization = materialize(
         basis._read(basis.DEFAULT_LEDGER),
         summary,
+        precision,
     )
     audit = materialization["basis_audit_after_materialization"]
 
@@ -197,8 +264,28 @@ def test_geometry_pilot_materialization_reduces_twenty_one_blockers_to_three() -
     ] == "YES"
 
 
+def test_small_incomplete_pilot_does_not_gain_precision_authorization_for_free() -> None:
+    completed, receipt, registry, config = _packet(
+        n_plants=10,
+        flowers_per_plant=4,
+        max_width=0.10,
+    )
+    summary = summarize(completed, receipt, registry)
+    precision = evaluate_precision(completed, summary, config)
+
+    assert precision["basis_materialization_authorized"] is False
+    assert precision["status"] != PRECISION_READY_STATUS
+
+    with pytest.raises(ValueError, match="precision is not ready"):
+        materialize(
+            basis._read(basis.DEFAULT_LEDGER),
+            summary,
+            precision,
+        )
+
+
 def test_completed_rows_cannot_drift_from_randomized_geometry_allocation() -> None:
-    completed, receipt, registry = _packet()
+    completed, receipt, registry, _ = _packet()
     completed[0]["pollination_treatment"] = (
         "SUPPLEMENTED"
         if completed[0]["pollination_treatment"] == "NATURAL"
@@ -210,7 +297,7 @@ def test_completed_rows_cannot_drift_from_randomized_geometry_allocation() -> No
 
 
 def test_wrong_cohort_role_cannot_supply_power_basis() -> None:
-    completed, receipt, registry = _packet()
+    completed, receipt, registry, _ = _packet()
     registry[0]["cohort_role"] = "FULL_SURFACE"
     registry[0]["confirmatory_eligible"] = "YES"
 
@@ -218,8 +305,8 @@ def test_wrong_cohort_role_cannot_supply_power_basis() -> None:
         summarize(completed, receipt, registry)
 
 
-def test_boundary_or_nonconcave_state_blocks_geometry_basis_promotion() -> None:
-    completed, receipt, registry = _packet()
+def test_boundary_or_nonconcave_state_blocks_even_point_estimate_readiness() -> None:
+    completed, receipt, registry, config = _packet()
     for row in completed:
         if _state(row) == "P1G1":
             z = float(row["realized_exsertion"])
@@ -234,10 +321,59 @@ def test_boundary_or_nonconcave_state_blocks_geometry_basis_promotion() -> None:
     summary = summarize(completed, receipt, registry)
 
     assert summary["status"] != READY_STATUS
-    assert summary["geometry_and_variance_basis_complete"] is False
+    assert summary["geometry_and_variance_point_estimates_complete"] is False
     assert summary["surface_specs"]["P1G1"][
         "usable_for_registered_power_basis"
     ] is False
 
-    with pytest.raises(ValueError, match="not ready for power basis"):
-        materialize(basis._read(basis.DEFAULT_LEDGER), summary)
+    with pytest.raises(ValueError, match="point estimates are not ready"):
+        evaluate_precision(completed, summary, config)
+
+
+def test_precision_gate_must_be_frozen_before_allocation() -> None:
+    config = _config()
+    config["precision_gate"][
+        "max_normalized_95ci_width_per_power_basis_path"
+    ] = "REQUIRED_BEFORE_USE"
+
+    with pytest.raises(ValueError, match="must be prospectively resolved"):
+        allocate(
+            _manifest(),
+            config,
+            "GEOMETRY-PILOT-SEED",
+        )
+
+
+def test_precision_receipt_cannot_be_reused_with_different_summary() -> None:
+    completed, receipt, registry, config = _packet(
+        n_plants=6,
+        flowers_per_plant=20,
+        max_width=0.10,
+    )
+    summary = summarize(completed, receipt, registry)
+    precision = evaluate_precision(completed, summary, config)
+    changed_summary = deepcopy(summary)
+    changed_summary["pilot_ovule_count_mean"] = 99.0
+
+    with pytest.raises(ValueError, match="not bound to this summary"):
+        materialize(
+            basis._read(basis.DEFAULT_LEDGER),
+            changed_summary,
+            precision,
+        )
+
+
+def test_precision_gate_cannot_be_relaxed_with_a_new_posthoc_config() -> None:
+    completed, receipt, registry, config = _packet(
+        n_plants=6,
+        flowers_per_plant=20,
+        max_width=0.10,
+    )
+    summary = summarize(completed, receipt, registry)
+    posthoc = deepcopy(config)
+    posthoc["precision_gate"][
+        "max_normalized_95ci_width_per_power_basis_path"
+    ] = 10.0
+
+    with pytest.raises(ValueError, match="exact config frozen at allocation"):
+        evaluate_precision(completed, summary, posthoc)
