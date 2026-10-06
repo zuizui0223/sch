@@ -19,6 +19,9 @@ from scripts.pedicularis_config_freeze import FREEZE_STATUS
 SCHEMA = "PEDICULARIS_W1_W2_POWER_CONFIG_V1"
 FROZEN_STATUS = "PEDICULARIS_W1_W2_POWER_INPUTS_PROSPECTIVELY_FROZEN"
 TEST_STATUS = "SYNTHETIC_TEST_ONLY"
+SENSITIVITY_STATUS = "PEDICULARIS_W1_W2_POWER_SENSITIVITY_SCENARIO_ONLY"
+BASIS_ANALYSIS = "pedicularis_w1_w2_power_basis_audit_v1"
+BASIS_READY_STATUS = "PEDICULARIS_W1_W2_POWER_BASIS_READY_FOR_REGISTERED_N"
 POSITIVE_SURFACE = "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE"
 STATES = ("P0G0", "P1G0", "P0G1", "P1G1")
 STATE_TREATMENTS = {
@@ -211,11 +214,52 @@ def _truth_gate_descriptor(
     }
 
 
+def _validate_basis_receipt(
+    basis_receipt: dict | None,
+    *,
+    status: str,
+) -> dict | None:
+    if status == TEST_STATUS:
+        return None
+    if basis_receipt is None:
+        raise ValueError(
+            "non-test W1/W2 power run requires a power-basis audit receipt"
+        )
+    if basis_receipt.get("analysis") != BASIS_ANALYSIS:
+        raise ValueError("power-basis receipt analysis schema mismatch")
+
+    basis_status = basis_receipt.get("registered_power_status")
+    if status == FROZEN_STATUS:
+        if basis_status != BASIS_READY_STATUS:
+            raise ValueError(
+                "registered W1/W2 n is blocked until the power-basis receipt "
+                "is READY_FOR_REGISTERED_N"
+            )
+        if basis_receipt.get("registered_single_scenario_n_basis_ready") is not True:
+            raise ValueError(
+                "registered W1/W2 n requires registered_single_scenario_n_basis_ready=true"
+            )
+        if int(basis_receipt.get("n_blocking_rows", -1)) != 0:
+            raise ValueError(
+                "registered W1/W2 n requires zero unresolved power-basis blockers"
+            )
+    elif status == SENSITIVITY_STATUS:
+        if basis_status not in {
+            BASIS_READY_STATUS,
+            "PEDICULARIS_W1_W2_POWER_BASIS_BLOCKED",
+        }:
+            raise ValueError("unrecognized W1/W2 power-basis status")
+    else:
+        raise ValueError("unrecognized W1/W2 power run status")
+
+    return basis_receipt
+
+
 def _validate_config(config: dict) -> dict:
     if config.get("schema") != SCHEMA:
         raise ValueError("W1/W2 power config schema mismatch")
     status = config.get("status")
-    if status not in {FROZEN_STATUS, TEST_STATUS}:
+    if status not in {FROZEN_STATUS, TEST_STATUS, SENSITIVITY_STATUS}:
         raise ValueError("W1/W2 power inputs are not prospectively frozen")
 
     provenance = config.get("planning_provenance")
@@ -738,8 +782,13 @@ def simulate_power(
     config: dict,
     *,
     world_rows: list[dict[str, str]] | None = None,
+    basis_receipt: dict | None = None,
 ) -> dict:
     frozen = _validate_config(config)
+    validated_basis = _validate_basis_receipt(
+        basis_receipt,
+        status=config["status"],
+    )
     worlds = _read_worlds(DEFAULT_WORLDS) if world_rows is None else world_rows
     provenance = frozen["planning_provenance"]
     population_id = provenance["population_id"]
@@ -881,6 +930,21 @@ def simulate_power(
         >= frozen["target_headline_w1_or_w2_power"]
     ]
 
+    registered_recommendation_allowed = config["status"] in {
+        FROZEN_STATUS,
+        TEST_STATUS,
+    }
+    recommended_n = (
+        min(eligible)
+        if eligible and registered_recommendation_allowed
+        else None
+    )
+    result_status = (
+        "PEDICULARIS_W1_W2_POWER_SENSITIVITY_ONLY"
+        if config["status"] == SENSITIVITY_STATUS
+        else "PEDICULARIS_W1_W2_POWER_SIMULATION_COMPLETE"
+    )
+
     return {
         "analysis": "pedicularis_W1_W2_full_surface_power_v1",
         "planning_provenance": provenance,
@@ -905,15 +969,29 @@ def simulate_power(
             "field_design": frozen["field_design"],
         },
         "candidate_results": candidate_results,
-        "minimum_plants_meeting_both_targets": (
-            min(eligible) if eligible else None
+        "basis_receipt_status": (
+            validated_basis.get("registered_power_status")
+            if validated_basis is not None
+            else "SYNTHETIC_TEST_ONLY"
         ),
+        "basis_blocker_count": (
+            int(validated_basis.get("n_blocking_rows", 0))
+            if validated_basis is not None
+            else 0
+        ),
+        "minimum_plants_meeting_both_targets": recommended_n,
         "minimum_total_full_surface_flowers_meeting_both_targets": (
-            min(eligible) * frozen["field_design"]["flowers_per_plant"]
-            if eligible
+            recommended_n * frozen["field_design"]["flowers_per_plant"]
+            if recommended_n is not None
             else None
         ),
-        "status": "PEDICULARIS_W1_W2_POWER_SIMULATION_COMPLETE",
+        "registered_field_allocation_recommendation_allowed": (
+            config["status"] == FROZEN_STATUS
+            and validated_basis is not None
+            and validated_basis.get("registered_power_status")
+            == BASIS_READY_STATUS
+        ),
+        "status": result_status,
         "claim_ceiling": [
             "prospective_design_planning_only",
             "conditional_on_qualified_P0_P1_G_interventions",
@@ -921,6 +999,7 @@ def simulate_power(
             "does_not_choose_generating_effects_from_confirmatory_data",
             "flowers_per_plant_and_balanced_allocation_must_match_field_design_before_using_n",
             "Monte_Carlo_power_is_conditional_on_frozen_generating_scenario",
+            "sensitivity_only_runs_cannot_supply_a_P2_field_allocation_n",
         ],
     }
 
@@ -934,13 +1013,27 @@ def main() -> None:
     )
     parser.add_argument("config_json", type=Path)
     parser.add_argument("--worlds", type=Path, default=DEFAULT_WORLDS)
+    parser.add_argument(
+        "--basis-receipt",
+        type=Path,
+        help=(
+            "pedicularis_w1_w2_power_basis_audit_v1 receipt; required for "
+            "non-test runs"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     config = json.loads(args.config_json.read_text(encoding="utf-8"))
+    basis_receipt = (
+        json.loads(args.basis_receipt.read_text(encoding="utf-8"))
+        if args.basis_receipt is not None
+        else None
+    )
     result = simulate_power(
         config,
         world_rows=_read_worlds(args.worlds),
+        basis_receipt=basis_receipt,
     )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
