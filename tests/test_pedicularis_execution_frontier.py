@@ -63,6 +63,13 @@ def test_three_same_context_frozen_configs_advance_to_receipt_collection(tmp_pat
     assert result["n_lanes_frozen"] == 3
     assert result["same_population_and_season_after_freeze"] is True
     assert result["current_blocker"] == "CONFIRMATORY_P0_P1_G_RECEIPTS_REQUIRED"
+    assert "treatment-blind P0/P1/G flower IDs" in result["next_action"]
+    assert "G_preoutcome_hard_pass_method_freeze" in (
+        result["confirmatory_execution_requirements"]
+    )
+    assert "locked_P0_P1_G_production_evaluators" in (
+        result["confirmatory_execution_requirements"]
+    )
 
 
 def test_frozen_configs_from_different_seasons_fail_closed(tmp_path: Path) -> None:
