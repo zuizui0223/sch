@@ -138,6 +138,41 @@ scripts/evaluate_pedicularis_predator_method.py
 
 The preferred first pilot is a post-pollination lower-flower / fruit shield. A lower-corolla ovipositor barrier during anthesis remains a second-choice unvalidated method and must independently pass the same pollinator-access and pollen-receipt gates.
 
+## Powered field-allocation integrity
+
+A positive readiness receipt is necessary but no longer sufficient to run the
+production P2 analysis.
+
+Before outcomes are collected, the field design must be bound to a W1/W2 power
+candidate that actually meets both the registered primary-surface and headline
+power targets. Treatment-blind flower IDs are then allocated with:
+
+```text
+scripts/build_pedicularis_full_surface_allocation.py
+```
+
+The allocator requires the same nominal z grid and flowers-per-plant design
+that were powered, supports complete or balanced incomplete plant blocks, and
+gives every z x P x G cell exactly equal total replication.
+
+The allocation is materialized into an identity-locked field sheet with:
+
+```text
+scripts/prepare_pedicularis_full_surface_field_sheet.py prepare
+```
+
+After field collection, the same tool must pass:
+
+```text
+verify --require-complete
+```
+
+The verification receipt stores the canonical surface-data SHA-256. The
+production full-surface CLI recomputes that digest and rejects any altered,
+unverified or identity-drifted dataset.
+
+See `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
+
 ## Raw-data contract
 
 Template:
@@ -204,6 +239,7 @@ python scripts/analyze_pedicularis_full_surface.py \
   <pedicularis_surface_v2.csv> \
   <pedicularis_readiness_v3.json> \
   <frozen_config_v2.json> \
+  --field-verification <p2_field_verification.json> \
   --output <sch_pedicularis_receipt.json>
 ```
 
@@ -358,6 +394,8 @@ readiness schema is not V3;
 method-qualified independent predator receipt is absent;
 predator barrier timing or pollinator-access preservation has not passed;
 raw data and readiness population/season differ;
+powered P2 allocation / identity lock / complete field verification is absent;
+field-verification SHA-256 does not match the exact analyzed CSV;
 water depth varies beyond the preregistered tolerance;
 handling damage exceeds tolerance;
 <5 informative z levels remain;
