@@ -41,6 +41,7 @@ def _power() -> dict:
         "target_truth_world": "W1",
         "target_primary_surface_power": 0.80,
         "target_headline_w1_or_w2_power": 0.80,
+        "registered_field_allocation_recommendation_allowed": True,
         "powered_design": {
             "nominal_z_levels": [-2.0, -1.0, 0.0, 1.0, 2.0],
             "realized_z_sd": 0.1,
@@ -283,7 +284,16 @@ def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
 def test_sensitivity_only_power_receipt_cannot_allocate_p2() -> None:
     power = _power()
     power["status"] = "PEDICULARIS_W1_W2_POWER_SENSITIVITY_ONLY"
+    power["registered_field_allocation_recommendation_allowed"] = False
     power["minimum_plants_meeting_both_targets"] = None
 
     with pytest.raises(ValueError, match="power receipt is not complete"):
+        build(_manifest(), _config(), power, "SEED")
+
+
+def test_complete_label_without_registered_allocation_authorization_fails() -> None:
+    power = _power()
+    power["registered_field_allocation_recommendation_allowed"] = False
+
+    with pytest.raises(ValueError, match="not authorized for registered P2"):
         build(_manifest(), _config(), power, "SEED")
