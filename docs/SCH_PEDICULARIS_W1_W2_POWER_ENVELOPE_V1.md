@@ -48,6 +48,27 @@ scenario role and basis note.
 The bounds still require biological justification. Merely making a grid wide
 does not make it scientifically registered.
 
+The current-evidence boundability audit is:
+
+~~~text
+scripts/audit_pedicularis_w1_w2_envelope_boundability.py
+docs/SCH_PEDICULARIS_W1_W2_ENVELOPE_BOUNDABILITY_V1.md
+~~~
+
+For the 18 blocking geometry/variance inputs it currently finds:
+
+~~~text
+direct same-estimand numeric bounds      0
+direction only                           3
+focal scale/range only                   4
+no numerical bound                      11.
+~~~
+
+Therefore the present *P. rex* evidence alone cannot define a narrow
+quantitative causal-geometry envelope. Any scenario magnitude assigned to the
+unbounded dimensions must be labelled as an additional prospective structural
+assumption or be replaced by direct geometry-pilot data.
+
 ## No averaging
 
 Scenario powers are never averaged and scenarios are never weighted.
