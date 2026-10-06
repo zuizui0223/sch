@@ -203,6 +203,10 @@ def _validate_power(power: dict, config: dict) -> dict:
         raise ValueError("power receipt is not the W1/W2 production planner")
     if power.get("status") != POWER_STATUS:
         raise ValueError("W1/W2 power receipt is not complete")
+    if power.get("registered_field_allocation_recommendation_allowed") is not True:
+        raise ValueError(
+            "W1/W2 power receipt is not authorized for registered P2 field allocation"
+        )
 
     provenance = power.get("planning_provenance")
     if not isinstance(provenance, dict):
