@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from scripts.pedicularis_config_freeze import FREEZE_SCHEMA, FREEZE_STATUS
+from scripts.build_pedicularis_full_surface_allocation import _semantic_sha256
 
 
 EXPECTED = {
@@ -48,6 +49,49 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
 
     same_context = len(set(contexts)) == 1
     checks["same_population_and_season"] = same_context
+
+    z_allocation = z_receipt.get("field_allocation_verification")
+    checks["z_randomized_allocation_verified"] = (
+        isinstance(z_allocation, dict)
+        and z_allocation.get("receipt_schema")
+        == "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
+        and z_allocation.get("identity_z_assignment_match") is True
+    )
+    z_levels = z_receipt.get("z_levels")
+    checks["z_levels_validated"] = (
+        isinstance(z_levels, list)
+        and len(z_levels) >= 5
+        and len(z_levels) == len(set(z_levels))
+        and all(isinstance(value, str) and bool(value) for value in z_levels)
+    )
+
+    p_allocation = p_receipt.get("field_allocation_verification")
+    checks["p_randomized_allocation_verified"] = (
+        isinstance(p_allocation, dict)
+        and p_allocation.get("receipt_schema")
+        == "PEDICULARIS_P1_RANDOMIZED_ALLOCATION_V1"
+        and p_allocation.get("identity_treatment_handling_match") is True
+        and p_allocation.get("experimental_unit")
+        == "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
+
+    g_allocation = g_receipt.get("field_allocation_verification")
+    g_method_summary = g_receipt.get("method_summary")
+    validated_g_method = (
+        g_method_summary.get("exclusion_method")
+        if isinstance(g_method_summary, dict)
+        else None
+    )
+    checks["g_randomized_allocation_verified"] = (
+        isinstance(g_allocation, dict)
+        and g_allocation.get("receipt_schema")
+        == "PEDICULARIS_G_CONFIRMATORY_RANDOMIZED_ALLOCATION_V1"
+        and g_allocation.get("identity_treatment_method_sham_match") is True
+        and isinstance(validated_g_method, str)
+        and bool(validated_g_method)
+        and g_allocation.get("selected_exclusion_method") == validated_g_method
+    )
+
     if checks["g_schema"]:
         checks["g_method_timing_validated"] = bool(g_receipt.get("gates")) and all(
             bool(value) for value in g_receipt.get("gates", {}).values()
@@ -73,8 +117,37 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
                     if isinstance(receipt.get("config_freeze"), dict)
                     else None
                 ),
+                "receipt_sha256": _semantic_sha256(receipt),
             }
             for lane, receipt in receipts.items()
+        },
+        "validated_execution": {
+            "z_levels": list(z_levels) if checks["z_levels_validated"] else None,
+            "p_experimental_unit": (
+                p_allocation.get("experimental_unit")
+                if checks["p_randomized_allocation_verified"]
+                else None
+            ),
+            "g_exclusion_method": (
+                validated_g_method
+                if checks["g_randomized_allocation_verified"]
+                else None
+            ),
+            "z_allocation_identity_sha256": (
+                z_allocation.get("allocation_identity_sha256")
+                if checks["z_randomized_allocation_verified"]
+                else None
+            ),
+            "p_allocation_identity_sha256": (
+                p_allocation.get("allocation_identity_sha256")
+                if checks["p_randomized_allocation_verified"]
+                else None
+            ),
+            "g_allocation_identity_sha256": (
+                g_allocation.get("allocation_identity_sha256")
+                if checks["g_randomized_allocation_verified"]
+                else None
+            ),
         },
         "status": "PEDICULARIS_FULL_SURFACE_READY" if ready else "PEDICULARIS_FULL_SURFACE_NOT_READY",
         "unlocked_next_step": (
