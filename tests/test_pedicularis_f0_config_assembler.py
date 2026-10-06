@@ -219,6 +219,9 @@ def test_cal_a_cal_b_and_cal_c_values_land_in_correct_lane_configs() -> None:
 
     assert outputs["P0"]["stage_p0"]["min_plants"] == 24
     assert outputs["P1"]["pollination_weight"]["min_paired_plants"] == 30
+    assert outputs["P1"]["pollination_weight"]["experimental_unit"] == (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
     assert outputs["G"]["method_gate"]["min_paired_plants"] == 36
     assert outputs["G"]["predator_weight"]["min_paired_plants"] == 36
 

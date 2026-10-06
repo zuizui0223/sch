@@ -1,0 +1,9 @@
+{
+  "schema": "PEDICULARIS_P1_ALLOCATION_CONFIG_V1",
+  "status": "PEDICULARIS_P1_ALLOCATION_PROSPECTIVELY_FROZEN",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "planned_paired_plants": "REQUIRED_BEFORE_USE",
+  "flowers_per_treatment_per_plant": "REQUIRED_BEFORE_USE",
+  "frozen_before_confirmatory_outcomes": "REQUIRED_BEFORE_USE"
+}
