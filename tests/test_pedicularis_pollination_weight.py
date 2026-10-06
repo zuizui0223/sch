@@ -4,7 +4,13 @@ import csv
 import json
 from pathlib import Path
 
-from scripts.evaluate_pedicularis_pollination_weight import REQUIRED_FIELDS, evaluate
+from scripts.evaluate_pedicularis_pollination_weight import (
+    REQUIRED_FIELDS,
+    _allocation_identity,
+    _semantic_sha256,
+    evaluate,
+    evaluate_locked,
+)
 from scripts.pedicularis_config_freeze import required_gate_paths
 
 
@@ -49,6 +55,24 @@ def _config() -> dict:
             "max_water_depth_change": 0.15,
             "max_mechanical_damage_rate": 0.05,
         },
+    }
+
+
+def _allocation_receipt(
+    rows: list[dict[str, str]],
+    config: dict,
+) -> dict:
+    return {
+        "receipt_schema": "PEDICULARIS_P1_RANDOMIZED_ALLOCATION_V1",
+        "status": "P1_FLOWERS_RANDOMIZED_NOT_YET_MEASURED",
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+        "n_allocated_flowers": len(rows),
+        "p1_field_config_sha256": _semantic_sha256(config),
+        "allocation_identity_sha256": "a" * 64,
+        "assignment_method": "SHA256_WITHIN_PLANT_BALANCED_P1_V1",
+        "expected_assignments": _allocation_identity(rows),
     }
 
 
@@ -132,3 +156,78 @@ def test_contract_maps_open_supplementation_without_pollinator_exclusion() -> No
     assert "P0 = open + standardized saturating supplemental cross-pollen" in text
     assert "seed-predator natural-history window overlaps open flowering" in text
     assert "later predation fraction is not the only selectivity check" in text
+
+
+def test_current_evaluator_rejects_whole_plant_experimental_unit() -> None:
+    config = _config()
+    config["pollination_weight"]["experimental_unit"] = (
+        "WHOLE_PLANT_SUPPLEMENTATION"
+    )
+
+    try:
+        evaluate(_rows(), config)
+    except ValueError as exc:
+        assert "supports only WITHIN_PLANT_PAIRED_FLOWERS" in str(exc)
+    else:
+        raise AssertionError("whole-plant route should fail current V1 evaluator")
+
+
+def test_handling_role_must_match_treatment() -> None:
+    rows = _rows()
+    rows[0]["pollination_handling_role"] = "DONOR_MIXED_CROSS_POLLEN"
+
+    try:
+        evaluate(rows, _config())
+    except ValueError as exc:
+        assert "pollination_handling_role" in str(exc)
+    else:
+        raise AssertionError("mismatched P1 handling role should fail")
+
+
+def test_locked_evaluator_accepts_exact_randomized_assignment() -> None:
+    rows = _rows()
+    config = _config()
+    result = evaluate_locked(
+        rows,
+        config,
+        _allocation_receipt(rows, config),
+    )
+
+    assert result["status"] == "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED"
+    assert result["field_allocation_verification"][
+        "identity_treatment_handling_match"
+    ] is True
+    assert result["field_allocation_verification"]["experimental_unit"] == (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
+
+
+def test_locked_evaluator_rejects_treatment_drift() -> None:
+    rows = _rows()
+    config = _config()
+    receipt = _allocation_receipt(rows, config)
+    changed = [dict(row) for row in rows]
+    changed[0]["pollination_treatment"] = "SUPPLEMENTED"
+    changed[0]["pollination_handling_role"] = "DONOR_MIXED_CROSS_POLLEN"
+
+    try:
+        evaluate_locked(changed, config, receipt)
+    except ValueError as exc:
+        assert "drifted from randomized allocation" in str(exc)
+    else:
+        raise AssertionError("P1 treatment drift should fail locked evaluator")
+
+
+def test_locked_evaluator_rejects_field_config_drift() -> None:
+    rows = _rows()
+    config = _config()
+    receipt = _allocation_receipt(rows, config)
+    changed_config = json.loads(json.dumps(config))
+    changed_config["pollination_weight"]["min_pollen_grain_delta"] = 6.0
+
+    try:
+        evaluate_locked(rows, changed_config, receipt)
+    except ValueError as exc:
+        assert "exact analyzed field config" in str(exc)
+    else:
+        raise AssertionError("P1 config drift should fail locked evaluator")
