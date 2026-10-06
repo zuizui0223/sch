@@ -1,0 +1,11 @@
+{
+  "schema": "PEDICULARIS_P2_CONTEXT_FREEZE_CONFIG_V1",
+  "status": "PEDICULARIS_P2_CONTEXT_SELECTION_PROSPECTIVELY_DECLARED",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "historical_population_code": "REQUIRED_BEFORE_USE_OR_NONE",
+  "selection_mode": "REQUIRED_BEFORE_USE",
+  "inference_scope": "REQUIRED_BEFORE_USE",
+  "selection_basis_note": "REQUIRED_BEFORE_USE",
+  "declared_before_full_surface_outcomes": "REQUIRED_BEFORE_USE"
+}
