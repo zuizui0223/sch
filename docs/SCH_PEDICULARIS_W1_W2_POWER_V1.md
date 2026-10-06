@@ -30,6 +30,48 @@ scripts/simulate_pedicularis_w1_w2_power.py
 tests/test_pedicularis_w1_w2_power.py
 ```
 
+## Geometry evidence must match the actual power config
+
+A zero-blocker basis receipt certifies that admissible evidence exists. It does
+not, by itself, prove that the numbers typed into a power config are those
+evidence values.
+
+For a registered `FROZEN` run, bind the final config to the independent
+geometry-pilot summary and the exact zero-blocker basis receipt:
+
+```bash
+python scripts/bind_pedicularis_w1_w2_geometry_config.py \
+  <frozen_power_config.json> \
+  <geometry_pilot_summary.json> \
+  <zero_blocker_power_basis_receipt.json> \
+  --output <geometry_config_binding.json>
+```
+
+The binding requires exact agreement for all 18 same-estimand geometry/variance
+paths and stores semantic SHA-256 digests of:
+
+```text
+geometry pilot summary
+power-basis receipt
+entire frozen power config.
+```
+
+The registered simulator then requires:
+
+```bash
+--basis-receipt <zero_blocker_power_basis_receipt.json>
+--geometry-binding <geometry_config_binding.json>
+```
+
+Any later edit to the frozen config or basis receipt invalidates the binding.
+
+Synthetic tests and sensitivity-only envelope runs remain exempt because they
+are not allowed to emit a P2 field-allocation n.
+
+This binding closes an evidence-provenance gap only. It does **not** address
+sampling uncertainty in the geometry-pilot point estimates; that uncertainty
+must still be treated conservatively in final design interpretation.
+
 ## What is powered
 
 Two power targets are frozen independently:
