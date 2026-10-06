@@ -240,8 +240,21 @@ def _bind_inputs(
         raise ValueError("geometry config and summary population_id do not match")
     if summary.get("season_id") != pilot["season_id"]:
         raise ValueError("geometry config and summary season_id do not match")
-    if int(summary.get("n_plants", -1)) != pilot["planned_n_plants"]:
-        raise ValueError("geometry config and summary plant count do not match")
+    stage_n = int(
+        summary.get("current_precision_look_n", summary.get("n_plants", -1))
+    )
+    if int(summary.get("n_plants", -1)) != stage_n:
+        raise ValueError("geometry summary plant count does not match current precision look")
+    if stage_n not in pilot["candidate_cumulative_plants"]:
+        raise ValueError(
+            "geometry summary plant count is not a preregistered cumulative precision look"
+        )
+    if summary.get("candidate_cumulative_plants") != pilot[
+        "candidate_cumulative_plants"
+    ]:
+        raise ValueError(
+            "geometry summary cumulative precision looks drift from frozen config"
+        )
     if int(summary.get("n_z_levels", -1)) != len(pilot["z_levels"]):
         raise ValueError("geometry config and summary z-level count do not match")
 
@@ -506,6 +519,10 @@ def build(
         "pilot_data_sha256": summary["pilot_data_sha256"],
         "pilot_config_sha256": summary["pilot_config_sha256"],
         "n_plants": summary["n_plants"],
+        "current_precision_look_n": int(summary["current_precision_look_n"]),
+        "candidate_cumulative_plants": list(
+            summary["candidate_cumulative_plants"]
+        ),
         "n_rows": summary["n_rows"],
         "normalization_scales": scales,
         "precision_gate": gate,
