@@ -247,6 +247,7 @@ CONFIRMATORY_P0
 CONFIRMATORY_P1
 CONFIRMATORY_G
 FULL_SURFACE
+POWER_GEOMETRY_PILOT
 ```
 
 A flower ID may appear only once across the entire execution registry.
@@ -260,7 +261,19 @@ confirmatory_eligible    = NO
 
 Confirmatory/full-surface rows are the reverse.
 
-Plant-level overlap between calibration and confirmatory phases is reported.
+`POWER_GEOMETRY_PILOT` is neither class:
+
+```text
+threshold_basis_eligible = NO
+confirmatory_eligible    = NO
+lane                     = P0_P1_G.
+```
+
+It exists only to estimate W1/W2 power-generating geometry/variance. Geometry-
+pilot plants are required to be disjoint from calibration, confirmatory and
+full-surface plants, and its flowers can never be reused in P2.
+
+Plant-level overlap between ordinary calibration and confirmatory phases is reported.
 It does not silently convert calibration rows into confirmatory evidence.
 Where feasible, plant-level disjointness is cleaner; flower-level data reuse is
 prohibited.
