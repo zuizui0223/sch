@@ -57,6 +57,11 @@ def _p1_rows(season: str = "S1") -> list[dict[str, str]]:
                     "plant_id": f"Q{plant:02d}",
                     "flower_id": f"P1_{plant:02d}_{treatment}",
                     "pollination_treatment": treatment,
+                    "pollination_handling_role": (
+                        "DONOR_MIXED_CROSS_POLLEN"
+                        if treatment == "SUPPLEMENTED"
+                        else "SHAM_STIGMA_CONTACT"
+                    ),
                     "realized_exsertion": "0.55",
                     "water_depth": "5.0",
                     "bract_height": "20.0",
