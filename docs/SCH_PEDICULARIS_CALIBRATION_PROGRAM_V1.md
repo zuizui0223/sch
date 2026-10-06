@@ -39,13 +39,32 @@ freeze biologically meaningful effect/margin targets
 CAL-C prospective power/precision
         |
         v
-freeze all P0/P1/G configs for one population + season
+freeze all P0/P1/G configs for one population + season (F0)
         |
-        v
-confirmatory P0 / P1 / G on rows not used for threshold basis
+        +--> freeze one hard-validity-pass confirmatory G method
         |
-        v
-SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
+        +--> bind exact P0 z plan + P0/P1/G configs + selected G method
+        |    to a separate POWER_GEOMETRY_PILOT before outcomes
+        |
+        +----------------------+----------------------+
+        |                      |                      |
+        v                      v                      v
+confirmatory P0          confirmatory P1       confirmatory G
+        \                      |                     /
+         \                     |                    /
+          +-------- separate geometry collection ---+
+                         on disjoint plants
+                                  |
+                                  v
+                    P0/P1/G readiness V3
+                                  |
+                     exact bound-plan match?
+                          /              \
+                        no                yes
+                        |                  |
+                        v                  v
+              geometry inadmissible   geometry summary /
+              for registered power    staged precision
 ```
 
 CAL-C must not be run conceptually before the effect/margin targets it is meant
@@ -258,6 +277,28 @@ Calibration rows are:
 threshold_basis_eligible = YES
 confirmatory_eligible    = NO
 ```
+
+`POWER_GEOMETRY_PILOT` is a separate nonconfirmatory role:
+
+```text
+threshold_basis_eligible = NO
+confirmatory_eligible    = NO
+```
+
+After F0, its **collection** may run in parallel with confirmatory P0/P1/G to
+avoid serially waiting for mature seed endpoints twice. This is not an
+information leak: the geometry config, z/P/G intervention plan, precision gate,
+candidate cumulative n looks and flower allocation are all frozen before those
+confirmatory outcomes.
+
+Geometry values remain unusable for W1/W2 basis until a later
+`SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3` is positive and its exact P0
+level-plan, P0/P1/G config and G-method-selection SHA-256 values match the
+pre-outcome geometry intervention binding. If any lane fails or the plan
+changes, the already collected geometry cohort is discarded for registered
+power purposes.
+
+See `docs/SCH_PEDICULARIS_PARALLEL_GEOMETRY_COLLECTION_V1.md`.
 
 Confirmatory/full-surface rows are the reverse.
 
