@@ -24,19 +24,34 @@ def _receipt(schema: str, status: str, lane: str, population: str = "P_REX_TEST"
 
 
 def _z() -> dict:
-    return _receipt(
+    receipt = _receipt(
         "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
         "PEDICULARIS_Z_MANIPULATION_VALIDATED",
         "P0",
     )
+    receipt["z_levels"] = ["Z0", "Z1", "Z2", "Z3", "Z4"]
+    receipt["field_allocation_verification"] = {
+        "receipt_schema": "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1",
+        "allocation_identity_sha256": "a" * 64,
+        "assignment_method": "SHA256_RANK_V1",
+        "identity_z_assignment_match": True,
+    }
+    return receipt
 
 
 def _p() -> dict:
-    return _receipt(
+    receipt = _receipt(
         "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
         "PEDICULARIS_POLLINATION_WEIGHT_VALIDATED",
         "P1",
     )
+    receipt["field_allocation_verification"] = {
+        "receipt_schema": "PEDICULARIS_P1_RANDOMIZED_ALLOCATION_V1",
+        "allocation_identity_sha256": "b" * 64,
+        "identity_treatment_handling_match": True,
+        "experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+    }
+    return receipt
 
 
 def _g() -> dict:
@@ -45,6 +60,16 @@ def _g() -> dict:
         "PEDICULARIS_PREDATOR_METHOD_VALIDATED",
         "G",
     )
+    receipt["method_summary"] = {
+        "exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    }
+    receipt["field_allocation_verification"] = {
+        "receipt_schema": "PEDICULARIS_G_CONFIRMATORY_RANDOMIZED_ALLOCATION_V1",
+        "allocation_identity_sha256": "c" * 64,
+        "identity_treatment_method_sham_match": True,
+        "selected_candidate_id": "G_TEST",
+        "selected_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+    }
     receipt["gates"] = {
         "method_single_exclusion_method": True,
         "method_minimum_paired_plants": True,
@@ -69,6 +94,19 @@ def test_three_valid_same_context_receipts_unlock_full_surface() -> None:
     assert "timed independent predator" in result["unlocked_next_step"]
     assert result["water_y_requirement"] == "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE"
     assert "POLLINATOR_ACCESS_PRESERVED" in result["predator_method_requirement"]
+    assert result["validated_execution"]["z_levels"] == [
+        "Z0", "Z1", "Z2", "Z3", "Z4"
+    ]
+    assert result["validated_execution"]["p_experimental_unit"] == (
+        "WITHIN_PLANT_PAIRED_FLOWERS"
+    )
+    assert result["validated_execution"]["g_exclusion_method"] == (
+        "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    )
+    assert all(
+        len(result["source_receipts"][lane]["receipt_sha256"]) == 64
+        for lane in ("z", "p", "g")
+    )
 
 
 def test_valid_receipts_from_different_contexts_do_not_unlock_surface() -> None:
@@ -117,3 +155,41 @@ def test_threshold_freeze_context_must_match_lane_receipt() -> None:
     result = assemble(_z(), p, _g())
     assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
     assert result["checks"]["p_threshold_freeze"] is False
+
+
+def test_missing_randomized_p0_verification_blocks_readiness() -> None:
+    z = _z()
+    z.pop("field_allocation_verification")
+    result = assemble(z, _p(), _g())
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["z_randomized_allocation_verified"] is False
+
+
+def test_missing_randomized_p1_verification_blocks_readiness() -> None:
+    p = _p()
+    p.pop("field_allocation_verification")
+    result = assemble(_z(), p, _g())
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["p_randomized_allocation_verified"] is False
+
+
+def test_missing_randomized_g_verification_blocks_readiness() -> None:
+    g = _g()
+    g.pop("field_allocation_verification")
+    result = assemble(_z(), _p(), g)
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["g_randomized_allocation_verified"] is False
+
+
+def test_g_method_identity_must_match_randomized_allocation() -> None:
+    g = _g()
+    g["field_allocation_verification"]["selected_exclusion_method"] = (
+        "DIFFERENT_METHOD"
+    )
+    result = assemble(_z(), _p(), g)
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["g_randomized_allocation_verified"] is False
