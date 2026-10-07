@@ -464,8 +464,13 @@ P0/P1/G all pass                         |
                            |
 P2 geometry              only now summarize / precision-qualify geometry;
                          failed readiness or plan mismatch discards it for power basis
-P2 basis                 resolve up to 18/21 blockers from qualified geometry
-P2 power                 after zero-blocker basis, run production W0-W5 power
+P2 basis                 resolve 18/21 blockers from qualified geometry
+P2 final3                materialize numeric z grid + within-level z SD from locked
+                         positive P0; use a pre-geometry full-surface threshold freeze
+                         to move 3 -> 0 blockers
+P2 bind                  require BOTH exact 18-path geometry binding and exact
+                         3-path P0/F0 binding to the same frozen power config
+P2 power                 only then run registered production W0-W5 power
 P2 alloc                 require exact positive readiness V3 + passing powered design,
                          then bind treatment-blind flower IDs
 P2 lock                  verify exact z/P/G/method identity + surface SHA-256
@@ -520,15 +525,21 @@ prospective: `candidate_cumulative_plants` freezes exact-balanced cumulative
 looks and `adjudicate_pedicularis_p2_geometry_accrual.py` stops at the first
 precision pass; later looks require every earlier look to have formally failed
 precision.
-After precision qualifies and the remaining P0/F0 basis rows
-are resolved, `bind_pedicularis_w1_w2_geometry_config.py` requires all 18
-values in the frozen registered power config to exactly match that qualified
-pilot and binds the summary, precision receipt, basis receipt and config by
-SHA-256. The separate
-`POWER_GEOMETRY_PILOT` cohort never enters confirmatory inference and can
-materialize 18 same-estimand geometry/variance basis rows, reducing the current
-21 blockers to the three P0/F0-dependent rows. See
-`docs/SCH_PEDICULARIS_P2_GEOMETRY_PILOT_V1.md`.
+After precision qualifies, the separate
+`POWER_GEOMETRY_PILOT` can materialize 18 same-estimand geometry/variance
+basis rows, reducing 21 blockers to three. Those final three are now
+machine-resolvable without another experiment:
+`materialize_pedicularis_w1_w2_final_p0_f0_basis.py` uses the positive locked
+P0 experiment to define the numeric z grid as the mean realized exsertion of
+each validated physical setting and estimates `realized_z_sd` as the pooled
+within-setting residual SD; the primary `sch_surface` rules come from
+`freeze_pedicularis_full_surface_thresholds.py`, which must be frozen before
+geometry/P2 outcomes are used. A zero-blocker basis then requires **two**
+exact config bindings:
+`bind_pedicularis_w1_w2_geometry_config.py` for the 18 qualified geometry
+paths and `bind_pedicularis_w1_w2_p0_f0_config.py` for the final three.
+See `docs/SCH_PEDICULARIS_P2_GEOMETRY_PILOT_V1.md` and
+`docs/SCH_PEDICULARIS_FINAL_W1_W2_BASIS_V1.md`.
 `simulate_pedicularis_w1_w2_power.py` then powers the actual production
 full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
 plants and flowers-per-plant design are then bound to treatment-blind flower
@@ -539,7 +550,9 @@ SHA-256 is carried through the field packet. The completed P2 field
 packet must pass
 `prepare_pedicularis_full_surface_field_sheet.py verify --require-complete`;
 the production analyzer rejects a CSV whose SHA-256 differs from that verified
-packet. See `docs/SCH_PEDICULARIS_W1_W2_POWER_V1.md` and
+packet **or whose primary surface/system-check config differs from the exact
+config used in registered power**. See
+`docs/SCH_PEDICULARIS_W1_W2_POWER_V1.md` and
 `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
 Until that chain produces a valid full-surface receipt (or fails a preregistered
