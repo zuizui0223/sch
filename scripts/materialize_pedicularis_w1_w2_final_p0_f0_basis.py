@@ -51,6 +51,16 @@ def _p0_power_values(
         raise ValueError("P0 receipt schema mismatch")
     if receipt.get("status") != P0_STATUS:
         raise ValueError("P0 manipulation receipt is not positive")
+    freeze = receipt.get("config_freeze")
+    if (
+        not isinstance(freeze, dict)
+        or freeze.get("schema") != "SCH_PEDICULARIS_THRESHOLD_FREEZE_V1"
+        or freeze.get("status") != "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN"
+        or freeze.get("lane") != "P0"
+        or freeze.get("population_id") != receipt.get("population_id")
+        or freeze.get("season_id") != receipt.get("season_id")
+    ):
+        raise ValueError("P0 receipt lacks positive same-context threshold-freeze provenance")
     if receipt.get("p0_data_sha256") != p0.p0_data_sha256(rows):
         raise ValueError("P0 raw rows do not match the validated P0 data fingerprint")
 
@@ -71,6 +81,20 @@ def _p0_power_values(
         raise ValueError("P0 receipt lacks realized-exsertion means by rank")
     if not isinstance(settings, list) or len(settings) != len(groups):
         raise ValueError("P0 receipt lacks validated manipulation settings")
+    expected_settings = [
+        {
+            "assigned_z_level": groups[rank][0]["assigned_z_level"],
+            "assigned_z_rank": rank,
+            "manipulation_setting_id": groups[rank][0][
+                "manipulation_setting_id"
+            ],
+        }
+        for rank in groups
+    ]
+    if settings != expected_settings:
+        raise ValueError(
+            "P0 receipt manipulation-setting mapping does not match raw rows"
+        )
 
     nominal = []
     setting_rows = []
@@ -251,11 +275,8 @@ def materialize(
         ],
         "status": (
             "PEDICULARIS_W1_W2_FINAL_P0_F0_BASIS_MATERIALIZED"
-            if all(
-                by_path[path]["blocking_for_registered_n"] == "YES"
-                for path in PROMOTED
-            )
-            else "PEDICULARIS_W1_W2_FINAL_P0_F0_BASIS_MATERIALIZED"
+            if audit["registered_single_scenario_n_basis_ready"]
+            else "PEDICULARIS_W1_W2_FINAL_P0_F0_BASIS_PARTIAL"
         ),
         "claim_ceiling": [
             "power_basis_materialization_only",
