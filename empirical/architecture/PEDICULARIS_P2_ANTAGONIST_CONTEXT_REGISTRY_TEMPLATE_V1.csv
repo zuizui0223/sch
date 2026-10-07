@@ -1,1 +1,1 @@
-population_id,season_id,plant_id,patch_id,context_measurement_date,density_quadrat_area_m2,flowering_plants_in_density_quadrat,patch_size_flowering_plants,notes
+population_id,season_id,plant_id,patch_id,context_measurement_date,patch_area_m2,patch_size_flowering_plants,notes
