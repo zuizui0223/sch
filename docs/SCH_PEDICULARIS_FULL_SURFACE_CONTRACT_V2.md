@@ -82,6 +82,23 @@ validated z-level labels, paired P1 experimental unit and selected G exclusion
 method. The P2 analyzer rechecks this provenance and rejects a raw P2 dataset
 whose z labels or EXCLUDED method differ from the validated interventions.
 
+## Prospective primary-surface threshold freeze
+
+The primary surface decision rules must be frozen independently of geometry and
+P2 outcomes. Use:
+
+```text
+empirical/architecture/PEDICULARIS_FULL_SURFACE_THRESHOLD_FREEZE_TEMPLATE_V1.json
+scripts/freeze_pedicularis_full_surface_thresholds.py
+```
+
+The receipt binds the exact `sch_surface` and `system_checks` objects by
+SHA-256. These same objects must appear in the registered W1/W2 power config,
+survive P2 allocation/field verification, and be supplied unchanged to the
+production analyzer.
+
+See `docs/SCH_PEDICULARIS_FINAL_W1_W2_BASIS_V1.md`.
+
 ## Registered state mapping
 
 The shared coordinate is:
@@ -193,9 +210,11 @@ After field collection, the same tool must pass:
 verify --require-complete
 ```
 
-The verification receipt stores the canonical surface-data SHA-256. The
-production full-surface CLI recomputes that digest and rejects any altered,
-unverified or identity-drifted dataset.
+The verification receipt stores the canonical surface-data SHA-256. It also
+carries the exact production-surface analysis-config SHA-256 from the registered
+W1/W2 power receipt. The production full-surface CLI recomputes both digests and
+rejects any altered/unverified dataset **or any change to the primary
+`sch_surface` / system-check configuration after power was registered**.
 
 See `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
