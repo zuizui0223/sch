@@ -112,10 +112,14 @@ Wang 1998
 
 Xia 2013 Dryad
   public dataset                   VERIFIED
-  file                             raw data.xlsx, 89.60 KB
-  legacy file-stream ID            46101
-  anonymous file_stream            HTTP 403
-  current /api/v2 file download    Bearer-authenticated endpoint
+  dataset id                       11150
+  version id                       11193
+  file                             raw data.xlsx
+  file id                          46101
+  exact size                       89,597 bytes
+  exact MD5                        10a98383677bbd2a01e19a86c350fdd3
+  public v2 metadata               ANONYMOUS GET VERIFIED
+  /api/v2/files/46101/download     HTTP 401 in current fetch environment
   DataONE dataset metadata mirror  VERIFIED; file object not recovered
   direct G state                   unchanged by design
 
@@ -125,9 +129,10 @@ Sun 2016 supplements
   direct P1/G state                unchanged by design
 ```
 
-The Dryad result is particularly important: the file is not missing. The
-public landing page and file identity are resolved, but the current API file
-download route is authenticated. Repeating anonymous file-stream/API attempts
+The Dryad result is particularly important: the file is not missing. Public
+v2 metadata now fixes the exact dataset/version/file IDs, byte size, MIME type
+and MD5 checksum. Only binary delivery remains blocked by HTTP 401 in the
+current fetch environment. Repeating metadata, DOI, stream-ID or URL discovery
 therefore has no information value.
 
 Tang 2011 remains a legitimate primary-binary target, but its observed citation
