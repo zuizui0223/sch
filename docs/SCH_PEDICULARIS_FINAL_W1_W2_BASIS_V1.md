@@ -115,7 +115,8 @@ status = PEDICULARIS_FULL_SURFACE_CONFIG_PROSPECTIVELY_FROZEN
 ```
 
 and the freeze receipt requires one explicit basis note for every registered
-`sch_surface` decision path.
+full-surface decision path: the `sch_surface` thresholds **and** the
+water-depth / mechanical-damage system-check tolerances.
 
 The receipt fingerprints the exact:
 
@@ -126,7 +127,9 @@ analysis config = {sch_surface, system_checks}.
 ```
 
 The threshold values may not be selected from the geometry pilot or P2
-outcomes.
+outcomes. The system-check notes should point back to the relevant same-context
+CAL-A / P0 / G handling-equivalence basis rather than being convenient
+post-hoc tolerances.
 
 ## 4. Materialize the final three ledger rows
 
