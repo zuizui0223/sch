@@ -188,6 +188,9 @@ def prepare(
         "p0_level_plan_sha256": allocation_receipt.get(
             "p0_level_plan_sha256"
         ),
+        "readiness_receipt_sha256": allocation_receipt.get(
+            "readiness_receipt_sha256"
+        ),
         "field_identity_sha256": _semantic_sha256(normalized),
         "frozen_fields": list(FROZEN_FIELDS),
         "expected_frozen_rows": normalized,
@@ -263,6 +266,9 @@ def verify(
         "allocation_identity_sha256": lock["allocation_identity_sha256"],
         "allocation_receipt_sha256": lock["allocation_receipt_sha256"],
         "p0_level_plan_sha256": lock.get("p0_level_plan_sha256"),
+        "readiness_receipt_sha256": lock.get(
+            "readiness_receipt_sha256"
+        ),
         "field_identity_sha256": lock["field_identity_sha256"],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": require_complete,
