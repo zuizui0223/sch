@@ -481,6 +481,7 @@ def build(
         "plant_id",
         "flower_id",
         "assigned_z_level",
+        "manipulation_setting_id",
         "pollination_treatment",
         "predator_treatment",
         "exclusion_method",
