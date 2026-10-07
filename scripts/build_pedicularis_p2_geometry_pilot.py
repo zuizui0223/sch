@@ -162,22 +162,31 @@ def _validate_config(config: dict) -> dict:
     labels: set[str] = set()
     ranks: set[int] = set()
     targets: set[float] = set()
+    setting_ids: set[str] = set()
     for row in z_rows:
         if not isinstance(row, dict):
             raise ValueError("each z_levels entry must be an object")
         label = _text(row.get("assigned_z_level"), "assigned_z_level")
         rank = _nonnegative_int(row.get("assigned_z_rank"), "assigned_z_rank")
         target = _number(row.get("target_exsertion"), "target_exsertion")
+        setting_id = _text(
+            row.get("manipulation_setting_id"),
+            "manipulation_setting_id",
+        )
         if label in labels or rank in ranks or target in targets:
             raise ValueError("z labels, ranks and target exsertion values must be unique")
+        if setting_id in setting_ids:
+            raise ValueError("manipulation_setting_id must be unique across z levels")
         labels.add(label)
         ranks.add(rank)
         targets.add(target)
+        setting_ids.add(setting_id)
         normalized_z.append(
             {
                 "assigned_z_level": label,
                 "assigned_z_rank": rank,
                 "target_exsertion": target,
+                "manipulation_setting_id": setting_id,
             }
         )
     normalized_z.sort(key=lambda row: row["assigned_z_rank"])
@@ -299,6 +308,7 @@ def _cells(config: dict, allocation_seed: str) -> list[dict[str, str]]:
                     "assigned_z_level": z["assigned_z_level"],
                     "assigned_z_rank": str(z["assigned_z_rank"]),
                     "target_exsertion": repr(z["target_exsertion"]),
+                    "manipulation_setting_id": z["manipulation_setting_id"],
                     "pollination_treatment": pollination,
                     "predator_treatment": predator,
                     "exclusion_method": (
@@ -356,6 +366,7 @@ def build(
         {
             "assigned_z_level": row["assigned_z_level"],
             "assigned_z_rank": str(row["assigned_z_rank"]),
+            "manipulation_setting_id": row["manipulation_setting_id"],
         }
         for row in config["z_levels"]
     ]
@@ -363,12 +374,13 @@ def build(
         {
             "assigned_z_level": row["assigned_z_level"],
             "assigned_z_rank": str(row["assigned_z_rank"]),
+            "manipulation_setting_id": row["manipulation_setting_id"],
         }
         for row in intervention_binding.get("z_level_plan", [])
     ]
     if expected_z != bound_z:
         raise ValueError(
-            "geometry intervention binding z plan does not match pilot config"
+            "geometry intervention binding z/manipulation plan does not match pilot config"
         )
     if intervention_binding.get("p1_experimental_unit") != (
         "WITHIN_PLANT_PAIRED_FLOWERS"
@@ -443,6 +455,7 @@ def build(
                     "plant_id": plant_id,
                     "flower_id": flower_id,
                     "assigned_z_level": cell["assigned_z_level"],
+                    "manipulation_setting_id": cell["manipulation_setting_id"],
                     "pollination_treatment": cell["pollination_treatment"],
                     "predator_treatment": cell["predator_treatment"],
                     "exclusion_method": cell["exclusion_method"],
@@ -538,6 +551,9 @@ def build(
             "z_levels": [
                 row["assigned_z_level"]
                 for row in intervention_binding["z_level_plan"]
+            ],
+            "z_manipulation_settings": intervention_binding[
+                "z_manipulation_settings"
             ],
             "p1_experimental_unit": intervention_binding[
                 "p1_experimental_unit"
