@@ -14,7 +14,8 @@ W1/W2 power
 ```
 
 A powered design is not enough if the field allocation drifts from the design
-that was simulated.
+that was simulated, or if it is implemented with a different intervention
+system from the one that produced readiness V3.
 
 This contract binds the W1/W2 power receipt to treatment-blind flower IDs before
 P2 outcomes exist.
@@ -42,11 +43,29 @@ The allocation config freezes:
 
 The config does **not** choose those values.
 
-## Step 2 — require an actually powered candidate
+## Step 2 — require positive readiness and an actually powered candidate
 
-The allocator accepts only a current W1/W2 power receipt.
+The allocator accepts only:
 
-It requires:
+```text
+positive SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3
++
+current registered W1/W2 power receipt.
+```
+
+Before a flower is assigned, readiness must match the frozen field design for:
+
+```text
+population / season
+P0 level-plan SHA-256
+z labels
+z label/rank -> manipulation_setting_id mapping
+paired-flower P1 execution
+G0 exclusion method
+G1 exposed-sham method.
+```
+
+The power receipt must match:
 
 ```text
 same population / season
@@ -92,6 +111,7 @@ python scripts/build_pedicularis_full_surface_allocation.py \
   <treatment_blind_flower_manifest.csv> \
   <frozen_allocation_config.json> \
   <w1_w2_power_receipt.json> \
+  <readiness_v3.json> \
   --allocation-seed <PRECOMMITTED_NEUTRAL_SEED> \
   --allocations-out <p2_allocations.csv> \
   --receipt-out <p2_allocation_receipt.json>
@@ -217,8 +237,13 @@ python scripts/analyze_pedicularis_full_surface.py \
   --output <sch_pedicularis_receipt.json>
 ```
 
-The analyzer recomputes the canonical surface-data SHA-256 and fails if it does
-not match the verification receipt.
+The allocation receipt fingerprints the exact readiness V3 used to authorize
+field work. That readiness SHA is carried through the field identity lock and
+verification receipt.
+
+The analyzer recomputes both the canonical surface-data SHA-256 and the
+readiness fingerprint. It fails if the field packet was authorized under a
+different readiness receipt, even when population/season labels are unchanged.
 
 Therefore a field CSV cannot be edited after verification and silently analyzed
 as the registered P2 experiment.
