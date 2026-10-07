@@ -366,6 +366,16 @@ def _validate_field_verification(
         raise ValueError("P2 field verification lacks identity/treatment match")
     if verification.get("canonical_outcomes_complete") is not True:
         raise ValueError("P2 field verification is not outcome-complete")
+    for key in (
+        "production_surface_config_sha256",
+        "surface_threshold_freeze_sha256",
+        "power_config_sha256",
+    ):
+        value = verification.get(key)
+        if not isinstance(value, str) or len(value) != 64:
+            raise ValueError(
+                f"P2 field verification lacks {key}"
+            )
 
     population, season = _context(rows)
     if verification.get("population_id") != population:
@@ -401,6 +411,18 @@ def analyze_locked(
         raise ValueError(
             "P2 field packet was not allocated under this exact readiness V3 receipt"
         )
+    analysis_config = {
+        "sch_surface": config.get("sch_surface"),
+        "system_checks": config.get("system_checks"),
+    }
+    analysis_config_sha = _semantic_sha256(analysis_config)
+    if field_verification.get(
+        "production_surface_config_sha256"
+    ) != analysis_config_sha:
+        raise ValueError(
+            "P2 analysis config differs from the production surface config used for power"
+        )
+
     result = analyze(rows, readiness, config)
     result["field_execution_verification"] = {
         "receipt_schema": field_verification["receipt_schema"],
@@ -418,6 +440,13 @@ def analyze_locked(
         "readiness_receipt_sha256": field_verification.get(
             "readiness_receipt_sha256"
         ),
+        "production_surface_config_sha256": field_verification[
+            "production_surface_config_sha256"
+        ],
+        "surface_threshold_freeze_sha256": field_verification[
+            "surface_threshold_freeze_sha256"
+        ],
+        "power_config_sha256": field_verification["power_config_sha256"],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
     }
