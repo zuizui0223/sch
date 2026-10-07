@@ -131,9 +131,9 @@ def _validate_config(config: dict) -> dict:
     gate = config.get("analysis_gate")
     if not isinstance(gate, dict):
         raise ValueError("analysis_gate is required")
-    min_plants = _positive_int(
-        gate.get("min_plants_per_historical_context_cell"),
-        "min_plants_per_historical_context_cell",
+    min_patches = _positive_int(
+        gate.get("min_patches_per_historical_context_cell"),
+        "min_patches_per_historical_context_cell",
     )
 
     return {
@@ -142,7 +142,7 @@ def _validate_config(config: dict) -> dict:
         "sparse_density_max_exclusive": sparse_max,
         "dense_density_min_exclusive": dense_min,
         "patch_boundary_exclusive": small_max,
-        "min_plants_per_cell": min_plants,
+        "min_patches_per_cell": min_patches,
         "source": historical.get("source"),
     }
 
@@ -294,8 +294,12 @@ def _plant_natural_exposed(rows: list[dict[str, str]]) -> dict[str, dict]:
     return result
 
 
-def _cell_summary(values: list[dict]) -> dict:
+def _patch_summary(values: list[dict]) -> dict:
+    patch_ids = {value["patch_id"] for value in values}
+    if len(patch_ids) != 1:
+        raise ValueError("one patch summary cannot mix patch_id values")
     return {
+        "patch_id": next(iter(patch_ids)),
         "n_plants": len(values),
         "mean_seed_predation_fraction": mean(
             value["seed_predation_fraction"] for value in values
@@ -303,6 +307,28 @@ def _cell_summary(values: list[dict]) -> dict:
         "mean_early_attack_rate": mean(value["early_attack_rate"] for value in values),
         "mean_final_undamaged_seed_fraction": mean(
             value["final_undamaged_seed_fraction"] for value in values
+        ),
+        "patch_flowering_density_plants_m2": values[0][
+            "patch_flowering_density_plants_m2"
+        ],
+        "patch_size_flowering_plants": values[0]["patch_size_flowering_plants"],
+        "density_class": values[0]["density_class"],
+        "patch_size_class": values[0]["patch_size_class"],
+    }
+
+
+def _cell_summary(patches: list[dict]) -> dict:
+    return {
+        "n_patches": len(patches),
+        "n_plants": sum(patch["n_plants"] for patch in patches),
+        "mean_seed_predation_fraction": mean(
+            patch["mean_seed_predation_fraction"] for patch in patches
+        ),
+        "mean_early_attack_rate": mean(
+            patch["mean_early_attack_rate"] for patch in patches
+        ),
+        "mean_final_undamaged_seed_fraction": mean(
+            patch["mean_final_undamaged_seed_fraction"] for patch in patches
         ),
     }
 
@@ -324,7 +350,7 @@ def build(
     context = _validate_context(context_rows, rows, config)
     natural_exposed = _plant_natural_exposed(rows)
 
-    cells: dict[str, list[dict]] = defaultdict(list)
+    plants_by_patch: dict[str, list[dict]] = defaultdict(list)
     classified_plants = []
     for plant, outcome in natural_exposed.items():
         info = context[plant]
@@ -336,7 +362,6 @@ def build(
             info["patch_size_flowering_plants"],
             config,
         )
-        cell = f"{density_class}_{patch_class}"
         record = {
             "plant_id": plant,
             "patch_id": info["patch_id"],
@@ -349,11 +374,19 @@ def build(
             **outcome,
         }
         classified_plants.append(record)
-        if density_class in {"SPARSE", "DENSE"} and patch_class in {
-            "SMALL",
-            "LARGE",
-        }:
-            cells[cell].append(record)
+        plants_by_patch[info["patch_id"]].append(record)
+
+    patch_records = []
+    for patch_id in sorted(plants_by_patch):
+        patch_records.append(_patch_summary(plants_by_patch[patch_id]))
+
+    cells: dict[str, list[dict]] = defaultdict(list)
+    for patch in patch_records:
+        if patch["density_class"] in {"SPARSE", "DENSE"} and patch[
+            "patch_size_class"
+        ] in {"SMALL", "LARGE"}:
+            cell = f"{patch['density_class']}_{patch['patch_size_class']}"
+            cells[cell].append(patch)
 
     expected_cells = {
         "SPARSE_SMALL",
@@ -365,9 +398,11 @@ def build(
         cell: _cell_summary(cells[cell])
         for cell in sorted(expected_cells & set(cells))
     }
-    n_by_cell = {cell: len(cells.get(cell, [])) for cell in sorted(expected_cells)}
+    n_patches_by_cell = {
+        cell: len(cells.get(cell, [])) for cell in sorted(expected_cells)
+    }
     modelable = all(
-        n_by_cell[cell] >= config["min_plants_per_cell"]
+        n_patches_by_cell[cell] >= config["min_patches_per_cell"]
         for cell in expected_cells
     )
 
@@ -379,8 +414,12 @@ def build(
 
         sparse_all = cells["SPARSE_SMALL"] + cells["SPARSE_LARGE"]
         dense_all = cells["DENSE_SMALL"] + cells["DENSE_LARGE"]
-        sparse_mean = mean(x["seed_predation_fraction"] for x in sparse_all)
-        dense_mean = mean(x["seed_predation_fraction"] for x in dense_all)
+        sparse_mean = mean(
+            x["mean_seed_predation_fraction"] for x in sparse_all
+        )
+        dense_mean = mean(
+            x["mean_seed_predation_fraction"] for x in dense_all
+        )
 
         contrasts = {
             "dense_minus_sparse_seed_predation": dense_mean - sparse_mean,
@@ -437,11 +476,12 @@ def build(
         "analysis_state": "NATURAL_POLLINATION_PLUS_PREDATOR_EXPOSED",
         "n_p2_plants": len(context),
         "n_plants_with_natural_exposed_rows": len(natural_exposed),
-        "historical_context_cell_n": n_by_cell,
+        "historical_context_cell_n_patches": n_patches_by_cell,
         "historical_context_cell_summary": cell_summaries,
         "historical_comparison_modelable": modelable,
         "historical_pattern_contrasts": contrasts,
         "historical_pattern_sign_checks": sign_checks,
+        "patch_level_secondary_data": patch_records,
         "plant_level_secondary_data": sorted(
             classified_plants,
             key=lambda row: row["plant_id"],
@@ -450,6 +490,7 @@ def build(
         "claim_ceiling": [
             "secondary_ecological_context_only",
             "patch_density_and_patch_size_are_observational_not_randomized",
+            "patch_is_the_replication_unit_for_historical_context_comparison",
             "does_not_change_or_rescue_primary_W0_W5",
             "does_not_claim_context_causes_optimum_displacement",
             "does_not_test_context_moderation_of_state_optima_without_separate_power",
