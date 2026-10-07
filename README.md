@@ -555,6 +555,16 @@ config used in registered power**. See
 `docs/SCH_PEDICULARIS_W1_W2_POWER_V1.md` and
 `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
+A plant-level ecological-context registry is now available as a **secondary,
+non-gating** companion to P2. It records local flowering density and patch size
+for every P2 plant, using the historical Xia et al. (2013) cutpoints
+(<2 vs >5 flowering plants/m2; <20 vs >20 flowering plants) frozen before P2
+outcomes. `analyze_pedicularis_antagonist_context.py` then asks whether the
+NATURAL + EXPOSED state recovers the published density-by-patch-size reversal in
+seed predation. Missing or under-replicated context makes only this secondary
+analysis non-modelable; it cannot block, change or rescue W0-W5. See
+`docs/SCH_PEDICULARIS_ANTAGONIST_CONTEXT_V1.md`.
+
 Until that chain produces a valid full-surface receipt (or fails a preregistered
 stop rule), additional TA3 remainder screening is secondary. Screening records
 already recovered remain part of the systematic denominator, but adding further
