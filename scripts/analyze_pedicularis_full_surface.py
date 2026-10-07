@@ -363,6 +363,13 @@ def analyze_locked(
     field_verification: dict,
 ) -> dict:
     _validate_field_verification(rows, field_verification)
+    expected_plan_sha = readiness.get("validated_execution", {}).get(
+        "p0_level_plan_sha256"
+    )
+    if field_verification.get("p0_level_plan_sha256") != expected_plan_sha:
+        raise ValueError(
+            "P2 field packet is not bound to the validated P0 level-plan SHA-256"
+        )
     result = analyze(rows, readiness, config)
     result["field_execution_verification"] = {
         "receipt_schema": field_verification["receipt_schema"],
@@ -374,6 +381,9 @@ def analyze_locked(
             "field_identity_sha256"
         ),
         "surface_data_sha256": field_verification["surface_data_sha256"],
+        "p0_level_plan_sha256": field_verification.get(
+            "p0_level_plan_sha256"
+        ),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
     }
