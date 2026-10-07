@@ -9,8 +9,8 @@ pollination.
 A second ecological question is available at almost no additional intervention
 cost:
 
-> **Is natural seed-predator pressure itself structured by local plant density
-> and patch size in the new P2 population/season?**
+> **Is natural seed-predator pressure itself structured by patch flowering
+> density and patch size in the new P2 population/season?**
 
 This is motivated directly by the focal P. rex study of Xia, Sun & Liu (2013;
 doi:10.1098/rsbl.2013.0387), not by a post-outcome search for moderators.
@@ -73,21 +73,25 @@ season_id
 plant_id
 patch_id
 context_measurement_date
-density_quadrat_area_m2
-flowering_plants_in_density_quadrat
+patch_area_m2
 patch_size_flowering_plants
 notes.
 ```
 
-The analysis derives local flowering density as flowering plants in quadrat
-divided by quadrat area.
+The analysis reconstructs the historical density definition at the **patch**
+scale:
+
+```text
+patch flowering density
+= patch_size_flowering_plants / patch_area_m2.
+```
 
 Patch size is the number of flowering plants assigned to the focal patch.
-All plants sharing one patch_id must share one patch-size value.
+All plants sharing one patch_id must share both patch area and patch size.
 
 ## Why the context is not inserted into the primary surface
 
-Density and patch size are observational attributes of where a plant grows.
+Patch flowering density and patch size are observational attributes of where a plant grows.
 They are not randomized.
 
 Therefore they may explain heterogeneity in enemy pressure, but they do not
@@ -155,23 +159,23 @@ The analysis requires the canonical surface_data_sha256 to match the exact
 flower-level data used for the primary P2 surface.
 
 A context registry must cover exactly the P2 plant set. Missing plants, extra
-plants, duplicate plant rows or inconsistent patch-size definitions fail the
-secondary analysis only.
+plants, duplicate plant rows, or inconsistent patch-area/patch-size definitions
+fail the secondary analysis only.
 
 ## Biological interpretation
 
 A consistent result would mean:
 
 > the focal causal experiment was conducted inside an ecological landscape in
-> which natural enemy pressure still shows the density/patch-size dependence
+> which natural enemy pressure still shows the patch-density/patch-size-size dependence
 > previously documented in P. rex.
 
 This would strengthen the ecological interpretation that antagonist weight is
 not a fixed species property.
 
-It would not show that density or patch size caused the P2 optimum displacement.
+It would not show that patch flowering density or patch size caused the P2 optimum displacement.
 
-Testing whether z_P* - z_C* itself changes with density/patch context requires
+Testing whether z_P* - z_C* itself changes with patch-density/patch-size context requires
 a separately powered context-by-surface design. The present secondary explicitly
 does not make that claim.
 
@@ -183,7 +187,7 @@ It cannot:
 
 - change or rescue W0-W5;
 - make a negative P2 surface positive;
-- identify causal effects of density or patch size;
+- identify causal effects of patch flowering density or patch size;
 - claim density-dependent optimum displacement;
 - change the registered P2 sample size;
 - redefine sparse/dense or small/large after outcomes.
