@@ -92,7 +92,19 @@ The key H2 signal is that the pollinator-associated component is comparatively c
 
 Local population geometry remains pending the supplement / population table.
 
-No 14-row pseudo-dataset is created from the population count alone.
+An independent focal source, Xia, Sun & Liu (2013), adds **pressure-only local
+context evidence** at a finer spatial scale. In 2011, seed predation had a very
+strong density x patch-size interaction (F=106.270, df 1,2345), and the
+patch-size association reversed between sparse and dense contexts. The matching
+final-seed-set interaction was nearly absent (F=0.023).
+
+This strengthens the interpretation that antagonist weight is spatially labile
+from within-region patch structure to among-population geography. It does not
+materialize a new H2 trait-geometry case because the 2013 study did not estimate
+exsertion-specific component selection within those patch contexts.
+
+No 14-row or density x size pseudo-dataset is created from context counts or
+pressure statistics alone.
 
 ### Primula farinosa — population × experiment × time programme
 
