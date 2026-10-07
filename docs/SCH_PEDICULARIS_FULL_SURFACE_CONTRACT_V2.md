@@ -93,9 +93,11 @@ scripts/freeze_pedicularis_full_surface_thresholds.py
 ```
 
 The receipt binds the exact `sch_surface` and `system_checks` objects by
-SHA-256. These same objects must appear in the registered W1/W2 power config,
-survive P2 allocation/field verification, and be supplied unchanged to the
-production analyzer.
+SHA-256 and requires an explicit pre-outcome basis note for **every** registered
+decision threshold, including the water-depth and mechanical-damage tolerances.
+These same objects must appear in the registered W1/W2 power config, survive P2
+allocation/field verification, and be supplied unchanged to the production
+analyzer.
 
 See `docs/SCH_PEDICULARIS_FINAL_W1_W2_BASIS_V1.md`.
 
