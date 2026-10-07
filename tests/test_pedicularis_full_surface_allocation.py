@@ -4,7 +4,9 @@ from copy import deepcopy
 
 import pytest
 
-from scripts.build_pedicularis_full_surface_allocation import build
+from scripts.build_pedicularis_full_surface_allocation import (
+    build as production_build,
+)
 
 
 def _config() -> dict:
@@ -29,6 +31,83 @@ def _config() -> dict:
         "exposed_method_code": "SHAM_SLEEVE",
         "frozen_before_full_surface_outcomes": True,
     }
+
+
+def _readiness(config: dict | None = None) -> dict:
+    config = _config() if config is None else config
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "z_manipulation_settings_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "z_manipulation_settings": [
+                {
+                    "assigned_z_level": row["assigned_z_level"],
+                    "assigned_z_rank": row["assigned_z_rank"],
+                    "manipulation_setting_id": row["manipulation_setting_id"],
+                }
+                for row in config["z_levels"]
+            ],
+            "p0_level_plan_sha256": config["p0_level_plan_sha256"],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "g_exposed_sham_method": config["exposed_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+        "source_receipts": {
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
+            },
+        },
+        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": (
+            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
+            "WITH_POLLINATOR_ACCESS_PRESERVED"
+        ),
+    }
+
+
+def build(
+    manifest: list[dict[str, str]],
+    config: dict,
+    power: dict,
+    seed: str,
+    readiness: dict | None = None,
+):
+    return production_build(
+        manifest,
+        config,
+        power,
+        _readiness(config) if readiness is None else readiness,
+        seed,
+    )
 
 
 def _power() -> dict:
@@ -106,6 +185,8 @@ def test_balanced_incomplete_block_allocation_matches_powered_design() -> None:
     }
     assert set(receipt["cell_counts"].values()) == {2}
     assert receipt["power_binding"]["candidate_primary_surface_power"] == 0.90
+    assert len(receipt["readiness_receipt_sha256"]) == 64
+    assert receipt["readiness_binding"]["g_exposed_sham_method"] == "SHAM_SLEEVE"
     assert receipt["power_binding"]["candidate_headline_w1_or_w2_power"] == 0.85
 
     by_plant: dict[str, set[str]] = {}
@@ -322,3 +403,32 @@ def test_p2_allocation_requires_unique_physical_z_settings() -> None:
 
     with pytest.raises(ValueError, match="manipulation_setting_id must be unique"):
         build(_manifest(), config, _power(), "SEED")
+
+
+def test_p2_allocation_rejects_readiness_p0_plan_mismatch() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["p0_level_plan_sha256"] = "9" * 64
+
+    with pytest.raises(ValueError, match="P0 level-plan SHA-256"):
+        build(_manifest(), config, _power(), "SEED", readiness)
+
+
+def test_p2_allocation_rejects_readiness_physical_z_setting_mismatch() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["z_manipulation_settings"][1][
+        "manipulation_setting_id"
+    ] = "DIFFERENT_SETTING"
+
+    with pytest.raises(ValueError, match="physical z-manipulation settings"):
+        build(_manifest(), config, _power(), "SEED", readiness)
+
+
+def test_p2_allocation_rejects_readiness_exposed_sham_mismatch() -> None:
+    config = _config()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["g_exposed_sham_method"] = "DIFFERENT_SHAM"
+
+    with pytest.raises(ValueError, match="EXPOSED sham method"):
+        build(_manifest(), config, _power(), "SEED", readiness)
