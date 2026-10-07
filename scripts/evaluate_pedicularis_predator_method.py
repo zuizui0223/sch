@@ -270,6 +270,9 @@ def evaluate_locked(
         "selected_exclusion_method": allocation_receipt.get(
             "selected_exclusion_method"
         ),
+        "exposed_sham_method_code": allocation_receipt.get(
+            "exposed_sham_method_code"
+        ),
         "g_field_config_sha256": allocation_receipt.get(
             "g_field_config_sha256"
         ),
