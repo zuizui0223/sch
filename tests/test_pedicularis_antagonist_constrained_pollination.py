@@ -25,6 +25,7 @@ def _rows() -> list[dict[str, str]]:
                             f"P{plant:02d}_Z{z_index}_{predator}"
                         ),
                         "assigned_z_level": f"Z{z_index}",
+                        "manipulation_setting_id": f"SETTING_Z{z_index}",
                         "realized_exsertion": str(z),
                         "pollination_treatment": "NATURAL",
                         "predator_treatment": predator,

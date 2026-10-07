@@ -19,11 +19,13 @@ def _allocation_config() -> dict:
         "season_id": "S1",
         "planned_n_plants": 10,
         "flowers_per_plant": 4,
+        "p0_level_plan_sha256": "1" * 64,
         "z_levels": [
             {
                 "assigned_z_level": f"Z{i}",
                 "assigned_z_rank": i,
                 "target_exsertion": value,
+                "manipulation_setting_id": f"SETTING_Z{i}",
             }
             for i, value in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0))
         ],
@@ -118,7 +120,9 @@ def test_prepare_prefills_only_frozen_identity_and_treatment_fields() -> None:
         "allocation_identity_sha256"
     ]
     assert lock["outcome_fields_prefilled"] is False
+    assert lock["p0_level_plan_sha256"] == "1" * 64
     assert all(row["assigned_z_level"] for row in field_rows)
+    assert all(row["manipulation_setting_id"] for row in field_rows)
     assert all(row["pollination_treatment"] for row in field_rows)
     assert all(row["predator_treatment"] for row in field_rows)
     assert all(row["exclusion_method"] for row in field_rows)
@@ -222,3 +226,12 @@ def test_allocation_receipt_drift_is_rejected_at_prepare() -> None:
 
     with pytest.raises(ValueError, match="allocation receipt digest"):
         prepare(allocations, allocation_receipt)
+
+
+def test_physical_z_setting_drift_fails_closed() -> None:
+    allocations, allocation_receipt = _allocation_packet()
+    field_rows, lock = prepare(allocations, allocation_receipt)
+    field_rows[0]["manipulation_setting_id"] = "AD_HOC_SETTING"
+
+    with pytest.raises(ValueError, match="drifted from the locked allocation"):
+        verify(field_rows, lock, require_complete=False)

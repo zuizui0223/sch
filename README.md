@@ -449,8 +449,8 @@ CAL-B      exploratory P/G effects + G timing pilot
 CAL-C      intervention-validity/selectivity power planning
 Stage F0   freeze P0/P1/G thresholds + one basis note per gate before confirmatory outcomes
 G select   freeze one exploratory hard-pass G method before confirmatory outcomes
-P2 bind    bind frozen P0 z plan + P0/P1/G configs + selected G method to
-           a separate geometry-pilot config before confirmatory outcomes
+P2 bind    bind frozen P0 z labels + physical manipulation settings + full
+           P0 plan SHA + P0/P1/G configs + selected G method to geometry
            |
            +-----------------------------+
            |                             |

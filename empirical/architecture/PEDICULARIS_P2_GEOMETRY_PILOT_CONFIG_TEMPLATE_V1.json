@@ -9,7 +9,8 @@
     {
       "assigned_z_level": "REQUIRED_BEFORE_USE",
       "assigned_z_rank": "REQUIRED_BEFORE_USE",
-      "target_exsertion": "REQUIRED_BEFORE_USE"
+      "target_exsertion": "REQUIRED_BEFORE_USE",
+      "manipulation_setting_id": "REQUIRED_BEFORE_USE"
     }
   ],
   "excluded_method_code": "REQUIRED_BEFORE_USE",

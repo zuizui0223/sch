@@ -115,6 +115,8 @@ def _levels() -> list[dict[str, str]]:
         {
             "assigned_z_level": f"Z{i}",
             "assigned_z_rank": str(i),
+            "manipulation_setting_id": f"SETTING_Z{i}",
+            "manipulation_setting_spec": f"BEND_FIX_SPEC_Z{i}",
             "sham_control": "1" if i == 4 else "0",
         }
         for i in range(5)
@@ -135,6 +137,7 @@ def _geometry() -> dict:
                 "assigned_z_level": f"Z{i}",
                 "assigned_z_rank": i,
                 "target_exsertion": float(i),
+                "manipulation_setting_id": f"SETTING_Z{i}",
             }
             for i in range(5)
         ],
@@ -356,4 +359,27 @@ def test_hand_edited_lane_config_with_same_status_is_rejected_by_f0_digest() -> 
             g_field_config=g,
             g_method_selection=_g_selection(g),
             f0_assembly_receipt=receipt,
+        )
+
+
+def test_geometry_physical_setting_must_match_frozen_p0_plan() -> None:
+    geometry = _geometry()
+    geometry["z_levels"][2]["manipulation_setting_id"] = "DIFFERENT_SETTING"
+    p0 = _p0()
+    p1 = _p1()
+    g = _g()
+
+    with pytest.raises(ValueError, match="manipulation settings"):
+        build(
+            geometry_config=geometry,
+            p0_level_plan=_levels(),
+            p0_field_config=p0,
+            p1_field_config=p1,
+            g_field_config=g,
+            g_method_selection=_g_selection(g),
+            f0_assembly_receipt=_f0_receipt(
+                p0_config=p0,
+                p1_config=p1,
+                g_config=g,
+            ),
         )

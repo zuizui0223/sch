@@ -71,6 +71,7 @@ def _rows() -> list[dict[str, str]]:
                     "flower_id": f"P{plant:02d}_Z{rank}",
                     "assigned_z_level": f"Z{rank}",
                     "assigned_z_rank": str(rank),
+                    "manipulation_setting_id": f"SETTING_Z{rank}",
                     "sham_control": "1" if rank == 4 else "0",
                     "realized_exsertion": f"{exsertion:.4f}",
                     "corolla_opening_width": f"{8.0 + plant_shift:.4f}",
@@ -102,6 +103,8 @@ def _locked_rows_and_receipt() -> tuple[list[dict[str, str]], dict]:
         {
             "assigned_z_level": f"Z{rank}",
             "assigned_z_rank": str(rank),
+            "manipulation_setting_id": f"SETTING_Z{rank}",
+            "manipulation_setting_spec": f"BEND_FIX_SPEC_Z{rank}",
             "sham_control": "1" if rank == 4 else "0",
         }
         for rank in range(5)
@@ -126,6 +129,7 @@ def _locked_rows_and_receipt() -> tuple[list[dict[str, str]], dict]:
                 "flower_id": alloc["flower_id"],
                 "assigned_z_level": alloc["assigned_z_level"],
                 "assigned_z_rank": alloc["assigned_z_rank"],
+                "manipulation_setting_id": alloc["manipulation_setting_id"],
                 "sham_control": alloc["sham_control"],
                 "realized_exsertion": f"{exsertion:.4f}",
                 "corolla_opening_width": f"{8.0 + plant_shift:.4f}",
@@ -184,6 +188,8 @@ def test_locked_p0_evaluator_accepts_exact_randomized_assignment() -> None:
 
     assert result["status"] == "PEDICULARIS_Z_MANIPULATION_VALIDATED"
     assert result["field_allocation_verification"]["identity_z_assignment_match"] is True
+    assert result["field_allocation_verification"]["physical_manipulation_setting_match"] is True
+    assert result["z_manipulation_settings"][0]["manipulation_setting_id"] == "SETTING_Z0"
     assert result["field_allocation_verification"]["receipt_schema"] == (
         "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
     )
@@ -204,6 +210,16 @@ def test_locked_p0_evaluator_rejects_z_assignment_drift() -> None:
 def test_locked_p0_evaluator_rejects_flower_substitution() -> None:
     rows, receipt = _locked_rows_and_receipt()
     rows[0]["flower_id"] = "SUBSTITUTED_FLOWER"
+
+    import pytest
+
+    with pytest.raises(ValueError, match="drifted from randomized allocation"):
+        evaluate_locked(rows, _config(), receipt)
+
+
+def test_locked_p0_evaluator_rejects_physical_setting_drift() -> None:
+    rows, receipt = _locked_rows_and_receipt()
+    rows[0]["manipulation_setting_id"] = "AD_HOC_SETTING"
 
     import pytest
 

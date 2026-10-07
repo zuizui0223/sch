@@ -33,6 +33,7 @@ def _config() -> dict:
                 "assigned_z_level": f"Z{i}",
                 "assigned_z_rank": i,
                 "target_exsertion": z,
+                "manipulation_setting_id": f"SETTING_Z{i}",
             }
             for i, z in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0))
         ],
@@ -67,10 +68,22 @@ def _binding(config: dict) -> dict:
         "g_field_config_sha256": "4" * 64,
         "g_method_selection_sha256": "5" * 64,
         "f0_assembly_receipt_sha256": "6" * 64,
+        "z_manipulation_settings": [
+            {
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": int(row["assigned_z_rank"]),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+            }
+            for row in config["z_levels"]
+        ],
         "z_level_plan": [
             {
                 "assigned_z_level": row["assigned_z_level"],
                 "assigned_z_rank": str(row["assigned_z_rank"]),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+                "manipulation_setting_spec": (
+                    f"BEND_FIX_SPEC_{row['assigned_z_level']}"
+                ),
                 "sham_control": (
                     "1" if i == len(config["z_levels"]) - 1 else "0"
                 ),

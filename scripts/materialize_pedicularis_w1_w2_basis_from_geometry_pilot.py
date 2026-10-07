@@ -55,6 +55,7 @@ def materialize(
     matches = geometry_summary.get("readiness_intervention_plan_match")
     required_match_keys = {
         "z_levels",
+        "z_manipulation_settings",
         "p1_experimental_unit",
         "g_exclusion_method",
         "p0_level_plan_sha256",

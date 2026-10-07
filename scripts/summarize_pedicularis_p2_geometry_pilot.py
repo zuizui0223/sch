@@ -29,6 +29,7 @@ FROZEN_FIELDS = (
     "plant_id",
     "flower_id",
     "assigned_z_level",
+    "manipulation_setting_id",
     "pollination_treatment",
     "predator_treatment",
     "exclusion_method",
@@ -336,6 +337,10 @@ def build(
 
     exact_matches = {
         "z_levels": validated.get("z_levels") == bound_plan.get("z_levels"),
+        "z_manipulation_settings": (
+            validated.get("z_manipulation_settings")
+            == bound_plan.get("z_manipulation_settings")
+        ),
         "p1_experimental_unit": (
             validated.get("p_experimental_unit")
             == bound_plan.get("p1_experimental_unit")

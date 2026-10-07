@@ -17,6 +17,7 @@ FROZEN_FIELDS = (
     "flower_id",
     "assigned_z_level",
     "assigned_z_rank",
+    "manipulation_setting_id",
     "sham_control",
 )
 
@@ -47,7 +48,13 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
 
 def _read_level_plan(path: Path) -> list[dict[str, str]]:
     rows = _read_csv(path)
-    required = {"assigned_z_level", "assigned_z_rank", "sham_control"}
+    required = {
+        "assigned_z_level",
+        "assigned_z_rank",
+        "sham_control",
+        "manipulation_setting_id",
+        "manipulation_setting_spec",
+    }
     missing = sorted(required - set(rows[0]))
     if missing:
         raise ValueError("P0 level plan lacks columns: " + ", ".join(missing))
@@ -55,6 +62,8 @@ def _read_level_plan(path: Path) -> list[dict[str, str]]:
     levels: list[dict[str, str]] = []
     seen_labels: set[str] = set()
     seen_ranks: set[int] = set()
+    seen_setting_ids: set[str] = set()
+    seen_setting_specs: set[str] = set()
     sham_count = 0
 
     for row in rows:
@@ -65,6 +74,16 @@ def _read_level_plan(path: Path) -> list[dict[str, str]]:
             rank = int(row["assigned_z_rank"])
         except ValueError as exc:
             raise ValueError("assigned_z_rank must be an integer") from exc
+        setting_id = row["manipulation_setting_id"].strip()
+        setting_spec = row["manipulation_setting_spec"].strip()
+        if not setting_id or setting_id == PLACEHOLDER:
+            raise ValueError(
+                "every P0 level needs a resolved manipulation_setting_id"
+            )
+        if not setting_spec or setting_spec == PLACEHOLDER:
+            raise ValueError(
+                "every P0 level needs a resolved manipulation_setting_spec"
+            )
         if row["sham_control"] not in {"0", "1"}:
             raise ValueError("sham_control must be coded 0/1")
         sham = int(row["sham_control"])
@@ -74,13 +93,21 @@ def _read_level_plan(path: Path) -> list[dict[str, str]]:
             raise ValueError("assigned_z_level must be unique")
         if rank in seen_ranks:
             raise ValueError("assigned_z_rank must be unique")
+        if setting_id in seen_setting_ids:
+            raise ValueError("manipulation_setting_id must be unique")
+        if setting_spec in seen_setting_specs:
+            raise ValueError("manipulation_setting_spec must be unique")
         seen_labels.add(label)
         seen_ranks.add(rank)
+        seen_setting_ids.add(setting_id)
+        seen_setting_specs.add(setting_spec)
 
         levels.append(
             {
                 "assigned_z_level": label,
                 "assigned_z_rank": str(rank),
+                "manipulation_setting_id": setting_id,
+                "manipulation_setting_spec": setting_spec,
                 "sham_control": str(sham),
             }
         )
@@ -207,6 +234,17 @@ def build(
     if len(level_ranks) != len(set(level_ranks)):
         raise ValueError("assigned_z_rank must be unique")
 
+    setting_ids = [row.get("manipulation_setting_id", "").strip() for row in levels]
+    setting_specs = [row.get("manipulation_setting_spec", "").strip() for row in levels]
+    if any(not value or value == PLACEHOLDER for value in setting_ids):
+        raise ValueError("every P0 level needs a resolved manipulation_setting_id")
+    if any(not value or value == PLACEHOLDER for value in setting_specs):
+        raise ValueError("every P0 level needs a resolved manipulation_setting_spec")
+    if len(setting_ids) != len(set(setting_ids)):
+        raise ValueError("manipulation_setting_id must be unique")
+    if len(setting_specs) != len(set(setting_specs)):
+        raise ValueError("manipulation_setting_spec must be unique")
+
     sham_values = [row["sham_control"] for row in levels]
     if any(value not in {"0", "1"} for value in sham_values):
         raise ValueError("sham_control must be coded 0/1")
@@ -251,6 +289,7 @@ def build(
                     "flower_id": flower_id,
                     "assigned_z_level": level["assigned_z_level"],
                     "assigned_z_rank": level["assigned_z_rank"],
+                    "manipulation_setting_id": level["manipulation_setting_id"],
                     "sham_control": level["sham_control"],
                     "assignment_method": ASSIGNMENT_METHOD,
                     "field_status": "ALLOCATED_NOT_YET_MEASURED",
@@ -275,6 +314,15 @@ def build(
         "n_allocated_flowers": len(allocations),
         "z_levels": [row["assigned_z_level"] for row in sorted_levels],
         "z_ranks": [int(row["assigned_z_rank"]) for row in sorted_levels],
+        "z_manipulation_settings": [
+            {
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": int(row["assigned_z_rank"]),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+            }
+            for row in sorted_levels
+        ],
+        "frozen_level_plan": sorted_levels,
         "sham_z_rank": next(
             int(row["assigned_z_rank"])
             for row in sorted_levels
@@ -302,6 +350,7 @@ def build(
             "complete_block_within_plant_randomization",
             "does_not_choose_number_of_plants",
             "does_not_choose_z_level_values",
+            "physical_manipulation_setting_ID_and_spec_frozen_before_assignment",
             "does_not_choose_thresholds",
             "does_not_validate_p0",
         ],

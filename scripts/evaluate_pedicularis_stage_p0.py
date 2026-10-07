@@ -29,6 +29,7 @@ REQUIRED_FIELDS = (
     "flower_id",
     "assigned_z_level",
     "assigned_z_rank",
+    "manipulation_setting_id",
     "sham_control",
     "realized_exsertion",
     "corolla_opening_width",
@@ -145,12 +146,23 @@ def _check_single_context(rows: list[dict[str, str]]) -> tuple[str, str]:
 def _group_by_rank(rows: list[dict[str, str]]) -> dict[int, list[dict[str, str]]]:
     groups: dict[int, list[dict[str, str]]] = defaultdict(list)
     labels: dict[int, set[str]] = defaultdict(set)
+    settings: dict[int, set[str]] = defaultdict(set)
     for row in rows:
         rank = _rank(row)
         groups[rank].append(row)
         labels[rank].add(row["assigned_z_level"])
+        settings[rank].add(row["manipulation_setting_id"])
     if any(len(values) != 1 for values in labels.values()):
         raise ValueError("each assigned_z_rank must map to exactly one assigned_z_level")
+    if any(len(values) != 1 for values in settings.values()):
+        raise ValueError(
+            "each assigned_z_rank must map to exactly one manipulation_setting_id"
+        )
+    setting_ids = [next(iter(settings[rank])) for rank in sorted(settings)]
+    if len(setting_ids) != len(set(setting_ids)):
+        raise ValueError(
+            "each assigned_z_rank must use a distinct manipulation_setting_id"
+        )
     return dict(sorted(groups.items()))
 
 
@@ -323,6 +335,7 @@ def evaluate_locked(
         "level_plan_sha256": allocation_receipt.get("level_plan_sha256"),
         "p0_field_config_sha256": p0_allocation_sha256(config),
         "identity_z_assignment_match": True,
+        "physical_manipulation_setting_match": True,
     }
     return result
 
@@ -390,6 +403,16 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "n_rows": len(rows),
         "n_plants": n_plants,
         "z_levels": [groups[rank][0]["assigned_z_level"] for rank in groups],
+        "z_manipulation_settings": [
+            {
+                "assigned_z_level": groups[rank][0]["assigned_z_level"],
+                "assigned_z_rank": rank,
+                "manipulation_setting_id": groups[rank][0][
+                    "manipulation_setting_id"
+                ],
+            }
+            for rank in groups
+        ],
         "sham_rank": _rank(sham[0]),
         "realized_exsertion": {
             "mean_by_rank": {str(k): v for k, v in rank_metrics["means"].items()},

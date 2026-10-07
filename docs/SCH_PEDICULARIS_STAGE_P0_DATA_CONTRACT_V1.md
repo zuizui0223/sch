@@ -87,10 +87,27 @@ python scripts/build_pedicularis_p0_randomized_assignment.py \\
   --receipt-out <p0_allocation_receipt.json>
 ```
 
-The level plan owns the prospectively specified z labels, ranks and single sham
-rank. The builder never chooses manipulation strengths, sample size or gate
-thresholds. It only randomizes treatment-blind flower IDs within each plant to
-the frozen level plan using reproducible SHA-256 ranking. Every included plant
+The level plan owns the prospectively specified z labels, ranks, single sham
+rank, and the **physical manipulation identity** for every level:
+
+```text
+manipulation_setting_id
+manipulation_setting_spec
+```
+
+These are distinct from the outcome coordinate:
+
+```text
+assigned_z_level             = analysis label
+manipulation_setting_id/spec = what is physically done to the flower
+realized_exsertion           = phenotype actually produced and later measured.
+```
+
+The same setting ID cannot be reused for two z ranks, and the frozen level-plan
+SHA-256 includes the setting specifications. The builder never chooses
+manipulation strengths, sample size or gate thresholds. It only randomizes
+treatment-blind flower IDs within each plant to the frozen level plan using
+reproducible SHA-256 ranking. Every included plant
 must contribute exactly one flower per planned z level.
 
 Merge measured Stage-P0 fields onto that allocation by `flower_id`. The
@@ -103,8 +120,9 @@ python scripts/evaluate_pedicularis_stage_p0.py \
   --output <p0_receipt.json>
 ```
 
-The evaluator reconstructs the flower-to-z/sham mapping and fails if a flower,
-z label/rank or sham identity differs from the randomized allocation. Do not
+The evaluator reconstructs the flower-to-z/physical-setting/sham mapping and
+fails if a flower, z label/rank, manipulation-setting ID or sham identity
+differs from the randomized allocation. Do not
 replace or relabel flowers after allocation is revealed.
 
 ## Required fields
@@ -116,6 +134,7 @@ plant_id
 flower_id
 assigned_z_level
 assigned_z_rank
+manipulation_setting_id
 sham_control
 realized_exsertion
 corolla_opening_width

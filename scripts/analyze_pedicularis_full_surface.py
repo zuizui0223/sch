@@ -19,6 +19,7 @@ RAW_FIELDS = (
     "plant_id",
     "flower_id",
     "assigned_z_level",
+    "manipulation_setting_id",
     "realized_exsertion",
     "pollination_treatment",
     "predator_treatment",
@@ -150,6 +151,7 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
         "same_population_and_season",
         "z_randomized_allocation_verified",
         "z_levels_validated",
+        "z_manipulation_settings_validated",
         "p_randomized_allocation_verified",
         "g_randomized_allocation_verified",
         "g_method_timing_validated",
@@ -171,6 +173,11 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
     z_levels = validated.get("z_levels")
     if not isinstance(z_levels, list) or len(z_levels) < 5:
         raise ValueError("V2 readiness lacks validated multi-level z design")
+    z_settings = validated.get("z_manipulation_settings")
+    if not isinstance(z_settings, list) or len(z_settings) != len(z_levels):
+        raise ValueError(
+            "V2 readiness lacks validated physical z-manipulation settings"
+        )
     if validated.get("p_experimental_unit") != "WITHIN_PLANT_PAIRED_FLOWERS":
         raise ValueError("V2 readiness lacks validated paired-flower P1 design")
     if not isinstance(validated.get("g_exclusion_method"), str) or not validated.get(
@@ -206,6 +213,27 @@ def _validate_rows_against_validated_execution(
     if observed_z != expected_z:
         raise ValueError(
             "raw P2 z-level labels do not match the validated P0 readiness grid"
+        )
+
+    expected_settings = {
+        row["assigned_z_level"]: row["manipulation_setting_id"]
+        for row in validated["z_manipulation_settings"]
+    }
+    observed_settings: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        observed_settings[row["assigned_z_level"]].add(
+            row["manipulation_setting_id"]
+        )
+    if (
+        set(observed_settings) != set(expected_settings)
+        or any(len(values) != 1 for values in observed_settings.values())
+        or any(
+            next(iter(observed_settings[level])) != setting_id
+            for level, setting_id in expected_settings.items()
+        )
+    ):
+        raise ValueError(
+            "raw P2 physical z-manipulation settings do not match validated P0 readiness"
         )
 
     excluded_methods = {
@@ -335,6 +363,13 @@ def analyze_locked(
     field_verification: dict,
 ) -> dict:
     _validate_field_verification(rows, field_verification)
+    expected_plan_sha = readiness.get("validated_execution", {}).get(
+        "p0_level_plan_sha256"
+    )
+    if field_verification.get("p0_level_plan_sha256") != expected_plan_sha:
+        raise ValueError(
+            "P2 field packet is not bound to the validated P0 level-plan SHA-256"
+        )
     result = analyze(rows, readiness, config)
     result["field_execution_verification"] = {
         "receipt_schema": field_verification["receipt_schema"],
@@ -346,6 +381,9 @@ def analyze_locked(
             "field_identity_sha256"
         ),
         "surface_data_sha256": field_verification["surface_data_sha256"],
+        "p0_level_plan_sha256": field_verification.get(
+            "p0_level_plan_sha256"
+        ),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
     }

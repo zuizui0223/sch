@@ -30,6 +30,14 @@ def _z() -> dict:
         "P0",
     )
     receipt["z_levels"] = ["Z0", "Z1", "Z2", "Z3", "Z4"]
+    receipt["z_manipulation_settings"] = [
+        {
+            "assigned_z_level": f"Z{i}",
+            "assigned_z_rank": i,
+            "manipulation_setting_id": f"SETTING_Z{i}",
+        }
+        for i in range(5)
+    ]
     receipt["field_allocation_verification"] = {
         "receipt_schema": "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1",
         "allocation_identity_sha256": "a" * 64,
@@ -37,6 +45,7 @@ def _z() -> dict:
         "level_plan_sha256": "1" * 64,
         "p0_field_config_sha256": "2" * 64,
         "identity_z_assignment_match": True,
+        "physical_manipulation_setting_match": True,
     }
     return receipt
 
@@ -102,6 +111,9 @@ def test_three_valid_same_context_receipts_unlock_full_surface() -> None:
     assert result["validated_execution"]["z_levels"] == [
         "Z0", "Z1", "Z2", "Z3", "Z4"
     ]
+    assert result["validated_execution"]["z_manipulation_settings"][2][
+        "manipulation_setting_id"
+    ] == "SETTING_Z2"
     assert result["validated_execution"]["p_experimental_unit"] == (
         "WITHIN_PLANT_PAIRED_FLOWERS"
     )
@@ -221,3 +233,12 @@ def test_missing_g_selection_hash_blocks_readiness() -> None:
 
     assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
     assert result["checks"]["g_plan_provenance_bound"] is False
+
+
+def test_missing_physical_z_setting_identity_blocks_readiness() -> None:
+    z = _z()
+    z["z_manipulation_settings"][2]["manipulation_setting_id"] = ""
+    result = assemble(z, _p(), _g())
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["z_manipulation_settings_validated"] is False

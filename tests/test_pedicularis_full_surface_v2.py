@@ -32,12 +32,22 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
             "same_population_and_season": True,
             "z_randomized_allocation_verified": True,
             "z_levels_validated": True,
+            "z_manipulation_settings_validated": True,
             "p_randomized_allocation_verified": True,
             "g_randomized_allocation_verified": True,
             "g_method_timing_validated": True,
         },
         "validated_execution": {
             "z_levels": ["Z-2", "Z-1", "Z+0", "Z+1", "Z+2"],
+            "z_manipulation_settings": [
+                {
+                    "assigned_z_level": f"Z{z:+d}",
+                    "assigned_z_rank": i,
+                    "manipulation_setting_id": f"SETTING_Z{z:+d}",
+                }
+                for i, z in enumerate((-2, -1, 0, 1, 2))
+            ],
+            "p0_level_plan_sha256": "1" * 64,
             "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "g_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
             "z_allocation_identity_sha256": "a" * 64,
@@ -78,6 +88,7 @@ def _field_verification(rows: list[dict[str, str]]) -> dict:
         "n_rows": len(rows),
         "allocation_identity_sha256": "a" * 64,
         "field_identity_sha256": "b" * 64,
+        "p0_level_plan_sha256": "1" * 64,
         "surface_data_sha256": surface_data_sha256(rows),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
@@ -129,6 +140,7 @@ def _rows(water_contaminated: bool = False) -> list[dict[str, str]]:
                         "plant_id": f"P{plant:02d}",
                         "flower_id": f"P{plant:02d}_Z{z:+d}_P{p}G{g}",
                         "assigned_z_level": f"Z{z:+d}",
+                        "manipulation_setting_id": f"SETTING_Z{z:+d}",
                         "realized_exsertion": str(float(z)),
                         "pollination_treatment": pollination,
                         "predator_treatment": predator,
@@ -286,3 +298,20 @@ def test_v2_rejects_readiness_without_randomized_execution_checks() -> None:
 
     with pytest.raises(ValueError, match="randomized execution checks"):
         analyze(_rows(), receipt, _config())
+
+
+def test_v2_rejects_raw_physical_z_setting_not_matching_validated_p0() -> None:
+    rows = _rows()
+    rows[0]["manipulation_setting_id"] = "UNVALIDATED_SETTING"
+
+    with pytest.raises(ValueError, match="physical z-manipulation settings"):
+        analyze(rows, _readiness(), _config())
+
+
+def test_production_locked_analysis_rejects_wrong_p0_plan_digest() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    verification["p0_level_plan_sha256"] = "9" * 64
+
+    with pytest.raises(ValueError, match="validated P0 level-plan SHA-256"):
+        analyze_locked(rows, _readiness(), _config(), verification)

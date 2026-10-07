@@ -56,6 +56,7 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         and z_allocation.get("receipt_schema")
         == "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
         and z_allocation.get("identity_z_assignment_match") is True
+        and z_allocation.get("physical_manipulation_setting_match") is True
     )
     z_level_plan_sha = (
         z_allocation.get("level_plan_sha256")
@@ -80,6 +81,34 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         and len(z_levels) >= 5
         and len(z_levels) == len(set(z_levels))
         and all(isinstance(value, str) and bool(value) for value in z_levels)
+    )
+    z_manipulation_settings = z_receipt.get("z_manipulation_settings")
+    setting_ids = (
+        [
+            row.get("manipulation_setting_id")
+            for row in z_manipulation_settings
+            if isinstance(row, dict)
+        ]
+        if isinstance(z_manipulation_settings, list)
+        else []
+    )
+    setting_labels = (
+        [
+            row.get("assigned_z_level")
+            for row in z_manipulation_settings
+            if isinstance(row, dict)
+        ]
+        if isinstance(z_manipulation_settings, list)
+        else []
+    )
+    checks["z_manipulation_settings_validated"] = (
+        checks["z_levels_validated"]
+        and isinstance(z_manipulation_settings, list)
+        and len(z_manipulation_settings) == len(z_levels)
+        and len(setting_ids) == len(z_levels)
+        and all(isinstance(value, str) and bool(value) for value in setting_ids)
+        and len(setting_ids) == len(set(setting_ids))
+        and setting_labels == list(z_levels)
     )
 
     p_allocation = p_receipt.get("field_allocation_verification")
@@ -165,6 +194,11 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         },
         "validated_execution": {
             "z_levels": list(z_levels) if checks["z_levels_validated"] else None,
+            "z_manipulation_settings": (
+                z_manipulation_settings
+                if checks["z_manipulation_settings_validated"]
+                else None
+            ),
             "p_experimental_unit": (
                 p_allocation.get("experimental_unit")
                 if checks["p_randomized_allocation_verified"]
