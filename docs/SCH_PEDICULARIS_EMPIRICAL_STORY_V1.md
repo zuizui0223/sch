@@ -181,6 +181,40 @@ that is not explained solely by exsertion.
 It still does not identify the predator cue. Floral odour, phenology, reward,
 plant quality or another correlated state would require a separate assay.
 
+## Antagonist pressure as ecological context
+
+A separate secondary asks whether the new P2 population/season recovers the
+density-by-patch-size structure in seed predation reported by Xia, Sun & Liu
+(2013).
+
+The historical cutpoints are frozen before P2 outcomes:
+
+```text
+sparse <2 flowering plants / m2
+dense  >5 flowering plants / m2
+small patch <20 flowering plants
+large patch >20 flowering plants.
+```
+
+The historical pattern is:
+
+```text
+seed predation: sparse > dense
+within sparse: small > large patches
+within dense:  large > small patches.
+```
+
+This analysis uses only the NATURAL + EXPOSED state and is bound to the exact
+P2 surface-data fingerprint. It is ecological context around the primary
+experiment, not another route to W0-W5.
+
+A positive replication would support the interpretation that antagonist weight
+varies with local ecological context. It would not show that density or patch
+size causes the enemy-induced optimum displacement; that stronger moderation
+question would need its own powered design.
+
+See `docs/SCH_PEDICULARIS_ANTAGONIST_CONTEXT_V1.md`.
+
 ## Falsifiers
 
 The focal hypothesis is rejected for the tested population/season if any core
@@ -267,6 +301,7 @@ higher z -> initial seed set                       TO TEST
 
 secondary
 success-risk coupling after randomized z control   TO TEST
+density x patch-size antagonist context             TO TEST
 
 not identified by the above
 pure pollinator optimum                            NO
