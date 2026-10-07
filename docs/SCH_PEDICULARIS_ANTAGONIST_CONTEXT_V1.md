@@ -87,7 +87,8 @@ patch flowering density
 ```
 
 Patch size is the number of flowering plants assigned to the focal patch.
-All plants sharing one patch_id must share both patch area and patch size.
+All plants sharing one patch_id must share one census date, one patch area and
+one patch-size value.
 
 ## Why the context is not inserted into the primary surface
 
@@ -159,8 +160,8 @@ The analysis requires the canonical surface_data_sha256 to match the exact
 flower-level data used for the primary P2 surface.
 
 A context registry must cover exactly the P2 plant set. Missing plants, extra
-plants, duplicate plant rows, or inconsistent patch-area/patch-size definitions
-fail the secondary analysis only.
+plants, duplicate plant rows, or inconsistent patch census date/area/size
+definitions fail the secondary analysis only.
 
 ## Biological interpretation
 
