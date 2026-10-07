@@ -34,22 +34,22 @@ def _config() -> dict:
 
 CELL_PLAN = {
     "SPARSE_SMALL": {
-        "density_count": 1,
+        "patch_area_m2": 10.0,
         "patch_size": 10,
         "predation": 0.40,
     },
     "SPARSE_LARGE": {
-        "density_count": 1,
+        "patch_area_m2": 30.0,
         "patch_size": 30,
         "predation": 0.20,
     },
     "DENSE_SMALL": {
-        "density_count": 6,
+        "patch_area_m2": 1.5,
         "patch_size": 10,
         "predation": 0.05,
     },
     "DENSE_LARGE": {
-        "density_count": 6,
+        "patch_area_m2": 5.0,
         "patch_size": 30,
         "predation": 0.10,
     },
@@ -96,10 +96,7 @@ def _packet() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
                     "plant_id": plant,
                     "patch_id": f"{cell}_PATCH",
                     "context_measurement_date": "2026-07-01",
-                    "density_quadrat_area_m2": "1",
-                    "flowering_plants_in_density_quadrat": str(
-                        spec["density_count"]
-                    ),
+                    "patch_area_m2": str(spec["patch_area_m2"]),
                     "patch_size_flowering_plants": str(spec["patch_size"]),
                     "notes": "",
                 }
@@ -191,10 +188,12 @@ def test_exact_2013_patch_boundary_is_unclassified() -> None:
         row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
     )
     target["patch_size_flowering_plants"] = "20"
-    # Keep patch consistency by moving the second plant in that patch too.
+    # Keep patch identity coherent and density sparse while putting size exactly
+    # on the historical excluded boundary.
     for row in context:
         if row["patch_id"] == "SPARSE_SMALL_PATCH":
             row["patch_size_flowering_plants"] = "20"
+            row["patch_area_m2"] = "20"
 
     result = build(rows, _surface_receipt(rows), context, _config())
 
@@ -220,6 +219,43 @@ def test_context_registry_patch_size_must_be_constant_within_patch() -> None:
     with pytest.raises(ValueError, match="constant within patch_id"):
         build(rows, _surface_receipt(rows), context, _config())
 
+
+
+def test_context_registry_patch_area_must_be_constant_within_patch() -> None:
+    rows, context = _packet()
+    same_patch = [
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
+    ]
+    same_patch[0]["patch_area_m2"] = "9"
+
+    with pytest.raises(ValueError, match="patch_area_m2 must be constant"):
+        build(rows, _surface_receipt(rows), context, _config())
+
+
+def test_patch_density_is_derived_from_patch_size_over_patch_area() -> None:
+    rows, context = _packet()
+    result = build(rows, _surface_receipt(rows), context, _config())
+
+    by_plant = {
+        row["plant_id"]: row for row in result["plant_level_secondary_data"]
+    }
+    sparse_small_plant = next(
+        row["plant_id"]
+        for row in context
+        if row["patch_id"] == "SPARSE_SMALL_PATCH"
+    )
+    dense_large_plant = next(
+        row["plant_id"]
+        for row in context
+        if row["patch_id"] == "DENSE_LARGE_PATCH"
+    )
+
+    assert by_plant[sparse_small_plant][
+        "patch_flowering_density_plants_m2"
+    ] == pytest.approx(1.0)
+    assert by_plant[dense_large_plant][
+        "patch_flowering_density_plants_m2"
+    ] == pytest.approx(6.0)
 
 def test_surface_fingerprint_mismatch_is_rejected() -> None:
     rows, context = _packet()
