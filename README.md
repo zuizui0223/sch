@@ -556,8 +556,9 @@ config used in registered power**. See
 `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
 A plant-level ecological-context registry is now available as a **secondary,
-non-gating** companion to P2. It records local flowering density and patch size
-for every P2 plant, using the historical Xia et al. (2013) cutpoints
+non-gating** companion to P2. It records patch area and flowering-plant patch size
+for every P2 plant and derives patch flowering density as patch size / area,
+using the historical Xia et al. (2013) cutpoints
 (<2 vs >5 flowering plants/m2; <20 vs >20 flowering plants) frozen before P2
 outcomes. `analyze_pedicularis_antagonist_context.py` then asks whether the
 NATURAL + EXPOSED state recovers the published density-by-patch-size reversal in
