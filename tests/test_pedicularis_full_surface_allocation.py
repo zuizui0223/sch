@@ -15,11 +15,13 @@ def _config() -> dict:
         "season_id": "S1",
         "planned_n_plants": 10,
         "flowers_per_plant": 4,
+        "p0_level_plan_sha256": "1" * 64,
         "z_levels": [
             {
                 "assigned_z_level": f"Z{i}",
                 "assigned_z_rank": i,
                 "target_exsertion": value,
+                "manipulation_setting_id": f"SETTING_Z{i}",
             }
             for i, value in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0))
         ],
@@ -98,6 +100,10 @@ def test_balanced_incomplete_block_allocation_matches_powered_design() -> None:
     assert receipt["n_surface_cells"] == 20
     assert receipt["replicates_per_cell"] == 2
     assert receipt["exact_cell_balance"] is True
+    assert receipt["p0_level_plan_sha256"] == "1" * 64
+    assert {row["manipulation_setting_id"] for row in allocations} == {
+        "SETTING_Z0", "SETTING_Z1", "SETTING_Z2", "SETTING_Z3", "SETTING_Z4"
+    }
     assert set(receipt["cell_counts"].values()) == {2}
     assert receipt["power_binding"]["candidate_primary_surface_power"] == 0.90
     assert receipt["power_binding"]["candidate_headline_w1_or_w2_power"] == 0.85
@@ -297,3 +303,21 @@ def test_complete_label_without_registered_allocation_authorization_fails() -> N
 
     with pytest.raises(ValueError, match="not authorized for registered P2"):
         build(_manifest(), _config(), power, "SEED")
+
+
+def test_p2_allocation_requires_frozen_p0_level_plan_digest() -> None:
+    config = _config()
+    config["p0_level_plan_sha256"] = "REQUIRED_BEFORE_USE"
+
+    with pytest.raises(ValueError, match="p0_level_plan_sha256"):
+        build(_manifest(), config, _power(), "SEED")
+
+
+def test_p2_allocation_requires_unique_physical_z_settings() -> None:
+    config = _config()
+    config["z_levels"][1]["manipulation_setting_id"] = (
+        config["z_levels"][0]["manipulation_setting_id"]
+    )
+
+    with pytest.raises(ValueError, match="manipulation_setting_id must be unique"):
+        build(_manifest(), config, _power(), "SEED")
