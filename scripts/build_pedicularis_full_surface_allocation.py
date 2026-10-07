@@ -8,6 +8,8 @@ import math
 from collections import Counter
 from pathlib import Path
 
+from scripts import analyze_pedicularis_full_surface as surface
+
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
 CONFIG_SCHEMA = "PEDICULARIS_FULL_SURFACE_ALLOCATION_CONFIG_V1"
@@ -309,6 +311,71 @@ def _validate_power(power: dict, config: dict) -> dict:
     }
 
 
+def _validate_readiness(
+    readiness: dict,
+    config: dict,
+) -> dict:
+    surface._validate_readiness(
+        readiness,
+        config["population_id"],
+        config["season_id"],
+    )
+    validated = readiness.get("validated_execution")
+    if not isinstance(validated, dict):
+        raise ValueError("P2 allocation readiness lacks validated execution")
+
+    if validated.get("p0_level_plan_sha256") != config[
+        "p0_level_plan_sha256"
+    ]:
+        raise ValueError(
+            "P2 allocation P0 level-plan SHA-256 does not match readiness"
+        )
+
+    expected_z_levels = [
+        row["assigned_z_level"] for row in config["z_levels"]
+    ]
+    if validated.get("z_levels") != expected_z_levels:
+        raise ValueError(
+            "P2 allocation z-level labels do not match validated P0 readiness"
+        )
+
+    expected_settings = [
+        {
+            "assigned_z_level": row["assigned_z_level"],
+            "assigned_z_rank": row["assigned_z_rank"],
+            "manipulation_setting_id": row["manipulation_setting_id"],
+        }
+        for row in config["z_levels"]
+    ]
+    if validated.get("z_manipulation_settings") != expected_settings:
+        raise ValueError(
+            "P2 allocation physical z-manipulation settings do not match readiness"
+        )
+
+    if validated.get("g_exclusion_method") != config["excluded_method_code"]:
+        raise ValueError(
+            "P2 allocation EXCLUDED method does not match validated G readiness"
+        )
+    if validated.get("g_exposed_sham_method") != config[
+        "exposed_method_code"
+    ]:
+        raise ValueError(
+            "P2 allocation EXPOSED sham method does not match validated G readiness"
+        )
+
+    return {
+        "readiness_receipt_sha256": _semantic_sha256(readiness),
+        "p0_level_plan_sha256": validated["p0_level_plan_sha256"],
+        "z_levels": list(validated["z_levels"]),
+        "z_manipulation_settings": list(
+            validated["z_manipulation_settings"]
+        ),
+        "p1_experimental_unit": validated["p_experimental_unit"],
+        "g_exclusion_method": validated["g_exclusion_method"],
+        "g_exposed_sham_method": validated["g_exposed_sham_method"],
+    }
+
+
 def _validate_manifest(
     rows: list[dict[str, str]],
     config: dict,
@@ -411,6 +478,7 @@ def build(
     manifest_rows: list[dict[str, str]],
     config_payload: dict,
     power_receipt: dict,
+    readiness_receipt: dict,
     allocation_seed: str,
 ) -> tuple[list[dict[str, str]], dict]:
     allocation_seed = allocation_seed.strip()
@@ -419,6 +487,7 @@ def build(
 
     config = _validate_config(config_payload)
     power = _validate_power(power_receipt, config)
+    readiness = _validate_readiness(readiness_receipt, config)
     by_plant = _validate_manifest(manifest_rows, config)
 
     plant_order = _hash_rank(
@@ -521,6 +590,10 @@ def build(
         "allocation_identity_sha256": allocation_digest,
         "allocation_config_sha256": _semantic_sha256(config_payload),
         "power_binding": power,
+        "readiness_binding": readiness,
+        "readiness_receipt_sha256": readiness[
+            "readiness_receipt_sha256"
+        ],
         "sample_size_chosen_by_script": False,
         "flowers_per_plant_chosen_by_script": False,
         "z_levels_chosen_by_script": False,
@@ -532,6 +605,8 @@ def build(
         "claim_ceiling": [
             "field_allocation_only",
             "power_design_to_field_execution_binding",
+            "positive_readiness_bound_before_field_allocation",
+            "validated_P0_z_settings_and_G0_G1_methods_match_allocation",
             "treatment_blind_flower_registration_before_assignment",
             "exact_global_z_by_P_by_G_cell_balance",
             "no_duplicate_cell_within_plant",
@@ -562,6 +637,7 @@ def main() -> None:
     parser.add_argument("flower_manifest_csv", type=Path)
     parser.add_argument("allocation_config_json", type=Path)
     parser.add_argument("power_receipt_json", type=Path)
+    parser.add_argument("readiness_v3_json", type=Path)
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--allocations-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
@@ -571,6 +647,7 @@ def main() -> None:
         _read_csv(args.flower_manifest_csv),
         _load_json(args.allocation_config_json),
         _load_json(args.power_receipt_json),
+        _load_json(args.readiness_v3_json),
         args.allocation_seed,
     )
     _write_csv(args.allocations_out, allocations)
