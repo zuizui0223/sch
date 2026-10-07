@@ -431,6 +431,21 @@ This prevents the geometry pilot from becoming a nominal citation while a
 different, more convenient optimum, curvature, slope or variance is used for
 sample-size planning.
 
+## Closing the remaining three blockers
+
+A precision-qualified geometry pilot intentionally leaves three basis paths
+untouched. They are completed with the separate contract:
+
+```text
+docs/SCH_PEDICULARIS_FINAL_W1_W2_BASIS_V1.md
+```
+
+No extra causal mini-surface is needed. The final-three materializer uses the
+positive locked P0 experiment for the numeric z grid and realized-z error, and a
+full-surface decision-threshold freeze made before geometry/P2 outcome use for
+the primary `sch_surface` rules. The registered simulator subsequently requires
+both the 18-path geometry binding and the final-three P0/F0 binding.
+
 ## What the pilot does not do
 
 The geometry pilot does not:
@@ -464,7 +479,12 @@ current basis audit
         else:
           evaluate staged geometry precision
           -> resolve 18 power-basis blockers
-          -> finish remaining P0/F0 basis
+          -> materialize the final 3:
+               P0 realized-setting means -> z_levels
+               pooled within-setting P0 SD -> realized_z_sd
+               pre-geometry full-surface freeze -> sch_surface.*
+          -> zero-blocker basis
+          -> exact geometry binding + exact P0/F0 binding
           -> registered W1/W2 power
           -> powered confirmatory P2
    else:

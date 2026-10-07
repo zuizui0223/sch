@@ -19,6 +19,10 @@ from scripts.bind_pedicularis_w1_w2_geometry_config import (
     BINDING_STATUS,
     _semantic_sha256,
 )
+from scripts.bind_pedicularis_w1_w2_p0_f0_config import (
+    BINDING_SCHEMA as P0_F0_BINDING_SCHEMA,
+    BINDING_STATUS as P0_F0_BINDING_STATUS,
+)
 
 
 SCHEMA = "PEDICULARIS_W1_W2_POWER_CONFIG_V1"
@@ -312,6 +316,45 @@ def _validate_geometry_binding(
             "power-basis receipt has changed since geometry-config binding"
         )
     return geometry_binding
+
+
+def _validate_p0_f0_binding(
+    config: dict,
+    basis_receipt: dict | None,
+    p0_f0_binding: dict | None,
+) -> dict | None:
+    status = config.get("status")
+    if status in {TEST_STATUS, SENSITIVITY_STATUS}:
+        return None
+    if status != FROZEN_STATUS:
+        raise ValueError("unrecognized W1/W2 power run status")
+    if basis_receipt is None:
+        raise ValueError(
+            "registered W1/W2 power requires a basis receipt before P0/F0 binding"
+        )
+    if p0_f0_binding is None:
+        raise ValueError(
+            "registered W1/W2 power requires an exact P0/F0 config binding receipt"
+        )
+    if p0_f0_binding.get("receipt_schema") != P0_F0_BINDING_SCHEMA:
+        raise ValueError("P0/F0 config binding receipt schema mismatch")
+    if p0_f0_binding.get("status") != P0_F0_BINDING_STATUS:
+        raise ValueError("P0/F0 config binding receipt is not ready")
+    if p0_f0_binding.get("all_final_three_paths_match") is not True:
+        raise ValueError("P0/F0 config binding does not certify all final paths")
+
+    provenance = config.get("planning_provenance", {})
+    if p0_f0_binding.get("population_id") != provenance.get("population_id"):
+        raise ValueError("P0/F0 binding population does not match power config")
+    if p0_f0_binding.get("season_id") != provenance.get("season_id"):
+        raise ValueError("P0/F0 binding season does not match power config")
+    if p0_f0_binding.get("power_config_sha256") != _semantic_sha256(config):
+        raise ValueError("power config has changed since P0/F0 binding")
+    if p0_f0_binding.get("power_basis_receipt_sha256") != _semantic_sha256(
+        basis_receipt
+    ):
+        raise ValueError("power-basis receipt has changed since P0/F0 binding")
+    return p0_f0_binding
 
 
 def _validate_config(config: dict) -> dict:
@@ -878,6 +921,7 @@ def simulate_power(
     world_rows: list[dict[str, str]] | None = None,
     basis_receipt: dict | None = None,
     geometry_binding: dict | None = None,
+    p0_f0_binding: dict | None = None,
 ) -> dict:
     frozen = _validate_config(config)
     validated_basis = _validate_basis_receipt(
@@ -888,6 +932,11 @@ def simulate_power(
         config,
         validated_basis,
         geometry_binding,
+    )
+    validated_p0_f0_binding = _validate_p0_f0_binding(
+        config,
+        validated_basis,
+        p0_f0_binding,
     )
     worlds = _read_worlds(DEFAULT_WORLDS) if world_rows is None else world_rows
     provenance = frozen["planning_provenance"]
@@ -1092,6 +1141,26 @@ def simulate_power(
                 else "MISSING"
             )
         ),
+        "p0_f0_config_binding_status": (
+            validated_p0_f0_binding.get("status")
+            if validated_p0_f0_binding is not None
+            else (
+                "NOT_REQUIRED_FOR_SENSITIVITY_OR_SYNTHETIC_TEST"
+                if config["status"] in {SENSITIVITY_STATUS, TEST_STATUS}
+                else "MISSING"
+            )
+        ),
+        "production_surface_config_sha256": (
+            validated_p0_f0_binding.get("analysis_config_sha256")
+            if validated_p0_f0_binding is not None
+            else _semantic_sha256(frozen["production_surface_config"])
+        ),
+        "surface_threshold_freeze_sha256": (
+            validated_p0_f0_binding.get("surface_threshold_freeze_sha256")
+            if validated_p0_f0_binding is not None
+            else None
+        ),
+        "power_config_sha256": _semantic_sha256(config),
         "minimum_plants_meeting_both_targets": recommended_n,
         "minimum_total_full_surface_flowers_meeting_both_targets": (
             recommended_n * frozen["field_design"]["flowers_per_plant"]
@@ -1105,6 +1174,8 @@ def simulate_power(
             == BASIS_READY_STATUS
             and validated_geometry_binding is not None
             and validated_geometry_binding.get("status") == BINDING_STATUS
+            and validated_p0_f0_binding is not None
+            and validated_p0_f0_binding.get("status") == P0_F0_BINDING_STATUS
         ),
         "status": result_status,
         "claim_ceiling": [
@@ -1116,6 +1187,8 @@ def simulate_power(
             "Monte_Carlo_power_is_conditional_on_frozen_generating_scenario",
             "sensitivity_only_runs_cannot_supply_a_P2_field_allocation_n",
             "registered_runs_require_precision_qualified_exact_18_path_geometry_binding",
+            "registered_runs_require_exact_final_three_P0_F0_binding",
+            "production_surface_config_fingerprint_carried_into_P2_allocation",
         ],
     }
 
@@ -1145,6 +1218,14 @@ def main() -> None:
             "for registered frozen runs and not required for sensitivity/test runs"
         ),
     )
+    parser.add_argument(
+        "--p0-f0-binding",
+        type=Path,
+        help=(
+            "PEDICULARIS_W1_W2_P0_F0_CONFIG_BINDING_V1 receipt; required "
+            "for registered frozen runs and not required for sensitivity/test runs"
+        ),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -1159,11 +1240,17 @@ def main() -> None:
         if args.geometry_binding is not None
         else None
     )
+    p0_f0_binding = (
+        json.loads(args.p0_f0_binding.read_text(encoding="utf-8"))
+        if args.p0_f0_binding is not None
+        else None
+    )
     result = simulate_power(
         config,
         world_rows=_read_worlds(args.worlds),
         basis_receipt=basis_receipt,
         geometry_binding=geometry_binding,
+        p0_f0_binding=p0_f0_binding,
     )
     payload = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:

@@ -123,6 +123,12 @@ def _power() -> dict:
         "target_primary_surface_power": 0.80,
         "target_headline_w1_or_w2_power": 0.80,
         "registered_field_allocation_recommendation_allowed": True,
+        "p0_f0_config_binding_status": (
+            "PEDICULARIS_W1_W2_P0_F0_CONFIG_EXACTLY_BOUND"
+        ),
+        "production_surface_config_sha256": "7" * 64,
+        "surface_threshold_freeze_sha256": "8" * 64,
+        "power_config_sha256": "9" * 64,
         "powered_design": {
             "nominal_z_levels": [-2.0, -1.0, 0.0, 1.0, 2.0],
             "realized_z_sd": 0.1,
@@ -185,6 +191,9 @@ def test_balanced_incomplete_block_allocation_matches_powered_design() -> None:
     }
     assert set(receipt["cell_counts"].values()) == {2}
     assert receipt["power_binding"]["candidate_primary_surface_power"] == 0.90
+    assert receipt["production_surface_config_sha256"] == "7" * 64
+    assert receipt["surface_threshold_freeze_sha256"] == "8" * 64
+    assert receipt["power_config_sha256"] == "9" * 64
     assert len(receipt["readiness_receipt_sha256"]) == 64
     assert receipt["readiness_binding"]["g_exposed_sham_method"] == "SHAM_SLEEVE"
     assert receipt["power_binding"]["candidate_headline_w1_or_w2_power"] == 0.85
@@ -432,3 +441,11 @@ def test_p2_allocation_rejects_readiness_exposed_sham_mismatch() -> None:
 
     with pytest.raises(ValueError, match="EXPOSED sham method"):
         build(_manifest(), config, _power(), "SEED", readiness)
+
+
+def test_power_without_final_three_binding_cannot_allocate_p2() -> None:
+    power = _power()
+    power["p0_f0_config_binding_status"] = "MISSING"
+
+    with pytest.raises(ValueError, match="final-three P0/F0"):
+        build(_manifest(), _config(), power, "SEED")

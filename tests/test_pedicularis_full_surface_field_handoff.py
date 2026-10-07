@@ -109,6 +109,12 @@ def _power() -> dict:
         "target_primary_surface_power": 0.80,
         "target_headline_w1_or_w2_power": 0.80,
         "registered_field_allocation_recommendation_allowed": True,
+        "p0_f0_config_binding_status": (
+            "PEDICULARIS_W1_W2_P0_F0_CONFIG_EXACTLY_BOUND"
+        ),
+        "production_surface_config_sha256": "7" * 64,
+        "surface_threshold_freeze_sha256": "8" * 64,
+        "power_config_sha256": "9" * 64,
         "powered_design": {
             "nominal_z_levels": [-2.0, -1.0, 0.0, 1.0, 2.0],
             "realized_z_sd": 0.1,
@@ -185,6 +191,9 @@ def test_prepare_prefills_only_frozen_identity_and_treatment_fields() -> None:
     assert lock["outcome_fields_prefilled"] is False
     assert lock["p0_level_plan_sha256"] == "1" * 64
     assert len(lock["readiness_receipt_sha256"]) == 64
+    assert lock["production_surface_config_sha256"] == "7" * 64
+    assert lock["surface_threshold_freeze_sha256"] == "8" * 64
+    assert lock["power_config_sha256"] == "9" * 64
     assert all(row["assigned_z_level"] for row in field_rows)
     assert all(row["manipulation_setting_id"] for row in field_rows)
     assert all(row["pollination_treatment"] for row in field_rows)
@@ -278,6 +287,9 @@ def test_complete_packet_produces_surface_data_fingerprint() -> None:
     assert receipt["canonical_outcomes_complete"] is True
     assert receipt["surface_data_sha256"] is not None
     assert receipt["readiness_receipt_sha256"] == lock["readiness_receipt_sha256"]
+    assert receipt["production_surface_config_sha256"] == "7" * 64
+    assert receipt["surface_threshold_freeze_sha256"] == "8" * 64
+    assert receipt["power_config_sha256"] == "9" * 64
     assert len(receipt["surface_data_sha256"]) == 64
     assert receipt["status"] == (
         "P2_FULL_SURFACE_FIELD_PACKET_VERIFIED_COMPLETE"

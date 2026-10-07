@@ -96,6 +96,9 @@ def _field_verification(
         "field_identity_sha256": "b" * 64,
         "p0_level_plan_sha256": "1" * 64,
         "readiness_receipt_sha256": _semantic_sha256(readiness),
+        "production_surface_config_sha256": _semantic_sha256(_config()),
+        "surface_threshold_freeze_sha256": "8" * 64,
+        "power_config_sha256": "9" * 64,
         "surface_data_sha256": surface_data_sha256(rows),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
@@ -258,6 +261,9 @@ def test_production_locked_analysis_accepts_exact_verified_surface() -> None:
     assert result["field_execution_verification"]["surface_data_sha256"] == (
         result["surface_data_sha256"]
     )
+    assert result["field_execution_verification"][
+        "production_surface_config_sha256"
+    ] == _semantic_sha256(_config())
 
 
 def test_production_locked_analysis_rejects_surface_changed_after_verify() -> None:
@@ -345,3 +351,18 @@ def test_production_locked_analysis_rejects_different_readiness_after_allocation
 
     with pytest.raises(ValueError, match="exact readiness V3 receipt"):
         analyze_locked(rows, changed_readiness, _config(), verification)
+
+
+def test_production_locked_analysis_rejects_threshold_config_drift_from_power() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    changed_config = _config()
+    changed_config["sch_surface"]["min_optimum_shift"] = 0.6
+
+    with pytest.raises(ValueError, match="differs from the production surface config"):
+        analyze_locked(
+            rows,
+            _readiness(),
+            changed_config,
+            verification,
+        )

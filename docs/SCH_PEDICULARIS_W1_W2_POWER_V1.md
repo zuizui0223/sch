@@ -60,11 +60,37 @@ population / season                    identical
 and stores semantic SHA-256 digests of the exact geometry summary, precision
 receipt, zero-blocker basis receipt and entire frozen power config.
 
-The registered simulator then requires both:
+The final three non-geometry paths are now closed separately by
+`docs/SCH_PEDICULARIS_FINAL_W1_W2_BASIS_V1.md`:
+
+~~~text
+generating_model.z_levels
+  <- means of realized exsertion for each validated physical P0 setting
+
+generating_model.realized_z_sd
+  <- pooled within-setting P0 realized-exsertion residual SD
+
+production_surface_config.sch_surface.*
+  <- prospective full-surface threshold freeze made before geometry/P2 outcomes.
+~~~
+
+After materialization, bind those values to the same frozen power config with:
+
+~~~bash
+python scripts/bind_pedicularis_w1_w2_p0_f0_config.py \
+  <frozen_power_config.json> \
+  <final_p0_f0_basis_receipt.json> \
+  <zero_blocker_power_basis_receipt.json> \
+  <surface_threshold_freeze_receipt.json> \
+  --output <p0_f0_config_binding.json>
+~~~
+
+A registered simulator run then requires all three provenance inputs:
 
 ~~~bash
 --basis-receipt <zero_blocker_power_basis_receipt.json>
 --geometry-binding <geometry_config_binding.json>
+--p0-f0-binding <p0_f0_config_binding.json>
 ~~~
 
 Any later edit to the power config or basis receipt invalidates the binding.
@@ -168,6 +194,11 @@ nonconfirmatory randomized z x P x G cohort registered as
 `POWER_GEOMETRY_PILOT`. A valid pilot can directly materialize the 18
 same-estimand fitness/pollen/initial-seed geometry and variance rows, leaving
 only the z-grid, realized-z SD and primary-threshold basis rows unresolved.
+Those three are not another field-study requirement: they are materialized from
+the already-positive same-context P0 manipulation plus a prospectively frozen
+full-surface decision-threshold receipt. The registered n remains blocked until
+both the 18-path geometry binding and the final-three P0/F0 binding certify the
+same frozen power config.
 
 For a registered power run, first materialize a basis-audit receipt whose state
 is:
@@ -237,9 +268,12 @@ The production analyzers receive the resulting realized exsertion values.
 Power therefore declines when manipulation levels overlap, rather than assuming
 perfectly realized trait values.
 
-The value of `realized_z_sd` must come from the same-context P0 calibration or
-a prospectively labelled sensitivity scenario. It must not be tuned after the
-full-surface result is seen.
+For a registered run, the numeric z grid is the ordered vector of mean
+`realized_exsertion` values produced by the validated physical P0 settings.
+`realized_z_sd` is the pooled within-setting residual SD from those exact P0
+rows. The positive P0 receipt fingerprints the raw dataset used to derive both.
+Sensitivity runs may still use explicitly labelled hypothetical values, but
+those cannot authorize P2 field allocation.
 
 ## Plant-level blocking
 

@@ -1,0 +1,20 @@
+{
+  "schema": "PEDICULARIS_FULL_SURFACE_THRESHOLD_FREEZE_V1",
+  "status": "PEDICULARIS_FULL_SURFACE_THRESHOLDS_PROSPECTIVELY_FROZEN",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "frozen_at_utc": "REQUIRED_BEFORE_USE",
+  "basis_document": "REQUIRED_BEFORE_USE",
+  "frozen_before_geometry_outcomes": "REQUIRED_BEFORE_USE",
+  "frozen_before_full_surface_outcomes": "REQUIRED_BEFORE_USE",
+  "threshold_basis": {
+    "sch_surface.min_z_levels": "REQUIRED_BEFORE_USE",
+    "sch_surface.min_valid_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+    "sch_surface.min_interior_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+    "sch_surface.min_optimum_separation": "REQUIRED_BEFORE_USE",
+    "sch_surface.min_optimum_shift": "REQUIRED_BEFORE_USE",
+    "sch_surface.min_abs_component_gradient": "REQUIRED_BEFORE_USE",
+    "system_checks.max_water_depth_range": "REQUIRED_BEFORE_USE",
+    "system_checks.max_mechanical_damage_rate": "REQUIRED_BEFORE_USE"
+  }
+}

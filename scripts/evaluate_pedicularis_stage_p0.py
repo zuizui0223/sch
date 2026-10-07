@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import random
@@ -94,6 +95,27 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
         ):
             _number(row, field)
     return rows
+
+
+def p0_data_sha256(rows: list[dict[str, str]]) -> str:
+    canonical = [
+        {field: row[field].strip() for field in REQUIRED_FIELDS}
+        for row in rows
+    ]
+    canonical.sort(
+        key=lambda row: (
+            row["population_id"],
+            row["season_id"],
+            row["plant_id"],
+            row["flower_id"],
+        )
+    )
+    payload = json.dumps(
+        canonical,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _number(row: dict[str, str], field: str) -> float:
@@ -402,6 +424,7 @@ def evaluate(rows: list[dict[str, str]], config: dict) -> dict:
         "config_freeze": freeze,
         "n_rows": len(rows),
         "n_plants": n_plants,
+        "p0_data_sha256": p0_data_sha256(rows),
         "z_levels": [groups[rank][0]["assigned_z_level"] for rank in groups],
         "z_manipulation_settings": [
             {

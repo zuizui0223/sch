@@ -189,6 +189,7 @@ def test_locked_p0_evaluator_accepts_exact_randomized_assignment() -> None:
     assert result["status"] == "PEDICULARIS_Z_MANIPULATION_VALIDATED"
     assert result["field_allocation_verification"]["identity_z_assignment_match"] is True
     assert result["field_allocation_verification"]["physical_manipulation_setting_match"] is True
+    assert len(result["p0_data_sha256"]) == 64
     assert result["z_manipulation_settings"][0]["manipulation_setting_id"] == "SETTING_Z0"
     assert result["field_allocation_verification"]["receipt_schema"] == (
         "PEDICULARIS_P0_RANDOMIZED_ALLOCATION_V1"
