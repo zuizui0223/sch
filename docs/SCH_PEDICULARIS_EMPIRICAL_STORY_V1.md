@@ -212,6 +212,51 @@ that is not explained solely by exsertion.
 It still does not identify the predator cue. Floral odour, phenology, reward,
 plant quality or another correlated state would require a separate assay.
 
+## Prospective replication of the Xia2013 antagonist context
+
+The historical result is already recovered: Xia, Sun & Liu (2013) showed that
+P. rex seed-predator pressure depends strongly on the combination of patch
+flowering density and patch size, including a reversal in the patch-size
+association between sparse and dense contexts.
+
+The new P2 cohort asks a different question:
+
+> does that historical antagonist-context pattern reappear around the same
+> plants used for the randomized z x P x G experiment?
+
+Before P2 outcomes, freeze the historical classes:
+
+```text
+sparse patch density <2 flowering plants / m2
+dense patch density  >5 flowering plants / m2
+small patch          <20 flowering plants
+large patch          >20 flowering plants.
+```
+
+Patch density is reconstructed on the historical scale as:
+
+```text
+patch_size_flowering_plants / patch_area_m2.
+```
+
+The secondary uses only the NATURAL + EXPOSED state and is bound to the exact
+primary P2 surface-data fingerprint. It tests only the preregistered sign
+pattern:
+
+```text
+overall predation: sparse > dense
+within sparse:     small > large patches
+within dense:      large > small patches.
+```
+
+A positive replication supports the interpretation that antagonist weight is a
+patch-scale ecological state rather than a fixed property of the population.
+It does **not** show that patch density or patch size causes the enemy-induced
+optimum displacement. That moderation question would need a separately powered
+context-by-surface design.
+
+See `docs/SCH_PEDICULARIS_ANTAGONIST_CONTEXT_V1.md`.
+
 ## Falsifiers
 
 The focal hypothesis is rejected for the tested population/season if any core
@@ -300,6 +345,7 @@ higher z -> initial seed set                       TO TEST
 
 secondary
 success-risk coupling after randomized z control   TO TEST
+P2 Xia2013 patch-context pattern replication       TO TEST
 
 not identified by the above
 pure pollinator optimum                            NO
