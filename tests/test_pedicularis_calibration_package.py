@@ -30,6 +30,7 @@ def _p0_rows(season: str = "S1") -> list[dict[str, str]]:
                 "population_id":"P_REX_TEST","season_id":season,
                 "plant_id":f"A{plant:02d}","flower_id":f"A{plant:02d}_Z{rank}",
                 "assigned_z_level":f"Z{rank}","assigned_z_rank":str(rank),
+                "manipulation_setting_id":f"SETTING_Z{rank}",
                 "sham_control":"1" if rank==4 else "0",
                 "realized_exsertion":str(0.2+0.15*rank+plant*0.001),
                 "corolla_opening_width":"8.0","lower_lip_angle_deg":"25.0",
