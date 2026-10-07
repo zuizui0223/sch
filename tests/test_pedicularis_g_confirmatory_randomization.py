@@ -169,6 +169,9 @@ def test_confirmatory_g_freeze_and_randomized_allocation_validate() -> None:
         "identity_treatment_method_sham_match"
     ] is True
     assert result["field_allocation_verification"]["selected_candidate_id"] == "G_TEST"
+    assert result["field_allocation_verification"]["exposed_sham_method_code"] == (
+        "SHAM_SLEEVE"
+    )
 
 
 def test_candidate_must_have_passed_exploratory_hard_validity() -> None:
