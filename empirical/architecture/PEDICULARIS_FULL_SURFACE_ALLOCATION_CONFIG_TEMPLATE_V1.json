@@ -9,10 +9,12 @@
     {
       "assigned_z_level": "REQUIRED_BEFORE_USE",
       "assigned_z_rank": "REQUIRED_BEFORE_USE",
-      "target_exsertion": "REQUIRED_BEFORE_USE"
+      "target_exsertion": "REQUIRED_BEFORE_USE",
+      "manipulation_setting_id": "REQUIRED_BEFORE_USE"
     }
   ],
   "excluded_method_code": "REQUIRED_BEFORE_USE",
   "exposed_method_code": "REQUIRED_BEFORE_USE",
-  "frozen_before_full_surface_outcomes": "REQUIRED_BEFORE_USE"
+  "frozen_before_full_surface_outcomes": "REQUIRED_BEFORE_USE",
+  "p0_level_plan_sha256": "REQUIRED_BEFORE_USE"
 }
