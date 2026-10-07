@@ -111,8 +111,10 @@ For each plant represented in that natural state it calculates:
 - early predator-attack rate;
 - final undamaged seed fraction.
 
-The historical replication requires a prospectively frozen minimum number of
-plants in each of four cells:
+The historical replication uses **patch**, not plant, as the independent
+context-replication unit. Plant outcomes are first averaged within patch, then
+the analysis requires a prospectively frozen minimum number of independent
+patches in each of four cells:
 
 ```text
 SPARSE x SMALL
@@ -121,7 +123,7 @@ DENSE  x SMALL
 DENSE  x LARGE.
 ```
 
-If one cell is below that minimum, the result is
+If one cell is below the minimum patch count, the result is
 P2_ANTAGONIST_CONTEXT_HISTORICAL_COMPARISON_NOT_MODELABLE rather than
 combining cells or changing thresholds after seeing data.
 
@@ -161,7 +163,8 @@ flower-level data used for the primary P2 surface.
 
 A context registry must cover exactly the P2 plant set. Missing plants, extra
 plants, duplicate plant rows, or inconsistent patch census date/area/size
-definitions fail the secondary analysis only.
+definitions fail the secondary analysis only. Multiple P2 plants in one patch
+improve the patch mean but do not count as independent context replicates.
 
 ## Biological interpretation
 
@@ -189,6 +192,7 @@ It cannot:
 - change or rescue W0-W5;
 - make a negative P2 surface positive;
 - identify causal effects of patch flowering density or patch size;
+- count multiple plants from one patch as independent patch replicates;
 - claim density-dependent optimum displacement;
 - change the registered P2 sample size;
 - redefine sparse/dense or small/large after outcomes.
