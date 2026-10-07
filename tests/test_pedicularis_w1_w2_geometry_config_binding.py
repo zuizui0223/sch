@@ -173,6 +173,7 @@ def _geometry_summary(config: dict) -> dict:
         "intervention_plan_binding_sha256": "i" * 64,
         "readiness_intervention_plan_match": {
             "z_levels": True,
+            "z_manipulation_settings": True,
             "p1_experimental_unit": True,
             "g_exclusion_method": True,
             "p0_level_plan_sha256": True,
