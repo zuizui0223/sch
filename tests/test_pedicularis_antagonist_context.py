@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from copy import deepcopy
-
 import pytest
 
 from scripts import analyze_pedicularis_full_surface as surface
@@ -27,7 +25,7 @@ def _config() -> dict:
             "exact_boundary_is_unclassified": True,
         },
         "analysis_gate": {
-            "min_plants_per_historical_context_cell": 2,
+            "min_patches_per_historical_context_cell": 2,
         },
     }
 
@@ -84,29 +82,36 @@ def _packet() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     rows = []
     context = []
     plant_index = 0
+
     for cell, spec in CELL_PLAN.items():
-        for replicate in range(2):
-            plant_index += 1
-            plant = f"P{plant_index:02d}"
-            rows.append(_row(plant, spec["predation"]))
-            context.append(
-                {
-                    "population_id": "P_REX_TEST",
-                    "season_id": "S1",
-                    "plant_id": plant,
-                    "patch_id": f"{cell}_PATCH",
-                    "context_measurement_date": "2026-07-01",
-                    "patch_area_m2": str(spec["patch_area_m2"]),
-                    "patch_size_flowering_plants": str(spec["patch_size"]),
-                    "notes": "",
-                }
-            )
+        for patch_rep in range(2):
+            patch_id = f"{cell}_PATCH{patch_rep + 1}"
+            for _plant_rep in range(2):
+                plant_index += 1
+                plant = f"P{plant_index:02d}"
+                rows.append(_row(plant, spec["predation"]))
+                context.append(
+                    {
+                        "population_id": "P_REX_TEST",
+                        "season_id": "S1",
+                        "plant_id": plant,
+                        "patch_id": patch_id,
+                        "context_measurement_date": "2026-07-01",
+                        "patch_area_m2": str(spec["patch_area_m2"]),
+                        "patch_size_flowering_plants": str(
+                            spec["patch_size"]
+                        ),
+                        "notes": "",
+                    }
+                )
     return rows, context
 
 
 def _surface_receipt(rows: list[dict[str, str]]) -> dict:
     return {
-        "system_wrapper_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2",
+        "system_wrapper_schema_version": (
+            "SCH_PEDICULARIS_FULL_SURFACE_WRAPPER_V2"
+        ),
         "system": "Pedicularis rex",
         "population_id": "P_REX_TEST",
         "season_id": "S1",
@@ -123,15 +128,21 @@ def test_historical_density_patch_pattern_is_recovered_without_touching_w0_w5() 
         "P2_ANTAGONIST_CONTEXT_PATTERN_CONSISTENT_WITH_XIA2013"
     )
     assert result["historical_comparison_modelable"] is True
-    assert result["historical_context_cell_n"] == {
+    assert result["historical_context_cell_n_patches"] == {
         "DENSE_LARGE": 2,
         "DENSE_SMALL": 2,
         "SPARSE_LARGE": 2,
         "SPARSE_SMALL": 2,
     }
+    assert len(result["patch_level_secondary_data"]) == 8
+    assert {
+        patch["n_plants"] for patch in result["patch_level_secondary_data"]
+    } == {2}
+
     checks = result["historical_pattern_sign_checks"]
     assert checks is not None
     assert all(checks.values())
+
     contrasts = result["historical_pattern_contrasts"]
     assert contrasts is not None
     assert contrasts["dense_minus_sparse_seed_predation"] < 0
@@ -139,6 +150,10 @@ def test_historical_density_patch_pattern_is_recovered_without_touching_w0_w5() 
     assert contrasts["dense_large_minus_small_patch_effect"] > 0
     assert contrasts["patch_by_density_difference_in_differences"] > 0
     assert "does_not_change_or_rescue_primary_W0_W5" in result["claim_ceiling"]
+    assert (
+        "patch_is_the_replication_unit_for_historical_context_comparison"
+        in result["claim_ceiling"]
+    )
 
 
 def test_reversed_dense_patch_effect_is_reported_as_not_recovered() -> None:
@@ -146,7 +161,7 @@ def test_reversed_dense_patch_effect_is_reported_as_not_recovered() -> None:
     dense_large = {
         row["plant_id"]
         for row in context
-        if row["patch_id"] == "DENSE_LARGE_PATCH"
+        if row["patch_id"].startswith("DENSE_LARGE_PATCH")
     }
     for row in rows:
         if row["plant_id"] in dense_large:
@@ -162,15 +177,16 @@ def test_reversed_dense_patch_effect_is_reported_as_not_recovered() -> None:
     ] is False
 
 
-def test_too_few_plants_in_one_historical_cell_is_fail_closed_not_modelable() -> None:
+def test_too_few_patches_in_one_historical_cell_is_fail_closed_not_modelable() -> None:
     rows, context = _packet()
-    remove = next(
-        row["plant_id"]
-        for row in context
-        if row["patch_id"] == "SPARSE_SMALL_PATCH"
-    )
-    rows = [row for row in rows if row["plant_id"] != remove]
-    context = [row for row in context if row["plant_id"] != remove]
+    remove_patch = "SPARSE_SMALL_PATCH1"
+    remove_plants = {
+        row["plant_id"] for row in context if row["patch_id"] == remove_patch
+    }
+    rows = [row for row in rows if row["plant_id"] not in remove_plants]
+    context = [
+        row for row in context if row["plant_id"] not in remove_plants
+    ]
 
     result = build(rows, _surface_receipt(rows), context, _config())
 
@@ -178,27 +194,56 @@ def test_too_few_plants_in_one_historical_cell_is_fail_closed_not_modelable() ->
     assert result["status"] == (
         "P2_ANTAGONIST_CONTEXT_HISTORICAL_COMPARISON_NOT_MODELABLE"
     )
+    assert result["historical_context_cell_n_patches"]["SPARSE_SMALL"] == 1
     assert result["historical_pattern_contrasts"] is None
     assert result["historical_pattern_sign_checks"] is None
 
 
+def test_many_plants_in_one_patch_do_not_count_as_independent_patch_replicates() -> None:
+    rows, context = _packet()
+
+    # Remove the second sparse-small patch, then add extra plants to the first
+    # one. Plant count rises, but independent patch count remains one.
+    remove_patch = "SPARSE_SMALL_PATCH2"
+    remove_plants = {
+        row["plant_id"] for row in context if row["patch_id"] == remove_patch
+    }
+    rows = [row for row in rows if row["plant_id"] not in remove_plants]
+    context = [
+        row for row in context if row["plant_id"] not in remove_plants
+    ]
+
+    base = next(
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH1"
+    )
+    for index in range(20, 24):
+        plant = f"P{index}"
+        rows.append(_row(plant, 0.40))
+        context.append(
+            {
+                **base,
+                "plant_id": plant,
+            }
+        )
+
+    result = build(rows, _surface_receipt(rows), context, _config())
+
+    assert result["historical_context_cell_n_patches"]["SPARSE_SMALL"] == 1
+    assert result["historical_comparison_modelable"] is False
+
+
 def test_exact_2013_patch_boundary_is_unclassified() -> None:
     rows, context = _packet()
-    target = next(
-        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
-    )
-    target["patch_size_flowering_plants"] = "20"
-    # Keep patch identity coherent and density sparse while putting size exactly
-    # on the historical excluded boundary.
+
     for row in context:
-        if row["patch_id"] == "SPARSE_SMALL_PATCH":
+        if row["patch_id"] == "SPARSE_SMALL_PATCH1":
             row["patch_size_flowering_plants"] = "20"
             row["patch_area_m2"] = "20"
 
     result = build(rows, _surface_receipt(rows), context, _config())
 
     assert result["historical_comparison_modelable"] is False
-    assert result["historical_context_cell_n"]["SPARSE_SMALL"] == 0
+    assert result["historical_context_cell_n_patches"]["SPARSE_SMALL"] == 1
 
 
 def test_context_registry_must_cover_exactly_all_p2_plants() -> None:
@@ -212,7 +257,7 @@ def test_context_registry_must_cover_exactly_all_p2_plants() -> None:
 def test_context_registry_patch_size_must_be_constant_within_patch() -> None:
     rows, context = _packet()
     same_patch = [
-        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH1"
     ]
     same_patch[0]["patch_size_flowering_plants"] = "9"
 
@@ -220,11 +265,10 @@ def test_context_registry_patch_size_must_be_constant_within_patch() -> None:
         build(rows, _surface_receipt(rows), context, _config())
 
 
-
 def test_context_registry_patch_area_must_be_constant_within_patch() -> None:
     rows, context = _packet()
     same_patch = [
-        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH1"
     ]
     same_patch[0]["patch_area_m2"] = "9"
 
@@ -232,36 +276,10 @@ def test_context_registry_patch_area_must_be_constant_within_patch() -> None:
         build(rows, _surface_receipt(rows), context, _config())
 
 
-def test_patch_density_is_derived_from_patch_size_over_patch_area() -> None:
-    rows, context = _packet()
-    result = build(rows, _surface_receipt(rows), context, _config())
-
-    by_plant = {
-        row["plant_id"]: row for row in result["plant_level_secondary_data"]
-    }
-    sparse_small_plant = next(
-        row["plant_id"]
-        for row in context
-        if row["patch_id"] == "SPARSE_SMALL_PATCH"
-    )
-    dense_large_plant = next(
-        row["plant_id"]
-        for row in context
-        if row["patch_id"] == "DENSE_LARGE_PATCH"
-    )
-
-    assert by_plant[sparse_small_plant][
-        "patch_flowering_density_plants_m2"
-    ] == pytest.approx(1.0)
-    assert by_plant[dense_large_plant][
-        "patch_flowering_density_plants_m2"
-    ] == pytest.approx(6.0)
-
-
 def test_context_registry_census_date_must_be_constant_within_patch() -> None:
     rows, context = _packet()
     same_patch = [
-        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH1"
     ]
     same_patch[0]["context_measurement_date"] = "2026-07-02"
 
@@ -270,6 +288,22 @@ def test_context_registry_census_date_must_be_constant_within_patch() -> None:
         match="context_measurement_date must be constant",
     ):
         build(rows, _surface_receipt(rows), context, _config())
+
+
+def test_patch_density_is_derived_from_patch_size_over_patch_area() -> None:
+    rows, context = _packet()
+    result = build(rows, _surface_receipt(rows), context, _config())
+
+    by_patch = {
+        row["patch_id"]: row for row in result["patch_level_secondary_data"]
+    }
+    assert by_patch["SPARSE_SMALL_PATCH1"][
+        "patch_flowering_density_plants_m2"
+    ] == pytest.approx(1.0)
+    assert by_patch["DENSE_LARGE_PATCH1"][
+        "patch_flowering_density_plants_m2"
+    ] == pytest.approx(6.0)
+
 
 def test_surface_fingerprint_mismatch_is_rejected() -> None:
     rows, context = _packet()
