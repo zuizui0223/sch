@@ -196,6 +196,12 @@ def build(config: dict, freeze: dict) -> dict:
         "sch_surface": sch_values,
         "system_checks": normalized_config["system_checks"],
         "full_surface_config_sha256": _semantic_sha256(config),
+        "analysis_config_sha256": _semantic_sha256(
+            {
+                "sch_surface": sch_values,
+                "system_checks": normalized_config["system_checks"],
+            }
+        ),
         "sch_surface_sha256": _semantic_sha256(sch_values),
         "system_checks_sha256": _semantic_sha256(
             normalized_config["system_checks"]
