@@ -184,8 +184,9 @@ plant quality or another correlated state would require a separate assay.
 ## Antagonist pressure as ecological context
 
 A separate secondary asks whether the new P2 population/season recovers the
-density-by-patch-size structure in seed predation reported by Xia, Sun & Liu
-(2013).
+**patch-density-by-patch-size** structure in seed predation reported by Xia,
+Sun & Liu (2013). Patch density is calculated on the historical scale as
+flowering plants in the patch divided by patch area.
 
 The historical cutpoints are frozen before P2 outcomes:
 
@@ -209,7 +210,7 @@ P2 surface-data fingerprint. It is ecological context around the primary
 experiment, not another route to W0-W5.
 
 A positive replication would support the interpretation that antagonist weight
-varies with local ecological context. It would not show that density or patch
+varies with patch-scale ecological context. It would not show that density or patch
 size causes the enemy-induced optimum displacement; that stronger moderation
 question would need its own powered design.
 
@@ -301,7 +302,7 @@ higher z -> initial seed set                       TO TEST
 
 secondary
 success-risk coupling after randomized z control   TO TEST
-density x patch-size antagonist context             TO TEST
+patch-density x patch-size antagonist context       TO TEST
 
 not identified by the above
 pure pollinator optimum                            NO
