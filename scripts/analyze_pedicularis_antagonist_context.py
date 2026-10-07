@@ -180,6 +180,7 @@ def _validate_context(
     by_plant: dict[str, dict] = {}
     patch_sizes: dict[str, set[int]] = defaultdict(set)
     patch_areas: dict[str, set[float]] = defaultdict(set)
+    patch_dates: dict[str, set[str]] = defaultdict(set)
 
     for row in context_rows:
         if row["population_id"] != config["population_id"]:
@@ -211,6 +212,7 @@ def _validate_context(
         }
         patch_sizes[patch].add(patch_size)
         patch_areas[patch].add(patch_area)
+        patch_dates[patch].add(date)
 
     if set(by_plant) != p2_plants:
         missing = sorted(p2_plants - set(by_plant))
@@ -235,6 +237,14 @@ def _validate_context(
         raise ValueError(
             "patch_area_m2 must be constant within patch_id: "
             + ", ".join(inconsistent_areas)
+        )
+    inconsistent_dates = sorted(
+        patch for patch, values in patch_dates.items() if len(values) != 1
+    )
+    if inconsistent_dates:
+        raise ValueError(
+            "context_measurement_date must be constant within patch_id: "
+            + ", ".join(inconsistent_dates)
         )
     return by_plant
 
