@@ -110,6 +110,32 @@ def build(rows: list[dict[str, str]]) -> dict:
 
     registered_ready = len(blockers) == 0
 
+    if registered_ready:
+        interpretation = (
+            "All rows marked blocking_for_registered_n now have an admissible "
+            "ready basis. The generating-input basis can support a registered "
+            "single-scenario W1/W2 power calculation, subject to the separate "
+            "exact geometry-config and P0/F0-config bindings."
+        )
+        claim_ceiling = [
+            "basis_audit_only",
+            "basis_ready_does_not_itself_choose_or_register_n",
+            "exact_geometry_and_P0_F0_config_bindings_still_required",
+            "power_targets_and_candidate_design_remain_prospective_inputs",
+        ]
+    else:
+        interpretation = (
+            "The production W1/W2 simulator is available, but a registered "
+            "sample-size recommendation is not yet identified because one or "
+            "more generating inputs still lack an admissible basis."
+        )
+        claim_ceiling = [
+            "basis_audit_only",
+            "no_registered_W1_W2_n_yet",
+            "external_priors_are_sensitivity_context_not_direct_surface_truth",
+            "do_not_use_single_arbitrary_scenario_for_field_allocation",
+        ]
+
     return {
         "analysis": "pedicularis_w1_w2_power_basis_audit_v1",
         "n_basis_rows": len(rows),
@@ -153,18 +179,8 @@ def build(rows: list[dict[str, str]]) -> dict:
             "treat_pooled_pollen_SD_as_between_plant_plus_residual_variance_decomposition",
             "treat_population_initial_seed_range_as_randomized_z_slope_or_residual_SD",
         ],
-        "interpretation": (
-            "The production W1/W2 simulator is available, but a registered "
-            "sample-size recommendation is not yet identified because the "
-            "causal four-state geometry and same-estimand variance structure "
-            "lack an admissible basis."
-        ),
-        "claim_ceiling": [
-            "basis_audit_only",
-            "no_registered_W1_W2_n_yet",
-            "external_priors_are_sensitivity_context_not_direct_surface_truth",
-            "do_not_use_single_arbitrary_scenario_for_field_allocation",
-        ],
+        "interpretation": interpretation,
+        "claim_ceiling": claim_ceiling,
     }
 
 
