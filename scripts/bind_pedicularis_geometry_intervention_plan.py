@@ -127,6 +127,8 @@ def build(
             {
                 "assigned_z_level": row["assigned_z_level"],
                 "assigned_z_rank": str(int(row["assigned_z_rank"])),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+                "manipulation_setting_spec": row["manipulation_setting_spec"],
                 "sham_control": row["sham_control"],
             }
             for row in p0_level_plan
@@ -138,6 +140,7 @@ def build(
             {
                 "assigned_z_level": str(row["assigned_z_level"]),
                 "assigned_z_rank": str(int(row["assigned_z_rank"])),
+                "manipulation_setting_id": str(row["manipulation_setting_id"]),
             }
             for row in geometry_config["z_levels"]
         ],
@@ -147,12 +150,13 @@ def build(
         {
             "assigned_z_level": row["assigned_z_level"],
             "assigned_z_rank": row["assigned_z_rank"],
+            "manipulation_setting_id": row["manipulation_setting_id"],
         }
         for row in normalized_plan
     ]
     if geometry_z != planned_z:
         raise ValueError(
-            "geometry-pilot z labels/ranks must match the frozen P0 level plan"
+            "geometry-pilot z labels/ranks/manipulation settings must match the frozen P0 level plan"
         )
 
     selected_method = g_method_selection.get("selected_exclusion_method")
@@ -207,6 +211,14 @@ def build(
         "g_method_selection_sha256": _semantic_sha256(g_method_selection),
         "f0_assembly_receipt_sha256": _semantic_sha256(f0_assembly_receipt),
         "z_level_plan": normalized_plan,
+        "z_manipulation_settings": [
+            {
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": int(row["assigned_z_rank"]),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+            }
+            for row in normalized_plan
+        ],
         "p1_experimental_unit": EXPERIMENTAL_UNIT,
         "g_selected_candidate_id": g_method_selection.get(
             "selected_candidate_id"
