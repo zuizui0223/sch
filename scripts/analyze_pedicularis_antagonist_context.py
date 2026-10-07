@@ -23,8 +23,7 @@ REGISTRY_FIELDS = (
     "plant_id",
     "patch_id",
     "context_measurement_date",
-    "density_quadrat_area_m2",
-    "flowering_plants_in_density_quadrat",
+    "patch_area_m2",
     "patch_size_flowering_plants",
     "notes",
 )
@@ -180,6 +179,7 @@ def _validate_context(
     p2_plants = {row["plant_id"] for row in p2_rows}
     by_plant: dict[str, dict] = {}
     patch_sizes: dict[str, set[int]] = defaultdict(set)
+    patch_areas: dict[str, set[float]] = defaultdict(set)
 
     for row in context_rows:
         if row["population_id"] != config["population_id"]:
@@ -194,27 +194,23 @@ def _validate_context(
         if plant in by_plant:
             raise ValueError("each P2 plant must have exactly one context row")
 
-        area = _number(row["density_quadrat_area_m2"], "density_quadrat_area_m2")
-        count = _number(
-            row["flowering_plants_in_density_quadrat"],
-            "flowering_plants_in_density_quadrat",
-        )
+        patch_area = _number(row["patch_area_m2"], "patch_area_m2")
         patch_size = _positive_int(
             row["patch_size_flowering_plants"],
             "patch_size_flowering_plants",
         )
-        if area <= 0:
-            raise ValueError("density_quadrat_area_m2 must be >0")
-        if count < 0:
-            raise ValueError("flowering_plants_in_density_quadrat must be >=0")
+        if patch_area <= 0:
+            raise ValueError("patch_area_m2 must be >0")
 
-        density = count / area
+        patch_density = patch_size / patch_area
         by_plant[plant] = {
             **row,
-            "local_flowering_density_plants_m2": density,
+            "patch_area_m2": patch_area,
+            "patch_flowering_density_plants_m2": patch_density,
             "patch_size_flowering_plants": patch_size,
         }
         patch_sizes[patch].add(patch_size)
+        patch_areas[patch].add(patch_area)
 
     if set(by_plant) != p2_plants:
         missing = sorted(p2_plants - set(by_plant))
@@ -224,13 +220,21 @@ def _validate_context(
             f"missing={missing}, extra={extra}"
         )
 
-    inconsistent = sorted(
+    inconsistent_sizes = sorted(
         patch for patch, values in patch_sizes.items() if len(values) != 1
     )
-    if inconsistent:
+    if inconsistent_sizes:
         raise ValueError(
             "patch_size_flowering_plants must be constant within patch_id: "
-            + ", ".join(inconsistent)
+            + ", ".join(inconsistent_sizes)
+        )
+    inconsistent_areas = sorted(
+        patch for patch, values in patch_areas.items() if len(values) != 1
+    )
+    if inconsistent_areas:
+        raise ValueError(
+            "patch_area_m2 must be constant within patch_id: "
+            + ", ".join(inconsistent_areas)
         )
     return by_plant
 
@@ -315,7 +319,7 @@ def build(
     for plant, outcome in natural_exposed.items():
         info = context[plant]
         density_class = _density_class(
-            info["local_flowering_density_plants_m2"],
+            info["patch_flowering_density_plants_m2"],
             config,
         )
         patch_class = _patch_class(
@@ -326,8 +330,8 @@ def build(
         record = {
             "plant_id": plant,
             "patch_id": info["patch_id"],
-            "local_flowering_density_plants_m2": info[
-                "local_flowering_density_plants_m2"
+            "patch_flowering_density_plants_m2": info[
+                "patch_flowering_density_plants_m2"
             ],
             "patch_size_flowering_plants": info["patch_size_flowering_plants"],
             "density_class": density_class,
@@ -435,7 +439,7 @@ def build(
         "status": status,
         "claim_ceiling": [
             "secondary_ecological_context_only",
-            "local_density_and_patch_size_are_observational_not_randomized",
+            "patch_density_and_patch_size_are_observational_not_randomized",
             "does_not_change_or_rescue_primary_W0_W5",
             "does_not_claim_context_causes_optimum_displacement",
             "does_not_test_context_moderation_of_state_optima_without_separate_power",
