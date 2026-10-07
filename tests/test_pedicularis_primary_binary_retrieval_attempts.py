@@ -3,7 +3,7 @@ from scripts.audit_pedicularis_primary_binary_retrieval_attempts import build
 
 def test_retrieval_attempt_audit_covers_all_five_primary_assets() -> None:
     result = build()
-    assert result["n_attempts"] == 15
+    assert result["n_attempts"] == 16
     assert result["n_primary_assets_with_attempts"] == 5
     assert set(result["attempt_counts_by_asset"]) == {
         "PRIMARY_JING2013_METHODS",
@@ -26,7 +26,14 @@ def test_direct_gap_assets_remain_unresolved_after_current_attempts() -> None:
 
 def test_dryad_blocker_is_authentication_not_missing_file() -> None:
     result = build()
+    assert result["dryad_dataset_id"] == 11150
+    assert result["dryad_version_id"] == 11193
     assert result["dryad_file_stream_id"] == 46101
+    assert result["dryad_file_path"] == "raw data.xlsx"
+    assert result["dryad_file_size_bytes"] == 89597
+    assert result["dryad_file_md5"] == "10a98383677bbd2a01e19a86c350fdd3"
+    assert result["dryad_public_metadata_state"] == "PUBLIC_V2_METADATA_VERIFIED"
+    assert result["dryad_v2_download_http_status"] == 401
     assert result["dryad_anonymous_download_state"] == (
         "PUBLIC_FILE_IDENTITY_VERIFIED_BYTES_REQUIRE_AUTHENTICATED_ROUTE"
     )
@@ -114,4 +121,12 @@ def test_wang_public_url_variant_search_is_exhausted() -> None:
     assert wang["n_attempts"] == 3
     assert wang["latest_allowed_action"].startswith(
         "Stop public URL-variant probing"
+    )
+
+
+def test_dryad_exact_metadata_discovery_is_closed() -> None:
+    result = build()
+    assert result["attempt_counts_by_asset"]["RAW_XIA2013_DRYAD"] == 4
+    assert "dryad_metadata_discovery_is_complete_exact_file_checksum_known" in (
+        result["claim_ceiling"]
     )

@@ -91,12 +91,28 @@ using only article summaries.
 
 ### Current access limitation
 
-The dataset page and `raw data.xlsx` identity were verified. The Dryad binary
-download endpoint returned HTTP 403 in the current tool environment, so the
-raw workbook has **not** been ingested into the repository.
+The public Dryad v2 metadata API now resolves the file unambiguously:
 
-Do not claim raw-data reanalysis until the workbook is actually retrieved and
-its sheets/columns are audited.
+```text
+dataset id    11150
+version id    11193
+file id       46101
+path          raw data.xlsx
+size          89,597 bytes
+MIME          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+MD5           10a98383677bbd2a01e19a86c350fdd3
+```
+
+Metadata endpoints are anonymously readable, but the exact v2 binary download
+endpoint `/api/v2/files/46101/download` currently returns HTTP 401 in the
+available fetch environment. Thus the raw workbook has **not** been ingested
+into the repository.
+
+Metadata/URL discovery is now complete. The only useful next retrieval action
+is a legitimate authenticated/session/library download of exact file 46101 (or
+a user-provided copy), followed by MD5 verification and sheet/column/grain
+audit. Do not claim raw-data reanalysis until those bytes are actually
+retrieved.
 
 ## Sun & Huang 2015 — causal water-defence experiment
 

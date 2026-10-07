@@ -88,6 +88,29 @@ def build(path: Path = DEFAULT_ATTEMPTS) -> dict:
         raise ValueError("Dryad file-stream 403 receipt is missing")
     if "DOWNLOAD_ENDPOINT_REQUIRES_BEARER_AUTHENTICATION" not in dryad_results:
         raise ValueError("Dryad API-authentication receipt is missing")
+    exact_dryad = [
+        row
+        for row in dryad_rows
+        if row["result"]
+        == "V2_METADATA_PUBLIC_EXACT_FILE_VERIFIED_DOWNLOAD_HTTP_401"
+    ]
+    if len(exact_dryad) != 1:
+        raise ValueError(
+            "Dryad exact public-v2 metadata receipt must occur exactly once"
+        )
+    dryad_locator = exact_dryad[0]["locator"]
+    for token in (
+        "dataset id 11150",
+        "version id 11193",
+        "file id 46101",
+        "raw data.xlsx",
+        "89597 bytes",
+        "MD5 10a98383677bbd2a01e19a86c350fdd3",
+    ):
+        if token not in dryad_locator:
+            raise ValueError(
+                f"Dryad exact public-v2 metadata locator lacks {token}"
+            )
 
     wang_rows = [
         row for row in rows if row["asset_id"] == "PRIMARY_WANG1998_PDF"
@@ -174,10 +197,20 @@ def build(path: Path = DEFAULT_ATTEMPTS) -> dict:
                 "STOP_GLOBETHESIS_RETRIES_USE_ONLY_WUHAN_CNKI_LIBRARY_BINARY"
             ),
         },
+        "dryad_dataset_id": 11150,
+        "dryad_version_id": 11193,
         "dryad_file_stream_id": 46101,
+        "dryad_file_path": "raw data.xlsx",
+        "dryad_file_size_bytes": 89597,
+        "dryad_file_mime_type": (
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        "dryad_file_md5": "10a98383677bbd2a01e19a86c350fdd3",
+        "dryad_public_metadata_state": "PUBLIC_V2_METADATA_VERIFIED",
         "dryad_anonymous_download_state": (
             "PUBLIC_FILE_IDENTITY_VERIFIED_BYTES_REQUIRE_AUTHENTICATED_ROUTE"
         ),
+        "dryad_v2_download_http_status": 401,
         "direct_registered_p1_recovered_from_binary_attempts": False,
         "direct_registered_g_recovered_from_binary_attempts": False,
         "broad_screening_should_resume": False,
@@ -189,6 +222,7 @@ def build(path: Path = DEFAULT_ATTEMPTS) -> dict:
             "technical_retrieval_failure_is_not_evidence_of_biological_absence",
             "primary_treatment_identity_must_be_read_from_primary_methods_before_promotion",
             "authenticated_public_data_retrieval_is_distinct_from_literature_discovery",
+            "dryad_metadata_discovery_is_complete_exact_file_checksum_known",
             "external_prior_assets_do_not_change_direct_P1_G_state",
             "do_not_repeat_anonymous_routes_already_recorded_as_blocked",
             "exact_pdf_url_discovery_is_complete_for_Wang1998_but_binary_access_is_not",
