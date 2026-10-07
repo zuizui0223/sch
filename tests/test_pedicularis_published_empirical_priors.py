@@ -15,15 +15,15 @@ def _rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def test_published_empirical_recovery_has_ten_sources_and_73_measurements() -> None:
+def test_published_empirical_recovery_has_ten_sources_and_77_measurements() -> None:
     result = build()
     assert result["n_published_sources"] == 10
-    assert result["n_published_measurement_rows"] == 73
+    assert result["n_published_measurement_rows"] == 77
     assert result["measurement_rows_by_source"] == {
         "PRX2005_GENETIC_VARIATION": 4,
         "PRX2007_GAMETE": 1,
         "PRX2007_POLLINATION": 1,
-        "PRX2013_ALLEE": 8,
+        "PRX2013_ALLEE": 12,
         "PRX2014_BUZZ_MORPHOLOGY": 3,
         "PRX2013_OUTCROSSING": 3,
         "PRX2015_WATER": 15,
@@ -246,3 +246,25 @@ def test_focal_mating_context_contains_opposing_population_level_clues() -> None
         row["source_id"] == "PRX2013_OUTCROSSING"
         for row in priors
     )
+
+
+def test_xia2013_density_size_interaction_is_strong_for_predation_not_final_seed_set() -> None:
+    priors = {
+        row["measurement_id"]: row
+        for row in _rows(DEFAULT_PRIORS)
+    }
+
+    initial = priors["PRX2013_INITIAL_SEED_DENSITY_SIZE_INT_F"]
+    final = priors["PRX2013_FINAL_SEED_DENSITY_SIZE_INT_F"]
+    fruit_pred = priors["PRX2013_FRUIT_PRED_DENSITY_SIZE_INT_F"]
+    seed_pred = priors["PRX2013_SEED_PRED_DENSITY_SIZE_INT_F"]
+
+    assert initial["estimate"] == "44.556"
+    assert fruit_pred["estimate"] == "10.605"
+    assert seed_pred["estimate"] == "106.270"
+    assert final["estimate"] == "0.023"
+    assert seed_pred["uncertainty_value"] == "1,2345"
+    assert final["uncertainty_value"] == "1,2345"
+    assert float(seed_pred["estimate"]) > 1000 * float(final["estimate"])
+    assert {initial["direct_freeze_eligible"], final["direct_freeze_eligible"],
+            fruit_pred["direct_freeze_eligible"], seed_pred["direct_freeze_eligible"]} == {"NO"}
