@@ -161,6 +161,8 @@ def _surface_freeze(config: dict | None = None) -> dict:
             "sch_surface.min_optimum_separation": "prospective biological effect threshold",
             "sch_surface.min_optimum_shift": "prospective biological effect threshold",
             "sch_surface.min_abs_component_gradient": "prospective biological effect threshold",
+            "system_checks.max_water_depth_range": "same-context water-y equivalence basis",
+            "system_checks.max_mechanical_damage_rate": "same-context handling-damage basis",
         },
     }
     return freeze_surface(config, freeze)
@@ -255,6 +257,8 @@ def test_surface_threshold_freeze_must_precede_geometry_outcomes() -> None:
             "sch_surface.min_optimum_separation": "x",
             "sch_surface.min_optimum_shift": "x",
             "sch_surface.min_abs_component_gradient": "x",
+            "system_checks.max_water_depth_range": "x",
+            "system_checks.max_mechanical_damage_rate": "x",
         },
     }
 
