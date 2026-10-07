@@ -32,6 +32,8 @@ def _levels(n: int = 5) -> list[dict[str, str]]:
         {
             "assigned_z_level": f"Z{i}",
             "assigned_z_rank": str(i),
+            "manipulation_setting_id": f"SETTING_Z{i}",
+            "manipulation_setting_spec": f"BEND_FIX_SPEC_Z{i}",
             "sham_control": "1" if i == n - 1 else "0",
         }
         for i in range(n)
@@ -77,6 +79,8 @@ def test_templates_are_treatment_blind_before_allocation() -> None:
         "assigned_z_level",
         "assigned_z_rank",
         "sham_control",
+        "manipulation_setting_id",
+        "manipulation_setting_spec",
     ]
 
 
@@ -97,6 +101,10 @@ def test_complete_block_randomizes_each_plant_across_all_levels() -> None:
     assert receipt["z_level_values_chosen_by_script"] is False
     assert len(receipt["allocation_identity_sha256"]) == 64
     assert len(receipt["expected_frozen_rows"]) == 20
+    assert len(receipt["frozen_level_plan"]) == 5
+    assert [row["manipulation_setting_id"] for row in receipt["z_manipulation_settings"]] == [
+        "SETTING_Z0", "SETTING_Z1", "SETTING_Z2", "SETTING_Z3", "SETTING_Z4"
+    ]
 
     for plant in {row["plant_id"] for row in allocations}:
         subset = [row for row in allocations if row["plant_id"] == plant]
@@ -108,6 +116,9 @@ def test_complete_block_randomizes_each_plant_across_all_levels() -> None:
             "4",
         }
         assert sum(int(row["sham_control"]) for row in subset) == 1
+        assert {row["manipulation_setting_id"] for row in subset} == {
+            "SETTING_Z0", "SETTING_Z1", "SETTING_Z2", "SETTING_Z3", "SETTING_Z4"
+        }
         assert {row["assignment_method"] for row in subset} == {
             ASSIGNMENT_METHOD
         }
@@ -177,3 +188,15 @@ def test_unresolved_seed_and_duplicate_flowers_fail_closed() -> None:
 def test_level_plan_parser_rejects_empty_template() -> None:
     with pytest.raises(ValueError, match="no data rows"):
         _read_level_plan(LEVEL_TEMPLATE)
+
+
+def test_level_plan_requires_unique_physical_manipulation_settings() -> None:
+    levels = _levels()
+    levels[1]["manipulation_setting_id"] = levels[0]["manipulation_setting_id"]
+    with pytest.raises(ValueError, match="manipulation_setting_id must be unique"):
+        build(_flowers(), levels, allocation_seed="p0-seed-a")
+
+    levels = _levels()
+    levels[1]["manipulation_setting_spec"] = levels[0]["manipulation_setting_spec"]
+    with pytest.raises(ValueError, match="manipulation_setting_spec must be unique"):
+        build(_flowers(), levels, allocation_seed="p0-seed-a")
