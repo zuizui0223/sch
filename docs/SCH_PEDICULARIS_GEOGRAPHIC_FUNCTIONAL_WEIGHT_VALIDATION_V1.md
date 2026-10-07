@@ -11,7 +11,11 @@ the weight of one function can vary strongly among populations
 -> the realized compromise should be context-dependent rather than species-wide fixed.
 ```
 
-This is an **external geographic validation lane**, not the main causal compromise experiment.
+This is an **external multiscale functional-weight validation lane**, not the
+main causal compromise experiment. The 2016 source supplies trait-linked
+geographic selection; Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387)
+independently shows finer-scale spatial variation in seed-predator pressure.
+The latter is pressure-only context evidence, not local exsertion geometry.
 
 Primary source:
 
@@ -118,6 +122,61 @@ pollinator-mediated selection direction: comparatively consistent
 seed-predator-mediated selection strength: geographically variable.
 ```
 
+## Finer-scale antagonist-weight context
+
+The geographic pattern is not the only evidence that antagonist weight is
+spatially labile.
+
+Xia, Sun & Liu (2013) compared sparse/dense P. rex patches and, in 2011,
+explicitly crossed local plant density with patch size. The reported
+density-by-patch-size interactions were:
+
+```text
+initial seed set   F = 44.556   df 1,2047
+final seed set     F =  0.023   df 1,2345
+fruit predation    F = 10.605   df 1,54
+seed predation     F =106.270   df 1,2345.
+```
+
+Post-hoc contrasts show a reversal in the patch-size association with seed
+predation:
+
+```text
+low density:
+  small patches -> higher seed predation than large patches
+
+high density:
+  large patches -> higher seed predation than small patches.
+```
+
+Thus antagonist pressure is not only heterogeneous among distant populations;
+it can reorganize across local density/patch-size contexts within the same
+regional system.
+
+The especially important contrast is:
+
+```text
+seed-predation density x size interaction  VERY STRONG
+final-seed-set density x size interaction  ~ ZERO.
+```
+
+Hence strong spatial reweighting of one component process need not appear as
+the same spatial pattern in integrated final reproduction.
+
+This supports a multiscale ecological reading:
+
+```text
+shared conflict direction
++
+context-labile antagonist weight
++
+partial masking after component processes are integrated into final fitness.
+```
+
+It does **not** create a local H2 exsertion-geometry row because Xia et al.
+did not estimate exsertion-specific pollinator and predator selection within
+those density x size cells.
+
 ## SCH interpretation
 
 Write the combined fitness surface as
@@ -223,6 +282,9 @@ Together they support a stronger general statement than either system alone:
 ```text
 REAL_WORLD_OPPOSING_FUNCTIONS: RECOVERED
 GEOGRAPHIC_ANTAGONIST_WEIGHT_MOSAIC: RECOVERED
+LOCAL_DENSITY_X_PATCH_SIZE_ANTAGONIST_CONTEXT: RECOVERED
+MULTISCALE_ANTAGONIST_WEIGHT_LABILITY: RECOVERED
+COMPONENT_VARIATION_MASKED_IN_FINAL_REPRODUCTION: OBSERVATIONAL
 CONTEXT_DEPENDENT_COMPROMISE_PREDICTION: DIRECTLY_MOTIVATED
 OBSERVATIONAL_OPTIMUM_SHIFT: NOT_YET_RECOVERED
 CAUSAL_OPTIMUM_SHIFT: NOT_IDENTIFIED
