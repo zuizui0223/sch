@@ -14,7 +14,7 @@ calculate a generic conflict index. Those are enabling steps.
 
 ## Why P. rex is unusually informative
 
-The existing natural-history programme already supplies three independent
+The existing natural-history programme already supplies four independent
 pieces of biological motivation.
 
 ### 1. One floral coordinate is pulled in opposite directions
@@ -40,7 +40,38 @@ also tend to incur greater later seed-predation risk.
 
 This does not show that pollen is the predator cue.
 
-### 3. The two functions may be separable in time
+### 3. Antagonist weight is strongly context dependent
+
+Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387) show that the same P. rex
+system can reorganize across spatial contexts even before any focal trait
+manipulation is introduced.
+
+In their 2011 density x patch-size analysis:
+
+```text
+initial seed set   interaction F = 44.556
+final seed set     interaction F =  0.023
+fruit predation    interaction F = 10.605
+seed predation     interaction F =106.270.
+```
+
+The paper's post-hoc contrasts show that patch-size effects on predation can
+reverse between sparse and dense patches.
+
+The important implication is not the numerical F values themselves. It is that
+**enemy pressure can vary strongly with ecological context while the same
+context dependence is nearly invisible in final seed set**.
+
+Thus an integrated reproductive endpoint can conceal strong changes in the
+component processes that produced it. This is one reason the focal experiment
+keeps pollen receipt, initial seed set, seed predation and final reproduction
+separate instead of treating final seed set as the only ecological response.
+
+This historical result is observational and does not identify the registered G
+effect. It supports the biological premise that antagonist weight is a local
+ecological state rather than a species-wide constant.
+
+### 4. The two functions may be separable in time
 
 Pollination occurs during the open-flower phase. Predator oviposition occurs
 after flowers open and before ovary swelling.
@@ -255,6 +286,8 @@ docs/SCH_PEDICULARIS_EMPIRICAL_OUTCOME_MAP_V1.md
 existing evidence
 shared exsertion conflict                         RECOVERED
 geographic antagonist-weight variation            RECOVERED
+density x patch-size antagonist-weight context     RECOVERED
+component structure masked by final reproduction   OBSERVATIONAL
 pollination-success / predation-risk coupling      OBSERVATIONAL
 
 natural timing pilot
