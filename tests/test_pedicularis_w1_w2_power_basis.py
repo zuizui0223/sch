@@ -89,3 +89,27 @@ def test_only_two_registered_resolution_routes_are_admissible() -> None:
         "promote_observational_exsertion_selection_to_randomized_state_surface"
         in result["inadmissible_routes"]
     )
+
+
+def test_zero_blocker_basis_receipt_does_not_claim_it_is_still_blocked() -> None:
+    rows = _read(DEFAULT_LEDGER)
+    promoted = []
+    for row in rows:
+        out = dict(row)
+        if out["blocking_for_registered_n"] == "YES":
+            out["current_status"] = "DIRECT_SAME_CONTEXT_READY"
+            out["direct_registered_n_eligible"] = "YES"
+        promoted.append(out)
+
+    result = build(promoted)
+
+    assert result["n_blocking_rows"] == 0
+    assert result["registered_single_scenario_n_basis_ready"] is True
+    assert result["registered_power_status"] == (
+        "PEDICULARIS_W1_W2_POWER_BASIS_READY_FOR_REGISTERED_N"
+    )
+    assert "support a registered single-scenario" in result["interpretation"]
+    assert "no_registered_W1_W2_n_yet" not in result["claim_ceiling"]
+    assert "basis_ready_does_not_itself_choose_or_register_n" in (
+        result["claim_ceiling"]
+    )
