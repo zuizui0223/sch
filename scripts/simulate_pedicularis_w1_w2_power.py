@@ -653,12 +653,21 @@ def _readiness(
             "same_population_and_season": True,
             "z_randomized_allocation_verified": True,
             "z_levels_validated": True,
+            "z_manipulation_settings_validated": True,
             "p_randomized_allocation_verified": True,
             "g_randomized_allocation_verified": True,
             "g_method_timing_validated": True,
         },
         "validated_execution": {
             "z_levels": z_levels,
+            "z_manipulation_settings": [
+                {
+                    "assigned_z_level": level,
+                    "assigned_z_rank": i,
+                    "manipulation_setting_id": f"SIM_SETTING_{level}",
+                }
+                for i, level in enumerate(z_levels)
+            ],
             "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "g_exclusion_method": "SIMULATED_QUALIFIED_PREDATOR_EXCLUSION",
             "z_allocation_identity_sha256": "a" * 64,
@@ -824,6 +833,7 @@ def generate_rows(
                         f"{plant_id}_Z{z_index}_{state}"
                     ),
                     "assigned_z_level": f"Z{z_index:02d}",
+                    "manipulation_setting_id": f"SIM_SETTING_Z{z_index:02d}",
                     "realized_exsertion": repr(float(z)),
                     "pollination_treatment": pollination,
                     "predator_treatment": predator,
