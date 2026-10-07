@@ -257,6 +257,20 @@ def test_patch_density_is_derived_from_patch_size_over_patch_area() -> None:
         "patch_flowering_density_plants_m2"
     ] == pytest.approx(6.0)
 
+
+def test_context_registry_census_date_must_be_constant_within_patch() -> None:
+    rows, context = _packet()
+    same_patch = [
+        row for row in context if row["patch_id"] == "SPARSE_SMALL_PATCH"
+    ]
+    same_patch[0]["context_measurement_date"] = "2026-07-02"
+
+    with pytest.raises(
+        ValueError,
+        match="context_measurement_date must be constant",
+    ):
+        build(rows, _surface_receipt(rows), context, _config())
+
 def test_surface_fingerprint_mismatch_is_rejected() -> None:
     rows, context = _packet()
     receipt = _surface_receipt(rows)
