@@ -22,6 +22,8 @@ THRESHOLD_PATHS = (
     "sch_surface.min_optimum_separation",
     "sch_surface.min_optimum_shift",
     "sch_surface.min_abs_component_gradient",
+    "system_checks.max_water_depth_range",
+    "system_checks.max_mechanical_damage_rate",
 )
 
 
@@ -177,7 +179,7 @@ def build(config: dict, freeze: dict) -> dict:
         raise ValueError("threshold_basis is required")
     if set(threshold_basis) != set(THRESHOLD_PATHS):
         raise ValueError(
-            "threshold_basis must cover exactly the registered sch_surface decision paths"
+            "threshold_basis must cover exactly the registered full-surface decision paths"
         )
     normalized_basis = {
         path: _text(threshold_basis[path], f"threshold_basis.{path}")
@@ -212,6 +214,7 @@ def build(config: dict, freeze: dict) -> dict:
         "claim_ceiling": [
             "prospective_decision_threshold_freeze_only",
             "threshold_values_not_inferred_from_geometry_or_P2_outcomes",
+            "system_check_tolerances_require_explicit_preoutcome_basis_notes",
             "does_not_validate_causal_compromise",
             "does_not_register_sample_size_by_itself",
         ],
