@@ -158,13 +158,24 @@ The preferred first pilot is a post-pollination lower-flower / fruit shield. A l
 A positive readiness receipt is necessary but no longer sufficient to run the
 production P2 analysis.
 
-Before outcomes are collected, the field design must be bound to a W1/W2 power
-candidate that actually meets both the registered primary-surface and headline
-power targets. Treatment-blind flower IDs are then allocated with:
+Before outcomes are collected, the field design must be bound to both:
+
+```text
+1. the exact positive readiness V3 receipt that validated P0/P1/G;
+2. a W1/W2 power candidate that actually meets both registered power targets.
+```
+
+Treatment-blind flower IDs are then allocated with:
 
 ```text
 scripts/build_pedicularis_full_surface_allocation.py
 ```
+
+The allocator fails before field assignment if the frozen design disagrees with
+readiness on the P0 level-plan SHA, z-label/physical-setting mapping, G0
+exclusion method, or G1 exposed-sham method. The allocation receipt fingerprints
+the exact readiness JSON, and that fingerprint must survive field verification
+and production analysis.
 
 The allocator requires the same nominal z grid and flowers-per-plant design
 that were powered, supports complete or balanced incomplete plant blocks, and
