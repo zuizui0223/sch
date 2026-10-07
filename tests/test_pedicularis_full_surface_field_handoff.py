@@ -35,6 +35,67 @@ def _allocation_config() -> dict:
     }
 
 
+def _readiness(config: dict | None = None) -> dict:
+    config = _allocation_config() if config is None else config
+    return {
+        "receipt_schema_version": "SCH_PEDICULARIS_FULL_SURFACE_READINESS_V3",
+        "status": "PEDICULARIS_FULL_SURFACE_READY",
+        "population_id": config["population_id"],
+        "season_id": config["season_id"],
+        "checks": {
+            "same_population_and_season": True,
+            "z_randomized_allocation_verified": True,
+            "z_levels_validated": True,
+            "z_manipulation_settings_validated": True,
+            "p_randomized_allocation_verified": True,
+            "g_randomized_allocation_verified": True,
+            "g_method_timing_validated": True,
+        },
+        "validated_execution": {
+            "z_levels": [
+                row["assigned_z_level"] for row in config["z_levels"]
+            ],
+            "z_manipulation_settings": [
+                {
+                    "assigned_z_level": row["assigned_z_level"],
+                    "assigned_z_rank": row["assigned_z_rank"],
+                    "manipulation_setting_id": row["manipulation_setting_id"],
+                }
+                for row in config["z_levels"]
+            ],
+            "p0_level_plan_sha256": config["p0_level_plan_sha256"],
+            "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
+            "g_exclusion_method": config["excluded_method_code"],
+            "g_exposed_sham_method": config["exposed_method_code"],
+            "z_allocation_identity_sha256": "a" * 64,
+            "p_allocation_identity_sha256": "b" * 64,
+            "g_allocation_identity_sha256": "c" * 64,
+        },
+        "source_receipts": {
+            "z": {
+                "schema": "SCH_PEDICULARIS_STAGE_P0_Z_MANIPULATION_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "d" * 64,
+            },
+            "p": {
+                "schema": "SCH_PEDICULARIS_POLLINATION_WEIGHT_V1",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "e" * 64,
+            },
+            "g": {
+                "schema": "SCH_PEDICULARIS_PREDATOR_METHOD_V4",
+                "threshold_freeze_status": "PEDICULARIS_THRESHOLDS_PROSPECTIVELY_FROZEN",
+                "receipt_sha256": "f" * 64,
+            },
+        },
+        "water_y_requirement": "HOLD_WATER_DEFENCE_FIXED_DURING_SCH_FULL_SURFACE",
+        "predator_method_requirement": (
+            "TIMED_POST_POLLINATION_OR_LOCAL_BARRIER_QUALIFIED_"
+            "WITH_POLLINATOR_ACCESS_PRESERVED"
+        ),
+    }
+
+
 def _power() -> dict:
     return {
         "analysis": "pedicularis_W1_W2_full_surface_power_v1",
@@ -86,10 +147,12 @@ def _manifest() -> list[dict[str, str]]:
 
 
 def _allocation_packet() -> tuple[list[dict[str, str]], dict]:
+    config = _allocation_config()
     return allocate(
         _manifest(),
-        _allocation_config(),
+        config,
         _power(),
+        _readiness(config),
         "LOCKED-P2-SEED",
     )
 
@@ -121,6 +184,7 @@ def test_prepare_prefills_only_frozen_identity_and_treatment_fields() -> None:
     ]
     assert lock["outcome_fields_prefilled"] is False
     assert lock["p0_level_plan_sha256"] == "1" * 64
+    assert len(lock["readiness_receipt_sha256"]) == 64
     assert all(row["assigned_z_level"] for row in field_rows)
     assert all(row["manipulation_setting_id"] for row in field_rows)
     assert all(row["pollination_treatment"] for row in field_rows)
@@ -213,6 +277,7 @@ def test_complete_packet_produces_surface_data_fingerprint() -> None:
     assert receipt["identity_and_treatment_match"] is True
     assert receipt["canonical_outcomes_complete"] is True
     assert receipt["surface_data_sha256"] is not None
+    assert receipt["readiness_receipt_sha256"] == lock["readiness_receipt_sha256"]
     assert len(receipt["surface_data_sha256"]) == 64
     assert receipt["status"] == (
         "P2_FULL_SURFACE_FIELD_PACKET_VERIFIED_COMPLETE"
