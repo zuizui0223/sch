@@ -29,6 +29,7 @@ def _p0_rows(season: str = "S1") -> list[dict[str, str]]:
                     "flower_id": f"P0_{plant:02d}_{rank}",
                     "assigned_z_level": f"Z{rank}",
                     "assigned_z_rank": str(rank),
+                    "manipulation_setting_id": f"SETTING_Z{rank}",
                     "sham_control": "1" if rank == 4 else "0",
                     "realized_exsertion": str(0.20 + 0.15 * rank + plant * 0.001),
                     "corolla_opening_width": str(8.0 + plant * 0.01),
