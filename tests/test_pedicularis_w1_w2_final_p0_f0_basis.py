@@ -266,7 +266,7 @@ def test_surface_threshold_freeze_rejects_unresolved_config() -> None:
     config = _surface_config()
     config["sch_surface"]["min_optimum_shift"] = "REQUIRED_BEFORE_USE"
 
-    with pytest.raises(ValueError, match="must be numeric"):
+    with pytest.raises(ValueError, match="must be prospectively resolved"):
         _surface_freeze(config)
 
 
