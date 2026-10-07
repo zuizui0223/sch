@@ -45,6 +45,7 @@ def _config(
                 "assigned_z_level": f"Z{i}",
                 "assigned_z_rank": i,
                 "target_exsertion": value,
+                "manipulation_setting_id": f"SETTING_Z{i}",
             }
             for i, value in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0))
         ],
@@ -68,6 +69,10 @@ def _binding(config: dict) -> dict:
         {
             "assigned_z_level": row["assigned_z_level"],
             "assigned_z_rank": str(row["assigned_z_rank"]),
+            "manipulation_setting_id": row["manipulation_setting_id"],
+            "manipulation_setting_spec": (
+                f"BEND_FIX_SPEC_{row['assigned_z_level']}"
+            ),
             "sham_control": "1" if i == len(config["z_levels"]) - 1 else "0",
         }
         for i, row in enumerate(config["z_levels"])
@@ -88,6 +93,14 @@ def _binding(config: dict) -> dict:
         "g_method_selection_sha256": "5" * 64,
         "f0_assembly_receipt_sha256": "6" * 64,
         "z_level_plan": z_plan,
+        "z_manipulation_settings": [
+            {
+                "assigned_z_level": row["assigned_z_level"],
+                "assigned_z_rank": int(row["assigned_z_rank"]),
+                "manipulation_setting_id": row["manipulation_setting_id"],
+            }
+            for row in z_plan
+        ],
         "p1_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
         "g_selected_candidate_id": "G_TEST",
         "g_exclusion_method": config["excluded_method_code"],
@@ -109,6 +122,7 @@ def _readiness(config: dict, binding: dict | None = None) -> dict:
             "z_randomized_allocation_verified": True,
             "z_plan_provenance_bound": True,
             "z_levels_validated": True,
+            "z_manipulation_settings_validated": True,
             "p_plan_provenance_bound": True,
             "p_randomized_allocation_verified": True,
             "g_plan_provenance_bound": True,
@@ -119,6 +133,7 @@ def _readiness(config: dict, binding: dict | None = None) -> dict:
             "z_levels": [
                 row["assigned_z_level"] for row in config["z_levels"]
             ],
+            "z_manipulation_settings": binding["z_manipulation_settings"],
             "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "g_exclusion_method": config["excluded_method_code"],
             "z_allocation_identity_sha256": "a" * 64,
@@ -594,6 +609,23 @@ def test_later_readiness_config_hashes_must_match_preoutcome_binding() -> None:
     readiness["validated_execution"]["p1_field_config_sha256"] = "9" * 64
 
     with pytest.raises(ValueError, match="p1_field_config_sha256"):
+        _summarize(
+            completed,
+            receipt,
+            registry,
+            config,
+            readiness=readiness,
+        )
+
+
+def test_geometry_summary_rejects_physical_z_setting_mismatch() -> None:
+    completed, receipt, registry, config = _packet()
+    readiness = _readiness(config)
+    readiness["validated_execution"]["z_manipulation_settings"][2][
+        "manipulation_setting_id"
+    ] = "DIFFERENT_SETTING"
+
+    with pytest.raises(ValueError, match="z_manipulation_settings"):
         _summarize(
             completed,
             receipt,
