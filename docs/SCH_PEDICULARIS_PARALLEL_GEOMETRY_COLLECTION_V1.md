@@ -103,7 +103,7 @@ The binding is created before confirmatory P0/P1/G outcomes are known.
 It freezes SHA-256 provenance for:
 
 ```text
-P0 level plan
+P0 level plan, including each manipulation_setting_id/spec
 P0 field config
 P1 field config
 G field config
@@ -180,6 +180,7 @@ exactly for:
 
 ```text
 z labels
+z label -> manipulation_setting_id mapping
 P1 experimental unit
 G method
 P0 level-plan SHA
