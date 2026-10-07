@@ -188,6 +188,37 @@ unverified or identity-drifted dataset.
 
 See `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
+## Physical z-treatment identity
+
+Confirmatory P2 must reuse the **validated physical P0 manipulation plan**, not
+only its z labels.
+
+The P2 allocation config therefore freezes:
+
+```text
+p0_level_plan_sha256
+z_levels[*].manipulation_setting_id
+```
+
+and every field row carries the assigned manipulation-setting ID. The field
+identity lock treats this ID as immutable. Production analysis requires both:
+
+```text
+row-level z label -> manipulation_setting_id mapping
+==
+validated P0 readiness mapping
+
+AND
+
+P2 field-packet p0_level_plan_sha256
+==
+validated P0 readiness p0_level_plan_sha256.
+```
+
+`target_exsertion` remains a prospective nominal phenotype used for design
+and power. `realized_exsertion` remains the measured phenotype. Neither is a
+substitute for the physical manipulation identity.
+
 ## Raw-data contract
 
 Template:
@@ -204,6 +235,7 @@ season_id
 plant_id
 flower_id
 assigned_z_level
+manipulation_setting_id
 realized_exsertion
 pollination_treatment
 predator_treatment
