@@ -81,6 +81,7 @@ def _g() -> dict:
         "identity_treatment_method_sham_match": True,
         "selected_candidate_id": "G_TEST",
         "selected_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+        "exposed_sham_method_code": "SHAM_SLEEVE",
         "g_field_config_sha256": "4" * 64,
         "selection_receipt_sha256": "5" * 64,
     }
@@ -119,6 +120,9 @@ def test_three_valid_same_context_receipts_unlock_full_surface() -> None:
     )
     assert result["validated_execution"]["g_exclusion_method"] == (
         "POST_POLLINATION_LOWER_FLOWER_SLEEVE"
+    )
+    assert result["validated_execution"]["g_exposed_sham_method"] == (
+        "SHAM_SLEEVE"
     )
     assert result["validated_execution"]["p0_level_plan_sha256"] == "1" * 64
     assert result["validated_execution"]["p0_field_config_sha256"] == "2" * 64
@@ -242,3 +246,12 @@ def test_missing_physical_z_setting_identity_blocks_readiness() -> None:
 
     assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
     assert result["checks"]["z_manipulation_settings_validated"] is False
+
+
+def test_missing_exposed_sham_method_blocks_readiness() -> None:
+    g = _g()
+    g["field_allocation_verification"]["exposed_sham_method_code"] = ""
+    result = assemble(_z(), _p(), g)
+
+    assert result["status"] == "PEDICULARIS_FULL_SURFACE_NOT_READY"
+    assert result["checks"]["g_randomized_allocation_verified"] is False

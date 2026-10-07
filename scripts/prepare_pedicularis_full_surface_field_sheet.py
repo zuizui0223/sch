@@ -106,6 +106,11 @@ def _validate_allocation(
         raise ValueError("allocation receipt schema mismatch")
     if allocation_receipt.get("status") != ALLOCATION_STATUS:
         raise ValueError("allocation receipt is not in pre-field allocated state")
+    readiness_sha = allocation_receipt.get("readiness_receipt_sha256")
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError(
+            "allocation receipt lacks exact readiness V3 fingerprint"
+        )
 
     normalized = _normalize_frozen_rows(allocation_rows)
     if len(normalized) != int(allocation_receipt.get("n_allocated_flowers", -1)):
@@ -188,6 +193,9 @@ def prepare(
         "p0_level_plan_sha256": allocation_receipt.get(
             "p0_level_plan_sha256"
         ),
+        "readiness_receipt_sha256": allocation_receipt.get(
+            "readiness_receipt_sha256"
+        ),
         "field_identity_sha256": _semantic_sha256(normalized),
         "frozen_fields": list(FROZEN_FIELDS),
         "expected_frozen_rows": normalized,
@@ -263,6 +271,9 @@ def verify(
         "allocation_identity_sha256": lock["allocation_identity_sha256"],
         "allocation_receipt_sha256": lock["allocation_receipt_sha256"],
         "p0_level_plan_sha256": lock.get("p0_level_plan_sha256"),
+        "readiness_receipt_sha256": lock.get(
+            "readiness_receipt_sha256"
+        ),
         "field_identity_sha256": lock["field_identity_sha256"],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": require_complete,

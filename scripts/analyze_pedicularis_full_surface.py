@@ -104,6 +104,16 @@ def read_rows(path: Path) -> list[dict[str, str]]:
     return rows
 
 
+def _semantic_sha256(payload: object) -> str:
+    text = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return hashlib.sha256(text).hexdigest()
+
+
 def surface_data_sha256(rows: list[dict[str, str]]) -> str:
     canonical = [
         {field: row[field].strip() for field in RAW_FIELDS}
@@ -184,6 +194,12 @@ def _validate_readiness(readiness: dict, population: str, season: str) -> None:
         "g_exclusion_method"
     ):
         raise ValueError("V2 readiness lacks validated G exclusion method")
+    if not isinstance(validated.get("g_exposed_sham_method"), str) or not validated.get(
+        "g_exposed_sham_method"
+    ):
+        raise ValueError("V2 readiness lacks validated G exposed-sham method")
+    if validated["g_exposed_sham_method"] == validated["g_exclusion_method"]:
+        raise ValueError("validated G exposed-sham and exclusion methods must differ")
 
     source_receipts = readiness.get("source_receipts", {})
     source_g = source_receipts.get("g", {})
@@ -244,6 +260,16 @@ def _validate_rows_against_validated_execution(
     if excluded_methods != {validated["g_exclusion_method"]}:
         raise ValueError(
             "raw P2 EXCLUDED method does not match the validated G readiness method"
+        )
+
+    exposed_methods = {
+        row["exclusion_method"]
+        for row in rows
+        if row["predator_treatment"] == "EXPOSED"
+    }
+    if exposed_methods != {validated["g_exposed_sham_method"]}:
+        raise ValueError(
+            "raw P2 EXPOSED sham method does not match the validated G readiness method"
         )
 
 
@@ -370,6 +396,11 @@ def analyze_locked(
         raise ValueError(
             "P2 field packet is not bound to the validated P0 level-plan SHA-256"
         )
+    expected_readiness_sha = _semantic_sha256(readiness)
+    if field_verification.get("readiness_receipt_sha256") != expected_readiness_sha:
+        raise ValueError(
+            "P2 field packet was not allocated under this exact readiness V3 receipt"
+        )
     result = analyze(rows, readiness, config)
     result["field_execution_verification"] = {
         "receipt_schema": field_verification["receipt_schema"],
@@ -383,6 +414,9 @@ def analyze_locked(
         "surface_data_sha256": field_verification["surface_data_sha256"],
         "p0_level_plan_sha256": field_verification.get(
             "p0_level_plan_sha256"
+        ),
+        "readiness_receipt_sha256": field_verification.get(
+            "readiness_receipt_sha256"
         ),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,

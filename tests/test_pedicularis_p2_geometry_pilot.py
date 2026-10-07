@@ -136,6 +136,7 @@ def _readiness(config: dict, binding: dict | None = None) -> dict:
             "z_manipulation_settings": binding["z_manipulation_settings"],
             "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "g_exclusion_method": config["excluded_method_code"],
+            "g_exposed_sham_method": config["exposed_method_code"],
             "z_allocation_identity_sha256": "a" * 64,
             "p_allocation_identity_sha256": "b" * 64,
             "g_allocation_identity_sha256": "c" * 64,

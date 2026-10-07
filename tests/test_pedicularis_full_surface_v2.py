@@ -8,6 +8,7 @@ import pytest
 
 from scripts.analyze_pedicularis_full_surface import (
     RAW_FIELDS,
+    _semantic_sha256,
     analyze,
     analyze_locked,
     surface_data_sha256,
@@ -50,6 +51,7 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
             "p0_level_plan_sha256": "1" * 64,
             "p_experimental_unit": "WITHIN_PLANT_PAIRED_FLOWERS",
             "g_exclusion_method": "POST_POLLINATION_LOWER_FLOWER_SLEEVE",
+            "g_exposed_sham_method": "SHAM_SLEEVE",
             "z_allocation_identity_sha256": "a" * 64,
             "p_allocation_identity_sha256": "b" * 64,
             "g_allocation_identity_sha256": "c" * 64,
@@ -79,7 +81,11 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
     }
 
 
-def _field_verification(rows: list[dict[str, str]]) -> dict:
+def _field_verification(
+    rows: list[dict[str, str]],
+    readiness: dict | None = None,
+) -> dict:
+    readiness = _readiness() if readiness is None else readiness
     return {
         "receipt_schema": "PEDICULARIS_FULL_SURFACE_FIELD_VERIFICATION_V1",
         "status": "P2_FULL_SURFACE_FIELD_PACKET_VERIFIED_COMPLETE",
@@ -89,6 +95,7 @@ def _field_verification(rows: list[dict[str, str]]) -> dict:
         "allocation_identity_sha256": "a" * 64,
         "field_identity_sha256": "b" * 64,
         "p0_level_plan_sha256": "1" * 64,
+        "readiness_receipt_sha256": _semantic_sha256(readiness),
         "surface_data_sha256": surface_data_sha256(rows),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
@@ -315,3 +322,26 @@ def test_production_locked_analysis_rejects_wrong_p0_plan_digest() -> None:
 
     with pytest.raises(ValueError, match="validated P0 level-plan SHA-256"):
         analyze_locked(rows, _readiness(), _config(), verification)
+
+
+def test_v2_rejects_raw_exposed_sham_not_matching_validated_g() -> None:
+    rows = _rows()
+    for row in rows:
+        if row["predator_treatment"] == "EXPOSED":
+            row["exclusion_method"] = "UNVALIDATED_SHAM_METHOD"
+
+    with pytest.raises(ValueError, match="EXPOSED sham method does not match"):
+        analyze(rows, _readiness(), _config())
+
+
+def test_production_locked_analysis_rejects_different_readiness_after_allocation() -> None:
+    rows = _rows()
+    allocated_readiness = _readiness()
+    verification = _field_verification(rows, allocated_readiness)
+    changed_readiness = _readiness()
+    changed_readiness["validated_execution"]["p_allocation_identity_sha256"] = (
+        "9" * 64
+    )
+
+    with pytest.raises(ValueError, match="exact readiness V3 receipt"):
+        analyze_locked(rows, changed_readiness, _config(), verification)

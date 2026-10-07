@@ -153,6 +153,11 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         if isinstance(g_method_summary, dict)
         else None
     )
+    validated_g_exposed_sham_method = (
+        g_allocation.get("exposed_sham_method_code")
+        if isinstance(g_allocation, dict)
+        else None
+    )
     checks["g_randomized_allocation_verified"] = (
         isinstance(g_allocation, dict)
         and g_allocation.get("receipt_schema")
@@ -161,6 +166,9 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         and isinstance(validated_g_method, str)
         and bool(validated_g_method)
         and g_allocation.get("selected_exclusion_method") == validated_g_method
+        and isinstance(validated_g_exposed_sham_method, str)
+        and bool(validated_g_exposed_sham_method)
+        and validated_g_exposed_sham_method != validated_g_method
     )
 
     if checks["g_schema"]:
@@ -206,6 +214,11 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
             ),
             "g_exclusion_method": (
                 validated_g_method
+                if checks["g_randomized_allocation_verified"]
+                else None
+            ),
+            "g_exposed_sham_method": (
+                validated_g_exposed_sham_method
                 if checks["g_randomized_allocation_verified"]
                 else None
             ),
