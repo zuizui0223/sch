@@ -248,6 +248,7 @@ def test_six_z_level_allocation_uses_all_twenty_four_cells() -> None:
             "assigned_z_level": f"Z{i}",
             "assigned_z_rank": i,
             "target_exsertion": value,
+            "manipulation_setting_id": f"SETTING_Z{i}",
         }
         for i, value in enumerate((-2.0, -1.0, 0.0, 1.0, 2.0, 3.0))
     ]
