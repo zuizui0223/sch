@@ -118,6 +118,15 @@ def _validate_config(config: dict) -> dict:
         config.get("flowers_per_plant"), "flowers_per_plant"
     )
     total = n_plants * flowers_per_plant
+    p0_level_plan_sha256 = _resolved_text(
+        config.get("p0_level_plan_sha256"),
+        "p0_level_plan_sha256",
+    )
+    if (
+        len(p0_level_plan_sha256) != 64
+        or any(ch not in "0123456789abcdef" for ch in p0_level_plan_sha256.lower())
+    ):
+        raise ValueError("p0_level_plan_sha256 must be a 64-character hexadecimal digest")
 
     z_rows = config.get("z_levels")
     if not isinstance(z_rows, list) or len(z_rows) < 5:
@@ -127,6 +136,7 @@ def _validate_config(config: dict) -> dict:
     labels: set[str] = set()
     ranks: set[int] = set()
     targets: set[float] = set()
+    setting_ids: set[str] = set()
     for row in z_rows:
         if not isinstance(row, dict):
             raise ValueError("each z_levels row must be an object")
@@ -140,20 +150,28 @@ def _validate_config(config: dict) -> dict:
         target = _finite_number(
             row.get("target_exsertion"), "z_levels.target_exsertion"
         )
+        setting_id = _resolved_text(
+            row.get("manipulation_setting_id"),
+            "z_levels.manipulation_setting_id",
+        )
         if label in labels:
             raise ValueError("assigned_z_level must be unique")
         if rank in ranks:
             raise ValueError("assigned_z_rank must be unique")
         if target in targets:
             raise ValueError("target_exsertion must be unique")
+        if setting_id in setting_ids:
+            raise ValueError("manipulation_setting_id must be unique")
         labels.add(label)
         ranks.add(rank)
         targets.add(target)
+        setting_ids.add(setting_id)
         normalized_z.append(
             {
                 "assigned_z_level": label,
                 "assigned_z_rank": rank,
                 "target_exsertion": target,
+                "manipulation_setting_id": setting_id,
             }
         )
 
@@ -193,6 +211,7 @@ def _validate_config(config: dict) -> dict:
         "n_surface_cells": n_surface_cells,
         "replicates_per_cell": total // n_surface_cells,
         "z_levels": normalized_z,
+        "p0_level_plan_sha256": p0_level_plan_sha256,
         "excluded_method_code": excluded_method,
         "exposed_method_code": exposed_method,
     }
@@ -367,6 +386,7 @@ def _cell_plan(config: dict, allocation_seed: str) -> list[dict]:
                     "assigned_z_level": z["assigned_z_level"],
                     "assigned_z_rank": z["assigned_z_rank"],
                     "target_exsertion": z["target_exsertion"],
+                    "manipulation_setting_id": z["manipulation_setting_id"],
                     "state_id": state_id,
                     "pollination_treatment": pollination,
                     "predator_treatment": predator,
@@ -451,6 +471,7 @@ def build(
                     "assigned_z_level": cell["assigned_z_level"],
                     "assigned_z_rank": str(cell["assigned_z_rank"]),
                     "target_exsertion": repr(cell["target_exsertion"]),
+                    "manipulation_setting_id": cell["manipulation_setting_id"],
                     "pollination_treatment": cell["pollination_treatment"],
                     "predator_treatment": cell["predator_treatment"],
                     "exclusion_method": cell["exclusion_method"],
@@ -488,6 +509,7 @@ def build(
         "exact_cell_balance": True,
         "cell_counts": dict(sorted(cell_counts.items())),
         "z_levels": config["z_levels"],
+        "p0_level_plan_sha256": config["p0_level_plan_sha256"],
         "excluded_method_code": config["excluded_method_code"],
         "exposed_method_code": config["exposed_method_code"],
         "allocation_strategy": CELL_STRATEGY,
