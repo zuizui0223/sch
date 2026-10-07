@@ -466,7 +466,8 @@ P2 geometry              only now summarize / precision-qualify geometry;
                          failed readiness or plan mismatch discards it for power basis
 P2 basis                 resolve up to 18/21 blockers from qualified geometry
 P2 power                 after zero-blocker basis, run production W0-W5 power
-P2 alloc                 bind passing powered design to treatment-blind flower IDs
+P2 alloc                 require exact positive readiness V3 + passing powered design,
+                         then bind treatment-blind flower IDs
 P2 lock                  verify exact z/P/G/method identity + surface SHA-256
 Stage P2                 run verified z x P x G surface
 Stage P3                 test context-stable component optima
@@ -531,7 +532,10 @@ materialize 18 same-estimand geometry/variance basis rows, reducing the current
 `simulate_pedicularis_w1_w2_power.py` then powers the actual production
 full-surface -> enemy-displacement -> W0-W5 pipeline. The powered z grid,
 plants and flowers-per-plant design are then bound to treatment-blind flower
-IDs by `build_pedicularis_full_surface_allocation.py`. The completed P2 field
+IDs by `build_pedicularis_full_surface_allocation.py`. Allocation now also
+requires the exact positive readiness V3 receipt that validated the P0 physical
+z settings, G0 exclusion method and G1 exposed-sham handling; that readiness
+SHA-256 is carried through the field packet. The completed P2 field
 packet must pass
 `prepare_pedicularis_full_surface_field_sheet.py verify --require-complete`;
 the production analyzer rejects a CSV whose SHA-256 differs from that verified
