@@ -6,13 +6,13 @@
   "frozen_before_p2_outcomes": "REQUIRED_BEFORE_USE",
   "historical_comparison": {
     "source": "Xia Sun Liu 2013 Biology Letters doi:10.1098/rsbl.2013.0387",
-    "sparse_density_max_exclusive_plants_m2": 2.0,
-    "dense_density_min_exclusive_plants_m2": 5.0,
+    "sparse_density_max_exclusive_plants_m2": 2,
+    "dense_density_min_exclusive_plants_m2": 5,
     "small_patch_max_exclusive_flowering_plants": 20,
     "large_patch_min_exclusive_flowering_plants": 20,
     "exact_boundary_is_unclassified": true
   },
   "analysis_gate": {
-    "min_plants_per_historical_context_cell": "REQUIRED_BEFORE_USE"
+    "min_patches_per_historical_context_cell": "REQUIRED_BEFORE_USE"
   }
 }
