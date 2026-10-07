@@ -9,6 +9,7 @@ from scripts.bind_pedicularis_w1_w2_p0_f0_config import build as bind_final
 from scripts.build_pedicularis_p0_randomized_assignment import build as allocate_p0
 from scripts.evaluate_pedicularis_stage_p0 import evaluate_locked
 from scripts.freeze_pedicularis_full_surface_thresholds import build as freeze_surface
+from scripts.simulate_pedicularis_w1_w2_power import _validate_p0_f0_binding
 from scripts.materialize_pedicularis_w1_w2_final_p0_f0_basis import materialize
 from scripts.pedicularis_config_freeze import (
     FREEZE_SCHEMA,
@@ -366,4 +367,60 @@ def test_p0_f0_power_binding_rejects_threshold_drift() -> None:
             materialization,
             basis_receipt,
             freeze,
+        )
+
+
+def test_registered_power_validator_accepts_exact_final_three_binding() -> None:
+    _, _, config, freeze, _, materialization = _materialized()
+    basis_receipt = materialization["basis_audit_after_materialization"]
+    values = materialization["resolved_power_inputs"]
+    power_config = {
+        "schema": "PEDICULARIS_W1_W2_POWER_CONFIG_V1",
+        "status": "PEDICULARIS_W1_W2_POWER_INPUTS_PROSPECTIVELY_FROZEN",
+        "planning_provenance": {
+            "population_id": "P_REX_TEST",
+            "season_id": "S1",
+        },
+        "generating_model": {
+            "z_levels": values["generating_model.z_levels"],
+            "realized_z_sd": values["generating_model.realized_z_sd"],
+        },
+        "production_surface_config": {
+            "sch_surface": values["production_surface_config.sch_surface"],
+            "system_checks": config["system_checks"],
+        },
+    }
+    binding = bind_final(
+        power_config,
+        materialization,
+        basis_receipt,
+        freeze,
+    )
+
+    validated = _validate_p0_f0_binding(
+        power_config,
+        basis_receipt,
+        binding,
+    )
+    assert validated is not None
+    assert validated["status"] == "PEDICULARIS_W1_W2_P0_F0_CONFIG_EXACTLY_BOUND"
+
+
+def test_registered_power_validator_rejects_missing_final_three_binding() -> None:
+    _, _, _, _, _, materialization = _materialized()
+    basis_receipt = materialization["basis_audit_after_materialization"]
+    power_config = {
+        "schema": "PEDICULARIS_W1_W2_POWER_CONFIG_V1",
+        "status": "PEDICULARIS_W1_W2_POWER_INPUTS_PROSPECTIVELY_FROZEN",
+        "planning_provenance": {
+            "population_id": "P_REX_TEST",
+            "season_id": "S1",
+        },
+    }
+
+    with pytest.raises(ValueError, match="exact P0/F0 config binding"):
+        _validate_p0_f0_binding(
+            power_config,
+            basis_receipt,
+            None,
         )
