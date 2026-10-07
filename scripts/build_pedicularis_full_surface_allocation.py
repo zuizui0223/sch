@@ -228,6 +228,22 @@ def _validate_power(power: dict, config: dict) -> dict:
         raise ValueError(
             "W1/W2 power receipt is not authorized for registered P2 field allocation"
         )
+    if power.get("p0_f0_config_binding_status") != (
+        "PEDICULARIS_W1_W2_P0_F0_CONFIG_EXACTLY_BOUND"
+    ):
+        raise ValueError(
+            "W1/W2 power receipt lacks exact final-three P0/F0 config binding"
+        )
+    production_config_sha = power.get("production_surface_config_sha256")
+    threshold_freeze_sha = power.get("surface_threshold_freeze_sha256")
+    power_config_sha = power.get("power_config_sha256")
+    for value, label in (
+        (production_config_sha, "production_surface_config_sha256"),
+        (threshold_freeze_sha, "surface_threshold_freeze_sha256"),
+        (power_config_sha, "power_config_sha256"),
+    ):
+        if not isinstance(value, str) or len(value) != 64:
+            raise ValueError(f"W1/W2 power receipt lacks {label}")
 
     provenance = power.get("planning_provenance")
     if not isinstance(provenance, dict):
@@ -307,6 +323,9 @@ def _validate_power(power: dict, config: dict) -> dict:
         "candidate_primary_surface_power": primary_power,
         "candidate_headline_w1_or_w2_power": headline_power,
         "powered_design": powered_design,
+        "production_surface_config_sha256": production_config_sha,
+        "surface_threshold_freeze_sha256": threshold_freeze_sha,
+        "power_config_sha256": power_config_sha,
         "power_receipt_sha256": _semantic_sha256(power),
     }
 
@@ -590,6 +609,13 @@ def build(
         "allocation_identity_sha256": allocation_digest,
         "allocation_config_sha256": _semantic_sha256(config_payload),
         "power_binding": power,
+        "production_surface_config_sha256": power[
+            "production_surface_config_sha256"
+        ],
+        "surface_threshold_freeze_sha256": power[
+            "surface_threshold_freeze_sha256"
+        ],
+        "power_config_sha256": power["power_config_sha256"],
         "readiness_binding": readiness,
         "readiness_receipt_sha256": readiness[
             "readiness_receipt_sha256"
@@ -605,6 +631,7 @@ def build(
         "claim_ceiling": [
             "field_allocation_only",
             "power_design_to_field_execution_binding",
+            "production_surface_threshold_config_bound_from_power_to_field",
             "positive_readiness_bound_before_field_allocation",
             "validated_P0_z_settings_and_G0_G1_methods_match_allocation",
             "treatment_blind_flower_registration_before_assignment",
