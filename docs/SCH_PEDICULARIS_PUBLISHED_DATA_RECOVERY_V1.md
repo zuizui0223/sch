@@ -85,6 +85,23 @@ The article-level ANOVA reports a strong density effect on final seed set
 (F=39.025, df 1,2926) and seed predation (F=166.220, df 1,2926). These F
 statistics are evidence of ecological structure, not portable effect sizes.
 
+The 2011 density-by-patch-size analysis adds a sharper ecological contrast:
+
+```text
+initial seed set   density x size F = 44.556   df 1,2047
+final seed set     density x size F =  0.023   df 1,2345
+fruit predation    density x size F = 10.605   df 1,54
+seed predation     density x size F =106.270   df 1,2345.
+```
+
+Thus the spatial context dependence of enemy pressure is very strong, while
+the same interaction is essentially absent from final seed set. The paper's
+post-hoc contrasts show that the direction of patch-size effects on predation
+can reverse between sparse and dense patches. This is evidence that antagonist
+weight is a spatially conditional ecological variable rather than a fixed
+population property. It is **not** evidence for a randomized G effect and these
+F statistics are not used as portable effect sizes.
+
 The raw Dryad file is therefore the top recovery target because it may permit
 direct reconstruction of seed-set and predation distributions rather than
 using only article summaries.
@@ -410,7 +427,7 @@ Current recovery result:
 
 ```text
 published source records         10
-published measurement rows       73
+published measurement rows       77
 direct F0 gate values recovered   0.
 ```
 
