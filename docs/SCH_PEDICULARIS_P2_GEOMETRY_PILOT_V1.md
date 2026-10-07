@@ -212,9 +212,15 @@ python scripts/bind_pedicularis_geometry_intervention_plan.py \
   --output <geometry_intervention_binding.json>
 ~~~
 
-The binding freezes the P0 z labels/ranks, P1 experimental unit, selected G
-method and exact P0/P1/G field-config SHA-256 values before confirmatory
-outcomes.
+The binding freezes the P0 z labels/ranks, the exact
+`manipulation_setting_id` attached to every level, the full P0 level-plan
+SHA-256 (which also contains the physical setting specifications), P1
+experimental unit, selected G method and exact P0/P1/G field-config SHA-256
+values before confirmatory outcomes.
+
+Thus a geometry row is not considered the same z treatment merely because it
+uses the same label. It must use the same frozen physical setting ID, while
+`realized_exsertion` remains the measured phenotype produced by that setting.
 
 The allocation script is then:
 
