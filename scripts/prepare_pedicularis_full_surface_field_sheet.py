@@ -106,6 +106,11 @@ def _validate_allocation(
         raise ValueError("allocation receipt schema mismatch")
     if allocation_receipt.get("status") != ALLOCATION_STATUS:
         raise ValueError("allocation receipt is not in pre-field allocated state")
+    readiness_sha = allocation_receipt.get("readiness_receipt_sha256")
+    if not isinstance(readiness_sha, str) or len(readiness_sha) != 64:
+        raise ValueError(
+            "allocation receipt lacks exact readiness V3 fingerprint"
+        )
 
     normalized = _normalize_frozen_rows(allocation_rows)
     if len(normalized) != int(allocation_receipt.get("n_allocated_flowers", -1)):
