@@ -111,6 +111,16 @@ def _validate_allocation(
         raise ValueError(
             "allocation receipt lacks exact readiness V3 fingerprint"
         )
+    for key in (
+        "production_surface_config_sha256",
+        "surface_threshold_freeze_sha256",
+        "power_config_sha256",
+    ):
+        value = allocation_receipt.get(key)
+        if not isinstance(value, str) or len(value) != 64:
+            raise ValueError(
+                f"allocation receipt lacks exact {key} provenance"
+            )
 
     normalized = _normalize_frozen_rows(allocation_rows)
     if len(normalized) != int(allocation_receipt.get("n_allocated_flowers", -1)):
@@ -196,6 +206,13 @@ def prepare(
         "readiness_receipt_sha256": allocation_receipt.get(
             "readiness_receipt_sha256"
         ),
+        "production_surface_config_sha256": allocation_receipt[
+            "production_surface_config_sha256"
+        ],
+        "surface_threshold_freeze_sha256": allocation_receipt[
+            "surface_threshold_freeze_sha256"
+        ],
+        "power_config_sha256": allocation_receipt["power_config_sha256"],
         "field_identity_sha256": _semantic_sha256(normalized),
         "frozen_fields": list(FROZEN_FIELDS),
         "expected_frozen_rows": normalized,
@@ -206,6 +223,7 @@ def prepare(
             "no_outcome_values_generated",
             "no_flower_substitution_allowed",
             "no_treatment_drift_allowed",
+            "powered_surface_threshold_config_fingerprint_locked",
             "does_not_validate_full_surface",
         ],
     }
@@ -274,6 +292,13 @@ def verify(
         "readiness_receipt_sha256": lock.get(
             "readiness_receipt_sha256"
         ),
+        "production_surface_config_sha256": lock.get(
+            "production_surface_config_sha256"
+        ),
+        "surface_threshold_freeze_sha256": lock.get(
+            "surface_threshold_freeze_sha256"
+        ),
+        "power_config_sha256": lock.get("power_config_sha256"),
         "field_identity_sha256": lock["field_identity_sha256"],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": require_complete,
