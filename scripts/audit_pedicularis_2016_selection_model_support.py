@@ -93,7 +93,11 @@ def build(rows: list[dict[str, str]]) -> dict:
         }
         total = sum(rel.values())
         model_support[endpoint] = {
-            "n_original_population_units": len(scopes[endpoint]),
+            "n_population_labels_in_table_note": len(scopes[endpoint]),
+            "underlying_n_population_units_independently_verified": (
+                endpoint != "initial_seed_set"
+            ),
+            "initial_seed_scope_ambiguous": endpoint == "initial_seed_set",
             "population_ids": sorted(scopes[endpoint]),
             "aicc_comparison_is_within_endpoint_only": True,
             "best_aicc": best_aicc,
@@ -126,6 +130,18 @@ def build(rows: list[dict[str, str]]) -> dict:
         "analysis": "pedicularis_rex_2016_original_AICc_evidence_v1",
         "source_doi": DOI,
         "n_original_published_model_candidates": len(rows),
+        "source_scope_discrepancies": [
+            {
+                "endpoint": "initial_seed_set",
+                "Table_1_population_scope_note": "populations_1_through_14",
+                "supplementary_Table_S2_seed_set_scope": "12_populations",
+                "resolved_from_raw_data": False,
+                "claim": (
+                    "model_3_population_scope_ambiguous; interpret displayed "
+                    "AICc comparison without claiming verified 14-population seed observations"
+                ),
+            },
+        ],
         "model_support_by_endpoint": model_support,
         "prose_table_relative_likelihood_check": comparison_notes,
         "biological_discriminator": {
@@ -148,6 +164,7 @@ def build(rows: list[dict[str, str]]) -> dict:
         "method_limits": [
             "models_from_different_endpoints_have_incomparable_AICc_values",
             "7_linked_predation_fitness_populations_not_14_pollen_populations",
+            "initial_seed_set_n_population_discrepancy_supplement_12_vs_table_note_14",
             "full_and_best_final_seed_models_both_contain_population_interactions",
             "no_reported_noninteraction_AICc_for_final_seeds",
             "absence_of_selected_interaction_does_not_prove_slope_equivalence",
