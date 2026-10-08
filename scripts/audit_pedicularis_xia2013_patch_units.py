@@ -54,6 +54,12 @@ def seed_output_decomposition(
     ):
         raise ValueError("fractions must be finite and lie in [0,1]")
 
+    if any(initial == 0 for initial in initial_seed_fractions):
+        raise ValueError(
+            "predation fraction is undefined when a capsule has no "
+            "distinguishable initially produced seeds"
+        )
+
     mean_initial = mean(initial_seed_fractions)
     mean_predation = mean(predation_fractions)
     mean_product = mean(
