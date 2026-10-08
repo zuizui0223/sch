@@ -94,10 +94,63 @@ def _config(raw: dict) -> dict:
         for v in ("patch_sd","plant_sd","flower_sd"):
             _number(scene.get(v),v)
         validated.append(scene)
+    eligibility = raw.get("eligible_two_flower_plant_rate_scenarios", [])
+    if not isinstance(eligibility, list) or any(
+        type(x) not in (int, float) or not math.isfinite(x) or not 0 < x <= 1
+        for x in eligibility
+    ) or len(eligibility) != len(set(eligibility)):
+        raise ValueError("eligibility plant-rate assumptions must be unique in (0,1]")
+    confidence = _number(
+        raw.get("target_probability_all_strata_can_fill", 0.95),
+        "target_probability_all_strata_can_fill"
+    )
+    if not 0 < confidence < 1:
+        raise ValueError("eligibility target must be in (0,1)")
     return {
         "grid": sorted(grid), "replicates":replicates, "seed":seed,
         "cap":cap, "scenarios":validated,
+        "eligibility_rates":eligibility, "target_eligibility":confidence,
     }
+
+
+def _prob_at_least_k_eligible(screened:int,k:int,p:float)->float:
+    """Exact binomial design assumption, not verified P. rex flower supply."""
+    if screened<k:
+        return 0.0
+    if p==1:
+        return 1.0
+    # Only k-1 lower failures; exact combinatorial expression.
+    failed=sum(
+        math.comb(screened,j)*p**j*(1-p)**(screened-j)
+        for j in range(k)
+    )
+    return max(0.0,min(1.0,1.0-failed))
+
+
+def _screening_requirement(batches:int,eligible_rate:float,target:float)->dict:
+    """Minimal screen count per independently eligible patch-stage stratum.
+
+    Assumes iid Bernoulli eligibility within each stratum and identical p
+    across strata, so the chance all B strata have >=10 eligible plants
+    is [P(Binomial(n,p)>=10)]**B. This does not solve sampling bias.
+    """
+    if batches<1 or not 0<eligible_rate<=1 or not 0<target<1:
+        raise ValueError("invalid plant supply assumption")
+    minimum=10
+    while minimum<=10000:
+        per=_prob_at_least_k_eligible(minimum,10,eligible_rate)
+        if per**batches+1e-12>=target:
+            return {
+                "n_patch_stage_batches":batches,
+                "assumed_independent_plant_two_flower_eligibility_rate":eligible_rate,
+                "minimal_plants_screened_per_batch":minimum,
+                "total_plants_screened_across_batches":minimum*batches,
+                "required_eligible_plants_per_batch":10,
+                "assumed_probability_every_batch_can_fill":per**batches,
+                "binomial_eligibility_screening_is_not_field_observation":True,
+            }
+        minimum+=1
+    raise ValueError("eligibility scenario needs >10000 plant screens per batch")
 
 
 def _derive_seed(seed:int,*names:str) -> int:
@@ -298,6 +351,10 @@ def build(config:dict)->dict:
             ),
         } for s in cfg["scenarios"]
     }
+    supply=[
+        _screening_requirement(b,p,cfg["target_eligibility"])
+        for b in cfg["grid"] for p in cfg["eligibility_rates"]
+    ]
     return {
         "receipt_schema":RESULT_SCHEMA,
         "status":"SYNTHETIC_HIERARCHICAL_DESIGN_DETECTABILITY_NOT_POWER",
@@ -306,6 +363,7 @@ def build(config:dict)->dict:
         "n_unique_scenarios":len(cfg["scenarios"]),
         "n_random_synthetic_datasets":len(results)*cfg["replicates"],
         "scenario_grid":results,
+        "hypothetical_two_flower_plant_supply":supply,
         "uniform_cell_missingness_analytic_limit":limiting,
         "no_nominal_alpha_or_valid_p_values_computed":True,
         "sample_size_requirement_calibrated_from_focal_empirical_variance":False,
@@ -320,6 +378,7 @@ def build(config:dict)->dict:
             "simulation_rate_is_not_design_based_confidence_or_confirmatory_power",
             "conditional_plant_deletion_stability_is_not_a_cluster_bootstrap_CI",
             "null_scenario_positive_rate_is_not_calibrated_type_I_error",
+            "plant_eligibility_rate_independence_is_hypothetical_and_not_a_sampling_frame",
             "no_P0_G_P2_W1_W2_or_SCH_architecture_promotion",
         ],
     }
