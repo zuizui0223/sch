@@ -9,6 +9,9 @@ from collections import Counter
 from pathlib import Path
 
 from scripts import analyze_pedicularis_full_surface as surface
+from scripts.audit_pedicularis_p2_dual_endpoint_feasibility import (
+    validate_receipt as validate_dual_endpoint_feasibility,
+)
 
 
 PLACEHOLDER = "REQUIRED_BEFORE_USE"
@@ -646,6 +649,36 @@ def build(
     return allocations, receipt
 
 
+def build_registered(
+    manifest_rows: list[dict[str, str]],
+    config_payload: dict,
+    power_receipt: dict,
+    readiness_receipt: dict,
+    endpoint_feasibility_receipt: dict,
+    allocation_seed: str,
+) -> tuple[list[dict[str, str]], dict]:
+    """Production allocation; low-level build() remains for synthetic design tests."""
+    config = _validate_config(config_payload)
+    endpoint_binding = validate_dual_endpoint_feasibility(
+        endpoint_feasibility_receipt,
+        config["population_id"],
+        config["season_id"],
+    )
+    allocations, receipt = build(
+        manifest_rows,
+        config_payload,
+        power_receipt,
+        readiness_receipt,
+        allocation_seed,
+    )
+    receipt["endpoint_feasibility_binding"] = endpoint_binding
+    receipt["single_flower_endpoint_compatibility_validated_before_allocation"] = True
+    receipt["claim_ceiling"].append(
+        "registered_collection_requires_independent_same_flower_pollen_seed_validation"
+    )
+    return allocations, receipt
+
+
 def _write_csv(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -665,16 +698,26 @@ def main() -> None:
     parser.add_argument("allocation_config_json", type=Path)
     parser.add_argument("power_receipt_json", type=Path)
     parser.add_argument("readiness_v3_json", type=Path)
+    parser.add_argument(
+        "--endpoint-feasibility",
+        type=Path,
+        required=True,
+        help=(
+            "Positive PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1 receipt "
+            "from independent same-flower pollen and mature seed validation"
+        ),
+    )
     parser.add_argument("--allocation-seed", required=True)
     parser.add_argument("--allocations-out", type=Path, required=True)
     parser.add_argument("--receipt-out", type=Path, required=True)
     args = parser.parse_args()
 
-    allocations, receipt = build(
+    allocations, receipt = build_registered(
         _read_csv(args.flower_manifest_csv),
         _load_json(args.allocation_config_json),
         _load_json(args.power_receipt_json),
         _load_json(args.readiness_v3_json),
+        _load_json(args.endpoint_feasibility),
         args.allocation_seed,
     )
     _write_csv(args.allocations_out, allocations)
