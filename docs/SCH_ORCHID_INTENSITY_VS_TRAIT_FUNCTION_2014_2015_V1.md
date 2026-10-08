@@ -53,6 +53,49 @@ start** and **reinforcing selection on spur length**.
 No claim is made that the two studies used exactly the same population-year
 sample frame; their effect estimates are **not pooled**.
 
+## A direct third route: pollinator guild affects selection differently from mean seed service
+
+**Sletvold et al. (2012), Ecology 93:1880–1891,
+DOI 10.1890/11-2044.1**, selectively excluded diurnal or nocturnal
+pollinators from *Gymnadenia* in **two central-Norway populations**.
+The original abstract states:
+
+- Excluding **diurnal** pollinators significantly lowered seed
+  production compared with open-pollinated plants **in both populations**.
+- Excluding **nocturnal** pollinators did **not** show the same
+  significant reduction in mean seed production.
+- Nevertheless **both diurnal and nocturnal pollination regimes**
+  showed selection on traits related to attraction and pollen-transfer
+  efficiency. Selection strengths varied among traits and populations,
+  but **directions were consistent** in that source.
+
+Thus the pollinator category with the strongest measured contribution
+to **mean seed production** was *not* the only category participating
+in **trait selection**. Importantly, a nonsignificant nocturnal-removal
+effect is **not evidence that nocturnal pollinators provide zero
+seed production**.
+
+A different experimental programme, **Sletvold et al. (2015),
+New Phytologist, DOI 10.1111/nph.13555**, studied four populations,
+with diurnal/nocturnal comparisons in **two**. It reports that
+**only nocturnal pollinators selected longer spurs in the focal
+guild-comparison subset**, and that the two guilds mediated
+correlational selection on **different combinations of floral
+traits**. This is source-level evidence for consumer-specific
+multitrait selection geometry. It is **not** evidence of an
+evolutionary sign reversal between 2012 and 2015: different
+study frames, interventions and fitness analyses must be
+kept separate.
+
+Taken with the 2014 mean-pollen-limitation nonprediction, these
+field experiments establish the biological importance of
+**pollinator identity and trait-specific selective response**
+rather than treating mean service or shortage as the entire
+functional landscape. They do not reveal exact night/day
+response-curve slopes or pure-function optima. Original abstract
+results and tested scope are recorded in
+data/SCH_GYMNADENIA_GUILD_SERVICE_VS_SELECTION_V1.csv.
+
 ## Three mechanisms that SCH must distinguish
 
 1. **Interaction intensity:** mean pollen limitation, mean attack rate,
