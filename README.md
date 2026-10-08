@@ -144,6 +144,28 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+### Constant additive predator gain is an important alternative
+
+A source-consistent optional sensitivity test now
+evaluates the union of **sharp constant-additive G
+effects** across all physically feasible integer
+seed-count gains tau. A uniform gain at every
+exsertion setting does **not** move the true
+fitness optimum, even though it violates the
+simpler "no predator effect" sharp null.
+
+For every compatible tau, the method imputes
+the missing G outcomes, executes the matched
+whole-plant Fisher test and takes the most
+conservative p-value across tau. Rejection
+rules out a universally common count effect
+under the sharp assumptions, **not**
+heterogeneous plant effects or the weak
+hypothesis of unchanged population optimum.
+This is synthetic-validated, not field
+evidence. See
+`docs/SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`.
+
 ## Conditional plant-level randomization test for predator-state peak changes
 
 The two-flower cyclic P. rex candidate now has a **Fisher
