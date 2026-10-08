@@ -144,6 +144,20 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Independent patch-context evidence boundary
+
+Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387) report that
+the sign of the patch-size association with P. rex seed predation reverses
+between sparse and dense patches. This is a useful biological lead, but the
+2011 density/patch-size predictors span **11 independent patches**, while
+the published capsule-level ANOVAs use residual df 2047/2345. Neither
+patch-robust significance nor a compensation explanation for the
+nonsignificant final-seed interaction is recovered. A separate
+`audit_pedicularis_xia2013_patch_units.py` keeps those claims below their
+evidence ceiling and defines a matched-capsule covariance test that could
+be run on the verified historical Dryad workbook. No direct F0/G inference
+is promoted.
+
 ## Execution priority
 
 The repository is now **empirical-gate limited, not literature-screen limited**.
