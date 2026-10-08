@@ -4,7 +4,7 @@
 
 In *Pedicularis rex*, can loss of rainwater defence **increase average seed-predator
 attack while decreasing the difference in attack risk between low and high
-floral exsertion**? If so, a population with *more* predators could experience
+floral exsertion**? If so, a population with *greater average attack pressure* could experience
 *weaker* selection against exsertion, not stronger selection.
 
 This is a falsifiable **new prospective prediction**, not a result of the
