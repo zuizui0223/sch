@@ -1,0 +1,19 @@
+{
+  "schema": "PEDICULARIS_RANDOMIZED_POLLEN_SENTINEL_CONFIG_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "pollen_assay_method_id": "REQUIRED_BEFORE_USE",
+  "prespecified_pollen_sampling_stage": "REQUIRED_BEFORE_USE",
+  "max_pollen_sampling_age_spread_hours": "REQUIRED_BEFORE_USE",
+  "min_independent_plants": "REQUIRED_BEFORE_USE",
+  "bootstrap_reps": "REQUIRED_BEFORE_USE",
+  "randomization_permutation_reps": "REQUIRED_BEFORE_USE",
+  "random_seed": 20261008,
+  "min_biologically_meaningful_pollen_grains_per_rank": "REQUIRED_BEFORE_USE",
+  "min_valid_plant_bootstrap_fraction": "REQUIRED_BEFORE_USE",
+  "frozen_before_sentinel_outcomes": "REQUIRED_BEFORE_USE",
+  "claim_lane": "RANDOMIZED_POLLINATION_FUNCTION_ONLY_NOT_W1_W2",
+  "max_mechanical_damage_fraction": "REQUIRED_BEFORE_USE",
+  "one_sided_randomization_alpha": "REQUIRED_BEFORE_USE"
+}

@@ -67,8 +67,18 @@ destructive slide protocol is **a source of the problem**, not a positive pilot.
 This is probably the more conventional biologically feasible direction
 if joint observation cannot be validated.
 
-A true split design would randomly allocate two disjoint sets of flower IDs,
-ideally within the same plant/block and z-setting:
+The first independent component of this route is now implemented:
+`build_pedicularis_randomized_pollen_sentinels.py` and
+`analyze_pedicularis_randomized_pollen_sentinels.py` permit a separate
+randomized exsertion experiment under NATURAL pollination on sacrificial
+flowers. Its response is a plant-block-randomized, intention-to-treat
+effect of the physical z manipulation on stigmatic pollen grains. It is a
+substantive test of the pollination-facing function, but **not the joint
+two-cohort W1/W2 analysis**. See
+`docs/SCH_PEDICULARIS_RANDOMIZED_POLLEN_SENTINELS_V1.md`.
+
+A complete split W1/W2 design would randomly allocate two disjoint sets of
+flower IDs, ideally within the same plant/block and z-setting:
 
 - **pollen sentinel flowers**: measure pollen in late anthesis; destroy
   stigmas if necessary; do not require mature seeds;
