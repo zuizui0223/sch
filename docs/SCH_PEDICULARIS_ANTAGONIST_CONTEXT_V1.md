@@ -102,8 +102,20 @@ The primary P2 surface and W0-W5 classifier are unchanged.
 
 ## Historical-comparison state
 
-For direct comparability with Xia et al., the secondary analysis uses only
-P = NATURAL and G = EXPOSED.
+For the closest defensible comparison with Xia et al., the secondary uses only
+P = NATURAL and G = EXPOSED **at the P0-validated sham / natural-exsertion
+level**. It does not pool the other experimentally altered z levels and call
+them natural flowers.
+
+The sham label is not manually selected after seeing the outcomes. It is
+recovered from the positive P0 receipt (its prospectively assigned sham rank),
+carried through readiness V3 into the primary P2 surface receipt, and required
+by the secondary. No sham provenance means no historical comparison.
+
+Because only a fraction of randomized P2 flowers may meet all three
+conditions, patch-level replication can be low. If the registered minimum
+independent patches per cell is not met, this secondary remains NOT_MODELABLE.
+That never changes W0-W5.
 
 For each flower represented in that natural state it calculates:
 
@@ -203,8 +215,8 @@ improve the patch mean but do not count as independent context replicates.
 A consistent result would mean:
 
 > the focal causal experiment was conducted inside an ecological landscape in
-> which natural enemy pressure still shows the patch-density/patch-size-size dependence
-> previously documented in P. rex.
+> which seed predation on the sham/natural-exsertion treatment shows the
+> patch-density-by-patch-size pattern previously documented in P. rex.
 
 This would strengthen the ecological interpretation that antagonist weight is
 not a fixed species property.
