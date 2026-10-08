@@ -97,6 +97,70 @@ composite no-peak-shift null, and is not automatically
 robust to effects on flower disappearance or plant
 interference.
 
+## A second control: constant additive predator effects
+
+Even when excluding predators increases seed output,
+the gain might be a **common constant** at every
+floral exsertion rank. Such an effect does not move
+the population's seed-fitness optimum, despite
+constituting a genuine predator treatment effect.
+
+The Fisher no-effect null can therefore be
+supplemented with a more permissive **union of
+sharp constant-additive-effect nulls**:
+
+    H0(tau):
+      Y_i(EXCLUDED,z) = Y_i(EXPOSED,z) + tau
+      for EVERY flower i and assigned z.
+
+Because exact viable seed counts are integers,
+tau is an **integer** gain (possibly negative).
+Individual precommitted seed-potential caps
+restrict which tau values could physically
+produce nonnegative, countable outcomes under
+both G treatments. Every feasible tau is
+considered, using the same conditional whole-
+plant pair swaps and one-sided peak-midrank
+statistic.
+
+For each tau, impute the missing alternative
+G potential outcome for all flowers and obtain
+the Fisher sharp-null p-value. Taking the
+**maximum p-value over the feasible tau values**
+is a conservative test of the **union** of
+all constant-additive sharp hypotheses. It
+cannot reject that union merely because
+the data disagree with tau=0.
+
+A complete synthetic tau=+2 seed/flower
+counterexample tests all 32 possible whole-
+plant G assignments. It verifies that the
+composite worst-case p-values are also
+super-uniform under the truly constant-additive
+effect.
+
+**Limits:** rejecting the constant-additive
+union means that *not every flower has the
+same integer G effect*, subject to the sharp
+null assumptions. It does **NOT by itself**
+prove a z-specific G interaction: effects
+might instead differ among mother plants
+without differing systematically with z.
+The weak null that the **population optimum
+does not move** remains untested by this
+simple union calculation.
+
+Invoke with the optional flag:
+
+    python -m scripts.fisher_pedicularis_plant_pair_G_randomization \
+      full_maturity.csv frozen_two_flower_receipt.json \
+      --test-uniform-additive-constant --output fisher.json
+
+This extra analysis is currently limited
+to at most 101 source-compatible integer
+tau candidates, failing closed rather
+than silently selecting favorable values.
+
 ## Complete-fate requirement
 
 The test first calls the existing source-locked
