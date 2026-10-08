@@ -144,6 +144,33 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Which missing fruit can resolve a biological selection question?
+
+The separate P. rex fruit-fate module now has an exact
+**conditional single-fruit remeasurement priority** diagnostic.
+A fruit with a source-justified viable-seed interval [a,b]
+would shrink its cell's uncertainty by exactly (b-a)/n if
+its intact mature seed output were verified, regardless
+of the result. More informatively, the module solves
+the exact *integer count intervals* that would establish
+positive or negative exsertion selection or a G-exclusion
+contrast even with **all other missing fruits still unresolved**.
+
+In a **synthetic** 20-flower test the predator-EXPOSED
+high-exsertion fruit has unknown intact seeds in [0,3].
+If later verified as 0 or 1, high-minus-low seed
+fitness is negative; if 3, positive; if 2, zero.
+The current excluded-arm high-minus-low sign is
+already positive despite another unknown fruit.
+This distinguishes *which source outcome could
+resolve a decision* from *which source has the
+largest raw numeric uncertainty*. It does **not**
+predict missing seed counts or authenticate
+historical 2016 P. rex capsule fates.
+
+See docs/SCH_PEDICULARIS_FRUIT_FATE_MEASUREMENT_PRIORITY_V1.md
+and scripts/prioritize_pedicularis_fruit_fate_remeasurement.py.
+
 ## Recover selection bounds while some reproductive fates are censored
 
 The registered *P. rex* fruit cohort now has a separate, non-gating
