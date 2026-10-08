@@ -351,6 +351,23 @@ def test_sentinel_and_fruit_cannot_share_flower_id_or_silent_pollen_copy() -> No
         analyze(*packet)
 
 
+def test_assigned_rank_is_not_treated_as_realized_exsertion_if_first_stage_fails() -> None:
+    packet = list(_packet())
+    fruit_rows = deepcopy(packet[5])
+    for row in fruit_rows:
+        if row["predator_treatment"] == "EXPOSED" and row["assigned_z_rank"] == "4":
+            row["realized_exsertion_before_G"] = "0.05"
+    packet[5] = fruit_rows
+    result = analyze(*packet)
+    assert result["status"] == (
+        "TWO_COHORT_Z_FIRST_STAGE_NOT_ORDERED_NO_EXSERTION_INTERPRETATION"
+    )
+    assert (
+        result["fruit_nuisance_checks"]["fruit_z_first_stage_ordered_in_both_G_states"]
+        is False
+    )
+
+
 def test_fruit_only_allocation_rejects_unqualified_G_and_wrong_physical_z() -> None:
     packet = _packet()
     p0, readiness = packet[2], packet[7]
