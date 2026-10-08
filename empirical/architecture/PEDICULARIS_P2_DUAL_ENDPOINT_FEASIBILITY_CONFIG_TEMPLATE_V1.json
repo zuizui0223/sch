@@ -1,0 +1,12 @@
+{
+  "schema": "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_CONFIG_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "collection_route": "REQUIRED_BEFORE_USE",
+  "pollen_assay_method_id": "REQUIRED_BEFORE_USE",
+  "assay_protocol_reference": "REQUIRED_BEFORE_USE",
+  "seed_endpoint_protocol_reference": "REQUIRED_BEFORE_USE",
+  "compatibility_margin_basis": "REQUIRED_BEFORE_USE",
+  "frozen_before_compatibility_pilot_outcomes": "REQUIRED_BEFORE_USE"
+}
