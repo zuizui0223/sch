@@ -88,7 +88,7 @@ def test_primary_fitness_and_optimum_shift_survive_unknown_fruit_fates():
     result = build(rows,allocation)
     assert result["status"] == "NON_GATING_FINITE_ASSIGNED_FRUIT_FATE_BOUNDS"
     assert result["n_all_allocated_flowers"] == 20
-    assert result["n_independent_plant_blocks"] == 2
+    assert result["n_plant_blocks"] == 2
     assert result["fate_status_counts"] == {
         "FATE_UNOBSERVED":2,
         "MATURE_COUNTED":16,
