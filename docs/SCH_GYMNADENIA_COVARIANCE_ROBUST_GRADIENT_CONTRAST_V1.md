@@ -155,6 +155,26 @@ published 2015 source. This new work improves what is
 *provable from reported uncertainty*, while correcting the
 earlier overly categorical covariance limitation.
 
+## Independent multiyear biological context, not replication of this contrast
+
+Sletvold & Ågren (2014; doi:10.1111/evo.12405) analyzed pollinator
+selection in the same species across **nine population-year units**.
+Within *Gymnadenia*, mean pollen limitation predicted stronger net
+selection but did not detectably predict the magnitude of
+pollinator-mediated selection. Pollinator selection differed among
+traits and was stronger for pollen-transfer efficiency (spur length)
+than for the tested attraction/display traits.
+
+**Crucial restriction:** flowering start was *excluded* from that
+multiyear *Gymnadenia* analysis owing to data-quality variation. The
+2014 source therefore does not replicate the specific flowering-start
+reversal from this 2015 factorial experiment, nor provide covariance
+for the 2015 beta contrast. Its qualitative significance is that
+population mean interaction intensity and trait-specific selection
+are distinct biological quantities, not interchangeable estimators.
+See
+`SCH_ORCHID_INTENSITY_VS_TRAIT_FUNCTION_2014_2015_V1.md`.
+
 ## Exact reproducibility
 
 ```sh
