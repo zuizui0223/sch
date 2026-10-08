@@ -9,7 +9,7 @@ floral exsertion**? If so, a population with *more* predators could experience
 
 This is a falsifiable **new prospective prediction**, not a result of the
 2015 and 2016 papers. Do not merge the two publications into a fabricated
-\`exsertion x water\` factorial dataset.
+`exsertion x water` factorial dataset.
 
 Sources:
 
@@ -46,14 +46,14 @@ pollinator P=0.958 is a non-rejection of the null, **not** a prospective
 equivalence demonstration or proof that water handling is neutral everywhere.
 
 **2016**: Corolla exsertion
-\`(flower_length - bract_height) / flower_length\` was observationally
+`(flower_length - bract_height) / flower_length` was observationally
 associated with both greater stigmatic pollen receipt and greater seed
 predation. That ratio is **not** a measured water-surface height or
 individually randomized exsertion treatment.
 
 The source-level check is machine-readable in the existing
-\`scripts/audit_pedicularis_published_empirical_priors.py\` receipt field
-\`water_2015_site_evidence\`, without any conversion of the paper's
+`scripts/audit_pedicularis_published_empirical_priors.py` receipt field
+`water_2015_site_evidence`, without any conversion of the paper's
 coefficients into raw risk differences or prospective F0 values.
 
 ## Three non-equivalent biological explanations
@@ -77,9 +77,9 @@ The actual oviposition cue remains unknown; do not assert volatile induction.
 A bounded risk-scale interaction can appear even if predators respond to
 exsertion with the **same log-odds slope** in wet and dry plants. Under
 
-\`\`\`
+```
 p(attack | z, y) = logistic(alpha + beta * z + delta * I(dry))
-\`\`\`
+```
 
 the dry treatment increases risk if delta>0 but has *no* z-by-water
 interaction on the logit scale. Yet a *risk-difference* contrast can shrink
@@ -108,7 +108,7 @@ whorl or along the inflorescence. Repeating water assignment independently
 within a plant risks treatment spillover and pseudo-replication.
 
 Use a conservative **plant-level water assignment** (stratified/randomized
-within independent patches), with multiple exsertion \`z\` settings randomized
+within independent patches), with multiple exsertion `z` settings randomized
 among distinct intact fruit-bearing flowers **within each plant**. When
 feasible, apply at least five predeclared z levels for comparability with P0.
 One plant contributes **one** independently water-randomized unit; several
@@ -123,25 +123,25 @@ The minimally identified water contrast requires:
   Confirm retention of the treatment throughout the actual oviposition
   exposure interval despite rainfall/refill.
 - Optional mechanistic comparison after the water-only contrast:
-  \`DRY_PUNCTURED\` and a wound-control at matched water content. A direct
+  `DRY_PUNCTURED` and a wound-control at matched water content. A direct
   water-vs-puncture decomposition is possible **only if the physical
   device/control combinations are successfully validated**; merely naming
   a third arm does not guarantee an identified wound effect.
 
 If a non-wounding dry treatment is physically impossible or rewetting cannot
-be controlled, report \`WATER_ONLY_MECHANISM_NOT_IDENTIFIED\` and do not call
+be controlled, report `WATER_ONLY_MECHANISM_NOT_IDENTIFIED` and do not call
 the original scissors effect a water-only causal effect. Fix any alternative
 sealed-puncture factorial **before** field collection.
 
 A separate *negative-control* measurement of bract injury, microclimate and
 handling must be recorded in every treatment. The exact manipulation
-\`setting_id\` (not merely the label \`dry\`) must be pre-frozen.
+`setting_id` (not merely the label `dry`) must be pre-frozen.
 
 ## Exposure geometry, sampling and outcomes
 
 Measure at the flower/whorl level **before and during predator access**:
 
-\`\`\`
+```
 assigned_z_rank, realized_corolla_exsertion_mm
 flower_base_and_ovary_elevation_mm
 bract_rim_elevation_mm
@@ -150,10 +150,10 @@ exposed_ovary_or_corolla_length_above_water_mm
 rainfall_or_refilling_observation
 bract_puncture_and_handling_damage
 flower_age, stage, whorl_id, plant_id, patch_id
-\`\`\`
+```
 
 The relevant physical mediator is **actual exposure above the waterline**,
-not \`assigned_z_rank\` and not \`(flower length - bract height)/flower length\`.
+not `assigned_z_rank` and not `(flower length - bract height)/flower length`.
 Use assignment for ITT causal inference. Do not condition the primary
 assignment contrast on realized exposure as if it were randomized.
 
@@ -178,19 +178,19 @@ not prove the absence of water effects on pollen transfer at other sites.
 
 ## Ecological contrasts to estimate without invented data
 
-For each water-assigned plant \`i\`, calculate the slope of early attack
-probability across its preassigned z ranks, \`b_Ai\`. Compare wet vs dry
+For each water-assigned plant `i`, calculate the slope of early attack
+probability across its preassigned z ranks, `b_Ai`. Compare wet vs dry
 **plant-level slopes** within patches, and use patch-aware randomization or
 resampling. The directional interaction is
 
-\`\`\`
+```
 Delta_attack = slope_A(WET) - slope_A(DRY)
 baseline_effect = mean_A(DRY) - mean_A(WET)
-\`\`\`
+```
 
 The paradoxical ecological world occurs when both are positive on the
 **risk scale**, conditional on adequate uncertainty support. A positive
-\`Delta_attack\` is not by itself evidence of a changed log-odds preference:
+`Delta_attack` is not by itself evidence of a changed log-odds preference:
 inspect the standardized logit-scale z-by-water contrast and compare
 measured waterline exposure.
 
@@ -201,14 +201,14 @@ denominator. Only if this also changes is there support for a change in
 An interaction in early attack and a null final-fitness interaction is a
 scientifically meaningful outcome; avoid post-hoc compensation stories.
 
-Do not estimate or claim a four-state SCH \`W00-W11\` surface,
-\`z_P*\`, \`z_G*\`, pure function optima or \`L\` from this two-factor
+Do not estimate or claim a four-state SCH `W00-W11` surface,
+`z_P*`, `z_G*`, pure function optima or `L` from this two-factor
 BITA-y mechanism experiment.
 
 ## Repository boundary and next empirical fork
 
 The primary SCH full-surface design **holds bract-water y fixed** and needs
-a separate predator exposure/exclusion \`G\`. This secondary
+a separate predator exposure/exclusion `G`. This secondary
 waterline/access project is orthogonal to that registered G route and
 cannot rescue failed P0/P1/G readiness, a blocked original W1/W2
 same-flower assay or an unqualified pollen sentinel.
@@ -216,7 +216,7 @@ same-flower assay or an unqualified pollen sentinel.
 If a direct field programme is not available, this protocol remains an
 evidence-bounded, preregistration-ready biological hypothesis, not a newly
 observed result. External source data supply **zero** randomized
-\`z x water\` observations at present.
+`z x water` observations at present.
 
 Tracking: issue #201, PR #200 and the independent
-\`docs/SCH_PEDICULARIS_WATER_G_DEPRECATION_V1.md\` boundary.
+`docs/SCH_PEDICULARIS_WATER_G_DEPRECATION_V1.md` boundary.
