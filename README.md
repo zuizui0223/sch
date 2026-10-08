@@ -158,6 +158,32 @@ evidence ceiling and defines a matched-capsule covariance test that could
 be run on the verified historical Dryad workbook. No direct F0/G inference
 is promoted.
 
+## Source-backed geographic fitness-translation hypothesis
+
+A fresh primary-table audit of Sun, Armbruster & Huang (2016;
+doi:10.1093/aob/mcw097) recovers the **original AICc evidence** for four
+linked ecological stages. The selected pollen (14 populations), seed-predation
+(7 linked populations), and initial-seed (14 populations) models omit the
+specific population-by-trait/pollen interaction under comparison. The best
+final viable seed model (7 linked populations) **retains multiple population
+interactions**.
+
+This raises a more discriminating biological possibility: geographic
+variation in the reproductive cost of multifunctional exsertion may enter
+**after** pollen arrival and enemy attack, through context-dependent
+conversion into viable seeds, rather than requiring geographic changes in
+consumer preference. The AICc comparisons alone cannot distinguish this
+process from other causes, and absence of a selected interaction is not
+equivalence. Table-derived model relative likelihoods are recomputed
+independently from prose values, and final-seed candidate models cannot
+be used as an interaction-vs-no-interaction likelihood ratio because
+both listed candidates contain interactions.
+
+See `docs/SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md` and
+`scripts/audit_pedicularis_2016_selection_model_support.py`. Published
+model outputs are real evidence; no raw flower-level refit or
+causal mechanism identification is claimed.
+
 ## Separate pollen and mature-seed flowers: marginal ecological bridge
 
 The destructive P. rex stigma assay does **not** require copying pollen counts
