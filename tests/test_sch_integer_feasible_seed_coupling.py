@@ -49,9 +49,14 @@ def test_integer_biology_identifies_positive_sign_that_continuous_margins_cannot
     )
     assert r["integer_constraint_changes_sign_identifiability"] is True
     assert r["SCH_primary_fitness_endpoint"] == "UNDAMAGED_MATURE_SEED_COUNT_PER_FLOWER"
+    assert r["fractionally_relaxed_high_minus_low_seed_count_per_flower_interval"] == pytest.approx(
+        [-.25,.75]
+    )
+    assert r["integer_constraint_changes_SCH_primary_seed_count_sign_identifiability"] is True
     assert r["integer_feasible_high_minus_low_seed_count_per_flower_interval"] == pytest.approx(
         [.5,.5]
     )
+    assert r["integer_constraint_changes_SCH_primary_seed_count_sign_identifiability"] is True
     assert r["SCH_primary_seed_count_selection_direction"] == (
         "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
     )
