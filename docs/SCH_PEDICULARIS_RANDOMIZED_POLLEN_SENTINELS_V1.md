@@ -160,6 +160,26 @@ python scripts/analyze_pedicularis_randomized_pollen_sentinels.py \
   --output <randomized_pollen_response.json>
 ```
 
+## Separate-cohort ecological contrast is now implementable (not confirmatory)
+
+A new non-gating companion uses another randomized
+`TWO_COHORT_FRUIT` set with intact mature seeds under natural pollination
+and qualified independent G. The two cohorts need not share flower IDs:
+the marginal curves `E[pollen | do(z)]` and
+`E[viable seeds | do(z), G]` are each experimentally estimable when
+cohort sampling and interference assumptions hold. The ecological
+contrast is pollen deposition at the *two predator-state reproductive
+rank maxima*. This directly handles a nonlinear pollen curve: an overall
+positive pollen slope can coexist with a negative pollen contrast over
+the selected pair of z settings.
+
+`scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` implements
+only a descriptive, plant-cluster-resampled comparison with explicit
+tied-peak and provenance checks. It does not perform the still-missing
+confirmatory **two-cohort W1/W2** sample-size planning, selective argmax
+inference, or primary four-state SCH estimation. See
+`SCH_PEDICULARIS_TWO_COHORT_ECOLOGICAL_ALIGNMENT_V1.md`.
+
 ## What the new route does **not** yet do
 
 A separate positive sentinel result **does not** automatically complete W1

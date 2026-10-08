@@ -1,0 +1,13 @@
+{
+  "schema": "PEDICULARIS_TWO_COHORT_ECOLOGICAL_BRIDGE_CONFIG_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "frozen_before_both_cohort_outcomes": "REQUIRED_BEFORE_USE",
+  "claim_lane": "TWO_COHORT_NON_GATING_ECOLOGICAL_GEOMETRY_NOT_W1_W2",
+  "min_fruit_plants": "REQUIRED_BEFORE_USE",
+  "plant_bootstrap_reps": "REQUIRED_BEFORE_USE",
+  "random_seed": 20261008,
+  "max_water_depth_range": "REQUIRED_BEFORE_USE",
+  "max_mechanical_damage_fraction": "REQUIRED_BEFORE_USE"
+}

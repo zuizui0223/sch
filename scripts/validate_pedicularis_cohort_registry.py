@@ -61,6 +61,12 @@ ROLE_RULES = {
         "confirmatory_eligible": "YES",
         "phase": "FULL_SURFACE",
     },
+    "TWO_COHORT_FRUIT": {
+        "lane": "FRUIT_P1_G",
+        "threshold_basis_eligible": "NO",
+        "confirmatory_eligible": "NO",
+        "phase": "EXPLORATORY_FRUIT",
+    },
     "POWER_GEOMETRY_PILOT": {
         "lane": "P0_P1_G",
         "threshold_basis_eligible": "NO",
@@ -124,6 +130,7 @@ def validate(rows: list[dict[str, str]]) -> dict:
         "POWER_BASIS": set(),
         "CONFIRMATORY": set(),
         "FULL_SURFACE": set(),
+        "EXPLORATORY_FRUIT": set(),
     }
     role_counts: dict[str, int] = {}
 
@@ -154,7 +161,7 @@ def validate(rows: list[dict[str, str]]) -> dict:
     confirmatory_plants = phases["CONFIRMATORY"] | phases["FULL_SURFACE"]
     shared_plants = sorted(calibration_plants & confirmatory_plants)
     power_basis_overlap = sorted(
-        power_basis_plants & (calibration_plants | confirmatory_plants)
+        power_basis_plants & (calibration_plants | confirmatory_plants | phases["EXPLORATORY_FRUIT"])
     )
     if power_basis_overlap:
         raise ValueError(
@@ -176,6 +183,7 @@ def validate(rows: list[dict[str, str]]) -> dict:
         "role_counts": dict(sorted(role_counts.items())),
         "n_calibration_plants": len(calibration_plants),
         "n_power_geometry_pilot_plants": len(power_basis_plants),
+        "n_exploratory_fruit_plants": len(phases["EXPLORATORY_FRUIT"]),
         "n_confirmatory_or_surface_plants": len(confirmatory_plants),
         "n_shared_plants_across_calibration_and_confirmatory": len(shared_plants),
         "power_geometry_pilot_plant_overlap_detected": False,
