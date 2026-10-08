@@ -77,6 +77,27 @@ All possible optimum ranks in each predator state
 and the resulting outer bounds on the excluded-minus-
 exposed shift are returned for each integer outcome range.
 
+## Leave-one-plant-out robustness is a separate diagnostic
+
+Even if the excluded-minus-exposed optimum displacement
+is guaranteed across **all allowed fruit fates**,
+the pooled mean can still depend on one parent plant.
+A companion analysis removes each complete plant's
+z×G set and recomputes the optimum possible ranks
+with all remaining fruits' fate bounds intact.
+The original allocation receipt is validated
+before omission, never rewritten as a new
+randomization experiment.
+
+The synthetic two-plant positive optimum
+shift can disappear as a guaranteed direction
+after removing the strong-response plant,
+even without changing the original data.
+This is **between-plant leverage**, not
+evidence of actual P. rex selection
+heterogeneity. See
+`SCH_PEDICULARIS_PLANT_BLOCK_OPTIMUM_SENSITIVITY_V1.md`.
+
 ## Scientific distinctions
 
 A mean predator-exclusion effect, a signed contrast

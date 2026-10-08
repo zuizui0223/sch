@@ -144,6 +144,33 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Does a pooled optimum displacement depend on one parent plant?
+
+The *P. rex* fruit-fate estimator now has a **plant-block
+leave-one-out** companion. It preserves the complete
+original source allocation and verified/unknown fruit
+intervals, then removes all z×G flowers from one
+parent plant at a time and recomputes possible
+reproductive optima.
+
+A synthetic two-plant experiment can show a
+**guaranteed positive pooled predator-induced
+optimum shift** with missing fruit fates, yet
+lose that guarantee when the strong-response
+plant is removed. Thus outcome-censoring
+robustness and **between-plant robustness**
+are different biological questions. A three-plant
+synthetic positive control remains robust
+after any one plant deletion.
+
+This does not provide a plant-cluster confidence
+interval or show real P. rex population
+heterogeneity. It instead keeps fruit pseudoreplication
+and selection of unusually floriferous plants
+visible. See
+`docs/SCH_PEDICULARIS_PLANT_BLOCK_OPTIMUM_SENSITIVITY_V1.md`
+and `scripts/audit_pedicularis_plant_block_optimum_robustness.py`.
+
 ## Which single lost fruit could decide the floral reproductive optimum?
 
 The new source-locked *P. rex* fruit-fate analysis now calculates
