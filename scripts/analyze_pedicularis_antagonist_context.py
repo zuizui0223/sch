@@ -266,7 +266,16 @@ def _patch_class(size: int, config: dict) -> str:
     return "BOUNDARY_UNCLASSIFIED"
 
 
-def _plant_natural_exposed(rows: list[dict[str, str]]) -> dict[str, dict]:
+def _plant_natural_exposed(
+    rows: list[dict[str, str]],
+) -> tuple[dict[str, dict], list[str]]:
+    """Use the Xia2013 per-capsule fraction, not a pooled seed-count ratio.
+
+    Xia2013 assigned 100% predation when no distinguishable seeds remained.
+    The current P2 seed counts alone cannot distinguish total consumption from
+    no seed development, so such flowers are explicitly unresolved rather
+    than silently discarded or automatically scored as fully predated.
+    """
     grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
         if (
@@ -276,22 +285,35 @@ def _plant_natural_exposed(rows: list[dict[str, str]]) -> dict[str, dict]:
             grouped[row["plant_id"]].append(row)
 
     result = {}
+    ambiguous_zero_seed_flower_ids: list[str] = []
     for plant, plant_rows in grouped.items():
-        damaged = sum(float(row["damaged_seed_count"]) for row in plant_rows)
-        undamaged = sum(float(row["undamaged_seed_count"]) for row in plant_rows)
-        developed = damaged + undamaged
-        ovules = sum(float(row["ovule_count"]) for row in plant_rows)
-        if developed <= 0 or ovules <= 0:
+        per_flower_predation = []
+        per_flower_final_fraction = []
+        early_attack = []
+        for row in plant_rows:
+            damaged = float(row["damaged_seed_count"])
+            undamaged = float(row["undamaged_seed_count"])
+            developed = damaged + undamaged
+            ovules = float(row["ovule_count"])
+            if ovules <= 0:
+                raise ValueError("ovule_count must be >0 in natural-exposed P2 rows")
+            if developed <= 0:
+                ambiguous_zero_seed_flower_ids.append(row["flower_id"])
+                continue
+            per_flower_predation.append(damaged / developed)
+            per_flower_final_fraction.append(undamaged / ovules)
+            early_attack.append(int(row["early_predator_attack_present"]))
+
+        if not per_flower_predation:
             continue
         result[plant] = {
             "n_natural_exposed_flowers": len(plant_rows),
-            "seed_predation_fraction": damaged / developed,
-            "early_attack_rate": mean(
-                int(row["early_predator_attack_present"]) for row in plant_rows
-            ),
-            "final_undamaged_seed_fraction": undamaged / ovules,
+            "n_evaluable_natural_exposed_flowers": len(per_flower_predation),
+            "seed_predation_fraction": mean(per_flower_predation),
+            "early_attack_rate": mean(early_attack),
+            "final_undamaged_seed_fraction": mean(per_flower_final_fraction),
         }
-    return result
+    return result, sorted(ambiguous_zero_seed_flower_ids)
 
 
 def _patch_summary(values: list[dict]) -> dict:
@@ -348,7 +370,7 @@ def build(
         raise ValueError("P2 rows do not match frozen context population/season")
 
     context = _validate_context(context_rows, rows, config)
-    natural_exposed = _plant_natural_exposed(rows)
+    natural_exposed, unresolved_zero_seed_flowers = _plant_natural_exposed(rows)
 
     plants_by_patch: dict[str, list[dict]] = defaultdict(list)
     classified_plants = []
@@ -401,10 +423,14 @@ def build(
     n_patches_by_cell = {
         cell: len(cells.get(cell, [])) for cell in sorted(expected_cells)
     }
-    modelable = all(
+    patch_replication_ready = all(
         n_patches_by_cell[cell] >= config["min_patches_per_cell"]
         for cell in expected_cells
     )
+    # An unknown 0/0 seed outcome could be complete predation (100% under
+    # Xia2013) or failed seed development. Neither assignment is warranted by
+    # the current P2 raw schema. Never promote a partial, selected subset.
+    modelable = patch_replication_ready and not unresolved_zero_seed_flowers
 
     if modelable:
         ss = cell_summaries["SPARSE_SMALL"]["mean_seed_predation_fraction"]
@@ -476,6 +502,18 @@ def build(
         "analysis_state": "NATURAL_POLLINATION_PLUS_PREDATOR_EXPOSED",
         "n_p2_plants": len(context),
         "n_plants_with_natural_exposed_rows": len(natural_exposed),
+        "historical_predation_metric": (
+            "mean_per_capsule_damaged_over_developed_then_plant_then_patch"
+        ),
+        "unresolved_zero_developed_seed_flower_ids": unresolved_zero_seed_flowers,
+        "n_unresolved_zero_developed_seed_flowers": len(unresolved_zero_seed_flowers),
+        "patch_replication_gate_passed": patch_replication_ready,
+        "historical_zero_seed_coding_admissible": not unresolved_zero_seed_flowers,
+        "historical_comparison_not_modelable_reason": (
+            "UNRESOLVED_ZERO_DEVELOPED_SEED_FATE"
+            if unresolved_zero_seed_flowers
+            else ("INSUFFICIENT_INDEPENDENT_PATCHES" if not patch_replication_ready else None)
+        ),
         "historical_context_cell_n_patches": n_patches_by_cell,
         "historical_context_cell_summary": cell_summaries,
         "historical_comparison_modelable": modelable,
@@ -496,6 +534,9 @@ def build(
             "does_not_test_context_moderation_of_state_optima_without_separate_power",
             "historical_pattern_comparison_uses_Xia2013_thresholds_not_posthoc_cutpoints",
             "natural_EXPOSED_state_only_for_historical_comparability",
+            "seed_predation_is_per_capsule_fraction_not_ratio_of_pooled_seed_counts",
+            "zero_developed_seed_fate_requires_independent_evidence_before_historical_comparison",
+            "do_not_silently_drop_fully_destroyed_or_seedless_capsules",
         ],
     }
 
