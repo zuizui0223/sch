@@ -110,6 +110,32 @@ def integer_stage_bounds_variable_ovules(
             return None
         return minimum[0], maximum[0], minimum[1], maximum[1]
 
+    # A second, independent matching optimization is essential when
+    # ovule denominators vary. SCH primary fitness is intact seed
+    # *count per flower*, not the fraction of a flower's ovules surviving.
+    @lru_cache(maxsize=None)
+    def solve_seed_counts(used_mask: int):
+        i = used_mask.bit_count()
+        if i == n:
+            return 0, 0, (), ()
+        minimum, maximum = None, None
+        for j in range(n):
+            if used_mask & (1 << j) or (i, j) not in feasible:
+                continue
+            rest = solve_seed_counts(used_mask | (1 << j))
+            if rest is None:
+                continue
+            viable_count = feasible[(i, j)][0]
+            candidate_min = viable_count + rest[0]
+            candidate_max = viable_count + rest[1]
+            if minimum is None or candidate_min < minimum[0]:
+                minimum = candidate_min, (j,) + rest[2]
+            if maximum is None or candidate_max > maximum[0]:
+                maximum = candidate_max, (j,) + rest[3]
+        if minimum is None:
+            return None
+        return minimum[0], maximum[0], minimum[1], maximum[1]
+
     result = solve(0)
     if result is None:
         raise ValueError(
@@ -117,6 +143,10 @@ def integer_stage_bounds_variable_ovules(
             "be assigned to these initiated seed counts; check rounding, "
             "fate definitions and any ovule-count assumptions"
         )
+    count_result = solve_seed_counts(0)
+    if count_result is None:
+        raise AssertionError("seed-count and fraction feasible graphs must agree")
+    count_min, count_max, count_min_idx, count_max_idx = count_result
     sum_min, sum_max, min_idx, max_idx = result
     def witness(assignment: tuple[int, ...]) -> list[dict]:
         return [
@@ -132,6 +162,8 @@ def integer_stage_bounds_variable_ovules(
             )
         ]
     min_witness, max_witness = witness(min_idx), witness(max_idx)
+    min_count_witness = witness(count_min_idx)
+    max_count_witness = witness(count_max_idx)
     low, high = float(sum_min/n), float(sum_max/n)
     relaxed = stage_bounds(
         [initiated / ovules for ovules, initiated in pairs],
@@ -159,17 +191,22 @@ def integer_stage_bounds_variable_ovules(
             str(sum_min/n), str(sum_max/n)
         ],
         "unrestricted_fractional_rearrangement_bounds": relaxed_interval,
+        "sharp_integer_feasible_mean_viable_seeds_per_flower": [
+            count_min/n, count_max/n
+        ],
+        "minimum_seed_count_attaining_matching": min_count_witness,
+        "maximum_seed_count_attaining_matching": max_count_witness,
         "minimum_fitness_attaining_matching": min_witness,
         "maximum_fitness_attaining_matching": max_witness,
         "source_fruit_matches_reconstructed": False,
         "matching_is_just_a_feasible_witness": True,
         "n_dp_states_evaluated": solve.cache_info().currsize,
+        "n_seed_count_dp_states_evaluated": solve_seed_counts.cache_info().currsize,
         "method": "EXACT_BITMASK_PERFECT_MATCHING_INTEGER_SEED_FATES",
     }
     if len(unique_ovules) == 1:
         output["integer_viable_total_seeds_extrema"] = [
-            sum(x["viable_count"] for x in min_witness),
-            sum(x["viable_count"] for x in max_witness),
+            count_min, count_max
         ]
     return output
 
@@ -221,6 +258,15 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
     relaxed_low = low["unrestricted_fractional_rearrangement_bounds"]
     relaxed_high = high["unrestricted_fractional_rearrangement_bounds"]
     dr0,dr1 = relaxed_high[0]-relaxed_low[1],relaxed_high[1]-relaxed_low[0]
+    count_l0,count_l1 = low["sharp_integer_feasible_mean_viable_seeds_per_flower"]
+    count_h0,count_h1 = high["sharp_integer_feasible_mean_viable_seeds_per_flower"]
+    count_delta = [count_h0-count_l1,count_h1-count_l0]
+    if count_delta[0] > 0:
+        count_sign = "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    elif count_delta[1] < 0:
+        count_sign = "NEGATIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    else:
+        count_sign = "SIGN_NOT_IDENTIFIED_ACROSS_INTEGER_FEASIBLE_COUPLINGS"
     if d0 > 0:
         sign = "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
     elif d1 < 0:
@@ -233,6 +279,11 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
         "low": low,
         "high": high,
         "integer_feasible_high_minus_low_interval": [d0,d1],
+        "integer_feasible_high_minus_low_seed_count_per_flower_interval": count_delta,
+        "SCH_primary_fitness_endpoint": "UNDAMAGED_MATURE_SEED_COUNT_PER_FLOWER",
+        "SCH_primary_seed_count_selection_direction": count_sign,
+        "per_flower_viable_fraction_selection_direction": sign,
+        "count_and_fraction_direction_agree": count_sign == sign,
         "fractionally_relaxed_high_minus_low_interval": [dr0,dr1],
         "integer_constraint_changes_sign_identifiability": (
             dr0 <= 0 <= dr1 and (d0 > 0 or d1 < 0)
@@ -247,6 +298,7 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
             "at_most_fourteen_fruits_per_setting_due_to_exponential_runtime",
             "attaining_matches_are_math_witnesses_not_true_fruit_identifications",
             "equal_fruit_weight_not_weighted_population_reproductive_success",
+            "viable_seed_counts_and_viable_seed_fractions_are_distinct_fitness_estimands",
             "finite_sample_bound_not_confidence_interval_or_causal_effect",
             "z_manipulation_randomization_required_for_causal_trait_selection",
         ],
