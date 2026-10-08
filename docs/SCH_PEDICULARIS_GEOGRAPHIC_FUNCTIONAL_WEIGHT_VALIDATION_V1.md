@@ -133,8 +133,10 @@ distinction. Within the listed candidate sets, the **best** pollen,
 seed-predation and initial-seed responses do not include the tested
 population-by-trait / pollen-response terms, while the best final viable-seed
 model **does** retain population-level interactions. The predator and final
-fitness tests involve only seven linked populations; no absence-of-interaction
-equivalence test is available.
+fitness tests involve only seven linked populations. The Table 1 footnote
+assigns initial-seed Model 3 to 14 populations, but source Supplementary
+Table S2 lists seed outcomes for 12; that count remains unresolved.
+No absence-of-interaction equivalence test is available.
 
 Consequently, the apparent geographic variation may partly arise from the
 **translation of similar floral trait–consumer responses into different
