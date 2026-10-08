@@ -52,24 +52,30 @@ def _pairs(rows:list[dict],receipt:dict)->list[dict]:
             )
         plant[(row["patch_id"],row["stage_block_id"],
                int(row["pair_cycle_edge"]),row["plant_id"])].append(
-            (int(row["assigned_z_rank"]),v["seed_fitness_lower"],row["predator_treatment"])
+            (
+                int(row["assigned_z_rank"]),
+                v["seed_fitness_lower"],
+                row["predator_treatment"],
+                int(row["seed_potential_upper"]),
+            )
         )
     matched=defaultdict(dict)
     for (patch,stage,edge,pid),outcomes in plant.items():
         if len(outcomes)!=2:
             raise ValueError("source plant needs two outcome flowers")
-        labels={g for _,_,g in outcomes}
+        labels={g for _,_,g,_ in outcomes}
         if len(labels)!=1:
             raise ValueError("G cannot vary within parent plant")
         g=labels.pop()
-        if set(z for z,_,_ in outcomes)!={edge,(edge+1)%5}:
+        if set(z for z,_,_,_ in outcomes)!={edge,(edge+1)%5}:
             raise ValueError("source pair cycle rank mismatch")
         group=(patch,stage,edge)
         if g in matched[group]:
             raise ValueError("cycle edge needs one separate plant in each G arm")
         matched[group][g]={
             "plant_id":pid,
-            "by_z":{z:y for z,y,_ in outcomes},
+            "by_z":{z:y for z,y,_,_ in outcomes},
+            "cap_by_z":{z:cap for z,_,_,cap in outcomes},
         }
     expected=5*receipt["n_patch_stage_batches"]
     if len(matched)!=expected or any(set(v)!={"EXCLUDED","EXPOSED"}
@@ -190,17 +196,118 @@ def fisher_from_pairs(
     }
 
 
+def uniform_additive_G_sensitivity(
+    pairs:list[dict], *,
+    monte_carlo_permutations:int=DEFAULT_MONTE_CARLO_PERMUTATIONS,
+    random_seed:int=20261009,
+    maximum_tau_candidates:int=101,
+)->dict:
+    """Conservative union-of-sharp-null test, constant INTEGER seed gain tau.
+
+    H0(tau): Y_i(EXCLUDED,z)=Y_i(EXPOSED,z)+tau for EVERY
+    allocated flower. This hypothesis implies the same
+    argmax z in each individual potential-outcome response
+    under perfect observation, but the finite sample may differ.
+    Maximizing a Fisher p-value over feasible tau tests the
+    UNION of constant-additive sharp nulls conservatively.
+
+    Even rejection need not imply z-specific G interaction:
+    heterogeneous G effects by plant unrelated to z can also
+    violate a universal common tau. This is not a test of
+    the weak null of equal population optimum.
+    """
+    if type(maximum_tau_candidates) is not int or not 1<=maximum_tau_candidates<=1000:
+        raise ValueError("constant-tau maximum candidate limit must be 1..1000")
+    ranges=[]
+    for pair in pairs:
+        for g,key in (("EXCLUDED","excluded"),("EXPOSED","exposed")):
+            item=pair[key]
+            for z,y in item["by_z"].items():
+                cap=item["cap_by_z"][z]
+                if not (0<=y<=cap):
+                    raise ValueError("source outcome exceeds per-flower seed cap")
+                if g=="EXCLUDED":
+                    ranges.append((y-cap,y))
+                else:
+                    ranges.append((-y,cap-y))
+    tau_min=max(a for a,b in ranges)
+    tau_max=min(b for a,b in ranges)
+    if tau_min>tau_max:
+        raise AssertionError("zero effect must fit counted source outcomes")
+    if tau_max-tau_min+1>maximum_tau_candidates:
+        raise ValueError(
+            "too many physically feasible constant-additive tau values; "
+            "increase registered budget or restrict genuine source seed caps"
+        )
+
+    observed_stat=statistic(pairs)["exclusion_minus_exposure_peak_midrank"]
+    scans=[]
+    for tau in range(tau_min,tau_max+1):
+        # Impute each original EXCLUDED flower's untreated seed outcome
+        # under the hypothesized constant additive tau. Under a swap,
+        # the newly assigned EXCLUDED gets +tau on *every z rank*.
+        # That uniform +tau cannot change the argmax, so evaluating
+        # the baselines is exactly equivalent for the peak statistic.
+        imputed=[]
+        for pair in pairs:
+            item=dict(pair)
+            item["excluded"]={
+                **pair["excluded"],
+                "by_z":{
+                    z:y-tau for z,y in pair["excluded"]["by_z"].items()
+                },
+            }
+            imputed.append(item)
+        test=fisher_from_pairs(
+            imputed,
+            monte_carlo_permutations=monte_carlo_permutations,
+            random_seed=random_seed,
+        )
+        if abs(
+            test["observed_predeclared_peak_statistic"][
+                "exclusion_minus_exposure_peak_midrank"
+            ]-observed_stat
+        )>1e-12:
+            raise AssertionError("constant additive tau changed the observed peak")
+        scans.append({
+            "hypothesized_constant_seed_gain_per_flower":tau,
+            "one_sided_sharp_null_p":test["one_sided_Fisher_sharp_null_p"],
+        })
+    worst=max(scans,key=lambda x:x["one_sided_sharp_null_p"])
+    return {
+        "tested_null":"UNION_OF_SHARP_UNIFORM_ADDITIVE_G_SEED_COUNT_EFFECTS",
+        "feasible_integer_tau_interval":[tau_min,tau_max],
+        "n_evaluated_tau_values":len(scans),
+        "conditional_p_upper_over_constant_tau_nulls":worst["one_sided_sharp_null_p"],
+        "most_conservative_integer_tau":worst["hypothesized_constant_seed_gain_per_flower"],
+        "individual_sharp_tau_sensitivity":scans,
+        "rejecting_uniform_tau_is_not_proof_of_G_by_z_interaction":True,
+        "not_test_of_weak_same_population_peak_null":True,
+        "tau_zero_is_included_in_source_compatible_nulls":tau_min<=0<=tau_max,
+        "only_integer_seed_gain_common_to_every_flower_considered":True,
+    }
+
+
 def build(rows:list[dict],receipt:dict, *,
           monte_carlo_permutations:int=DEFAULT_MONTE_CARLO_PERMUTATIONS,
-          random_seed:int=20261009)->dict:
+          random_seed:int=20261009,
+          test_uniform_additive_constant:bool=False)->dict:
     pairs=_pairs(rows,receipt)
     results=fisher_from_pairs(
         pairs,monte_carlo_permutations=monte_carlo_permutations,
         random_seed=random_seed,
     )
+    additive=(
+        uniform_additive_G_sensitivity(
+            pairs,
+            monte_carlo_permutations=monte_carlo_permutations,
+            random_seed=random_seed,
+        ) if test_uniform_additive_constant else None
+    )
     return {
         "receipt_schema":SCHEMA,
         "status":"NON_GATING_SHARP_NULL_CONDITIONAL_RANDOMIZATION_ONLY",
+        "uniform_additive_seed_gain_sharp_null_sensitivity":additive,
         "source_population":receipt["population_id"],
         "source_season":receipt["season_id"],
         "source_design_receipt_sha256":_semantic_sha256(receipt),
@@ -220,6 +327,7 @@ def build(rows:list[dict],receipt:dict, *,
             "between_plant_predator_spillover_could_violate_sharp_null_imputation",
             "plant_z_treatment_first_stage_and_causal_G_selectivity_unverified",
             "randomization_p_does_not_imply_pure_pollinator_or_predator_optima",
+            "constant_additive_sharp_tau_union_not_the_weak_null_of_no_G_by_z_effect",
             "no_P0_G_P2_W1_W2_SCH_L_or_SLK_architecture_promotion",
         ],
     }
@@ -231,6 +339,7 @@ def main()->None:
     p.add_argument("candidate_frozen_allocation_receipt_json",type=Path)
     p.add_argument("--monte-carlo-permutations",type=int,default=DEFAULT_MONTE_CARLO_PERMUTATIONS)
     p.add_argument("--seed",type=int,default=20261009)
+    p.add_argument("--test-uniform-additive-constant",action="store_true")
     p.add_argument("--output",type=Path)
     args=p.parse_args()
     source= _rows_csv(args.complete_fruit_fate_csv)
@@ -239,6 +348,7 @@ def main()->None:
         source,receipt,
         monte_carlo_permutations=args.monte_carlo_permutations,
         random_seed=args.seed,
+        test_uniform_additive_constant=args.test_uniform_additive_constant,
     )
     data=json.dumps(result,sort_keys=True,indent=2)+"\n"
     if args.output:
