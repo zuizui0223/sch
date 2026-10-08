@@ -15,11 +15,17 @@ def test_published_2016_model_table_has_original_11_candidates_and_grains() -> N
     result = build(read(DEFAULT_SOURCE))
     assert result["n_original_published_model_candidates"] == 11
     models = result["model_support_by_endpoint"]
-    assert models["pollen_receipt"]["n_original_population_units"] == 14
-    assert models["initial_seed_set"]["n_original_population_units"] == 14
+    assert models["pollen_receipt"]["n_population_labels_in_table_note"] == 14
+    assert models["initial_seed_set"]["n_population_labels_in_table_note"] == 14
     assert models["seed_predation"]["population_ids"] == [1, 3, 5, 8, 9, 10, 11]
     assert models["final_viable_seeds"]["population_ids"] == [1, 3, 5, 8, 9, 10, 11]
     assert all(x["aicc_comparison_is_within_endpoint_only"] for x in models.values())
+    assert models["initial_seed_set"]["underlying_n_population_units_independently_verified"] is False
+    assert models["initial_seed_set"]["initial_seed_scope_ambiguous"] is True
+    assert result["source_scope_discrepancies"][0]["resolved_from_raw_data"] is False
+    assert "initial_seed_set_n_population_discrepancy_supplement_12_vs_table_note_14" in (
+        result["method_limits"]
+    )
 
 
 def test_source_table_support_is_recomputed_not_copied_from_paper_prose() -> None:
