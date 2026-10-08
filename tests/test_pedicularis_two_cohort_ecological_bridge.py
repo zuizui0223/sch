@@ -8,6 +8,9 @@ from scripts.build_pedicularis_p0_randomized_assignment import _semantic_sha256
 from scripts.build_pedicularis_randomized_pollen_sentinels import build as pollen_allocate
 from scripts.build_pedicularis_two_cohort_fruit_allocation import build as fruit_allocate
 from scripts.analyze_pedicularis_two_cohort_ecological_bridge import build as analyze
+from scripts.analyze_pedicularis_two_cohort_ecological_bridge import (
+    _seed_fitness_translation,
+)
 from scripts import validate_pedicularis_cohort_registry as cohort
 from scripts.pedicularis_config_freeze import FREEZE_STATUS
 
@@ -402,3 +405,79 @@ def test_bridge_config_cannot_authorize_W1_W2_after_outcomes() -> None:
     packet[-1] = bad
     with pytest.raises(ValueError, match="cannot promote W1/W2"):
         analyze(*packet)
+
+
+def test_fruit_decomposition_returns_real_matched_cell_identities() -> None:
+    result = analyze(*_packet())
+    decomposition = result["fruit_stage_fitness_translation_non_gating"]
+    assert decomposition["status"] == (
+        "ALL_MATCHED_DISTINGUISHABLE_SEED_CELLS_DECOMPOSABLE"
+    )
+    assert decomposition["n_unresolved_z_by_G_cells"] == 0
+    cell = decomposition["by_predator_state_and_rank"]["EXPOSED"]["2"]
+    assert cell["complete_stage_identity_checked"] is True
+    assert cell["mean_predation_fraction"] > 0
+    assert (
+        cell["mean_final_viable_seed_fraction_all_flowers"]
+        == pytest.approx(
+            cell["mean_initial_seed_fraction"]
+            * (1 - cell["mean_predation_fraction"])
+            - cell["initial_predation_covariance"]
+        )
+    )
+
+
+def test_zero_distinguishable_seeds_stay_in_viable_seed_fitness_but_block_q() -> None:
+    packet = list(_packet())
+    fruit = deepcopy(packet[5])
+    flower_id = fruit[0]["flower_id"]
+    rank = fruit[0]["assigned_z_rank"]
+    g = fruit[0]["predator_treatment"]
+    fruit[0]["undamaged_seed_count"] = "0"
+    fruit[0]["damaged_seed_count"] = "0"
+    packet[5] = fruit
+    result = analyze(*packet)
+    decomposition = result["fruit_stage_fitness_translation_non_gating"]
+    assert decomposition["status"] == "PARTIAL_DECOMPOSITION_ZERO_SEED_FATE_UNRESOLVED"
+    cell = decomposition["by_predator_state_and_rank"][g][rank]
+    assert flower_id in cell["zero_distinguishable_seed_flower_ids"]
+    assert cell["mean_predation_fraction"] is None
+    assert cell["initial_predation_covariance"] is None
+    assert cell["n_flowers"] == 12
+    assert result["fruit_nuisance_checks"]["n_fruit_flowers"] == 120
+
+
+def test_matched_fruit_covariance_changes_final_fitness_with_equal_mean_components() -> None:
+    # Both treatment stages/ranks have the same E[I]=0.5 and E[q]=0.25.
+    # Only matching matters: positive covariance in low-z vs negative in
+    # high-z changes final viability by +0.15. Synthetic diagnostic only.
+    rows = []
+    for g in ("EXCLUDED", "EXPOSED"):
+        for rank in range(5):
+            pairs = [(4, 0), (8, 8)] if rank < 4 else [(2, 2), (16, 0)]
+            for i, (undamaged, damaged) in enumerate(pairs):
+                rows.append({
+                    "flower_id": f"{g}_Z{rank}_{i}",
+                    "predator_treatment": g,
+                    "assigned_z_rank": str(rank),
+                    "ovule_count": "20",
+                    "undamaged_seed_count": str(undamaged),
+                    "damaged_seed_count": str(damaged),
+                })
+    result = _seed_fitness_translation(rows, list(range(5)))
+    assert result["status"] == (
+        "ALL_MATCHED_DISTINGUISHABLE_SEED_CELLS_DECOMPOSABLE"
+    )
+    low = result["by_predator_state_and_rank"]["EXPOSED"]["0"]
+    high = result["by_predator_state_and_rank"]["EXPOSED"]["4"]
+    assert low["mean_initial_seed_fraction"] == pytest.approx(0.5)
+    assert high["mean_initial_seed_fraction"] == pytest.approx(0.5)
+    assert low["mean_predation_fraction"] == pytest.approx(0.25)
+    assert high["mean_predation_fraction"] == pytest.approx(0.25)
+    assert low["initial_predation_covariance"] == pytest.approx(0.075)
+    assert high["initial_predation_covariance"] == pytest.approx(-0.075)
+    endpoint = result["fixed_extreme_rank_decomposition"]["EXPOSED"]
+    assert endpoint["seed_initiation_contribution"] == pytest.approx(0)
+    assert endpoint["seed_predation_contribution"] == pytest.approx(0)
+    assert endpoint["within_fruit_covariance_contribution"] == pytest.approx(0.15)
+    assert endpoint["viable_seed_change"] == pytest.approx(0.15)
