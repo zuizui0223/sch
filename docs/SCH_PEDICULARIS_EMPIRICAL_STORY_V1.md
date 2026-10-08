@@ -142,6 +142,22 @@ plant means or attributing sentinel pollen counts to fruit-bearing flower IDs.
 
 See `SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md`.
 
+## Independent randomized pollen test
+
+The historical observation that exserted flowers receive more pollen can now
+be tested directly, without damaging the seed-bearing flowers: new
+`POLLEN_SENTINEL` flower IDs are randomized across the already validated P0
+physical exsertion settings under natural pollination. Within-plant
+randomization inference tests whether the assigned exsertion treatment
+increases actual stigma pollen receipt. This identifies a causal
+**pollination-performance benefit of the physical treatment** rather than a
+post-hoc correlation with flower size.
+
+A positive sentinel result is not yet W1 or W2; it is independent evidence
+for the pollination-facing component, awaiting a prospectively frozen
+two-cohort integration with a separate seed-fitness/G experiment.
+See `SCH_PEDICULARIS_RANDOMIZED_POLLEN_SENTINELS_V1.md`.
+
 ## Pollination-performance consequence
 
 Randomized multi-level exsertion is measured with pollen receipt in both
