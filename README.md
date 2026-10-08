@@ -144,6 +144,30 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Integer-feasible reproductive stage coupling: a sharper identification result
+
+The previous marginal-only theorem allowed all continuous initiation–predation
+fraction pairings. Biological fruits contain **integer seeds**. A new
+exact assignment solver retains only initiated-count × predation-fraction
+pairs that correspond to whole damaged seed counts, using exact
+rational arithmetic and complete feasible matchings.
+
+In a 12-ovule synthetic counterexample the unrestricted HIGH-minus-LOW
+seed fitness bound crosses zero, but integer feasibility uniquely
+determines a **positive +0.5 surviving seed per flower** difference.
+This identifies the sign of the **registered SCH seed-count fitness
+endpoint**, not merely a proportion. A separate negative-control
+witness preserves the original non-identification despite integer
+constraints; the method does not always identify selection.
+
+The solver also handles **variable ovules per fruit**, separately
+optimizing intact seed count/flower versus viable seed fraction/flower.
+Those fitness estimands can have **opposite signs** when ovule
+number varies. Exact witnesses and adversarial tests are in
+`docs/SCH_INTEGER_FEASIBLE_STAGE_COUPLING_V1.md` and
+`scripts/bound_sch_integer_feasible_seed_stage_selection.py`.
+All examples are synthetic, not recovered P. rex observations.
+
 ## Stage coupling is a separate ecological determinant
 
 Even if both seed-initiation and predation marginal response distributions

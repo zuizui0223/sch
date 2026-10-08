@@ -163,6 +163,24 @@ registered weighting/optimal-transport extension, or fruit
 predation rates reported after selectively excluding
 completely consumed capsules.
 
+## Exact integer-fate refinement and registered seed-count fitness
+
+The unrestricted rearrangement inequality is sharp only in the
+continuous fractional matching model. A new exact assignment
+solver retains only matched count–fraction pairs that yield an
+**integer number of visibly damaged seeds**. This can shrink
+selection intervals and sometimes identify the sign even
+when the fractional relaxation crosses zero. It also
+supports variable ovule counts per fruit and independently
+computes the registered SCH primary endpoint (**viable seed
+counts per flower**) and secondary viable fraction. These
+estimands may favor opposite trait settings.
+
+This does not turn historical unpaired/censored fractions
+into field data. It requires exact, unrounded q and
+well-defined distinguishable seed fates. See
+`SCH_INTEGER_FEASIBLE_STAGE_COUPLING_V1.md`.
+
 ## Relevance to SCH–SLK–BITA
 
 This is a *non-identification of fitness selection from
