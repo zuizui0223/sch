@@ -312,3 +312,41 @@ def test_physical_z_setting_drift_fails_closed() -> None:
 
     with pytest.raises(ValueError, match="drifted from the locked allocation"):
         verify(field_rows, lock, require_complete=False)
+
+
+def test_production_field_sheet_rejects_unvalidated_dual_endpoint_allocation() -> None:
+    allocations, allocation_receipt = _allocation_packet()
+    with pytest.raises(ValueError, match="validated same-flower"):
+        prepare(
+            allocations,
+            allocation_receipt,
+            require_endpoint_binding=True,
+        )
+
+
+def test_production_field_sheet_propagates_joint_endpoint_assay_identity() -> None:
+    allocations, allocation_receipt = _allocation_packet()
+    allocation_receipt["endpoint_feasibility_binding"] = {
+        "receipt_schema": "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1",
+        "status": "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBLE_FOR_SINGLE_FLOWER_PIPELINE",
+        "collection_route": "SAME_FLOWER_NONDESTRUCTIVE_POLLEN_QUANTIFICATION",
+        "pollen_assay_method_id": "SYNTHETIC_TEST_METHOD",
+        "feasibility_receipt_sha256": "d" * 64,
+        "independent_pilot_data_sha256": "e" * 64,
+    }
+    allocation_receipt[
+        "single_flower_endpoint_compatibility_validated_before_allocation"
+    ] = True
+
+    field_rows, lock = prepare(
+        allocations,
+        allocation_receipt,
+        require_endpoint_binding=True,
+    )
+    assert lock["endpoint_feasibility_binding"]["pollen_assay_method_id"] == (
+        "SYNTHETIC_TEST_METHOD"
+    )
+    receipt = verify(_complete(field_rows), lock, require_complete=True)
+    assert receipt["endpoint_feasibility_binding"]["feasibility_receipt_sha256"] == (
+        "d" * 64
+    )
