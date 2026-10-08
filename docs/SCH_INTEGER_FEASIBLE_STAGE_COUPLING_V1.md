@@ -147,20 +147,36 @@ construct a bipartite graph:
 - Allowed edge: initiated×q is an integer in [0,initiated].
 - Edge payoff: (initiated−damaged)/ovules.
 
-Enumerate all feasible perfect matchings by a memoized
-bitmask dynamic programme. Independently retain the matchings
-with the smallest/largest total viable **seed count** and
-smallest/largest sum of per-fruit viable **fractions**.
-Divide each objective by the number of fruits. All
-fractional payoffs and matching sums use Python's exact
-rational arithmetic; seed counts remain exact integers.
-The decimals are presentation values.
+The current solver uses the **Hungarian primal–dual shortest
+augmenting-path algorithm** for an exact minimum/maximum
+**perfect bipartite assignment**. Four optimization runs
+independently obtain the smallest/largest total viable
+**seed count** and viable **fraction**. Edge feasibility
+is still the exact test that initiated×q is an integer;
+invalid fruit–q pairings are **forbidden edges**, not
+large artificial finite penalties.
 
-For n fruits the implementation is worst-case
-O(n²2^n) time and O(n2^n) state-related memory.
-We deliberately reject >14 fruits per setting until
-a scalable flow/assignment optimization is implemented,
-so there is no accidental exponential job in field production.
+Both objectives use exact integer or Fraction arithmetic,
+not floating-point rounding. The method runs in
+**O(n³) arithmetic operations** with **O(n²) memory** for
+n observed fruits at a trait setting. Because exact rational
+arithmetic has operand-dependent bit complexity, the cubic
+bound describes algorithmic operations, not a universal
+wall-clock guarantee for arbitrarily large rational numbers.
+A conservative **256-fruit/setting limit** remains in place
+to avoid uncontrolled field jobs.
+
+Independent regression fixtures exhaustively enumerate all
+permutations in small groups and compare both endpoints with
+the Hungarian optimum. Another synthetic test allocates
+**120 fruits with complete, integer-valid stage margins**,
+so the new implementation addresses a plausible site-level
+sample size rather than only the earlier 14-fruit limit.
+
+The selected matching is an **existence witness**, not an
+assertion that the algorithm has recovered the real identity
+of the fruit attacked. The code rejects any source marginal
+sets without a perfect integer-feasible matching.
 
 The algorithm returns explicit integer damaged/viable seed
 counts for one attaining matching at each extreme. This is
@@ -221,8 +237,9 @@ intervals for the population, causal selection without
 a randomized trait setting, or identified SCH pure
 pollinator and antagonist function optima.
 
-The method does not yet handle >14 fruit observations
-per setting, unequal fruit weights, unrecognized predation
+The implementation rejects >256 fruit observations
+per setting; it also does not handle unequal fruit weights,
+unrecognized predation
 that destroys all seed coats, missing ovule counts, q
 measured imprecisely, or partly overlapping rather
 than full known marginal sets. A positive mathematical

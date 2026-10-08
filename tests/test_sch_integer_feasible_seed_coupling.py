@@ -147,7 +147,7 @@ def test_fraction_strings_are_exact_never_round_to_one_third():
         ([],[],12,"equal-length"),
         ([True],["0"],12,"exact integer"),
         ([1],["0"],0,"exact integer"),
-        ([1]*15,["0"]*15,12,"equal-length"),
+        ([1]*257,["0"]*257,12,"equal-length"),
     ],
 )
 def test_invalid_biological_fates_and_intractable_designs_are_rejected(
@@ -318,3 +318,75 @@ def test_variable_ovule_optimization_count_and_fraction_may_use_different_pairin
     ]
     assert fit["sharp_integer_feasible_mean_viable_seeds_per_flower"][0] == pytest.approx(7)
     assert fit["sharp_integer_feasible_mean_viable_fraction"][0] == pytest.approx(.225)
+
+
+def test_large_source_like_120_fruit_stage_margins_use_exact_assignment():
+    # This is synthetic, not an actual P. rex published population sample.
+    counts=[2*(i%12+1) for i in range(120)]
+    fractions=["0"]*60+["1/2"]*60
+    r=integer_stage_bounds(counts,fractions,40)
+    assert r["n_equal_weight_fruits"]==120
+    assert r["method"]=="EXACT_HUNGARIAN_PERFECT_MATCHING_INTEGER_SEED_FATES"
+    assert r["n_exact_assignment_solutions"]==4
+    sorted_counts=sorted(counts)
+    total=sum(counts)
+    min_total=total-sum(sorted_counts[-60:])//2
+    max_total=total-sum(sorted_counts[:60])//2
+    assert r["integer_viable_total_seeds_extrema"]==[min_total,max_total]
+    assert r["sharp_integer_feasible_mean_viable_seeds_per_flower"]==pytest.approx(
+        [min_total/120,max_total/120]
+    )
+    for key,expected in (
+        ("minimum_seed_count_attaining_matching",min_total),
+        ("maximum_seed_count_attaining_matching",max_total),
+    ):
+        matched=r[key]
+        assert len(matched)==120
+        assert sum(x["viable_count"] for x in matched)==expected
+        assert all(
+            Fraction(x["initiated_count"])*Fraction(x["q_fraction"])
+            ==x["damaged_count"] and x["viable_count"]>=0
+            for x in matched
+        )
+
+
+def test_120_fruit_variable_ovules_independent_exact_fitness_objectives():
+    n=120
+    fruits=[
+        {"ovules":20+(i%13), "initiated":2*(1+i%8)}
+        for i in range(n)
+    ]
+    ratios=["0"]*60+["1/2"]*60
+    result=integer_stage_bounds_variable_ovules(fruits,ratios)
+    assert result["ovule_count_heterogeneous"] is True
+    assert result["n_equal_weight_fruits"]==120
+    for key,interval in (
+        ("seed_count","sharp_integer_feasible_mean_viable_seeds_per_flower"),
+        ("fraction","sharp_integer_feasible_mean_viable_fraction"),
+    ):
+        low,high=result[interval]
+        assert low<=high
+        assert all(
+            len(result[s])==n for s in (
+                ("minimum_seed_count_attaining_matching",
+                 "maximum_seed_count_attaining_matching")
+                if key=="seed_count"
+                else ("minimum_fitness_attaining_matching",
+                      "maximum_fitness_attaining_matching")
+            )
+        )
+    count_low=result["minimum_seed_count_attaining_matching"]
+    count_high=result["maximum_seed_count_attaining_matching"]
+    assert sum(x["viable_count"] for x in count_low)/n==pytest.approx(
+        result["sharp_integer_feasible_mean_viable_seeds_per_flower"][0]
+    )
+    assert sum(x["viable_count"] for x in count_high)/n==pytest.approx(
+        result["sharp_integer_feasible_mean_viable_seeds_per_flower"][1]
+    )
+
+
+def test_infeasible_large_sparse_graph_must_fail_closed():
+    # There are 119 fruits with odd initiated counts, but 120 q=1/2;
+    # no integer-damage perfect matching exists.
+    with pytest.raises(ValueError,match="NO_INTEGER_FEASIBLE_PERFECT_MATCHING"):
+        integer_stage_bounds([1]*119+[2],["1/2"]*120,40)

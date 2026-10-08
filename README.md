@@ -160,6 +160,15 @@ endpoint**, not merely a proportion. A separate negative-control
 witness preserves the original non-identification despite integer
 constraints; the method does not always identify selection.
 
+The solver now uses **exact cubic-time Hungarian assignment**
+instead of exponential bitmask dynamic programming. It optimizes
+all four extreme objectives with forbidden biologically impossible
+pairings and checks 120-fruit synthetic populations against
+an exact integer seed-count solution. The current limit is
+**256 fruits per trait setting**, not 14; historical source
+identities remain unknown, and even mathematically valid
+margins do not become biological observations.
+
 The solver also handles **variable ovules per fruit**, separately
 optimizing intact seed count/flower versus viable seed fraction/flower.
 Those fitness estimands can have **opposite signs** when ovule
