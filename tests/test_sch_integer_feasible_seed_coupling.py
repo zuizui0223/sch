@@ -48,6 +48,13 @@ def test_integer_biology_identifies_positive_sign_that_continuous_margins_cannot
         [1/24, 1/24]
     )
     assert r["integer_constraint_changes_sign_identifiability"] is True
+    assert r["SCH_primary_fitness_endpoint"] == "UNDAMAGED_MATURE_SEED_COUNT_PER_FLOWER"
+    assert r["integer_feasible_high_minus_low_seed_count_per_flower_interval"] == pytest.approx(
+        [.5,.5]
+    )
+    assert r["SCH_primary_seed_count_selection_direction"] == (
+        "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    )
     assert r["high_minus_low_direction_given_margins"] == (
         "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
     )
@@ -196,6 +203,9 @@ def test_variable_ovule_counts_recover_positive_sign_and_preserve_per_fruit_weig
     assert r["integer_feasible_high_minus_low_interval"] == pytest.approx(
         [3/80,3/80]
     )
+    assert r["integer_feasible_high_minus_low_seed_count_per_flower_interval"] == pytest.approx(
+        [.5,.5]
+    )
     relaxed=r["fractionally_relaxed_high_minus_low_interval"]
     assert relaxed[0] < 0 < relaxed[1]
     assert r["integer_constraint_changes_sign_identifiability"] is True
@@ -262,3 +272,44 @@ def test_variable_fruit_count_exact_permutation_optimization():
     assert fitted["exact_fractional_mean_viability_extrema"] == [
         str(min(values)),str(max(values))
     ]
+
+
+def test_variable_ovule_counts_can_reverse_primary_count_vs_fraction_fitness_sign():
+    # Both are fully observed integer seed counts with q=0.
+    # LOW: 50 surviving seeds out of 100 ovules.
+    # HIGH: 8 surviving seeds out of 10 ovules.
+    # Higher z improves the *fraction* surviving but reduces total
+    # viable seed output per flower, which is SCH's registered fitness.
+    r=compare_settings_variable_ovules(
+        [{"ovules":100,"initiated":50}],["0"],
+        [{"ovules":10,"initiated":8}],["0"]
+    )
+    assert r["integer_feasible_high_minus_low_interval"] == pytest.approx(
+        [.3,.3]
+    )
+    assert r["integer_feasible_high_minus_low_seed_count_per_flower_interval"] == pytest.approx(
+        [-42,-42]
+    )
+    assert r["per_flower_viable_fraction_selection_direction"] == (
+        "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    )
+    assert r["SCH_primary_seed_count_selection_direction"] == (
+        "NEGATIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    )
+    assert r["count_and_fraction_direction_agree"] is False
+
+
+def test_variable_ovule_optimization_count_and_fraction_may_use_different_pairings():
+    fruits=[
+        {"ovules":8,"initiated":4},
+        {"ovules":100,"initiated":20},
+    ]
+    ratios=["0","1/2"]
+    fit=integer_stage_bounds_variable_ovules(fruits,ratios)
+    min_fraction=fit["minimum_fitness_attaining_matching"]
+    min_count=fit["minimum_seed_count_attaining_matching"]
+    assert [(r["initiated_count"],r["q_fraction"]) for r in min_fraction] != [
+        (r["initiated_count"],r["q_fraction"]) for r in min_count
+    ]
+    assert fit["sharp_integer_feasible_mean_viable_seeds_per_flower"][0] == pytest.approx(7)
+    assert fit["sharp_integer_feasible_mean_viable_fraction"][0] == pytest.approx(.225)
