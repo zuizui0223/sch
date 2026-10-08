@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+from itertools import permutations
 from pathlib import Path
 
 import pytest
@@ -59,6 +60,22 @@ def test_two_complete_worlds_have_identical_stage_marginals_but_opposite_selecti
     result = compare_settings(LOW_I, COMMON_Q, HIGH_I, COMMON_Q)
     assert result["sharp_high_minus_low_fitness_interval"] == pytest.approx(
         [worlds[0][2], worlds[1][2]]
+    )
+
+
+def test_rearrangement_bounds_are_attained_over_every_three_fruit_matching() -> None:
+    initial = [0.2, 0.5, 0.8]
+    predation = [0.1, 0.3, 0.9]
+    all_fitness = [
+        sum(i * (1 - q) for i, q in zip(initial, p, strict=True)) / 3
+        for p in permutations(predation)
+    ]
+    result = stage_bounds(initial, predation)
+    assert result["minimum_possible_mean_viable_seed_fraction"] == pytest.approx(
+        min(all_fitness)
+    )
+    assert result["maximum_possible_mean_viable_seed_fraction"] == pytest.approx(
+        max(all_fitness)
     )
 
 
