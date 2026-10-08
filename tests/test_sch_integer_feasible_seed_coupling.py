@@ -32,7 +32,7 @@ def _demo() -> dict:
 def test_integer_biology_identifies_positive_sign_that_continuous_margins_cannot():
     r = build(_demo())
     assert r["source_data_kind"] == "SYNTHETIC_DEMONSTRATION"
-    assert r["actual_field_evidence"] is False
+    assert r["observed_field_data_independently_verified"] is False
     assert r["field_selection_effect_identified"] is False
     assert r["low"]["sharp_integer_feasible_mean_viable_fraction"] == pytest.approx(
         [1/24, 1/24]
@@ -155,7 +155,8 @@ def test_observed_route_requires_fate_validation_and_site_provenance():
     payload["source_population"] = "EXAMPLE_ONLY"
     payload["source_season"] = "SYNTHETIC_SEASON"
     r = build(payload)
-    assert r["actual_field_evidence"] is True
+    assert r["user_claims_observed_margins"] is True
+    assert r["observed_field_data_independently_verified"] is False
     assert r["field_selection_effect_identified"] is False
     # This test checks input validation only, not actual data provenance.
 
