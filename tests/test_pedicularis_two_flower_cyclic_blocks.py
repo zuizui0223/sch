@@ -120,9 +120,7 @@ def test_salted_randomization_is_reproducible_under_manifest_reordering():
         key=lambda x:x["flower_id"],
     )
     assert freeze(first)==freeze(rearranged)
-    assert receipt["allocation_identity_sha256"]==_candidate(reversed(original))[1][
-        "allocation_identity_sha256"
-    ] if False else receipt["allocation_identity_sha256"]==_candidate(
+    assert receipt["allocation_identity_sha256"]==_candidate(
         list(reversed(original))
     )[1]["allocation_identity_sha256"]
     other,_=design(
