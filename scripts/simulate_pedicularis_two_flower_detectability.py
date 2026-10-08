@@ -276,12 +276,14 @@ def _one_replicate(
         })
     complete=_possible_optima(_means(records,use_latent_outcomes=True))
     bounded=_possible_optima(_means(records))
-    stable=False
-    if check_plant_deletion and bounded["guaranteed_positive"]:
-        plants=sorted({r["plant_id"] for r in records})
-        stable=all(_possible_optima(
-            _means(records,omitted_plant=plant)
-        )["guaranteed_positive"] for plant in plants)
+    stable=None
+    if check_plant_deletion:
+        stable=False
+        if bounded["guaranteed_positive"]:
+            plants=sorted({r["plant_id"] for r in records})
+            stable=all(_possible_optima(
+                _means(records,omitted_plant=plant)
+            )["guaranteed_positive"] for plant in plants)
     return {
         "full_latent_positive":complete["guaranteed_positive"],
         "source_bounded_positive":bounded["guaranteed_positive"],
@@ -335,8 +337,14 @@ def build(config:dict)->dict:
                     sum(x["full_latent_positive"] for x in runs)/n,
                 "fraction_fate_bounded_guaranteed_positive_shift":
                     sum(x["source_bounded_positive"] for x in runs)/n,
-                "fraction_fate_bounded_positive_and_stable_to_plant_deletion":
-                    sum(x["plant_deletion_stable_positive"] for x in runs)/n,
+                "fraction_fate_bounded_positive_and_stable_to_plant_deletion": (
+                    sum(x["plant_deletion_stable_positive"] for x in runs)/n
+                    if scene.get("include_plant_deletion_diagnostic",False)
+                    else None
+                ),
+                "plant_deletion_diagnostic_evaluated":bool(
+                    scene.get("include_plant_deletion_diagnostic",False)
+                ),
                 "mean_fraction_missing_mature_fruit_outcomes":
                     sum(x["n_lost_fruit_outcomes"] for x in runs)/
                     (n*20*batches),
