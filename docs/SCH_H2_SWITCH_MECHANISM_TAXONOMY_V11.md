@@ -60,9 +60,12 @@ flowering-phenology supported reversal already occurs along a
 has β = +0.094 (P<0.01), while supplemental hand pollination has
 β = −0.066 (P<0.05). Herbivory does **not** change between
 these two groups. This is one comparison within the registered
-factorial experiment, not an additional independent programme,
-and the unreported covariance means the beta *difference*
-cannot receive a new p-value.
+factorial experiment, not an additional independent programme.
+The exact beta-difference p needs covariance, but the original
+SEs give a *sharp worst-case* normal-Wald p **upper bound ≈0.0067**
+for this single comparison (unadjusted); a 20-edge exploratory
+family-wide guarantee is not obtained. See
+`SCH_GYMNADENIA_COVARIANCE_ROBUST_GRADIENT_CONTRAST_V1.md`.
 
 Flowering phenology contains a supported positive context and supported negative contexts.
 

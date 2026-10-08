@@ -96,8 +96,14 @@ but hand-supplemented selection is β = −0.066
 (source P<0.05). Thus pollination treatment alone is
 associated with supported opposite *net selection* signs.
 The source-factorial additivity residual for flowering start
-is only −0.0042 in point estimates, but no covariance-aware
-interaction CI can be inferred. This is not a new independent
+is only −0.0042 in point estimates, but no **informative**
+interaction interval can be inferred. The single-factor beta
+difference has a sharp arbitrary-covariance SE upper bound
+0.059. Assuming valid normal-Wald approximations it has a
+conservative nominal 95% interval [−0.276,−0.044],
+but the exploratory 20-edge Bonferroni guarantee does not
+pass at 5%. See
+`SCH_GYMNADENIA_COVARIANCE_ROBUST_GRADIENT_CONTRAST_V1.md`. This is not a new independent
 cluster, proof of a pure-function optimum, or a change to
 frozen H2M1 held-out classes. See
 `SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`.

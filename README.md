@@ -156,19 +156,28 @@ flowering-start selection is positive under open pollination
 hand pollination (β=−0.066, source P<0.05).
 One treatment factor changed; the second was held fixed.
 
+The single-factor contrast is **−0.160** with a sharp
+arbitrary-covariance SE upper bound **0.059**. If a
+joint-normal Wald approximation with valid published
+SEs is applicable, the conservative nominal 95% interval
+is [−0.276,−0.044] (upper p bound ≈0.0067).
+The post hoc 20-edge family does not have a
+5% family-wise-sign guarantee.
+
 The four-cell additive prediction for natural pollination
 with herbivory is β≈0.000, versus observed β=−0.0042.
-This source-derived *point residual* is not a
-covariance-aware statistical test of additivity, and
-the trait itself was not randomized. The finding
+This source-derived *point residual* cannot establish
+statistical equivalence to additivity, and the trait
+itself was not randomized. The finding
 distinguishes a net **selection-direction change**
 from a changed biological-agent preference or a newly
 identified pure-function optimum. The existing 2×2
 programme remains **one** source, and the outcome-blind
 H2M1 comparison remains frozen.
 
-See `docs/SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`
-and `scripts/audit_sch_gymnadenia_factorial_reversal.py`.
+See `docs/SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`,
+`docs/SCH_GYMNADENIA_COVARIANCE_ROBUST_GRADIENT_CONTRAST_V1.md`
+and `scripts/audit_sch_gymnadenia_covariance_robust_contrasts.py`.
 
 ## Independent patch-context evidence boundary
 
