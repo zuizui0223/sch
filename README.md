@@ -562,11 +562,14 @@ historical Xia et al. (2013) sparse/dense cutpoints (<2 and >5 flowering
 plants/m2) and small/large patch cutpoints (<20 and >20 flowering plants),
 all frozen before P2 outcomes. After the primary P2 surface is fitted,
 `analyze_pedicularis_antagonist_context.py` asks whether the NATURAL +
-EXPOSED state recovers the published density-by-patch-size reversal in seed
-predation. Plant outcomes are averaged within patch and only independent patches count
-toward the prospectively frozen four-cell replication gate. Missing or
-under-replicated patch context makes only this secondary NOT_MODELABLE; it
-cannot block, change or rescue W0-W5. See
+EXPOSED state **at the P0-validated sham/natural-exsertion level** recovers
+the published density-by-patch-size reversal in seed predation. This avoids
+calling other experimentally manipulated z levels natural flowers. The metric
+averages per-capsule seed-predation fractions within plant, then within patch,
+with patch as the independent unit. Capsules with zero distinguishable seeds
+remain unresolved rather than being silently dropped or automatically called
+100% predated; these and insufficient independent patch replication make only
+this secondary NOT_MODELABLE. It cannot block, change or rescue W0-W5. See
 `docs/SCH_PEDICULARIS_ANTAGONIST_CONTEXT_V1.md`.
 
 Until that chain produces a valid full-surface receipt (or fails a preregistered
