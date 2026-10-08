@@ -158,6 +158,27 @@ evidence ceiling and defines a matched-capsule covariance test that could
 be run on the verified historical Dryad workbook. No direct F0/G inference
 is promoted.
 
+## Separate pollen and mature-seed flowers: marginal ecological bridge
+
+The destructive P. rex stigma assay does **not** require copying pollen counts
+into a later mature-fruit row to ask whether removing seed predators shifts
+reproductive success toward z settings with better pollen deposition.
+A new **non-gating two-cohort analysis** now separately randomizes flowers
+for stigmatic pollen and for intact NATURAL × independent-G viable seeds on
+the same P0-validated physical z grid. It reconstructs the **full nonlinear
+pollen curve**, the predator-excluded/exposed discrete fruit fitness curves,
+and a matched population-level pollen contrast between the two fitted
+reproductive rank maxima. Plant-overlap-aware resampling preserves pairing
+where possible without inventing within-flower covariance.
+
+This is a synthetic-tested **ecological estimand and preliminary diagnostic**,
+not completed field evidence, a powered confirmatory W1/W2 replacement, pure
+function optima or a new permission to bypass the original P2
+dual-endpoint block. The separate fruit-only cohort remains nonconfirmatory,
+and a fully preregistered/simulated selective-optimum inference route is
+needed before promotion. See
+`docs/SCH_PEDICULARIS_TWO_COHORT_ECOLOGICAL_ALIGNMENT_V1.md`.
+
 ## Waterline shielding, injury and risk-saturation alternatives
 
 The source-level P. rex water experiment is now audited for all six
