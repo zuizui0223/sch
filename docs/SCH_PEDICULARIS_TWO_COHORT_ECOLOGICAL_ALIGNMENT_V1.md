@@ -119,6 +119,40 @@ might change enemy allocation to nearby exposed flowers, and fruit/resource
 competition within one plant may induce interference. Those are biological
 pilot questions, not assumptions proven by the code.
 
+## Optional matched-fruit fitness translation (non-gating)
+
+A biological subanalysis now separates the **same fruit's** distinguishable
+initiated seeds, visibly damaged seeds and intact mature seeds. For each
+`z × G` cell it reports the mean initiation fraction, the mean predation
+fraction, and their **within-fruit covariance**. It verifies the identity
+
+```text
+mean final fraction
+  = mean initial fraction * (1 - mean predation fraction)
+    - within-fruit Cov(initial fraction, predation fraction).
+```
+
+For the two **predefined extreme z ranks**, it further decomposes the
+difference in final viable-seed fractions into three exact contributions:
+seed initiation, seed predation and change in within-fruit covariance.
+This is a non-gating description of **fitness translation**, not a
+causal mediation decomposition. A biological change in fitness may arise
+even if mean initiation and mean predation appear the same, because
+successful capsules can also be systematically at greater enemy risk.
+
+The subanalysis refuses to infer a predation fraction for any cell that
+contains an intact=0, damaged=0 fruit; it retains the true observed final
+viable seeds but marks the cell and relevant high-minus-low decomposition
+`NOT_MODELABLE`. A fully destroyed fruit and an undeveloped fruit cannot
+be distinguished by those two raw columns. Even when all fractions are
+computable, completely consumed but unrecognizable seeds would require
+field-level fate verification before calling the distinguishable-count
+quantity true biological seed initiation.
+
+This addition follows the original 2016 source's distinction between
+trait–consumer response and final fitness, audited in
+`SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md`.
+
 ## Analysis status and statistical limitation
 
 `scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` reconstructs
