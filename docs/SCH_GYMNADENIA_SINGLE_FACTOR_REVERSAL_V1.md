@@ -25,9 +25,14 @@ Table A2.
 **Positive and negative flowering-start selection estimates, each individually
 supported in the original table, occur with herbivore exclusion held fixed.**
 Only pollen supplementation differs. The corresponding contrast in point
-estimates is **−0.160 selection-gradient units**. The source table does
-**not** provide the covariance between the estimates, so do not call
-that *contrast* significant at a newly calculated p-value.
+estimates is **−0.160 selection-gradient units**. The source table does **not** provide the covariance, so its **exact**
+contrast SE and original factorial ANCOVA p remain unknown. However,
+a sharp covariance-worst-case bound `SE(delta beta) <= 0.031+0.028
+= 0.059` gives a **conditional conservative normal-Wald p upper bound
+of approximately 0.0067**, with 95% interval [−0.276,−0.044].
+This is a nominal single-edge result; it does not certify a
+5%-family-wide finding for the **20 exploratory source-table edges**.
+See `SCH_GYMNADENIA_COVARIANCE_ROBUST_GRADIENT_CONTRAST_V1.md`.
 
 Importantly, floral phenotypes were **not themselves randomized**. The
 factorially randomized manipulation changes the ecological fitness
@@ -60,8 +65,11 @@ factorial difference-in-differences = −0.0042
 ```
 
 This is a **point-estimate decomposition**, not a statistical equivalence
-test for exact additivity. An unknown four-coefficient covariance matrix
-prevents computing a valid SE or p-value for the double difference.
+test for exact additivity. Although the SE of a four-coefficient contrast
+can be **upper bounded** by the sum of the four cell SEs, that bound is
+too wide to establish either a nonzero factorial interaction or
+equivalence to zero. The exact interaction SE and source ANCOVA p
+remain unrecovered.
 
 Under natural pollination with herbivory, the observed net gradient is
 close to zero. Under herbivore exclusion, pollen delivery yields selection
