@@ -120,6 +120,24 @@ and missing m were not recovered. Consequently, the 19-capsule
 result is a conditional **sensitivity benchmark**, not a new
 source-derived confidence interval or proof of complete robustness.
 
+### Why mean antagonist pressure is not automatically a selection gradient
+
+The independent orchid programme (Sletvold & Ågren 2014;
+doi:10.1111/evo.12405) demonstrates the analogous mutualist-side
+warning: population mean pollen limitation did not predict
+pollinator-mediated selection on individual traits within species,
+despite an association with net selection in *Gymnadenia*.
+Correspondingly, the six published P. rex bract-treatment
+coefficients quantify how mean treatment risk differs among
+populations, **not** which floral exsertion phenotypes are
+preferentially attacked or how trait sensitivity changes.
+
+A stronger SCH ecological experiment must measure **both**
+population attack prevalence and randomized trait-conditioned
+attack-response slopes, then track the resulting fitness. Neither
+quantity can substitute for the other. The orchid result is
+a cross-study conceptual precedent, not a pooled source estimate.
+
 ## What this changes for SCH
 
 The biological distinction becomes more concrete:
