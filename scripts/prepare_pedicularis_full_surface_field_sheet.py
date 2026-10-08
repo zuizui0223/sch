@@ -8,6 +8,10 @@ from pathlib import Path
 
 from scripts import analyze_pedicularis_full_surface as surface
 from scripts.build_pedicularis_full_surface_allocation import _semantic_sha256
+from scripts.audit_pedicularis_p2_dual_endpoint_feasibility import (
+    RECEIPT_SCHEMA as ENDPOINT_SCHEMA,
+    READY_STATUS as ENDPOINT_READY_STATUS,
+)
 
 
 ALLOCATION_SCHEMA = "PEDICULARIS_FULL_SURFACE_ALLOCATION_V1"
@@ -161,7 +165,34 @@ def _validate_allocation(
 def prepare(
     allocation_rows: list[dict[str, str]],
     allocation_receipt: dict,
+    *,
+    require_endpoint_binding: bool = False,
 ) -> tuple[list[dict[str, str]], dict]:
+    endpoint_binding = allocation_receipt.get("endpoint_feasibility_binding")
+    if require_endpoint_binding:
+        if not isinstance(endpoint_binding, dict):
+            raise ValueError(
+                "production P2 field sheet requires validated same-flower "
+                "pollen-plus-mature-seed endpoint feasibility"
+            )
+        if (
+            endpoint_binding.get("receipt_schema") != ENDPOINT_SCHEMA
+            or endpoint_binding.get("status") != ENDPOINT_READY_STATUS
+            or not isinstance(
+                endpoint_binding.get("feasibility_receipt_sha256"), str
+            )
+            or len(endpoint_binding["feasibility_receipt_sha256"]) != 64
+        ):
+            raise ValueError(
+                "P2 allocation endpoint feasibility binding is not positive"
+            )
+        if allocation_receipt.get(
+            "single_flower_endpoint_compatibility_validated_before_allocation"
+        ) is not True:
+            raise ValueError(
+                "dual-endpoint compatibility was not validated before P2 allocation"
+            )
+
     normalized = _validate_allocation(
         allocation_rows,
         allocation_receipt,
@@ -213,6 +244,7 @@ def prepare(
             "surface_threshold_freeze_sha256"
         ],
         "power_config_sha256": allocation_receipt["power_config_sha256"],
+        "endpoint_feasibility_binding": endpoint_binding,
         "field_identity_sha256": _semantic_sha256(normalized),
         "frozen_fields": list(FROZEN_FIELDS),
         "expected_frozen_rows": normalized,
@@ -299,6 +331,7 @@ def verify(
             "surface_threshold_freeze_sha256"
         ),
         "power_config_sha256": lock.get("power_config_sha256"),
+        "endpoint_feasibility_binding": lock.get("endpoint_feasibility_binding"),
         "field_identity_sha256": lock["field_identity_sha256"],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": require_complete,
@@ -343,6 +376,7 @@ def main() -> None:
         rows, lock = prepare(
             _read_csv(args.allocation_csv),
             _load_json(args.allocation_receipt_json),
+            require_endpoint_binding=True,
         )
         _write_csv(args.field_sheet_out, rows)
         args.identity_lock_out.parent.mkdir(parents=True, exist_ok=True)
