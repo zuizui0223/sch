@@ -555,6 +555,23 @@ config used in registered power**. See
 `docs/SCH_PEDICULARIS_W1_W2_POWER_V1.md` and
 `docs/SCH_PEDICULARIS_FULL_SURFACE_ALLOCATION_V1.md`.
 
+A separate **non-gating P2 ecological-context secondary** now records one
+patch census for every P2 plant: patch area and flowering-plant patch size.
+Patch flowering density is reconstructed as patch size / patch area using the
+historical Xia et al. (2013) sparse/dense cutpoints (<2 and >5 flowering
+plants/m2) and small/large patch cutpoints (<20 and >20 flowering plants),
+all frozen before P2 outcomes. After the primary P2 surface is fitted,
+`analyze_pedicularis_antagonist_context.py` asks whether the NATURAL +
+EXPOSED state **at the P0-validated sham/natural-exsertion level** recovers
+the published density-by-patch-size reversal in seed predation. This avoids
+calling other experimentally manipulated z levels natural flowers. The metric
+averages per-capsule seed-predation fractions within plant, then within patch,
+with patch as the independent unit. Capsules with zero distinguishable seeds
+remain unresolved rather than being silently dropped or automatically called
+100% predated; these and insufficient independent patch replication make only
+this secondary NOT_MODELABLE. It cannot block, change or rescue W0-W5. See
+`docs/SCH_PEDICULARIS_ANTAGONIST_CONTEXT_V1.md`.
+
 Until that chain produces a valid full-surface receipt (or fails a preregistered
 stop rule), additional TA3 remainder screening is secondary. Screening records
 already recovered remain part of the systematic denominator, but adding further

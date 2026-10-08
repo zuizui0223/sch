@@ -1,0 +1,19 @@
+{
+  "schema": "PEDICULARIS_P2_ANTAGONIST_CONTEXT_CONFIG_V1",
+  "status": "PEDICULARIS_P2_ANTAGONIST_CONTEXT_PROSPECTIVELY_FROZEN",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "frozen_before_p2_outcomes": "REQUIRED_BEFORE_USE",
+  "historical_comparison": {
+    "source": "Xia Sun Liu 2013 Biology Letters doi:10.1098/rsbl.2013.0387",
+    "sparse_density_max_exclusive_plants_m2": 2,
+    "dense_density_min_exclusive_plants_m2": 5,
+    "small_patch_max_exclusive_flowering_plants": 20,
+    "large_patch_min_exclusive_flowering_plants": 20,
+    "exact_boundary_is_unclassified": true,
+    "reference_z_scope": "P0_VALIDATED_SHAM_Z_ONLY"
+  },
+  "analysis_gate": {
+    "min_patches_per_historical_context_cell": "REQUIRED_BEFORE_USE"
+  }
+}
