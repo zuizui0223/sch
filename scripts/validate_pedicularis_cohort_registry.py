@@ -55,6 +55,12 @@ ROLE_RULES = {
         "confirmatory_eligible": "YES",
         "phase": "FULL_SURFACE",
     },
+    "POLLEN_SENTINEL": {
+        "lane": "POLLEN",
+        "threshold_basis_eligible": "NO",
+        "confirmatory_eligible": "YES",
+        "phase": "FULL_SURFACE",
+    },
     "POWER_GEOMETRY_PILOT": {
         "lane": "P0_P1_G",
         "threshold_basis_eligible": "NO",
