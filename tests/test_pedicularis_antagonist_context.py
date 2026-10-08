@@ -23,6 +23,7 @@ def _config() -> dict:
             "small_patch_max_exclusive_flowering_plants": 20,
             "large_patch_min_exclusive_flowering_plants": 20,
             "exact_boundary_is_unclassified": True,
+            "reference_z_scope": "P0_VALIDATED_SHAM_Z_ONLY",
         },
         "analysis_gate": {
             "min_patches_per_historical_context_cell": 2,
@@ -117,6 +118,7 @@ def _surface_receipt(rows: list[dict[str, str]]) -> dict:
         "season_id": "S1",
         "surface_data_sha256": surface.surface_data_sha256(rows),
         "status": "MODEL_SUPPORTED_CAUSAL_COMPROMISE_CANDIDATE",
+        "readiness_reference": {"p0_sham_z_level": "Z2"},
     }
 
 
@@ -346,7 +348,9 @@ def test_seed_predation_uses_mean_per_capsule_not_pooled_seeds() -> None:
     second["damaged_seed_count"] = "90"
     second["undamaged_seed_count"] = "10"
 
-    result, unresolved = _plant_natural_exposed([first, second])
+    result, unresolved = _plant_natural_exposed(
+        [first, second], sham_z_level="Z2"
+    )
 
     assert unresolved == []
     assert result["P99"]["seed_predation_fraction"] == pytest.approx(0.7)
@@ -389,3 +393,39 @@ def test_early_attack_absence_does_not_resolve_zero_seed_fate_either() -> None:
     assert result["historical_comparison_not_modelable_reason"] == (
         "UNRESOLVED_ZERO_DEVELOPED_SEED_FATE"
     )
+
+
+def test_nonsham_randomized_exsertion_is_excluded_from_historical_replication() -> None:
+    rows, context = _packet()
+    extra = dict(rows[0])
+    extra["flower_id"] = "EXTRA_HIGH_Z"
+    extra["assigned_z_level"] = "Z4"
+    extra["manipulation_setting_id"] = "SETTING_Z4"
+    extra["damaged_seed_count"] = "100"
+    extra["undamaged_seed_count"] = "0"
+    rows.append(extra)
+
+    result = build(rows, _surface_receipt(rows), context, _config())
+
+    assert result["reference_sham_z_level"] == "Z2"
+    assert result["n_excluded_nonsham_natural_exposed_flowers"] == 1
+    assert result["historical_pattern_sign_checks"] is not None
+    assert all(result["historical_pattern_sign_checks"].values())
+
+
+def test_missing_validated_sham_reference_fails_closed() -> None:
+    rows, context = _packet()
+    receipt = _surface_receipt(rows)
+    receipt["readiness_reference"].pop("p0_sham_z_level")
+
+    with pytest.raises(ValueError, match="validated P0 sham z reference"):
+        build(rows, receipt, context, _config())
+
+
+def test_historical_comparison_cannot_use_all_randomized_z_levels() -> None:
+    rows, context = _packet()
+    config = _config()
+    config["historical_comparison"]["reference_z_scope"] = "ALL_RANDOMIZED_Z"
+
+    with pytest.raises(ValueError, match="validated P0 sham z level only"):
+        build(rows, _surface_receipt(rows), context, config)
