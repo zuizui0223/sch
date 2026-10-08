@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 from copy import deepcopy
+from fractions import Fraction
 
 import pytest
 
@@ -109,6 +110,21 @@ def test_two_flower_cyclic_design_exact_incidence_and_plant_G_randomization():
         assert len({r["plant_id"] for r in alloc
                     if r["patch_id"]==patch and
                     r["predator_treatment"]=="EXPOSED"})==5
+
+
+def test_randomization_slots_give_equal_marginal_z_and_G_probability_per_flower():
+    # Uniform permutation of plants over ten slots + independent flower
+    # randomization over the two z levels in each slot. Each labeled
+    # flower has chance 2/(10*2) = 1/10 of each z x G treatment.
+    for g in ("EXCLUDED","EXPOSED"):
+        for z in range(5):
+            count=0
+            for slot in range(10):
+                arm="EXCLUDED" if slot<5 else "EXPOSED"
+                ranks=(slot%5,(slot%5+1)%5)
+                if arm==g:
+                    count+=sum(1 for level in ranks if level==z)
+            assert Fraction(count,10*2)==Fraction(1,10)
 
 
 def test_salted_randomization_is_reproducible_under_manifest_reordering():
