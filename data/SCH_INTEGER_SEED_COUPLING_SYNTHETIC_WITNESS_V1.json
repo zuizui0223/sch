@@ -1,0 +1,27 @@
+{
+  "schema": "SCH_INTEGER_SEED_STAGE_MARGINS_V1",
+  "data_kind": "SYNTHETIC_DEMONSTRATION",
+  "ovules_per_fruit": 12,
+  "setting_margins": {
+    "LOW": {
+      "initiated_seed_counts": [
+        1,
+        2
+      ],
+      "predation_fractions": [
+        "1/2",
+        "1"
+      ]
+    },
+    "HIGH": {
+      "initiated_seed_counts": [
+        1,
+        4
+      ],
+      "predation_fractions": [
+        "1/2",
+        "1"
+      ]
+    }
+  }
+}
