@@ -165,6 +165,27 @@ replication of the 2015 flowering-time sign reversal. The original
 claimed. See
 `docs/SCH_ORCHID_INTENSITY_VS_TRAIT_FUNCTION_2014_2015_V1.md`.
 
+### Mean pollination service versus trait-specific selection
+
+A separate **2012 daytime/nighttime pollinator-exclusion**
+experiment in *Gymnadenia* (doi:10.1890/11-2044.1) found that
+removing **daytime** visitors significantly reduced seed
+production in both studied populations, whereas removing
+nighttime visitors did not produce a comparable detected
+decline. However **both pollinator regimes exerted selection**
+on floral traits. A 2015 four-population study
+(doi:10.1111/nph.13555; guild experiment in two populations)
+further reported nocturnal-specific selection for longer
+spurs and guild-dependent selection on different trait
+combinations. These original sources are **not pooled** and
+a nonsignificant night-exclusion effect is not a zero effect.
+
+This supplies a direct ecological precedent for SCH's
+distinction **mean interaction contribution != selective
+trait-dependent contribution**, complementing the 2014
+within-species pollen-limitation result. See
+`docs/SCH_ORCHID_INTENSITY_VS_TRAIT_FUNCTION_2014_2015_V1.md`.
+
 ## Ecological correction: one changed factor can reverse realized selection
 
 The source-verified 2015 **Gymnadenia conopsea** four-arm
