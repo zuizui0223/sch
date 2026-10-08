@@ -100,6 +100,13 @@ observing pollen or seeds.
   attacked or undeveloped fruits.
 - Fail if mature seeds appear on a pollen sentinel or a stigmatic pollen
   count is copied into a fruit-only row.
+- Record realized physical exsertion **before applying G** on every intact
+  fruit-bearing flower. The assigned setting rank remains the ITT coordinate;
+  failing to produce ordered realized exsertion across z ranks in both G states
+  blocks calling its contrast an *exsertion* optimum.
+- Confirm that the physical z manipulation and barrier do not introduce
+  unregistered geometry interactions across G; V3 readiness at one geometry
+  does not guarantee selectivity at all manipulated z levels.
 - Store initial seed set and early predator attack if available, but do not
   infer the **cause** of a 0/0 seed count without validated fate evidence.
 - Audit water-depth and mechanical handling variation under their pre-frozen
