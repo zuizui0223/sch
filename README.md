@@ -158,6 +158,24 @@ evidence ceiling and defines a matched-capsule covariance test that could
 be run on the verified historical Dryad workbook. No direct F0/G inference
 is promoted.
 
+## Waterline shielding, injury and risk-saturation alternatives
+
+The source-level P. rex water experiment is now audited for all six
+site-model coefficients, the approximately 20-fold imprecision of the
+nonsignificant Zhongdian estimate, and the Shama-only pollinator-visit
+scope. Bract drainage was performed by **cutting a hole**; the published
+compound treatment does not isolate a water-only mechanism. A separate
+ecological hypothesis asks whether water removal could raise mean seed
+predation while weakening exsertion-dependent predation by exposing all
+flowers. That interaction is **not measured** by the two historical papers,
+and apparent risk-scale interactions must be distinguished from saturation
+under a common log-odds response.
+
+See `docs/SCH_PEDICULARIS_WATERLINE_ACCESS_MECHANISM_V1.md`.
+The prospective design randomizes water at the plant level and physical
+exsertion within plants; it is a non-gating BITA-y mechanism fork, **not**
+the independent SCH G intervention and not evidence that L is identified.
+
 ## Execution priority
 
 The repository is now **empirical-gate limited, not literature-screen limited**.
