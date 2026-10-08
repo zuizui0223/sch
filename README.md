@@ -144,6 +144,32 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Recover selection bounds while some reproductive fates are censored
+
+The registered *P. rex* fruit cohort now has a separate, non-gating
+**viable-seed outcome-fate bounding** analysis. It distinguishes
+mature fruits with counted intact seeds, **pre-dispersal verified
+zero mature yield**, partially censored fruits and completely
+unobserved fruit fates. This is biologically important because
+verified zero mature reproduction does not identify whether
+seed initiation failed or larvae consumed the initiated seeds:
+predation q can remain undefined even when fitness is known.
+
+For a missing fruit the algorithm never silently imputes zero;
+it keeps [0,U] with a measured pre-event or prospectively fixed
+per-flower potential-seed cap. Exact finite-sample arithmetic
+bounds z-response, G-exclusion contrasts and possible
+finite-grid reproductive optima. A 20-flower **synthetic**
+example identifies a predator-state optimum shift to higher
+exsertion even while two fruit outcomes are missing.
+
+This complements, but does not replace, the separate
+unpaired stage-coupling/seed-count solver or the blocked
+confirmatory P2. The 2016 historical *P. rex* fully consumed
+capsules cannot be retrospectively called verified zeros
+without pre-dispersal evidence. See
+`docs/SCH_PEDICULARIS_FRUIT_FATE_OUTCOME_BOUNDS_V1.md`.
+
 ## Integer-feasible reproductive stage coupling: a sharper identification result
 
 The previous marginal-only theorem allowed all continuous initiation–predation

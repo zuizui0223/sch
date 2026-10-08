@@ -216,6 +216,26 @@ measurement or causal P0/P1/G readiness.
 
 See `SCH_INTEGER_FEASIBLE_STAGE_COUPLING_V1.md`.
 
+## Separate viability bounds for documented zero and unknown fruit fate
+
+A companion non-gating analysis now preserves **all** assigned
+fruit IDs but distinguishes (i) exact counted viable seeds,
+(ii) a **verified zero viable mature-seed outcome** with
+unknown initiation/predation cause, (iii) independently
+documented partial intervals, and (iv) truly unobserved
+fruit fates bounded only by a defensible upper seed cap.
+
+The identified fitness estimand is intact **seeds per flower**,
+not q. The analyzer derives intervals for treatment-cell
+mean reproduction, extreme-z contrasts, G-exclusion
+differences and possible/guaranteed finite-grid optima.
+It neither estimates predation q from a zero-denominator
+fruit nor interprets loss as a zero outcome. This
+separate diagnostic does **not** change the present
+complete-count input contract for the two-cohort
+pollen/fruit analyzer, nor unlock any W1/W2 gate.
+See `SCH_PEDICULARIS_FRUIT_FATE_OUTCOME_BOUNDS_V1.md`.
+
 ## Analysis status and statistical limitation
 
 `scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` reconstructs
