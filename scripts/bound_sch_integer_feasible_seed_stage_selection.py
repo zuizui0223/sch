@@ -229,7 +229,8 @@ def build(payload: dict) -> dict:
         payload.get("ovules_per_fruit"),
     )
     result["source_data_kind"] = kind
-    result["actual_field_evidence"] = kind == "OBSERVED_UNPAIRED_MARGINS"
+    result["user_claims_observed_margins"] = kind == "OBSERVED_UNPAIRED_MARGINS"
+    result["observed_field_data_independently_verified"] = False
     result["field_selection_effect_identified"] = False
     return result
 
