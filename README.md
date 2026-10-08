@@ -144,6 +144,40 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Two-flower design: plant supply versus reproductive detectability
+
+A new explicitly **synthetic, scenario-dependent**
+power-planning precursor runs the actual two-flower
+cyclic allocator with randomized **whole-plant predator G**,
+shared maternal and patch effects, flower-level noise,
+and unknown mature seed fates retained as [0,K] intervals.
+It reports the fraction of Monte Carlo datasets
+identifying a positive discrete optimum shift,
+plus whether that remains true after deletion
+of every one parent plant. These frequencies
+are **not calibrated frequentist power** or
+actual P. rex variance estimates.
+
+Separately, the program computes exact conditional
+eligibility-screening needs. If (as a HYPOTHESIS) half
+of plants within a patch-stage batch have at least
+two suitable flowers, surveying **28 plants** gives
+at least 95% binomial-model probability of locating
+the ten plants needed for one complete cyclic batch.
+For four independent batches and a 95% chance of
+filling **all** of them, the assumption implies
+32 surveyed plants per batch (128 total).
+These are not real flower-supply measurements.
+
+Crucially, with a stable proportion m of completely
+unobserved fruits and individual upper viable-seed
+cap K, the width mK of worst-case mean fitness
+bounds persists even with very large sample sizes:
+collecting more flowers **cannot substitute for
+improving fate ascertainment** under those
+no-imputation bounds. See
+`docs/SCH_PEDICULARIS_TWO_FLOWER_DETECTABILITY_AND_ELIGIBILITY_V1.md`.
+
 ## Reduce P. rex fruit flower demands with plant-level predator randomization
 
 The source-aware plant-block sensitivity audit raised a real sampling
