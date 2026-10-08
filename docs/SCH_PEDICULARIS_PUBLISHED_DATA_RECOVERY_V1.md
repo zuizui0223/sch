@@ -259,6 +259,31 @@ pollination success in 14 populations.
 The supplement identities are verified but the binary files have not yet been
 ingested in the current environment.
 
+### 2026 public-source distribution update
+
+As of **August 26, 2026**, the legacy PMC FTP/OA article-dataset
+distribution routes were removed. The official supported source for
+eligible articles is now the **PMC Article Datasets public AWS S3 cloud**
+and includes individually addressable supplementary files *when the
+article's licensing and OA inclusion permit*. See the NCBI documentation:
+https://pmc.ncbi.nlm.nih.gov/tools/pmcaws/.
+
+That migration is a new potential official *retrieval route*, not evidence
+that `PMC4970362` is included in this public dataset or that either
+specific supplemental object is available. This research session was
+unable to retrieve the binary; **the supplement contents, exact
+per-population n, and full row-level measurements remain unverified**.
+Do not claim ingestion based only on the listed filenames, expected
+cloud path pattern, or source abstract. Use the exact official metadata
+and materialize source bytes before any analysis that needs those rows.
+
+In the meantime, exact published Table 1 AICc and six-site 2015 GLM
+treatment coefficients are reproducibly audited without inventing
+underlying data. See
+`SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md` and
+`SCH_PEDICULARIS_REAL_WORLD_ANTAGONIST_HETEROGENEITY_V1.md`.
+
+
 ## P. rex population-genetic mating context
 
 Li, Gao & Wang (2005) surveyed five Yunnan P. rex populations

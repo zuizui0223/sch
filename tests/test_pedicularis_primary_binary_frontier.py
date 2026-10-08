@@ -100,3 +100,16 @@ def test_stop_rule_preserves_key_claim_boundaries() -> None:
     assert "observational_raw_data_cannot_create_randomized_G" in ceiling
     assert "aggregate_supplements_cannot_create_missing_interventions" in ceiling
     assert "no_further_congeneric_screening_without_new_direct_gap_rationale" in ceiling
+
+
+def test_2026_official_pmc_cloud_route_is_discovery_not_download() -> None:
+    rows = _rows()
+    supp = next(r for r in rows if r["asset_id"] == "SUPP_SUN2016_MCW097")
+    assert "pmcaws/" in supp["locator"]
+    assert "OBJECT_UNVERIFIED" in supp["current_access_state"]
+    assert "2026_PMC_AWS_ROUTE_DOCUMENTED" in supp["current_access_state"]
+    assert "article eligibility" in supp["search_stop_condition"]
+    result = build()
+    assert result["n_retrieved_assets"] == 0
+    assert result["n_external_prior_only_assets"] == 2
+    assert result["field_calibration_is_primary_path"] is True
