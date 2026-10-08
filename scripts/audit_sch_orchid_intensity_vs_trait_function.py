@@ -20,6 +20,19 @@ from scripts.audit_sch_gymnadenia_factorial_reversal import (
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data/SCH_GYMNADENIA_INTERACTION_INTENSITY_FUNCTIONAL_RESPONSE_2014_V1.csv"
 DOI = "10.1111/evo.12405"
+GUILD_SOURCE = ROOT / "data/SCH_GYMNADENIA_GUILD_SERVICE_VS_SELECTION_V1.csv"
+GUILD_EXPECTED = {
+    ("10.1890/11-2044.1", "diurnal_exclusion_effect_on_mean_seed_production"):
+        "SIGNIFICANT_DECREASE_IN_BOTH_POPULATIONS",
+    ("10.1890/11-2044.1", "nocturnal_exclusion_effect_on_mean_seed_production"):
+        "NO_DETECTED_DECREASE_IN_BOTH_POPULATIONS",
+    ("10.1890/11-2044.1", "diurnal_and_nocturnal_trait_selection"):
+        "BOTH_GUILDS_SELECTION_WITH_CONSISTENT_DIRECTION_AND_VARIABLE_STRENGTH",
+    ("10.1111/nph.13555", "guild_effect_on_spur_length_selection"):
+        "ONLY_NOCTURNAL_LONGER_SPUR_SELECTION_REPORTED_IN_SOURCE",
+    ("10.1111/nph.13555", "guild_effect_on_correlational_trait_selection"):
+        "GUILDS_SELECT_DIFFERENT_MULTITRAIT_COMBINATIONS",
+}
 G = "Gymnadenia conopsea"
 D = "Dactylorhiza lapponica"
 OUTCOMES = {
@@ -48,7 +61,73 @@ def read(path: Path = SOURCE) -> list[dict[str, str]]:
     return data
 
 
-def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
+def read_guild(path: Path = GUILD_SOURCE) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as f:
+        out = list(csv.DictReader(f))
+    if not out:
+        raise ValueError("guild source table empty")
+    return out
+
+
+def audit_guild(rows: list[dict[str, str]]) -> dict:
+    found = set()
+    for row in rows:
+        key = (row["source_doi"], row["outcome"])
+        if key not in GUILD_EXPECTED or key in found:
+            raise ValueError("unknown or duplicate guild-source result")
+        found.add(key)
+        year, n_pops, n_guild = (
+            (2012, 2, 2) if key[0] == "10.1890/11-2044.1"
+            else (2015, 4, 2)
+        )
+        if (
+            int(row["year"]) != year
+            or int(row["populations_total"]) != n_pops
+            or int(row["populations_with_guild_manipulation"]) != n_guild
+        ):
+            raise ValueError("guild source population/manipulation scope drift")
+        if row["reported_result"] != GUILD_EXPECTED[key]:
+            raise ValueError("guild original published result identity drift")
+        if (
+            row["source_evidence"] != "PRIMARY_PUBLISHED_ABSTRACT"
+            or row["raw_estimates_recovered"] != "NO"
+        ):
+            raise ValueError("guild effects remain qualitative until full tables")
+    if found != set(GUILD_EXPECTED) or len(rows) != len(GUILD_EXPECTED):
+        raise ValueError("guild source evidence set incomplete")
+    return {
+        "source_programmes": [
+            {"doi": "10.1890/11-2044.1", "year": 2012,
+             "population_count": 2, "guild_experiment_populations": 2},
+            {"doi": "10.1111/nph.13555", "year": 2015,
+             "population_count": 4, "guild_experiment_populations": 2},
+        ],
+        "2012_diurnal_removal_mean_seed_production_decreased_both_pops": True,
+        "2012_nocturnal_removal_mean_seed_production_decrease_detected": False,
+        "2012_both_guilds_contributed_to_flower_trait_selection": True,
+        "2012_direction_of_selection_consistent_across_guild_treatments": True,
+        "2015_nocturnal_guild_selected_longer_spur_in_guild_subset": True,
+        "2015_guild_specific_correlational_trait_combinations": True,
+        "guild_specific_selection_coefficients_recovered": False,
+        "interpretation": (
+            "The guild required for mean seed production need not be the "
+            "only guild contributing to floral trait selection."
+        ),
+        "claim_ceiling": [
+            "non_detected_nocturnal_seed_loss_is_not_zero_nocturnal_service",
+            "2012_and_2015_source_programmes_may_share_sites_not_independent_field_replicates",
+            "no_risk_or_absolute_visitor_effect_sizes_extracted",
+            "not_proof_2012_to_2015_evolutionary_direction_changed",
+            "does_not_identify_function_specific_optimum_or_trait_intervention",
+        ],
+    }
+
+
+def build(
+    rows: list[dict[str, str]],
+    cells_2015: list[dict[str, str]],
+    guild_rows: list[dict[str, str]] | None = None,
+) -> dict:
     seen = set()
     for row in rows:
         species = row["species"]
@@ -82,6 +161,7 @@ def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
     if seen != set(OUTCOMES) or len(rows) != len(OUTCOMES):
         raise ValueError("2014 six-source-claim ledger incomplete")
 
+    guild = audit_guild(read_guild() if guild_rows is None else guild_rows)
     prior = build_2015(cells_2015)
     if prior["n_source_treatment_cells"] != 20:
         raise ValueError("2015 factorial source lacks complete treatment cells")
@@ -125,6 +205,7 @@ def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
             "functional_trait_response_causally_identified_from_PL_regression": False,
         },
         "2015_same_experiment_point_component_contrasts": pairwise,
+        "independent_published_guild_exclusion_evidence": guild,
         "ecological_discriminator": {
             "interaction_intensity": "population_year_mean_pollen_limitation",
             "functional_significance": "trait_specific_gradient_of_pollen_delivery_or_fitness",
@@ -147,6 +228,8 @@ def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
             "2014_and_2015_sampling_frames_cannot_be_merged_as_one_experiment",
             "response_curve_mapping_is_mechanistic_hypothesis_not_measured_cause",
             "2014_Dryad_xlsx_not_ingested_no_numeric_reanalysis_claim",
+            "guild_exclusion_reports_not_raw_risk_or_selection_effect_sizes",
+            "2012_and_2015_guild_studies_not_proof_of_longitudinal_selection_reversal",
             "trait_directional_selection_not_SCH_function_specific_optimum",
         ],
         "status": "PUBLISHED_MULTISEASON_INTENSITY_FUNCTION_DISSOCIATION_RECORDED",
