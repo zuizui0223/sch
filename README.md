@@ -515,9 +515,14 @@ on one flower ID. The production P2 allocator now requires a positive,
 independent `PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1` receipt, and field
 verification carries it to the analyzer. Until accurate same-flower pollen
 counts and unbiased seed maturation are independently validated, registered
-single-flower P2 collection remains blocked. A separate pollen-sentinel
-cohort is a viable design candidate but needs a newly powered two-cohort
-analyzer; it cannot be silently substituted into W1/W2. See
+single-flower P2 collection remains blocked. The separate pollen-sentinel
+route now has a **standalone causal pollination-function test**: validated
+P0 physical z settings are independently randomized among sacrificial
+`POLLEN_SENTINEL` flowers under natural pollination, with plant-block
+bootstrap and within-plant randomization inference on stigma pollen receipt.
+See `docs/SCH_PEDICULARIS_RANDOMIZED_POLLEN_SENTINELS_V1.md`.
+This is not yet a newly powered **two-cohort W1/W2 estimator**, and sentinel
+pollen cannot be copied onto mature-fruit flower IDs. See also
 `docs/SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md`.
 
 The final P2 replication now has a second prospective power layer in addition
