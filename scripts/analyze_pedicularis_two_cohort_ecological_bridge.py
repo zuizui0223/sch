@@ -124,6 +124,7 @@ def _validated_fruit_blocks(
     required = set(FRUIT_FROZEN_FIELDS) | {
         "ovule_count", "undamaged_seed_count", "damaged_seed_count",
         "water_depth", "mechanical_damage", "early_predator_attack_present",
+        "realized_exsertion_before_G",
     }
     if not rows or any(not required.issubset(set(row)) for row in rows):
         raise ValueError("fruit-only rows are missing required reproductive columns")
@@ -143,6 +144,7 @@ def _validated_fruit_blocks(
     observed_flower_ids: set[str] = set()
     waters: list[float] = []
     mechanical: list[int] = []
+    observed_z: dict[tuple[str, int], list[float]] = defaultdict(list)
     ranks = list(range(int(allocation["n_z_levels"])))
     expected = {(rank, g) for rank in ranks for g in ("EXCLUDED", "EXPOSED")}
     valid_settings = {
@@ -194,6 +196,9 @@ def _validated_fruit_blocks(
             if row[bit] not in ("0", "1"):
                 raise ValueError(f"{bit} must be 0/1")
         waters.append(_number(row["water_depth"], "water_depth"))
+        observed_z[(g, rank)].append(
+            _number(row["realized_exsertion_before_G"], "realized_exsertion_before_G")
+        )
         mechanical.append(int(row["mechanical_damage"]))
         by_plant[row["plant_id"]].append(row)
     if len(by_plant) < config["min_fruit_plants"]:
@@ -208,7 +213,22 @@ def _validated_fruit_blocks(
         raise ValueError("fruit-only water-y changed beyond registered tolerance")
     if mean(mechanical) > config["max_damage_fraction"]:
         raise ValueError("fruit-only handling damage exceeded registered tolerance")
+    z_means = {
+        treatment: {
+            rank: mean(observed_z[(treatment, rank)]) for rank in ranks
+        }
+        for treatment in ("EXCLUDED", "EXPOSED")
+    }
+    first_stage_ordered = all(
+        all(values[after] > values[before] for before, after in zip(ranks, ranks[1:]))
+        for values in z_means.values()
+    )
     return dict(by_plant), {
+        "realized_exsertion_before_G_by_state_and_rank": {
+            g: {str(rank): val for rank, val in values.items()}
+            for g, values in z_means.items()
+        },
+        "fruit_z_first_stage_ordered_in_both_G_states": first_stage_ordered,
         "n_fruit_plants": len(by_plant),
         "n_fruit_flowers": len(rows),
         "n_physical_z_levels": len(ranks),
@@ -375,7 +395,11 @@ def build(
     return {
         "analysis": "pedicularis_split_cohort_discrete_optimum_pollen_alignment_v1",
         "receipt_schema": "PEDICULARIS_TWO_COHORT_NON_GATING_ECOLOGICAL_CONTRAST_V1",
-        "status": "TWO_COHORT_DESCRIPTIVE_CONTRAST_NO_W1_W2_PROMOTION",
+        "status": (
+            "TWO_COHORT_DESCRIPTIVE_CONTRAST_NO_W1_W2_PROMOTION"
+            if fruit_checks["fruit_z_first_stage_ordered_in_both_G_states"]
+            else "TWO_COHORT_Z_FIRST_STAGE_NOT_ORDERED_NO_EXSERTION_INTERPRETATION"
+        ),
         "population_id": cfg["population_id"],
         "season_id": cfg["season_id"],
         "estimand": (
@@ -422,6 +446,8 @@ def build(
             "argmax_bootstrap_percentiles_are_nonregular_not_formal_95pct_inference",
             "predator_barrier_spillover_and_maternal_resource_competition_need_pilot",
             "natural_pollination_pollen_receipt_not_specific_pollinator_mediation",
+            "cohort_exchangeability_and_G_selectivity_across_z_not_proved_by_receipts",
+            "assigned_setting_rank_not_actual_mm_exsertion_without_first_stage",
             "does_not_unlock_original_same_flower_P2_or_SCH_primary_compromise",
         ],
     }
