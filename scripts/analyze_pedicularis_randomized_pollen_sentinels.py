@@ -106,6 +106,29 @@ def _slope_within_plant(blocks: list[list[dict[str, str]]]) -> float:
     return numerator / denominator
 
 
+def _mean_pollen_by_rank(
+    blocks: list[list[dict[str, str]]], ranks: list[int]
+) -> dict[int, float]:
+    """Balanced-block dose-response; one randomized flower per rank and plant."""
+    values: dict[int, list[float]] = {rank: [] for rank in ranks}
+    for block in blocks:
+        per_plant = {int(row["assigned_z_rank"]): float(row["pollen_grains"]) for row in block}
+        if set(per_plant) != set(ranks):
+            raise ValueError("dose-response requires every rank within each plant")
+        for rank in ranks:
+            values[rank].append(per_plant[rank])
+    return {rank: mean(values[rank]) for rank in ranks}
+
+
+def _central_vs_endpoints(profile: dict[int, float], ranks: list[int]) -> float:
+    """Predefined descriptive shape contrast, never a confirmatory gate."""
+    n = len(ranks)
+    center = [ranks[n // 2]] if n % 2 else [ranks[n // 2 - 1], ranks[n // 2]]
+    return mean(profile[rank] for rank in center) - (
+        profile[ranks[0]] + profile[ranks[-1]]
+    ) / 2
+
+
 def _configuration(config: dict) -> dict:
     if config.get("schema") != CONFIG_SCHEMA:
         raise ValueError("pollen sentinel analysis config schema mismatch")
@@ -310,10 +333,13 @@ def build(
     )
     block_list = [blocks[key] for key in sorted(blocks)]
     observed = _slope_within_plant(block_list)
+    ranks = sorted(int(row["assigned_z_rank"]) for row in block_list[0])
+    observed_profile = _mean_pollen_by_rank(block_list, ranks)
 
     rng = random.Random(config["random_seed"])
     plant_keys = sorted(blocks)
     boot_slopes = []
+    boot_profiles = []
     for _ in range(config["bootstrap_reps"]):
         sample = [
             blocks[plant_id]
@@ -321,6 +347,7 @@ def build(
         ]
         try:
             boot_slopes.append(_slope_within_plant(sample))
+            boot_profiles.append(_mean_pollen_by_rank(sample, ranks))
         except ValueError:
             pass
     valid_fraction = len(boot_slopes) / config["bootstrap_reps"]
@@ -331,6 +358,40 @@ def build(
         raise ValueError("too few valid plant-block bootstrap replicates")
     lo = _quantile(boot_slopes, 0.025)
     hi = _quantile(boot_slopes, 0.975)
+
+    # Secondary, outcome-agnostic diagnostics preserve the full randomized
+    # response curve. A peaked response can coexist with a zero linear ITT
+    # slope; the diagnostic must never change the registered benefit status.
+    by_rank_ci = {
+        str(rank): [
+            _quantile([profile[rank] for profile in boot_profiles], 0.025),
+            _quantile([profile[rank] for profile in boot_profiles], 0.975),
+        ]
+        for rank in ranks
+    }
+    adjacent = {
+        f"{left}_to_{right}": observed_profile[right] - observed_profile[left]
+        for left, right in zip(ranks, ranks[1:])
+    }
+    central_contrast = _central_vs_endpoints(observed_profile, ranks)
+    central_ci = [
+        _quantile(
+            [_central_vs_endpoints(profile, ranks) for profile in boot_profiles], q
+        ) for q in (0.025, 0.975)
+    ]
+    best_rank = max(ranks, key=lambda rank: observed_profile[rank])
+    descriptive_profile = {
+        "mean_pollen_grains_by_assigned_rank": {
+            str(rank): observed_profile[rank] for rank in ranks
+        },
+        "plant_cluster_bootstrap_mean_ci95_by_rank": by_rank_ci,
+        "adjacent_rank_mean_differences": adjacent,
+        "predefined_central_vs_endpoints_contrast": central_contrast,
+        "predefined_central_vs_endpoints_bootstrap_ci95": central_ci,
+        "highest_observed_mean_rank": best_rank,
+        "interior_peak_in_observed_means": best_rank not in (ranks[0], ranks[-1]),
+        "status": "DESCRIPTIVE_NON_GATING_NOT_A_PURE_FUNCTION_OPTIMUM",
+    }
 
     null_at_least_as_positive = 0
     for _ in range(config["permutation_reps"]):
@@ -366,6 +427,7 @@ def build(
         "preregistered_min_effect_per_rank": config["min_slope"],
         "preregistered_one_sided_alpha": config["alpha"],
         "pollen_benefit_supported_in_tested_population_season": supported,
+        "non_gating_randomized_dose_response": descriptive_profile,
         "nuisance_checks": checks,
         "p0_qualification_sha256": _semantic_sha256(p0_receipt),
         "sentinel_assignment_sha256": _semantic_sha256(allocation),
@@ -380,6 +442,8 @@ def build(
         "claim_ceiling": [
             "causal_intention_to_treat_effect_of_randomized_physical_z_settings",
             "does_not_identify_pure_pollinator_function_optimum",
+            "descriptive_dose_response_does_not_change_primary_ITT_status",
+            "pollen_receipt_under_open_access_does_not_by_itself_prove_pollinator_mediation",
             "no_predator_G_causal_effect_in_sentinel_flowers",
             "no_same_flower_pollen_seed_covariance",
             "not_a_W1_W2_or_causal_compromise_receipt",
