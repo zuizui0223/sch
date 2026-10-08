@@ -144,6 +144,34 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Reduce P. rex fruit flower demands with plant-level predator randomization
+
+The source-aware plant-block sensitivity audit raised a real sampling
+problem: a **complete** five-exsertion-rank × two-predator-condition
+fruit experiment uses **ten flowers per plant**, which risks
+selecting unusually floriferous mothers. The focal 2016 source
+reported mean **12.51 ± 5.60 SD mature capsules per plant**, not
+a census of eligible flower supply.
+
+A prospective **candidate** design now uses only **two fruit-bearing
+flowers per plant**, with exactly ten plants in each pre-defined
+patch × developmental-stage batch. The **predator treatment is
+randomized to whole plants** (five excluded, five exposed)
+rather than mixing G assignments on adjacent flowers, and the
+two exsertion ranks on each plant follow a connected cyclic
+five-rank incidence pattern. Every z×G cell receives two
+**distinct plants** per batch. This design is equireplicate and
+connected but **not pairwise-balanced BIBD**.
+
+The candidate allocator and separate outcome-fate analyzer are
+implemented and synthetic-tested without bypassing previous
+complete-block source checks or promoting unqualified P0/G,
+field power, population confidence intervals or W1/W2.
+Between-plant seed-predator spillover, within-plant resource
+interference, realistic eligible plant supply and study
+precision remain empirical pilot needs. See
+`docs/SCH_PEDICULARIS_TWO_FLOWER_CYCLIC_FIELD_DESIGN_V1.md`.
+
 ## Does a pooled optimum displacement depend on one parent plant?
 
 The *P. rex* fruit-fate estimator now has a **plant-block
