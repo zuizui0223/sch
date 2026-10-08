@@ -105,3 +105,8 @@ def test_covariance_diagnostic_rejects_unmatched_or_impossible_capsule_data() ->
         seed_output_decomposition([0.2], [1.1])
     with pytest.raises(ValueError, match="at least one matched"):
         seed_output_decomposition([], [])
+
+
+def test_zero_developed_seed_capsules_need_separate_censoring_rule() -> None:
+    with pytest.raises(ValueError, match="predation fraction is undefined"):
+        seed_output_decomposition([0.0, 0.5], [1.0, 0.2])
