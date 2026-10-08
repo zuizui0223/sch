@@ -135,6 +135,28 @@ interference: predator barriers on one flower may displace enemy
 attack onto others, and fruit resources can be reallocated among
 sibling flowers.
 
+### Executable two-cohort translation diagnostic
+
+The existing exploratory fruit analyzer now implements this matched-fruit
+decomposition and returns the non-gating
+`fruit_stage_fitness_translation_non_gating` receipt. It reports
+`z × G` source-cell means and measured same-fruit covariance, without
+ever requiring pollen measured on that same flower.
+
+An **adversarial synthetic test** gives identical mean initial seed fractions
+(0.5) and predation fractions (0.25) at low and high assigned z, but a
+different covariance (+0.075 vs −0.075). The final viable fraction changes
+from 0.30 to 0.45; **all 0.15 of this numerical difference is the covariance
+term**. This is a counterexample to explaining viable-seed variation using
+mean seed initiation and mean predation alone, not a field effect in P. rex.
+
+The field test would need independent evidence that attacked fruits retain
+countable damaged tissue. If any `0/0` fruit occurs, corresponding
+covariance inference is withheld while its zero viable output remains
+in the fitness surface. An additional source-independent observational
+difference in covariance would still not identify the causal process that
+generated that covariance.
+
 ## What this observation changes for SCH
 
 The original biological claim can be sharpened from
