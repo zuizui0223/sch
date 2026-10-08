@@ -149,6 +149,60 @@ All source profiles, variances, missingness
 mechanisms, seed cap and the Monte Carlo seed
 are frozen in a synthetic JSON input.
 
+## Reproducible numerical scenario results
+
+A dedicated GitHub Actions run of the **frozen synthetic
+five-scenario × six-batch-size × 100-replicate grid**
+(workflow run 37805251093, configuration seed 20261009)
+completed successfully. The following is the observed
+fraction of simulated allocations where worst-case
+**mature-fruit-fate bounds guarantee a strictly positive
+EXCLUDED-minus-EXPOSED discrete optimum rank shift**:
+
+| Assumed data-generating scenario | 10 eligible plants | 40 eligible plants | 80 eligible plants | 320 eligible plants |
+|---|---:|---:|---:|---:|
+| Low maternal variance, complete maturity | 0.97 | 1.00 | 1.00 | 1.00 |
+| High maternal variance, complete maturity | 0.72 | 0.94 | 0.99 | 1.00 |
+| 5% independent missing maturity | 0.66 | 0.87 | 0.95 | 1.00 |
+| Outcome-dependent loss, nominal p=12% | 0.16 | 0.12 | 0.19 | 0.06 |
+| **No underlying optimum shift (negative control)** | **0.19** | **0.12** | **0.02** | **0.00** |
+
+All are synthetic conditional classification frequencies,
+**not frequentist power or Type I error of a calibrated
+test**. The model's 100 replicates give coarse Monte
+Carlo resolution and nontrivial simulation uncertainty.
+Reproducing with other effect curves and seeds is
+essential; a 0.95 value is not evidence that 80 P. rex
+plants would yield 95% inferential power.
+
+Crucially, the outcome-dependent generator with nominal
+12% loss yielded **approximately 18% realized unobserved
+maturity outcomes** because seed-poor flowers had a
+higher chance of becoming unascertainable. In this
+scenario even 320 enrolled plants did not reliably
+identify the optimum shift without added assumptions.
+The no-shift control's 19% apparent positive signal
+with just ten plants demonstrates why a descriptive
+optimum difference CANNOT be called a significance
+test or calibrated detection power.
+
+A separate stability diagnostic was **evaluated only**
+under the complete-maturity/low-variance scenario:
+the fractions both positive and stable to deletion
+of every one plant were 0.79 (10 plants),
+0.96 (20 plants), and 1.00 (40 plants).
+This is not inferential robustness against
+population sampling uncertainty; all other
+scenarios' plant-deletion diagnostics are
+explicitly marked **NOT EVALUATED**, not 0%.
+
+The machine-readable complete scenario grid is
+available as the JSON artifact of the dedicated
+GitHub Actions workflow; the CLI reproduces it
+from the frozen source configuration. No real
+P. rex seed-count variance or true z×G shape
+has been recovered.
+
 ## The crucial ecological limit: more plants may NOT rescue unobserved fruits
 
 If the fraction m of flowers whose maturity output
