@@ -22,6 +22,18 @@ valid P0/P1/G
 
 The new planner therefore powers the final production pipeline itself.
 
+**Measurement-feasibility caveat:** these simulations currently draw stigmatic
+pollen and mature-seed outcomes for every simulated flower. Sun et al. (2016)
+measured the former destructively and usually obtained the latter from
+different flowers. The simulated W1/W2 probabilities therefore do not
+establish that the actual field endpoint pairing is possible. Registered
+field allocation requires a separate positive dual-endpoint compatibility
+receipt; the power assumptions must also be reviewed against the validated
+assay's pollen measurement variance. If split-flower sentinels are used, this
+entire joint P2 power route must be redesigned rather than treating sentinel
+flowers as independent mature-fruit flowers. See
+`docs/SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md`.
+
 ## Machine files
 
 ```text

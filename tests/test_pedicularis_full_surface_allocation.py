@@ -6,6 +6,7 @@ import pytest
 
 from scripts.build_pedicularis_full_surface_allocation import (
     build as production_build,
+    build_registered,
 )
 
 
@@ -449,3 +450,68 @@ def test_power_without_final_three_binding_cannot_allocate_p2() -> None:
 
     with pytest.raises(ValueError, match="final-three P0/F0"):
         build(_manifest(), _config(), power, "SEED")
+
+
+def _qualified_endpoint_fixture() -> dict:
+    # Synthetic test only; does not represent a P. rex biological measurement.
+    return {
+        "receipt_schema": "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1",
+        "status": (
+            "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBLE_FOR_SINGLE_FLOWER_PIPELINE"
+        ),
+        "population_id": "P_REX_TEST",
+        "season_id": "S1",
+        "flower_endpoint_unit": "SAME_FLOWER",
+        "collection_route": "SAME_FLOWER_NONDESTRUCTIVE_POLLEN_QUANTIFICATION",
+        "pollen_assay_method_id": "SYNTHETIC_TEST_METHOD",
+        "same_flower_pollen_and_mature_seeds_validated": True,
+        "accuracy_validation_passed": True,
+        "mature_seed_noninterference_equivalence_passed": True,
+        "predator_and_pollination_lane_compatibility_passed": True,
+        "pilot_cohort_independent_of_confirmatory_P2": True,
+        "frozen_config_sha256": "d" * 64,
+        "independent_pilot_receipt_sha256": "e" * 64,
+        "independent_pilot_data_sha256": "f" * 64,
+    }
+
+
+def test_registered_allocation_requires_endpoint_compatibility_receipt() -> None:
+    with pytest.raises(ValueError, match="requires a dual-endpoint"):
+        build_registered(
+            _manifest(),
+            _config(),
+            _power(),
+            _readiness(),
+            {},
+            "SEED",
+        )
+
+
+def test_registered_allocation_binds_qualified_joint_assay_before_flower_assignment() -> None:
+    allocations, receipt = build_registered(
+        _manifest(),
+        _config(),
+        _power(),
+        _readiness(),
+        _qualified_endpoint_fixture(),
+        "SYNTHETIC-LOCKED-SEED",
+    )
+    assert len(allocations) == 40
+    assert receipt["single_flower_endpoint_compatibility_validated_before_allocation"] is True
+    assert len(
+        receipt["endpoint_feasibility_binding"]["feasibility_receipt_sha256"]
+    ) == 64
+
+
+def test_split_flower_receipt_cannot_authorize_original_single_flower_allocation() -> None:
+    endpoint = _qualified_endpoint_fixture()
+    endpoint["collection_route"] = "SPLIT_FLOWER_POLLEN_SENTINEL"
+    with pytest.raises(ValueError, match="split-flower sentinels"):
+        build_registered(
+            _manifest(),
+            _config(),
+            _power(),
+            _readiness(),
+            endpoint,
+            "SEED",
+        )

@@ -485,8 +485,11 @@ P2 final3                materialize numeric z grid + within-level z SD from loc
 P2 bind                  require BOTH exact 18-path geometry binding and exact
                          3-path P0/F0 binding to the same frozen power config
 P2 power                 only then run registered production W0-W5 power
-P2 alloc                 require exact positive readiness V3 + passing powered design,
-                         then bind treatment-blind flower IDs
+P2 endpoints             independently validate that accurate stigma pollen
+                         counts AND mature seeds can come from the SAME flower;
+                         otherwise redesign with disjoint pollen sentinels
+P2 alloc                 require positive joint-endpoint compatibility + exact
+                         readiness V3 + passing powered design before assignment
 P2 lock                  verify exact z/P/G/method identity + surface SHA-256
 Stage P2                 run verified z x P x G surface
 Stage P3                 test context-stable component optima
@@ -502,6 +505,20 @@ treatment-blind flower IDs to equal NATURAL sham-handling and SUPPLEMENTED
 donor-mixed-cross-pollen arms within each plant using a precommitted SHA-256
 seed. The production P1 CLI requires that allocation receipt and rejects
 flower/treatment/handling or frozen-config drift.
+
+P2 has a separate **biological endpoint-feasibility stop**:
+Sun, Armbruster & Huang (2016; doi:10.1093/aob/mcw097) counted stigmatic pollen
+by crushing stigmas onto slides, whereas mature seed endpoints were normally
+taken from different flowers on the same plants. The current P2 raw/analyzer
+layout instead requires `pollen_grains` and mature intact/damaged seed counts
+on one flower ID. The production P2 allocator now requires a positive,
+independent `PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1` receipt, and field
+verification carries it to the analyzer. Until accurate same-flower pollen
+counts and unbiased seed maturation are independently validated, registered
+single-flower P2 collection remains blocked. A separate pollen-sentinel
+cohort is a viable design candidate but needs a newly powered two-cohort
+analyzer; it cannot be silently substituted into W1/W2. See
+`docs/SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md`.
 
 The final P2 replication now has a second prospective power layer in addition
 to CAL-C, but its evidence basis is audited first. The current basis ledger has

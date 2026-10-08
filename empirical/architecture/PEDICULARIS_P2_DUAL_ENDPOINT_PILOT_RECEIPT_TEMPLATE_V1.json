@@ -1,0 +1,17 @@
+{
+  "receipt_schema": "PEDICULARIS_P2_DUAL_ENDPOINT_PILOT_VALIDATION_V1",
+  "status": "REQUIRED_BEFORE_USE",
+  "population_id": "REQUIRED_BEFORE_USE",
+  "season_id": "REQUIRED_BEFORE_USE",
+  "pollen_assay_method_id": "REQUIRED_BEFORE_USE",
+  "collection_route": "REQUIRED_BEFORE_USE",
+  "prospective_acceptance_margins_frozen": "REQUIRED_BEFORE_USE",
+  "pilot_cohort_independent_of_confirmatory_P2": "REQUIRED_BEFORE_USE",
+  "same_flower_pollen_count_and_mature_seed_linkage_verified": "REQUIRED_BEFORE_USE",
+  "pollen_count_accuracy_against_independent_reference_pass": "REQUIRED_BEFORE_USE",
+  "mature_seed_noninterference_equivalence_pass": "REQUIRED_BEFORE_USE",
+  "pollination_and_predator_treatment_compatibility_pass": "REQUIRED_BEFORE_USE",
+  "positive_nonzero_pollen_and_mature_seed_records_recovered": "REQUIRED_BEFORE_USE",
+  "pilot_data_sha256": "REQUIRED_BEFORE_USE",
+  "pilot_protocol_basis": "REQUIRED_BEFORE_USE"
+}

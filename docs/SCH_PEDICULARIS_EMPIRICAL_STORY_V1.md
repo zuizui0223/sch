@@ -126,6 +126,22 @@ This is **enemy-induced optimum displacement**.
 The claim remains on the reproductive-state scale. `z_P*` is not renamed a
 pure pollinator optimum.
 
+## Observation feasibility of the headline
+
+The W1/W2 causal story needs a pollen-receipt slope as well as mature seed
+fitness. Those are different biological processes measured at different
+stages. Sun et al. (2016) destructively crushed stigmas to count pollen and
+usually measured mature seeds on different flowers from the same plants.
+
+The current SCH P2 code nevertheless assigns both outcomes to one flower ID.
+That is an **unvalidated same-flower observation assumption**, not a
+biological result. Before P2, qualify a same-flower pollen assay that preserves
+mature seed set, or prospectively redesign W1/W2 for randomized disjoint pollen
+sentinels and seed flowers. This cannot be repaired by filling the CSV with
+plant means or attributing sentinel pollen counts to fruit-bearing flower IDs.
+
+See `SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md`.
+
 ## Pollination-performance consequence
 
 Randomized multi-level exsertion is measured with pollen receipt in both
