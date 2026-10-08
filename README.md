@@ -175,8 +175,9 @@ identified pure-function optimum. The existing 2×2
 programme remains **one** source, and the outcome-blind
 H2M1 comparison remains frozen.
 
-See `docs/SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`
-and `scripts/audit_sch_gymnadenia_factorial_reversal.py`.
+See `docs/SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`,
+`docs/SCH_GYMNADENIA_COVARIANCE_ROBUST_GRADIENT_CONTRAST_V1.md`
+and `scripts/audit_sch_gymnadenia_covariance_robust_contrasts.py`.
 
 ## Independent patch-context evidence boundary
 
