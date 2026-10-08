@@ -99,6 +99,16 @@ def _field_verification(
         "production_surface_config_sha256": _semantic_sha256(_config()),
         "surface_threshold_freeze_sha256": "8" * 64,
         "power_config_sha256": "9" * 64,
+        "endpoint_feasibility_binding": {
+            "receipt_schema": "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1",
+            "status": (
+                "PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBLE_FOR_SINGLE_FLOWER_PIPELINE"
+            ),
+            "collection_route": "SAME_FLOWER_NONDESTRUCTIVE_POLLEN_QUANTIFICATION",
+            "pollen_assay_method_id": "SYNTHETIC_TEST_METHOD",
+            "feasibility_receipt_sha256": "a" * 64,
+            "independent_pilot_data_sha256": "b" * 64,
+        },
         "surface_data_sha256": surface_data_sha256(rows),
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
@@ -366,3 +376,23 @@ def test_production_locked_analysis_rejects_threshold_config_drift_from_power() 
             changed_config,
             verification,
         )
+
+
+def test_locked_production_analysis_rejects_unvalidated_joint_endpoints() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    verification.pop("endpoint_feasibility_binding")
+
+    with pytest.raises(ValueError, match="same-flower pollen"):
+        analyze_locked(rows, _readiness(), _config(), verification)
+
+
+def test_locked_production_analysis_rejects_split_flower_endpoint_route() -> None:
+    rows = _rows()
+    verification = _field_verification(rows)
+    verification["endpoint_feasibility_binding"]["status"] = (
+        "SPLIT_FLOWER_ESTIMATOR_NOT_YET_IMPLEMENTED"
+    )
+
+    with pytest.raises(ValueError, match="dual-endpoint feasibility"):
+        analyze_locked(rows, _readiness(), _config(), verification)
