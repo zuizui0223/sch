@@ -40,6 +40,7 @@ def _readiness(population: str = "P_REX_TEST", season: str = "S1") -> dict:
         },
         "validated_execution": {
             "z_levels": ["Z-2", "Z-1", "Z+0", "Z+1", "Z+2"],
+            "p0_sham_z_level": "Z+0",
             "z_manipulation_settings": [
                 {
                     "assigned_z_level": f"Z{z:+d}",
@@ -187,6 +188,7 @@ def test_v2_mapping_recovers_non_circular_pedicularis_compromise_surface() -> No
     assert mapping["G1"] == "SEED_PREDATOR_EXPOSED"
     assert mapping["water_y"] == "HELD_FIXED_ACROSS_ALL_SCH_CELLS"
     assert result["readiness_reference"]["g_schema"] == "SCH_PEDICULARIS_PREDATOR_METHOD_V4"
+    assert result["readiness_reference"]["p0_sham_z_level"] == "Z+0"
     assert "POLLINATOR_ACCESS_PRESERVED" in result["readiness_reference"]["predator_method_requirement"]
     est = result["observed_estimands"]
     assert abs(est["z_pollinator_context"] - 2.0) < 1e-8
