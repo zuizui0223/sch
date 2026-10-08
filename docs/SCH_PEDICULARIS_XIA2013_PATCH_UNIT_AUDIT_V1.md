@@ -81,7 +81,14 @@ q = damaged seeds / (intact seeds + damaged seeds)
 F = intact seeds / ovules = I (1 - q).
 ```
 
-For any fixed patch-context group, with q defined for the included capsules,
+For any fixed patch-context group, with q defined for the included capsules.
+The source explicitly assigns 100% predation to fruits in which no
+distinguishable seeds remain; a zero/unknown developed-seed denominator does
+**not** itself define q from raw counts. The reanalysis must adjudicate such
+fruits separately and run a missingness/censoring sensitivity analysis, not
+quietly exclude them and call the resulting covariance representative of all
+fruits.
+
 
 ```text
 E[F] = E[I] (1 - E[q]) - Cov(I, q).
