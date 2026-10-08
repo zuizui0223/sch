@@ -124,6 +124,18 @@ study would hold PL and flower stage approximately matched while
 randomizing the floral coordinate and measuring visitor-verified
 pollen transfer, early attack and mature fitness.
 
+### Why even both mean functional curves may be insufficient
+
+The stage-coupling theorem in
+SCH_STAGE_COUPLING_SELECTION_SIGN_IDENTIFICATION_V1.md
+separates the trait-conditioned stage margins from their
+within-fruit pairing. Holding both complete marginal
+distributions fixed can still reverse the final fitness
+ranking when the seed predator targets different
+developing fruits. That is a synthetic mathematical
+counterexample, **not** evidence that the orchid
+selection gradients were caused by such coupling.
+
 ## Limits and explicit negative controls
 
 - **Different significance decisions are not themselves a formal

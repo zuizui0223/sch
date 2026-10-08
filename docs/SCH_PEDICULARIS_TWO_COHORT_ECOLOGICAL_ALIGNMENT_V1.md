@@ -176,6 +176,25 @@ This addition follows the original 2016 source's distinction between
 trait–consumer response and final fitness, audited in
 `SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md`.
 
+## Sharp bounds if within-fruit stage matching is unavailable
+
+The two-cohort design intentionally uses different flowers for
+stigmatic-pollen and mature-seed endpoints. However, seed initiation
+and predation within the **fruit cohort** should still be measured
+on the same intact fruit ID. Unpaired stage observations can fail
+to identify the direction of selection on final seed fitness,
+even if both complete trait-conditioned stage distributions exist.
+
+The new script scripts/bound_sch_unpaired_seed_stage_selection.py
+computes sharp rearrangement bounds for equal-size/equal-weight
+unpaired initiation and predation margins, and reports whether a
+HIGH-minus-LOW seed-fitness contrast has a fixed sign across all
+possible within-cell pairings. It never fabricates same-fruit matching
+or imputes q for 0/0 completely destroyed/undeveloped capsules.
+
+See SCH_STAGE_COUPLING_SELECTION_SIGN_IDENTIFICATION_V1.md.
+The built-in witness is synthetic, not measured P. rex data.
+
 ## Analysis status and statistical limitation
 
 `scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` reconstructs
