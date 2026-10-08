@@ -236,6 +236,21 @@ complete-count input contract for the two-cohort
 pollen/fruit analyzer, nor unlock any W1/W2 gate.
 See `SCH_PEDICULARIS_FRUIT_FATE_OUTCOME_BOUNDS_V1.md`.
 
+## Which missing fruit controls the reproductive optimum?
+
+The separate fruit-fate sensitivity analysis can now
+calculate which potential exact seed counts from one
+unobserved flower would certify an EXCLUDED-minus-EXPOSED
+optimum shift, zero shift or an unresolved tie across
+the entire z treatment grid. All other fruit outcomes
+remain at their original bounds; critical outcome counts
+are obtained with exact integer thresholds, not an
+assumed probability model.
+
+This is a non-gating experimental information tool,
+not field evidence or a substitute for qualifying G.
+See SCH_PEDICULARIS_OPTIMUM_SHIFT_FATE_TIPPING_V1.md.
+
 ## Analysis status and statistical limitation
 
 `scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` reconstructs
