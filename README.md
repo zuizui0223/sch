@@ -144,6 +144,37 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Conditional plant-level randomization test for predator-state peak changes
+
+The two-flower cyclic P. rex candidate now has a **Fisher
+sharp-null randomization test** matching its actual experimental
+assignment: conditional on each plant's fixed pair of z
+settings, each patch-stage-cycle-edge stratum contains
+one excluded and one exposed mother plant. Randomization
+swaps **the entire parent plant's G label** against its
+matched partner; it never permutes individual flowers.
+
+A prespecified statistic is the difference in
+**midranks of the five-level viable-seed curve maxima**
+(excluded minus exposed). One ten-plant batch has
+**32 exact G assignments**; up to three batches are
+enumerated exactly, with larger numbers using a
+seeded plus-one Monte Carlo test.
+
+This test addresses the **Fisher sharp null of no G
+effect on any flower's mature intact seed count**.
+It does **not** test the weaker null that a population
+optimum stays unchanged, nor prove that a particular
+pollinator or seed predator caused a fitness response.
+The test requires **every final seed outcome observed
+exactly or verified zero** and fails closed on censored
+mature-fate observations. Source data and actual G
+selectivity remain unverified.
+
+See
+`docs/SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`
+and `scripts/fisher_pedicularis_plant_pair_G_randomization.py`.
+
 ## Two-flower design: plant supply versus reproductive detectability
 
 A new explicitly **synthetic, scenario-dependent**
