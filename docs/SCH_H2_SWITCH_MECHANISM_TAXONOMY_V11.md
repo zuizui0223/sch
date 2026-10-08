@@ -54,6 +54,16 @@ one-side supported               1
 
 Both Gymnadenia axes change point direction somewhere in the 2 × 2 pollination/herbivory experiment.
 
+**Important within-design refinement (source Table A2 re-audit):** the
+flowering-phenology supported reversal already occurs along a
+**single-factor edge**: among herbivore-excluded plants, open pollination
+has β = +0.094 (P<0.01), while supplemental hand pollination has
+β = −0.066 (P<0.05). Herbivory does **not** change between
+these two groups. This is one comparison within the registered
+factorial experiment, not an additional independent programme,
+and the unreported covariance means the beta *difference*
+cannot receive a new p-value.
+
 Flowering phenology contains a supported positive context and supported negative contexts.
 
 Spur length crosses zero only at the point-estimate level because the negative cell is not independently supported away from zero.
@@ -177,11 +187,28 @@ No Fisher test, logistic model or ranking of mechanisms is licensed from V11.
 
 ## Prospective implication
 
-The V11 pattern motivates a future outcome-blind hypothesis:
+**Correction after auditing the four cells of the already-included
+Gymnadenia source:** a strong *directional reversal* does **not**
+require simultaneous changes in two consumer factors. The
+herbivore-excluded open-versus-supplemented comparison already
+contains source-supported positive and negative net gradients
+with only pollination changed.
 
-> Strong directional reversal may require either simultaneous change in multiple ecological weights or turnover in the interacting consumer environment, whereas single-factor manipulations may more often change magnitude without establishing opposite supported directions.
+The earlier discovery-set conjecture that multidimensional
+ecological turnover might be necessary was therefore
+**falsified as a necessity claim**. The genuinely prospective,
+outcome-blind H2M1 programme contrast (single versus
+multi-component settings) remains a *frequency/rate hypothesis*,
+not a necessity theorem. This retrospective correction does not
+change frozen H2M1 classes or claim that single-factor mechanisms
+are more likely to cause reversals.
 
-That hypothesis must be frozen **before** new qualified programmes are used to test it.
+The recalculated Gymnadenia phenology four-cell
+difference-in-differences is −0.0042 (point units) against
+a nearly zero additive reconstruction; contrast covariance
+is unavailable. See
+`SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md` for the
+full five-trait 2×2 audit and its uncertainty limits.
 
 ## Status
 

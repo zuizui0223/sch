@@ -144,6 +144,32 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Ecological correction: one changed factor can reverse realized selection
+
+The source-verified 2015 **Gymnadenia conopsea** four-arm
+pollination × herbivory experiment contains a stringent
+counterexample to the conjecture that supported selection
+reversal requires simultaneous changes in multiple
+ecological factors. With herbivores excluded in both arms,
+flowering-start selection is positive under open pollination
+(β=+0.094, source P<0.01), but negative after supplemental
+hand pollination (β=−0.066, source P<0.05).
+One treatment factor changed; the second was held fixed.
+
+The four-cell additive prediction for natural pollination
+with herbivory is β≈0.000, versus observed β=−0.0042.
+This source-derived *point residual* is not a
+covariance-aware statistical test of additivity, and
+the trait itself was not randomized. The finding
+distinguishes a net **selection-direction change**
+from a changed biological-agent preference or a newly
+identified pure-function optimum. The existing 2×2
+programme remains **one** source, and the outcome-blind
+H2M1 comparison remains frozen.
+
+See `docs/SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`
+and `scripts/audit_sch_gymnadenia_factorial_reversal.py`.
+
 ## Independent patch-context evidence boundary
 
 Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387) report that
