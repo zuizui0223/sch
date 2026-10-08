@@ -1,0 +1,12 @@
+endpoint,model_key,model_name,reported_aicc,source_populations,n_populations,source_locator,source_doi,model_interactions_interpretation
+pollen_receipt,full,full_model,1728.99,"1-14",14,Table_1_Model_1a,10.1093/aob/mcw097,has_population_x_trait
+pollen_receipt,interaction,retained_exsertion_population_interaction,1714.83,"1-14",14,Table_1_Model_1b,10.1093/aob/mcw097,has_population_x_exsertion
+pollen_receipt,best,additive_population_and_flower_traits,1700.10,"1-14",14,Table_1_Model_1c,10.1093/aob/mcw097,no_population_x_exsertion
+seed_predation,full,full_model,-128.48,"1|3|5|8|9|10|11",7,Table_1_Model_2a,10.1093/aob/mcw097,has_population_x_trait
+seed_predation,interaction,retained_exsertion_population_interaction,-151.03,"1|3|5|8|9|10|11",7,Table_1_Model_2b,10.1093/aob/mcw097,has_population_x_exsertion
+seed_predation,best,additive_population_and_flower_traits,-156.11,"1|3|5|8|9|10|11",7,Table_1_Model_2c,10.1093/aob/mcw097,no_population_x_exsertion
+initial_seed_set,full,full_model,-452.54,"1-14",14,Table_1_Model_3a,10.1093/aob/mcw097,has_population_interactions
+initial_seed_set,interaction,retained_pollen_population_interaction,-480.30,"1-14",14,Table_1_Model_3b,10.1093/aob/mcw097,has_population_x_pollen
+initial_seed_set,best,additive_population_and_pollen,-493.44,"1-14",14,Table_1_Model_3c,10.1093/aob/mcw097,no_population_x_pollen
+final_viable_seeds,full,full_interaction_model,-971.091,"1|3|5|8|9|10|11",7,Table_1_Model_4a,10.1093/aob/mcw097,multiple_population_interactions
+final_viable_seeds,best_interaction,retained_context_dependent_fitness_interactions,-1000.03,"1|3|5|8|9|10|11",7,Table_1_Model_4b,10.1093/aob/mcw097,multiple_population_interactions
