@@ -138,6 +138,27 @@ attack-response slopes, then track the resulting fitness. Neither
 quantity can substitute for the other. The orchid result is
 a cross-study conceptual precedent, not a pooled source estimate.
 
+### Unscorable seed-predation stages do not always erase final-fitness information
+
+The source (Sun et al. 2016) excludes fruits whose seed
+number could not be ascertained after complete larval
+consumption. This does **not** authorize coding those
+historical fruits as zero viable mature reproduction;
+we lack individually verified fate records.
+
+For a prospective experiment, however, a pre-dispersal
+verified zero surviving-seed outcome can support the
+**total fitness endpoint** even when seed initiation
+and predation q are not measurable. Conversely, a
+fully unobserved fruit outcome must retain a bounded
+viable seed interval, not a fabricated zero.
+A new, explicitly nonconfirmatory
+`bound_pedicularis_fruit_fate_selection.py`
+diagnostic tests whether valid outcome-censoring
+intervals are already narrow enough to order
+state-specific reproductive optima. See
+`SCH_PEDICULARIS_FRUIT_FATE_OUTCOME_BOUNDS_V1.md`.
+
 ## What this changes for SCH
 
 The biological distinction becomes more concrete:
