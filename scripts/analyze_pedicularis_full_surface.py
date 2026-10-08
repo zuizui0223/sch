@@ -487,6 +487,9 @@ def analyze(rows: list[dict[str, str]], readiness: dict, config: dict) -> dict:
         "season_id": readiness["season_id"],
         "g_schema": readiness["source_receipts"]["g"]["schema"],
         "predator_method_requirement": readiness["predator_method_requirement"],
+        "p0_sham_z_level": readiness.get("validated_execution", {}).get(
+            "p0_sham_z_level"
+        ),
     }
     result["pedicularis_system_checks"] = checks
     result["pedicularis_secondary_outcomes"] = _secondary_summary(rows)
