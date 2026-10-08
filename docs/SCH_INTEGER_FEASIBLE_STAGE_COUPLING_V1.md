@@ -65,6 +65,50 @@ integer-feasible in either arrangement, so the integer-aware
 procedure **still cannot identify the selection sign**.
 Integer constraints help in some cases, not automatically.
 
+## A second biological distinction: surviving count versus surviving fraction
+
+SCH's registered primary fitness endpoint in the P. rex full-surface
+experiment is **undamaged mature seed count per flower**. The
+stage identity above was originally expressed as **viable seed
+fraction per flower**. When ovule counts vary, those are
+**different fitness objectives** and may favor *opposite trait
+settings*.
+
+The exact matching algorithm therefore separately optimizes:
+
+    E[(initiated - damaged) / ovules]  # unweighted mean viable fraction
+    E[initiated - damaged]             # SCH mean viable seed count / flower
+
+It reports *two different* sharp pairing intervals, each with its
+own attaining feasible integer assignments, and two selection-sign
+statuses. The source matching that gives minimum fraction need
+not give minimum viable count.
+
+A simple physically valid constructed contrast:
+
+- LOW z: 100 ovules, 50 initiated, q = 0 -> 50 surviving seeds.
+- HIGH z: 10 ovules, 8 initiated, q = 0 -> 8 surviving seeds.
+
+HIGH−LOW *viable fraction* = 0.80−0.50 = **+0.30**.
+HIGH−LOW *intact seed count per flower* = 8−50 = **−42**.
+
+Both are correct for their estimands. Only the second addresses
+the registered SCH seed-count endpoint. The distinction matters
+even with fully matched fruit-level data and no predation at all.
+
+For the first 12-ovule two-fruit witness, the relaxed primary
+count contrast lies in [−0.25, +0.75] intact seeds per flower;
+with biologically feasible integer assignments its interval
+collapses to **+0.50** intact seeds per flower. Thus the
+**registered SCH count endpoint also changes from unidentified
+to positive under the stated margins**.
+
+For the unequal-ovule example below, the primary count
+difference likewise equals **+0.5 surviving seed per flower**
+under its uniquely feasible coupling, while the per-fruit
+fraction contrast is **+0.0375**. These are not interchangeable
+numerical effects.
+
 ## Ovule count need not be constant across fruits
 
 In nature, ovule counts vary across flowers. The focal
@@ -76,10 +120,11 @@ limited field value.
 The upgraded exact solver therefore also accepts **paired
 ovule-and-initiated-seed counts per fruit**, with different
 ovule counts on different fruits, while keeping the separate
-predation fractions unpaired. It uses the integer check for
-each candidate pairing and optimizes the **mean of individual
-fruit's viable fractions**, rather than incorrectly pooling
-viable counts over unequal ovule denominators.
+predation fractions unpaired. It uses the exact integer
+feasibility check for every candidate pairing and **separately
+optimizes** both the mean viable-seed fraction and mean intact
+seed count per flower. It does not replace the mean of
+individual fruit fractions with pooled viable counts/ovules.
 
 Second synthetic demonstration:
 
@@ -103,12 +148,13 @@ construct a bipartite graph:
 - Edge payoff: (initiated−damaged)/ovules.
 
 Enumerate all feasible perfect matchings by a memoized
-bitmask dynamic programme. Retain the matching with the
-**lowest** and the one with the **highest** sum of per-fruit
-payoff fractions; divide by n. All calculations along each
-edge and through the matching sums use Python's exact
-rational-number arithmetic. The reported decimal interval
-is the exact rational interval converted for presentation.
+bitmask dynamic programme. Independently retain the matchings
+with the smallest/largest total viable **seed count** and
+smallest/largest sum of per-fruit viable **fractions**.
+Divide each objective by the number of fruits. All
+fractional payoffs and matching sums use Python's exact
+rational arithmetic; seed counts remain exact integers.
+The decimals are presentation values.
 
 For n fruits the implementation is worst-case
 O(n²2^n) time and O(n2^n) state-related memory.
