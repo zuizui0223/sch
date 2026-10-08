@@ -11,6 +11,10 @@ from statistics import mean
 
 from scripts.analyze_sch_compromise_surface import analyze as analyze_sch_surface
 from scripts.pedicularis_config_freeze import FREEZE_STATUS
+from scripts.audit_pedicularis_p2_dual_endpoint_feasibility import (
+    RECEIPT_SCHEMA as ENDPOINT_SCHEMA,
+    READY_STATUS as ENDPOINT_READY_STATUS,
+)
 
 
 RAW_FIELDS = (
@@ -366,6 +370,22 @@ def _validate_field_verification(
         raise ValueError("P2 field verification lacks identity/treatment match")
     if verification.get("canonical_outcomes_complete") is not True:
         raise ValueError("P2 field verification is not outcome-complete")
+    endpoint_binding = verification.get("endpoint_feasibility_binding")
+    if not isinstance(endpoint_binding, dict):
+        raise ValueError(
+            "P2 analysis requires independently validated same-flower pollen "
+            "and mature-seed endpoint feasibility"
+        )
+    if (
+        endpoint_binding.get("receipt_schema") != ENDPOINT_SCHEMA
+        or endpoint_binding.get("status") != ENDPOINT_READY_STATUS
+    ):
+        raise ValueError("P2 field verification lacks positive dual-endpoint feasibility")
+    endpoint_digest = endpoint_binding.get("feasibility_receipt_sha256")
+    if not isinstance(endpoint_digest, str) or len(endpoint_digest) != 64:
+        raise ValueError("P2 field verification lacks dual-endpoint pilot provenance")
+    if endpoint_binding.get("pollen_assay_method_id") in (None, "", "REQUIRED_BEFORE_USE"):
+        raise ValueError("P2 field verification lacks validated pollen assay identity")
     for key in (
         "production_surface_config_sha256",
         "surface_threshold_freeze_sha256",
@@ -447,6 +467,9 @@ def analyze_locked(
             "surface_threshold_freeze_sha256"
         ],
         "power_config_sha256": field_verification["power_config_sha256"],
+        "endpoint_feasibility_binding": field_verification[
+            "endpoint_feasibility_binding"
+        ],
         "identity_and_treatment_match": True,
         "canonical_outcomes_complete": True,
     }
