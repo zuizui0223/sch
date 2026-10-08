@@ -62,7 +62,7 @@ Required fields:
 population_id, season_id, plant_id, flower_id
 assigned_z_level, assigned_z_rank, manipulation_setting_id, sham_control
 realized_exsertion, pollen_grains
-flower_age_at_sampling_hours
+flower_age_at_sampling_hours, pollen_sampling_stage
 pollen_assay_method_id, stigma_removed, mechanical_damage.
 ```
 
