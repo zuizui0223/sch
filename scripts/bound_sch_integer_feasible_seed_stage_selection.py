@@ -9,23 +9,23 @@ only if k*q is a nonnegative INTEGER number of damaged seeds.
 Independent exact assignment optimizations report both mean surviving
 seed COUNT per flower (the registered SCH fitness) and mean surviving
 seed FRACTION per flower. They can favor opposite z settings when ovule
-counts differ. Exponential bitmask DP is limited to n<=14 equal-weight
+counts differ. Cubic-time exact Hungarian assignment handles up to 256 equal-weight
 complete, unambiguous fruit-stage margins. Not population inference.
 """
 from __future__ import annotations
 
 import argparse
-from functools import lru_cache
 from fractions import Fraction
 import json
 import math
 from pathlib import Path
 
 from scripts.bound_sch_unpaired_seed_stage_selection import stage_bounds
+from scripts.sch_exact_assignment import exact_assignment, MAX_ASSIGNMENT_SIZE
 
 SCHEMA = "SCH_INTEGER_SEED_STAGE_MARGINS_V1"
 OUTPUT_SCHEMA = "SCH_INTEGER_FEASIBLE_SELECTION_BOUNDS_V1"
-MAX_EXACT_FRUITS_PER_SETTING = 14
+MAX_EXACT_FRUITS_PER_SETTING = MAX_ASSIGNMENT_SIZE
 
 
 def _count(value: object, name: str, *, minimum: int, maximum: int) -> int:
@@ -65,7 +65,7 @@ def integer_stage_bounds_variable_ovules(
         or len(ovule_and_initiated_counts) != len(predation_fractions)
         or not 1 <= len(ovule_and_initiated_counts) <= MAX_EXACT_FRUITS_PER_SETTING
     ):
-        raise ValueError("integer stage margins require 1..14 equal-length fruits")
+        raise ValueError("integer stage margins require 1..256 equal-length fruits")
     pairs = []
     for fruit in ovule_and_initiated_counts:
         if not isinstance(fruit, dict) or set(fruit) != {"ovules", "initiated"}:
@@ -87,67 +87,33 @@ def integer_stage_bounds_variable_ovules(
                 viable = initiated - damaged
                 feasible[(i, j)] = (viable, Fraction(viable, ovules))
 
-    @lru_cache(maxsize=None)
-    def solve(used_mask: int):
-        i = used_mask.bit_count()
-        if i == n:
-            return Fraction(0), Fraction(0), (), ()
-        minimum, maximum = None, None
-        for j in range(n):
-            if used_mask & (1 << j) or (i, j) not in feasible:
-                continue
-            rest = solve(used_mask | (1 << j))
-            if rest is None:
-                continue
-            contribution = feasible[(i, j)][1]
-            candidate_min = contribution + rest[0]
-            candidate_max = contribution + rest[1]
-            if minimum is None or candidate_min < minimum[0]:
-                minimum = candidate_min, (j,) + rest[2]
-            if maximum is None or candidate_max > maximum[0]:
-                maximum = candidate_max, (j,) + rest[3]
-        if minimum is None:
-            return None
-        return minimum[0], maximum[0], minimum[1], maximum[1]
+    # Four separate exact assignment problems, since minimum count,
+    # maximum count, minimum fraction and maximum fraction may attain
+    # their optima at four different feasible fruit-to-q matchings.
+    #
+    # No large artificial penalty for impossible biological pairs:
+    # an infeasible edge remains None in the Hungarian optimization.
+    count_costs = [
+        [feasible[(i,j)][0] if (i,j) in feasible else None for j in range(n)]
+        for i in range(n)
+    ]
+    fraction_costs = [
+        [feasible[(i,j)][1] if (i,j) in feasible else None for j in range(n)]
+        for i in range(n)
+    ]
+    count_low = exact_assignment(count_costs)
+    count_high = exact_assignment(count_costs, maximize=True)
+    fraction_low = exact_assignment(fraction_costs)
+    fraction_high = exact_assignment(fraction_costs, maximize=True)
 
-    # A second, independent matching optimization is essential when
-    # ovule denominators vary. SCH primary fitness is intact seed
-    # *count per flower*, not the fraction of a flower's ovules surviving.
-    @lru_cache(maxsize=None)
-    def solve_seed_counts(used_mask: int):
-        i = used_mask.bit_count()
-        if i == n:
-            return 0, 0, (), ()
-        minimum, maximum = None, None
-        for j in range(n):
-            if used_mask & (1 << j) or (i, j) not in feasible:
-                continue
-            rest = solve_seed_counts(used_mask | (1 << j))
-            if rest is None:
-                continue
-            viable_count = feasible[(i, j)][0]
-            candidate_min = viable_count + rest[0]
-            candidate_max = viable_count + rest[1]
-            if minimum is None or candidate_min < minimum[0]:
-                minimum = candidate_min, (j,) + rest[2]
-            if maximum is None or candidate_max > maximum[0]:
-                maximum = candidate_max, (j,) + rest[3]
-        if minimum is None:
-            return None
-        return minimum[0], maximum[0], minimum[1], maximum[1]
-
-    result = solve(0)
-    if result is None:
-        raise ValueError(
-            "NO_INTEGER_FEASIBLE_PERFECT_MATCHING: source q ratios cannot all "
-            "be assigned to these initiated seed counts; check rounding, "
-            "fate definitions and any ovule-count assumptions"
-        )
-    count_result = solve_seed_counts(0)
-    if count_result is None:
-        raise AssertionError("seed-count and fraction feasible graphs must agree")
-    count_min, count_max, count_min_idx, count_max_idx = count_result
-    sum_min, sum_max, min_idx, max_idx = result
+    count_min, count_max = count_low["objective"], count_high["objective"]
+    count_min_idx, count_max_idx = (
+        count_low["assignment"], count_high["assignment"]
+    )
+    sum_min, sum_max = fraction_low["objective"], fraction_high["objective"]
+    min_idx, max_idx = (
+        fraction_low["assignment"], fraction_high["assignment"]
+    )
     def witness(assignment: tuple[int, ...]) -> list[dict]:
         return [
             {
@@ -220,9 +186,13 @@ def integer_stage_bounds_variable_ovules(
         "maximum_fitness_attaining_matching": max_witness,
         "source_fruit_matches_reconstructed": False,
         "matching_is_just_a_feasible_witness": True,
-        "n_dp_states_evaluated": solve.cache_info().currsize,
-        "n_seed_count_dp_states_evaluated": solve_seed_counts.cache_info().currsize,
-        "method": "EXACT_BITMASK_PERFECT_MATCHING_INTEGER_SEED_FATES",
+        "n_exact_assignment_solutions": 4,
+        "n_hungarian_augmenting_path_iterations": sum(
+            run["inner_iterations"] for run in (
+                count_low, count_high, fraction_low, fraction_high
+            )
+        ),
+        "method": "EXACT_HUNGARIAN_PERFECT_MATCHING_INTEGER_SEED_FATES",
     }
     if len(unique_ovules) == 1:
         output["integer_viable_total_seeds_extrema"] = [
@@ -325,7 +295,7 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
             "exact_unrounded_predation_rational_values_required",
             "no_zero_initiated_unrecognizable_full_destruction_or_0_over_0_fruits",
             "only_countable_intact_and_damaged_initiated_seeds_allowed",
-            "at_most_fourteen_fruits_per_setting_due_to_exponential_runtime",
+            "at_most_256_fruits_per_setting_due_to_quadratic_memory_cubic_time",
             "attaining_matches_are_math_witnesses_not_true_fruit_identifications",
             "equal_fruit_weight_not_weighted_population_reproductive_success",
             "viable_seed_counts_and_viable_seed_fractions_are_distinct_fitness_estimands",
