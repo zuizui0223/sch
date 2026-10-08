@@ -3,6 +3,8 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import pytest
+
 from scripts.audit_pedicularis_published_empirical_priors import (
     DEFAULT_DATASETS,
     DEFAULT_PRIORS,
@@ -268,3 +270,52 @@ def test_xia2013_density_size_interaction_is_strong_for_predation_not_final_seed
     assert float(seed_pred["estimate"]) > 1000 * float(final["estimate"])
     assert {initial["direct_freeze_eligible"], final["direct_freeze_eligible"],
             fruit_pred["direct_freeze_eligible"], seed_pred["direct_freeze_eligible"]} == {"NO"}
+
+
+def test_2015_water_treatment_site_precision_and_causal_limit_are_explicit() -> None:
+    result = build()["water_2015_site_evidence"]
+    sites = result["site_coefficients"]
+    assert result["n_source_populations"] == 6
+    assert result["n_negative_signed_site_coefficients"] == 6
+    assert sites["Zhongdian"]["published_model_beta"] == pytest.approx(-0.093)
+    assert sites["Zhongdian"]["published_model_se"] == pytest.approx(0.348)
+    assert result["Zhongdian_se_relative_to_other_five_median"] == pytest.approx(
+        0.348 / 0.017
+    )
+    assert result["Zhongdian_approx_interval_contains_zero"] is True
+    assert result["published_visitation_comparison_scope"] == "SHAMA_ONLY"
+    assert result["water_only_vs_wounding_effect_identified"] is False
+    assert result["water_by_randomized_exsertion_interaction_identified"] is False
+    assert result["water_state_is_main_SCH_independent_G"] is False
+    assert "no_z_by_water_causal_interaction_or_optimum_identified" in result[
+        "claim_ceiling"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("bad_id", "field", "replacement", "error"),
+    [
+        ("PRX2015_PRED_ZHONGDIAN", "uncertainty_value", "0", "positive SE"),
+        ("PRX2015_PRED_SANBA", "uncertainty_type", "SD", "lost site"),
+        ("PRX2015_POLLINATOR_TREAT_BETA", "population_scope", "six populations", "Shama only"),
+        ("PRX2015_PRED_DEQIN", "direct_freeze_eligible", "YES", "must not silently promote"),
+    ],
+)
+def test_2015_source_contract_rejects_invalid_promotion_or_scope(
+    tmp_path: Path, bad_id: str, field: str, replacement: str, error: str,
+) -> None:
+    rows = _rows(DEFAULT_PRIORS)
+    for row in rows:
+        if row["measurement_id"] == bad_id:
+            row[field] = replacement
+            break
+    else:
+        raise AssertionError("missing test source row")
+
+    altered = tmp_path / "prior.csv"
+    with altered.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(ValueError, match=error):
+        build(prior_path=altered)
