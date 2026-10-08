@@ -162,9 +162,10 @@ is promoted.
 
 A fresh primary-table audit of Sun, Armbruster & Huang (2016;
 doi:10.1093/aob/mcw097) recovers the **original AICc evidence** for four
-linked ecological stages. The selected pollen (14 populations), seed-predation
-(7 linked populations), and initial-seed (14 populations) models omit the
-specific population-by-trait/pollen interaction under comparison. The best
+linked ecological stages. The selected pollen (14-population Table 1 scope),
+seed-predation (7 linked populations), and initial-seed (Table 1 says 14,
+but the source seed-set summary has 12) models omit the specific
+population-by-trait/pollen interaction under comparison. The best
 final viable seed model (7 linked populations) **retains multiple population
 interactions**.
 
