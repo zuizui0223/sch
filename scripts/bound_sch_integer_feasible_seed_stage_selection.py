@@ -50,110 +50,145 @@ def _ratio(value: object) -> Fraction:
     return q
 
 
+def integer_stage_bounds_variable_ovules(
+    ovule_and_initiated_counts: list[dict[str, int]],
+    predation_fractions: list[str],
+) -> dict:
+    """Sharp mean intact-seed *fraction* under variable measured ovule counts.
+
+    Ovule count and initiation count stay paired to the same fruit;
+    predation ratios are a second unpaired multiset within this z cell.
+    """
+    if (
+        not isinstance(ovule_and_initiated_counts, list)
+        or not isinstance(predation_fractions, list)
+        or len(ovule_and_initiated_counts) != len(predation_fractions)
+        or not 1 <= len(ovule_and_initiated_counts) <= MAX_EXACT_FRUITS_PER_SETTING
+    ):
+        raise ValueError("integer stage margins require 1..14 equal-length fruits")
+    pairs = []
+    for fruit in ovule_and_initiated_counts:
+        if not isinstance(fruit, dict) or set(fruit) != {"ovules", "initiated"}:
+            raise ValueError("each fruit must pair ovules and initiated counts")
+        n_ovules = _count(fruit["ovules"], "ovules", minimum=1, maximum=1000000)
+        initiated = _count(
+            fruit["initiated"], "initiated", minimum=1, maximum=n_ovules
+        )
+        pairs.append((n_ovules, initiated))
+    pairs = tuple(sorted(pairs))
+    fractions = tuple(sorted(_ratio(q) for q in predation_fractions))
+    n = len(pairs)
+    feasible: dict[tuple[int, int], tuple[int, Fraction]] = {}
+    for i, (ovules, initiated) in enumerate(pairs):
+        for j, q in enumerate(fractions):
+            numerator = initiated * q.numerator
+            if numerator % q.denominator == 0:
+                damaged = numerator // q.denominator
+                viable = initiated - damaged
+                feasible[(i, j)] = (viable, Fraction(viable, ovules))
+
+    @lru_cache(maxsize=None)
+    def solve(used_mask: int):
+        i = used_mask.bit_count()
+        if i == n:
+            return Fraction(0), Fraction(0), (), ()
+        minimum, maximum = None, None
+        for j in range(n):
+            if used_mask & (1 << j) or (i, j) not in feasible:
+                continue
+            rest = solve(used_mask | (1 << j))
+            if rest is None:
+                continue
+            contribution = feasible[(i, j)][1]
+            candidate_min = contribution + rest[0]
+            candidate_max = contribution + rest[1]
+            if minimum is None or candidate_min < minimum[0]:
+                minimum = candidate_min, (j,) + rest[2]
+            if maximum is None or candidate_max > maximum[0]:
+                maximum = candidate_max, (j,) + rest[3]
+        if minimum is None:
+            return None
+        return minimum[0], maximum[0], minimum[1], maximum[1]
+
+    result = solve(0)
+    if result is None:
+        raise ValueError(
+            "NO_INTEGER_FEASIBLE_PERFECT_MATCHING: source q ratios cannot all "
+            "be assigned to these initiated seed counts; check rounding, "
+            "fate definitions and any ovule-count assumptions"
+        )
+    sum_min, sum_max, min_idx, max_idx = result
+    def witness(assignment: tuple[int, ...]) -> list[dict]:
+        return [
+            {
+                "ovule_count": ovules,
+                "initiated_count": initiated,
+                "q_fraction": str(fractions[j]),
+                "damaged_count": initiated - feasible[(i, j)][0],
+                "viable_count": feasible[(i, j)][0],
+            }
+            for i, ((ovules, initiated), j) in enumerate(
+                zip(pairs, assignment, strict=True)
+            )
+        ]
+    min_witness, max_witness = witness(min_idx), witness(max_idx)
+    low, high = float(sum_min/n), float(sum_max/n)
+    relaxed = stage_bounds(
+        [initiated / ovules for ovules, initiated in pairs],
+        [float(q) for q in fractions],
+    )
+    relaxed_interval = [
+        relaxed["minimum_possible_mean_viable_seed_fraction"],
+        relaxed["maximum_possible_mean_viable_seed_fraction"],
+    ]
+    if low < relaxed_interval[0] - 1e-12 or high > relaxed_interval[1] + 1e-12:
+        raise AssertionError("integer feasible bounds must lie in relaxed bounds")
+    unique_ovules = {ovules for ovules, _ in pairs}
+    output = {
+        "n_equal_weight_fruits": n,
+        "ovules_per_fruit": next(iter(unique_ovules)) if len(unique_ovules) == 1 else None,
+        "ovule_count_heterogeneous": len(unique_ovules) > 1,
+        "observed_ovule_initiation_pairs": [
+            {"ovules": ovules, "initiated": initiated}
+            for ovules, initiated in pairs
+        ],
+        "observed_initiation_count_multiset": [initiated for _, initiated in pairs],
+        "observed_predation_ratio_multiset": [str(q) for q in fractions],
+        "sharp_integer_feasible_mean_viable_fraction": [low, high],
+        "exact_fractional_mean_viability_extrema": [
+            str(sum_min/n), str(sum_max/n)
+        ],
+        "unrestricted_fractional_rearrangement_bounds": relaxed_interval,
+        "minimum_fitness_attaining_matching": min_witness,
+        "maximum_fitness_attaining_matching": max_witness,
+        "source_fruit_matches_reconstructed": False,
+        "matching_is_just_a_feasible_witness": True,
+        "n_dp_states_evaluated": solve.cache_info().currsize,
+        "method": "EXACT_BITMASK_PERFECT_MATCHING_INTEGER_SEED_FATES",
+    }
+    if len(unique_ovules) == 1:
+        output["integer_viable_total_seeds_extrema"] = [
+            sum(x["viable_count"] for x in min_witness),
+            sum(x["viable_count"] for x in max_witness),
+        ]
+    return output
+
+
 def integer_stage_bounds(
     initiated_counts: list[int],
     predation_fractions: list[str],
     ovules_per_fruit: int,
 ) -> dict:
-    """Find sharp bounds on equal-weight viable-seed fraction via bitmask DP."""
+    """Backward-compatible uniform-ovule special case."""
     n_ovules = _count(
         ovules_per_fruit, "ovules_per_fruit", minimum=1, maximum=1000000
     )
-    if (
-        not isinstance(initiated_counts, list)
-        or not isinstance(predation_fractions, list)
-        or len(initiated_counts) != len(predation_fractions)
-        or not 1 <= len(initiated_counts) <= MAX_EXACT_FRUITS_PER_SETTING
-    ):
+    if not isinstance(initiated_counts, list):
         raise ValueError("integer stage margins require 1..14 equal-length fruits")
-    counts = tuple(sorted(_count(
-        c, "initiated_seeds", minimum=1, maximum=n_ovules
-    ) for c in initiated_counts))
-    fractions = tuple(sorted(_ratio(q) for q in predation_fractions))
-    n = len(counts)
-    # Future validation is based solely on integer seed fates, not floating
-    # approximations that could turn 1/3 into 0.3333333333333333.
-    can_pair: dict[tuple[int, int], int] = {}
-    for i, initiated in enumerate(counts):
-        for j, q in enumerate(fractions):
-            numerator = initiated * q.numerator
-            if numerator % q.denominator == 0:
-                damaged = numerator // q.denominator
-                can_pair[(i, j)] = initiated - damaged
-    @lru_cache(maxsize=None)
-    def solve(used_q_mask: int):
-        i = used_q_mask.bit_count()
-        if i == n:
-            return (0, 0, (), ())
-        min_result = None
-        max_result = None
-        for j in range(n):
-            if used_q_mask & (1 << j) or (i,j) not in can_pair:
-                continue
-            child = solve(used_q_mask | (1 << j))
-            if child is None:
-                continue
-            viable = can_pair[(i,j)]
-            cand_min = viable + child[0]
-            cand_max = viable + child[1]
-            if min_result is None or cand_min < min_result[0]:
-                min_result = (cand_min, (j,) + child[2])
-            if max_result is None or cand_max > max_result[0]:
-                max_result = (cand_max, (j,) + child[3])
-        if min_result is None:
-            return None
-        return min_result[0], max_result[0], min_result[1], max_result[1]
-
-    answer = solve(0)
-    if answer is None:
-        raise ValueError(
-            "NO_INTEGER_FEASIBLE_PERFECT_MATCHING: source q ratios cannot all "
-            "be assigned to these initiated seed counts; check rounding, "
-            "fate definitions and common-ovule assumption"
-        )
-    min_total, max_total, min_idx, max_idx = answer
-    denom = n * n_ovules
-    def witness(index_assignment: tuple[int, ...]) -> list[dict]:
-        return [
-            {
-                "initiated_count": count,
-                "q_fraction": str(fractions[j]),
-                "damaged_count": count - can_pair[(i,j)],
-                "viable_count": can_pair[(i,j)],
-                "ovule_count": n_ovules,
-            }
-            for i, (count,j) in enumerate(zip(counts,index_assignment,strict=True))
-        ]
-    relaxed = stage_bounds(
-        [c/n_ovules for c in counts],
-        [float(q) for q in fractions],
+    return integer_stage_bounds_variable_ovules(
+        [{"ovules": n_ovules, "initiated": c} for c in initiated_counts],
+        predation_fractions,
     )
-    min_fitness, max_fitness = min_total/denom, max_total/denom
-    if (
-        min_fitness < relaxed["minimum_possible_mean_viable_seed_fraction"] - 1e-12
-        or max_fitness > relaxed["maximum_possible_mean_viable_seed_fraction"] + 1e-12
-    ):
-        raise AssertionError("integer constrained interval must lie within relaxation")
-    return {
-        "n_equal_weight_fruits": n,
-        "ovules_per_fruit": n_ovules,
-        "observed_initiation_count_multiset": list(counts),
-        "observed_predation_ratio_multiset": [str(q) for q in fractions],
-        "integer_viable_total_seeds_extrema": [min_total, max_total],
-        "sharp_integer_feasible_mean_viable_fraction": [
-            min_fitness, max_fitness
-        ],
-        "unrestricted_fractional_rearrangement_bounds": [
-            relaxed["minimum_possible_mean_viable_seed_fraction"],
-            relaxed["maximum_possible_mean_viable_seed_fraction"],
-        ],
-        "minimum_fitness_attaining_matching": witness(min_idx),
-        "maximum_fitness_attaining_matching": witness(max_idx),
-        "source_fruit_matches_reconstructed": False,
-        "matching_is_just_a_feasible_witness": True,
-        "n_dp_states_evaluated": solve.cache_info().currsize,
-        "method": "EXACT_BITMASK_PERFECT_MATCHING_EQUAL_OVULES",
-    }
 
 
 def compare_settings_integer(
@@ -165,6 +200,21 @@ def compare_settings_integer(
 ) -> dict:
     low = integer_stage_bounds(low_initiated, low_q, ovules_per_fruit)
     high = integer_stage_bounds(high_initiated, high_q, ovules_per_fruit)
+    return _compare_stage_outputs(low, high)
+
+
+def compare_settings_variable_ovules(
+    low_fruits: list[dict[str, int]],
+    low_q: list[str],
+    high_fruits: list[dict[str, int]],
+    high_q: list[str],
+) -> dict:
+    low = integer_stage_bounds_variable_ovules(low_fruits, low_q)
+    high = integer_stage_bounds_variable_ovules(high_fruits, high_q)
+    return _compare_stage_outputs(low, high)
+
+
+def _compare_stage_outputs(low: dict, high: dict) -> dict:
     l0,l1 = low["sharp_integer_feasible_mean_viable_fraction"]
     h0,h1 = high["sharp_integer_feasible_mean_viable_fraction"]
     d0,d1 = h0-l1,h1-l0
@@ -216,18 +266,34 @@ def build(payload: dict) -> dict:
     margin = payload.get("setting_margins")
     if not isinstance(margin, dict) or set(margin) != {"LOW", "HIGH"}:
         raise ValueError("both LOW/HIGH setting margins required")
-    for state in ("LOW","HIGH"):
-        if not isinstance(margin[state], dict) or set(margin[state]) != {
-            "initiated_seed_counts", "predation_fractions"
-        }:
-            raise ValueError("each setting needs count and ratio marginal arrays")
-    result = compare_settings_integer(
-        margin["LOW"]["initiated_seed_counts"],
-        margin["LOW"]["predation_fractions"],
-        margin["HIGH"]["initiated_seed_counts"],
-        margin["HIGH"]["predation_fractions"],
-        payload.get("ovules_per_fruit"),
-    )
+    mode = payload.get("ovule_count_mode", "COMMON_OVULES_PER_FRUIT")
+    if mode == "COMMON_OVULES_PER_FRUIT":
+        for state in ("LOW", "HIGH"):
+            if not isinstance(margin[state], dict) or set(margin[state]) != {
+                "initiated_seed_counts", "predation_fractions"
+            }:
+                raise ValueError("each setting needs count and ratio marginal arrays")
+        result = compare_settings_integer(
+            margin["LOW"]["initiated_seed_counts"],
+            margin["LOW"]["predation_fractions"],
+            margin["HIGH"]["initiated_seed_counts"],
+            margin["HIGH"]["predation_fractions"],
+            payload.get("ovules_per_fruit"),
+        )
+    elif mode == "VARIABLE_OVULES_PER_FRUIT":
+        for state in ("LOW", "HIGH"):
+            if not isinstance(margin[state], dict) or set(margin[state]) != {
+                "ovule_and_initiated_counts", "predation_fractions"
+            }:
+                raise ValueError("each setting needs ovule/initiation pairs and ratios")
+        result = compare_settings_variable_ovules(
+            margin["LOW"]["ovule_and_initiated_counts"],
+            margin["LOW"]["predation_fractions"],
+            margin["HIGH"]["ovule_and_initiated_counts"],
+            margin["HIGH"]["predation_fractions"],
+        )
+    else:
+        raise ValueError("unregistered ovule_count_mode")
     result["source_data_kind"] = kind
     result["user_claims_observed_margins"] = kind == "OBSERVED_UNPAIRED_MARGINS"
     result["observed_field_data_independently_verified"] = False
