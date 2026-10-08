@@ -10,7 +10,8 @@
     "dense_density_min_exclusive_plants_m2": 5,
     "small_patch_max_exclusive_flowering_plants": 20,
     "large_patch_min_exclusive_flowering_plants": 20,
-    "exact_boundary_is_unclassified": true
+    "exact_boundary_is_unclassified": true,
+    "reference_z_scope": "P0_VALIDATED_SHAM_Z_ONLY"
   },
   "analysis_gate": {
     "min_patches_per_historical_context_cell": "REQUIRED_BEFORE_USE"
