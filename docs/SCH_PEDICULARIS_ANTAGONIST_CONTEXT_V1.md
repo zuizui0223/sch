@@ -105,11 +105,43 @@ The primary P2 surface and W0-W5 classifier are unchanged.
 For direct comparability with Xia et al., the secondary analysis uses only
 P = NATURAL and G = EXPOSED.
 
-For each plant represented in that natural state it calculates:
+For each flower represented in that natural state it calculates:
 
-- seed-predation fraction: damaged / (damaged + undamaged developed seed);
-- early predator-attack rate;
+- per-capsule seed-predation fraction: damaged / (damaged + undamaged developed seed);
+- early predator-attack indicator;
 - final undamaged seed fraction.
+
+The flower-level fractions are then averaged **within plant**, followed by an
+equal-weighted average **within patch**. This matches the historical
+per-capsule definition more closely than summing all seeds across flowers
+(which inadvertently weights large-seeded capsules more heavily).
+
+### Fully destroyed versus seedless capsules: required interpretation boundary
+
+Xia et al. (2013) treated fruits with *no distinguishable seeds remaining* as
+**100% predated**. The current P2 raw columns record undamaged and damaged
+seed counts but cannot, on their own, distinguish a completely destroyed
+capsule from a capsule that never developed seeds.
+
+Therefore a NATURAL + EXPOSED flower with
+
+```text
+undamaged_seed_count = 0
+damaged_seed_count = 0
+```
+
+must **not** be silently excluded, and must **not** automatically be called
+100% predated. The secondary receipt reports its flower ID and is
+`NOT_MODELABLE` under the historical comparison until independent fruit-fate
+evidence and a prospectively specified coding route become available.
+
+The early-attack flag alone does not prove that all seeds were consumed.
+Field teams should preserve photographs/inspection records that distinguish
+complete seed destruction from failed development; the current analysis does
+not infer that distinction.
+
+This restriction affects only the optional historical comparison, never
+the primary randomized P2 surface or its W0–W5 result.
 
 The historical replication uses **patch**, not plant, as the independent
 context-replication unit. Plant outcomes are first averaged within patch, then
