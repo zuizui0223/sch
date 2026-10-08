@@ -194,6 +194,7 @@ def _packet(
             seeds = 22 - 3 * abs(z - 2)
         fruit_rows.append({
             **row,
+            "realized_exsertion_before_G": repr(0.2 + 0.1 * z + n * 0.0001),
             "ovule_count": "40",
             "undamaged_seed_count": str(seeds + n % 3),
             "damaged_seed_count": (
