@@ -173,6 +173,23 @@ def integer_stage_bounds_variable_ovules(
         relaxed["minimum_possible_mean_viable_seed_fraction"],
         relaxed["maximum_possible_mean_viable_seed_fraction"],
     ]
+    counts_sorted = sorted(initiated for _, initiated in pairs)
+    q_sorted = list(fractions)
+    mean_initiated = Fraction(sum(counts_sorted), n)
+    count_relax_min = mean_initiated - sum(
+        (k * q for k, q in zip(counts_sorted, q_sorted, strict=True)),
+        Fraction(0)
+    ) / n
+    count_relax_max = mean_initiated - sum(
+        (k * q for k, q in zip(counts_sorted, reversed(q_sorted), strict=True)),
+        Fraction(0)
+    ) / n
+    count_relax_bounds = [float(count_relax_min), float(count_relax_max)]
+    if (
+        count_min/n < count_relax_bounds[0] - 1e-12
+        or count_max/n > count_relax_bounds[1] + 1e-12
+    ):
+        raise AssertionError("integer seed count bounds outside relaxed count bounds")
     if low < relaxed_interval[0] - 1e-12 or high > relaxed_interval[1] + 1e-12:
         raise AssertionError("integer feasible bounds must lie in relaxed bounds")
     unique_ovules = {ovules for ovules, _ in pairs}
@@ -191,6 +208,9 @@ def integer_stage_bounds_variable_ovules(
             str(sum_min/n), str(sum_max/n)
         ],
         "unrestricted_fractional_rearrangement_bounds": relaxed_interval,
+        "unrestricted_fractional_rearrangement_mean_seed_count_bounds": (
+            count_relax_bounds
+        ),
         "sharp_integer_feasible_mean_viable_seeds_per_flower": [
             count_min/n, count_max/n
         ],
@@ -258,6 +278,9 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
     relaxed_low = low["unrestricted_fractional_rearrangement_bounds"]
     relaxed_high = high["unrestricted_fractional_rearrangement_bounds"]
     dr0,dr1 = relaxed_high[0]-relaxed_low[1],relaxed_high[1]-relaxed_low[0]
+    clow = low["unrestricted_fractional_rearrangement_mean_seed_count_bounds"]
+    chigh = high["unrestricted_fractional_rearrangement_mean_seed_count_bounds"]
+    relaxed_count_delta = [chigh[0]-clow[1],chigh[1]-clow[0]]
     count_l0,count_l1 = low["sharp_integer_feasible_mean_viable_seeds_per_flower"]
     count_h0,count_h1 = high["sharp_integer_feasible_mean_viable_seeds_per_flower"]
     count_delta = [count_h0-count_l1,count_h1-count_l0]
@@ -285,6 +308,13 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
         "per_flower_viable_fraction_selection_direction": sign,
         "count_and_fraction_direction_agree": count_sign == sign,
         "fractionally_relaxed_high_minus_low_interval": [dr0,dr1],
+        "fractionally_relaxed_high_minus_low_seed_count_per_flower_interval": (
+            relaxed_count_delta
+        ),
+        "integer_constraint_changes_SCH_primary_seed_count_sign_identifiability": (
+            relaxed_count_delta[0] <= 0 <= relaxed_count_delta[1]
+            and (count_delta[0] > 0 or count_delta[1] < 0)
+        ),
         "integer_constraint_changes_sign_identifiability": (
             dr0 <= 0 <= dr1 and (d0 > 0 or d1 < 0)
         ),
