@@ -126,6 +126,14 @@ pollen transfer, early attack and mature fitness.
 
 ## Limits and explicit negative controls
 
+- **Different significance decisions are not themselves a formal
+  statistical difference.** A PL slope detected for net selection
+  but not for mediated selection does **not** mean those two
+  PL slopes have been tested against each other. Equally,
+  significant mean seed loss after diurnal exclusion and a
+  nonsignificant loss after nocturnal exclusion do **not**
+  alone establish a significant daytime-versus-nighttime
+  treatment contrast.
 - The 2014 source's nonsignificant within-species PL result is **not
   evidence of exactly zero PL effect** or proof that response gradients
   explain all residual variation.
