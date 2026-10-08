@@ -187,11 +187,28 @@ No Fisher test, logistic model or ranking of mechanisms is licensed from V11.
 
 ## Prospective implication
 
-The V11 pattern motivates a future outcome-blind hypothesis:
+**Correction after auditing the four cells of the already-included
+Gymnadenia source:** a strong *directional reversal* does **not**
+require simultaneous changes in two consumer factors. The
+herbivore-excluded open-versus-supplemented comparison already
+contains source-supported positive and negative net gradients
+with only pollination changed.
 
-> Strong directional reversal may require either simultaneous change in multiple ecological weights or turnover in the interacting consumer environment, whereas single-factor manipulations may more often change magnitude without establishing opposite supported directions.
+The earlier discovery-set conjecture that multidimensional
+ecological turnover might be necessary was therefore
+**falsified as a necessity claim**. The genuinely prospective,
+outcome-blind H2M1 programme contrast (single versus
+multi-component settings) remains a *frequency/rate hypothesis*,
+not a necessity theorem. This retrospective correction does not
+change frozen H2M1 classes or claim that single-factor mechanisms
+are more likely to cause reversals.
 
-That hypothesis must be frozen **before** new qualified programmes are used to test it.
+The recalculated Gymnadenia phenology four-cell
+difference-in-differences is −0.0042 (point units) against
+a nearly zero additive reconstruction; contrast covariance
+is unavailable. See
+`SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md` for the
+full five-trait 2×2 audit and its uncertainty limits.
 
 ## Status
 
