@@ -144,6 +144,22 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Stage coupling is a separate ecological determinant
+
+Even if both seed-initiation and predation marginal response distributions
+are known for each floral trait setting, the **sign of viable-seed
+selection** can remain unidentified without within-fruit matching.
+A reproducible 40-ovule synthetic witness has identical
+stage margins in two ecological worlds but opposite fitness gradients:
+HIGH minus LOW is -0.0375 versus +0.3375.
+
+The missing ecological quantity is within-fruit Cov(I,q|z).
+A new rearrangement-inequality routine gives **sharp finite-sample
+bounds** from complete, equal-weight unpaired marginal distributions;
+a bound crossing zero does not license either selection direction.
+This is a mathematical identification result, not observed P. rex
+field evidence. See docs/SCH_STAGE_COUPLING_SELECTION_SIGN_IDENTIFICATION_V1.md.
+
 ## The mean intensity of interaction is not the trait-specific selection gradient
 
 A separate **2014 multiyear study** (Sletvold & Ågren,
