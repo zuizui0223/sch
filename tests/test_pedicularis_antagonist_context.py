@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from scripts import analyze_pedicularis_full_surface as surface
-from scripts.analyze_pedicularis_antagonist_context import build
+from scripts.analyze_pedicularis_antagonist_context import (build, _plant_natural_exposed)
 
 
 def _config() -> dict:
@@ -332,3 +332,60 @@ def test_context_thresholds_are_historical_not_posthoc() -> None:
     rows, context = _packet()
     with pytest.raises(ValueError, match="one shared excluded value"):
         build(rows, _surface_receipt(rows), context, config)
+
+
+def test_seed_predation_uses_mean_per_capsule_not_pooled_seeds() -> None:
+    # Two capsules with very different developed-seed counts:
+    # historical 2013 definition averages 50% and 90%, not 91/102.
+    first = _row("P99", 0.5)
+    first["flower_id"] = "P99_F1"
+    first["damaged_seed_count"] = "1"
+    first["undamaged_seed_count"] = "1"
+    second = _row("P99", 0.9)
+    second["flower_id"] = "P99_F2"
+    second["damaged_seed_count"] = "90"
+    second["undamaged_seed_count"] = "10"
+
+    result, unresolved = _plant_natural_exposed([first, second])
+
+    assert unresolved == []
+    assert result["P99"]["seed_predation_fraction"] == pytest.approx(0.7)
+    assert result["P99"]["seed_predation_fraction"] != pytest.approx(91 / 102)
+    assert result["P99"]["n_evaluable_natural_exposed_flowers"] == 2
+
+
+def test_zero_developed_seed_case_is_not_silently_excluded_or_assumed_100_percent() -> None:
+    rows, context = _packet()
+    flower_id = rows[0]["flower_id"]
+    rows[0]["damaged_seed_count"] = "0"
+    rows[0]["undamaged_seed_count"] = "0"
+    rows[0]["early_predator_attack_present"] = "1"
+
+    result = build(rows, _surface_receipt(rows), context, _config())
+
+    assert result["historical_comparison_modelable"] is False
+    assert result["status"] == (
+        "P2_ANTAGONIST_CONTEXT_HISTORICAL_COMPARISON_NOT_MODELABLE"
+    )
+    assert result["unresolved_zero_developed_seed_flower_ids"] == [flower_id]
+    assert result["n_unresolved_zero_developed_seed_flowers"] == 1
+    assert result["historical_zero_seed_coding_admissible"] is False
+    assert result["patch_replication_gate_passed"] is True
+    assert result["historical_comparison_not_modelable_reason"] == (
+        "UNRESOLVED_ZERO_DEVELOPED_SEED_FATE"
+    )
+    assert result["historical_pattern_contrasts"] is None
+    assert result["historical_pattern_sign_checks"] is None
+
+
+def test_early_attack_absence_does_not_resolve_zero_seed_fate_either() -> None:
+    rows, context = _packet()
+    rows[0]["damaged_seed_count"] = "0"
+    rows[0]["undamaged_seed_count"] = "0"
+    rows[0]["early_predator_attack_present"] = "0"
+
+    result = build(rows, _surface_receipt(rows), context, _config())
+    assert result["historical_comparison_modelable"] is False
+    assert result["historical_comparison_not_modelable_reason"] == (
+        "UNRESOLVED_ZERO_DEVELOPED_SEED_FATE"
+    )
