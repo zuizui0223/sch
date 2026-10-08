@@ -92,16 +92,25 @@ The key H2 signal is that the pollinator-associated component is comparatively c
 
 Local population geometry remains pending the supplement / population table.
 
-An independent focal source, Xia, Sun & Liu (2013), adds **pressure-only local
-context evidence** at a finer spatial scale. In 2011, seed predation had a very
-strong density x patch-size interaction (F=106.270, df 1,2345), and the
-patch-size association reversed between sparse and dense contexts. The matching
-final-seed-set interaction was nearly absent (F=0.023).
+An independent focal source, Xia, Sun & Liu (2013), adds **pressure-only,
+observational local context evidence** at a finer spatial scale. In 2011, the
+reported seed-predation density x patch-size interaction was F=106.270
+(df 1,2345), and the observed patch-size association reversed between sparse
+and dense contexts. A separate final-seed-set ANOVA did not detect that
+interaction (F=0.023).
 
-This strengthens the interpretation that antagonist weight is spatially labile
-from within-region patch structure to among-population geography. It does not
-materialize a new H2 trait-geometry case because the 2013 study did not estimate
-exsertion-specific component selection within those patch contexts.
+However, the spatial predictors vary across only **11 patches** (5 sparse,
+6 dense), not 2,345 independent patches. The large capsule-level ANOVA
+denominator df is not patch-level replication, and the reported F does not
+provide a patch-cluster-robust effect estimate. Also, nondetection in final
+seed set is not evidence that the two components quantitatively cancelled.
+See `SCH_PEDICULARIS_XIA2013_PATCH_UNIT_AUDIT_V1.md`.
+
+This motivates, rather than establishes, multiscale antagonist-weight
+reorganization: patch-respecting uncertainty and matched component data
+remain unresolved. It does not materialize a new H2 trait-geometry case
+because the 2013 study did not estimate exsertion-specific component
+selection within those patch contexts.
 
 No 14-row or density x size pseudo-dataset is created from context counts or
 pressure statistics alone.
