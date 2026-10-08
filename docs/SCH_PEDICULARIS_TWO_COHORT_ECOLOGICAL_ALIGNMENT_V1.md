@@ -36,6 +36,17 @@ stronger and more precise than testing a globally positive pollen slope:
 a hump-shaped pollen response can make delta_M negative despite a positive
 average linear tendency.
 
+A concrete **synthetic counterexample** is registered in the unit tests:
+the mean pollen curve at z ranks 0–4 has values proportional to
+[0, 8, 25, 16, 8]. Its fitted randomized linear ITT slope is positive
+(+2.4 pollen grains per rank), yet if predator removal moves the fruit
+optimum from rank 2 to rank 4, the pollen contrast is **8 - 25 = -17
+grains** (the added constant baseline cancels). Thus a supported
+population-average positive linear response is *not sufficient* evidence
+that the ecological shift moves flowers toward better pollination.
+
+These numbers are synthetic and cannot be cited as P. rex field evidence.
+
 All optima here are *finite-grid, ecological state-specific reproductive
 optima*, never pure pollinator-function optima. Negative and null outcomes
 are substantive biological tests, not failed paperwork.
