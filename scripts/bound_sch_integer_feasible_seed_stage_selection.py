@@ -1,16 +1,16 @@
 """Exact finite-fruit integer-constrained bounds for unpaired seed-stage margins.
 
-Scientific use: countable, completely fate-resolved fruits with ONE known
-common number N of ovules per fruit within both z settings. Marginal
-initiation is an unordered multiset of *integer* counts; predation is
-an unordered multiset of *exact rational* fractions from other fruits.
-No source pairing is invented. A pair (initiation k, predation q)
-is feasible only if k*q is an integer in [0,k].
+Scientific use: countable, completely fate-resolved fruits. Each fruit
+keeps its own measured ovule-and-initiated-seed counts (ovule counts may
+differ); predation is an unpaired multiset of exact rational fractions.
+No source fruit matching is invented. A candidate edge (k,q) is valid
+only if k*q is a nonnegative INTEGER number of damaged seeds.
 
-Dynamic programming solves minimum and maximum total viable seeds over
-*all perfect matchings*. It can tighten a relaxed continuous rearrangement
-interval, but is limited to small groups (n<=14), known equal fruit weights,
-and full, unambiguous fates. This is not population inference.
+Independent exact assignment optimizations report both mean surviving
+seed COUNT per flower (the registered SCH fitness) and mean surviving
+seed FRACTION per flower. They can favor opposite z settings when ovule
+counts differ. Exponential bitmask DP is limited to n<=14 equal-weight
+complete, unambiguous fruit-stage margins. Not population inference.
 """
 from __future__ import annotations
 
