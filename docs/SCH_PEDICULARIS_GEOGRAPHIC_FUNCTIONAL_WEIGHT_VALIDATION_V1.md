@@ -14,8 +14,12 @@ the weight of one function can vary strongly among populations
 This is an **external multiscale functional-weight validation lane**, not the
 main causal compromise experiment. The 2016 source supplies trait-linked
 geographic selection; Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387)
-independently shows finer-scale spatial variation in seed-predator pressure.
-The latter is pressure-only context evidence, not local exsertion geometry.
+reports finer-scale spatial patterns in seed-predator pressure. The 2011
+density x patch-size predictors vary across only 11 patches, despite
+capsule-level ANOVA denominator degrees of freedom exceeding 2,000; the
+reported interactions are not yet patch-cluster-robust estimates. This is
+pressure-only context evidence, not local exsertion geometry. See
+`SCH_PEDICULARIS_XIA2013_PATCH_UNIT_AUDIT_V1.md`.
 
 Primary source:
 
@@ -156,12 +160,16 @@ regional system.
 The especially important contrast is:
 
 ```text
-seed-predation density x size interaction  VERY STRONG
-final-seed-set density x size interaction  ~ ZERO.
+seed-predation density x size interaction  REPORTED F=106.270
+final-seed-set density x size interaction  NOT DETECTED, F=0.023.
 ```
 
-Hence strong spatial reweighting of one component process need not appear as
-the same spatial pattern in integrated final reproduction.
+This is a useful contrast among published tests, but a nonsignificant
+final-seed-set interaction does not establish equivalence, buffering or
+cancellation. The seed outcomes are nested within 11 patches, and the
+reported tests use different response denominators. Patch-level refitting
+and matched initial/predation data would be needed to establish an ecological
+compensation mechanism.
 
 This supports a multiscale ecological reading:
 
@@ -282,9 +290,11 @@ Together they support a stronger general statement than either system alone:
 ```text
 REAL_WORLD_OPPOSING_FUNCTIONS: RECOVERED
 GEOGRAPHIC_ANTAGONIST_WEIGHT_MOSAIC: RECOVERED
-LOCAL_DENSITY_X_PATCH_SIZE_ANTAGONIST_CONTEXT: RECOVERED
-MULTISCALE_ANTAGONIST_WEIGHT_LABILITY: RECOVERED
-COMPONENT_VARIATION_MASKED_IN_FINAL_REPRODUCTION: OBSERVATIONAL
+LOCAL_DENSITY_X_PATCH_SIZE_ANTAGONIST_CONTEXT: REPORTED_OBSERVATIONAL_PATTERN
+PATCH_CLUSTER_ROBUST_INTERACTION: NOT_RECOVERED
+MULTISCALE_ANTAGONIST_WEIGHT_LABILITY: SUGGESTIVE_NOT_PATCH_ROBUST
+FINAL_REPRODUCTION_INTERACTION: NOT_DETECTED_NOT_EQUIVALENCE
+INITIAL_PREDATION_COVARIANCE_MECHANISM: TO_TEST_WITH_MATCHED_RAW_DATA
 CONTEXT_DEPENDENT_COMPROMISE_PREDICTION: DIRECTLY_MOTIVATED
 OBSERVATIONAL_OPTIMUM_SHIFT: NOT_YET_RECOVERED
 CAUSAL_OPTIMUM_SHIFT: NOT_IDENTIFIED
