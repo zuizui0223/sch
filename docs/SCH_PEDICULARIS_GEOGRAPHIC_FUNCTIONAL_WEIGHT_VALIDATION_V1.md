@@ -126,6 +126,27 @@ pollinator-mediated selection direction: comparatively consistent
 seed-predator-mediated selection strength: geographically variable.
 ```
 
+### Where does the geographic variation enter?
+
+A Table 1 AICc audit of the 2016 source now makes an important biological
+distinction. Within the listed candidate sets, the **best** pollen,
+seed-predation and initial-seed responses do not include the tested
+population-by-trait / pollen-response terms, while the best final viable-seed
+model **does** retain population-level interactions. The predator and final
+fitness tests involve only seven linked populations; no absence-of-interaction
+equivalence test is available.
+
+Consequently, the apparent geographic variation may partly arise from the
+**translation of similar floral trait–consumer responses into different
+reproductive payoffs**, not solely from geographically varying preferences.
+That is a prospective mechanism prediction, not a recovered fitness-path
+coefficient or a causal alternative already resolved by the publication.
+
+See `SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md` for exact
+published AICc, model-support calculations, population scope and
+the comparison that would discriminate changing enemy preference from
+changing seed-initiation/predation-to-fitness conversion.
+
 ## Finer-scale antagonist-weight context
 
 The geographic pattern is not the only evidence that antagonist weight is
