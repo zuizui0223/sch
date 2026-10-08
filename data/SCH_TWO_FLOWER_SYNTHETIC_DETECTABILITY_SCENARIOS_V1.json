@@ -138,5 +138,11 @@
       "include_plant_deletion_diagnostic": false
     }
   ],
-  "description": "Entirely synthetic 5-scenario sensitivity grid, not P. rex source data or a formal power calculation."
+  "description": "Entirely synthetic 5-scenario sensitivity grid, not P. rex source data or a formal power calculation.",
+  "eligible_two_flower_plant_rate_scenarios": [
+    0.3,
+    0.5,
+    0.8
+  ],
+  "target_probability_all_strata_can_fill": 0.95
 }
