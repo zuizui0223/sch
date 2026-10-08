@@ -160,6 +160,16 @@ def test_distinct_patch_effect_plant_effect_and_missingness_are_preserved():
         ("random_seed",-1,"random_seed"),
     ],
 )
+def test_unrun_plant_deletion_diagnostic_is_null_not_false_zero_rate():
+    config, scene=_fixture()
+    scene["include_plant_deletion_diagnostic"]=False
+    result=build(config)
+    for item in result["scenario_grid"]:
+        assert item["plant_deletion_diagnostic_evaluated"] is False
+        assert item["fraction_fate_bounded_positive_and_stable_to_plant_deletion"] is None
+        assert item["fraction_fate_bounded_guaranteed_positive_shift"]==1
+
+
 def test_invalid_scenario_configuration_fails_closed(field,value,error):
     c,scene=_fixture()
     c[field]=value
