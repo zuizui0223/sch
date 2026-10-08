@@ -158,7 +158,7 @@ def _packet(
     for row in pollen_assignment:
         rank = int(row["assigned_z_rank"])
         n = int(row["plant_id"][1:])
-        grains = (10 + [0, 8, 25, 8, 0][rank]) if peaked_pollen else (10 + 3 * rank)
+        grains = (10 + [0, 8, 25, 16, 8][rank]) if peaked_pollen else (10 + 3 * rank)
         pollen_rows.append({
             **row,
             "realized_exsertion": repr(0.2 + rank * 0.1 + n * 0.0001),
@@ -267,7 +267,10 @@ def test_interior_pollen_peak_defeats_linear_shift_narrative() -> None:
     result = analyze(*packet)
     obs = result["observed_discrete_contrast"]
     assert obs["rank_shift_predator_removal"] == 2
-    assert obs["pollen_gain_at_shifted_ranks"] == pytest.approx(-25)
+    assert result["pollen_sentinel_status"] == (
+        "RANDOMIZED_EXSERTION_TREATMENT_INCREASES_POLLEN_RECEIPT"
+    )
+    assert obs["pollen_gain_at_shifted_ranks"] == pytest.approx(-17)
     assert obs["positive_alignment"] is False
     assert result["plant_bootstrap"]["positive_shift_and_positive_pollen_gain_fraction"] == 0
 
