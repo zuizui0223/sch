@@ -144,6 +144,18 @@ verify this positive and negative case. The inference target
 remains a bounded **finite empirical sample**, not a population
 confidence interval or proof of randomized causal selection.
 
+**Sharpness is relative to the stated fractional model.**
+If each fruit has a verified finite number of ovules and
+damaged/initiated seed counts must be *integers*, some
+continuous-fraction q–I matches may be biologically
+impossible. Additional integer or fate constraints can then
+tighten these conservative fractional bounds. The two-world
+40-ovule witness above was checked to have integer counts
+under **every specific matching shown**. With general source
+data, a physical integer-feasibility audit is needed
+before calling the unrestricted rearrangement extrema
+biologically attainable.
+
 This procedure needs **full within-setting marginal samples
 of equal size and equal weight**. It cannot be run on
 published means alone, unequal sample sets without a
