@@ -185,8 +185,9 @@ def build(rows: list[dict[str, str]], allocation_receipt: dict) -> dict:
     ranks = list(range(allocation_receipt.get("n_z_levels", 0)))
     if len(ranks) < 5:
         raise ValueError("source z grid requires >=5 assigned levels")
+    rank_labels = {str(rank) for rank in ranks}
     if any(
-        row["assigned_z_rank"] not in {str(rank) for rank in ranks}
+        row["assigned_z_rank"] not in rank_labels
         or row["predator_treatment"] not in {"EXPOSED","EXCLUDED"}
         for row in rows
     ):
@@ -277,7 +278,7 @@ def build(rows: list[dict[str, str]], allocation_receipt: dict) -> dict:
         "allocation_receipt_sha256": _semantic_sha256(allocation_receipt),
         "source_outcome_rows_sha256": _semantic_sha256(sorted(rows,key=lambda r:(r["plant_id"],r["flower_id"]))),
         "n_all_allocated_flowers": len(rows),
-        "n_independent_plant_blocks": len(source_by_plant),
+        "n_plant_blocks": len(source_by_plant),
         "fate_status_counts": {
             status: sum(x["fate_status"]==status for x in interpreted)
             for status in sorted(STATUSES)
@@ -293,7 +294,7 @@ def build(rows: list[dict[str, str]], allocation_receipt: dict) -> dict:
             "source_allocation_hash_checks_identity_not_authenticity_of_field_randomization",
             "separate_two_cohort_exploratory_lane_not_primary_W1_W2",
             "verified_zero_viable_seed_fitness_does_not_identify_cause_or_predation_q",
-            "missing_frustation_not_imputed_as_0_and_full_seed_count_potential_cap_required",
+            "missing_fruit_not_imputed_as_zero_and_potential_seed_upper_cap_required",
             "ovule_cap_basis_provenance_user_declared_not_independently_verified",
             "finite_allocated_sample_identification_not_superpopulation_confidence_interval",
             "individual_flower_outcomes_within_plant_may_interfere",
