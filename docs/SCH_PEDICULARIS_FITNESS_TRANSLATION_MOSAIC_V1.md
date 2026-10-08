@@ -23,7 +23,7 @@ audit, not a refit to raw pollen/seed records.
 |---|---:|---:|---:|---:|
 | Stigma pollen receipt (14 populations) | 1700.10 | 1714.83 | 14.73 | 0.000633 |
 | Seed predation (7 linked populations) | −156.11 | −151.03 | 5.08 | 0.078866 |
-| Initial seed set (14 populations) | −493.44 | −480.30 | 13.14 | 0.001402 |
+| Initial seed set (Table 1 labels 14; source scope unresolved) | −493.44 | −480.30 | 13.14 | 0.001402 |
 
 All three reported **best models** omit the shown population × trait or
 pollen-response interaction, while retaining additive population variation.
@@ -50,9 +50,17 @@ the prose ratios should not be reused as if directly derived from Table 1.
 The calculation is machine-checked in
 `scripts/audit_pedicularis_2016_selection_model_support.py`.
 
-**Crucial scope:** 14 populations contributed the published pollen-receipt
-and initial-seed fits; only seven individually linked populations
-(1, 3, 5, 8, 9, 10, 11) contributed predation and final-seed fits.
+**Crucial scope:** the pollen models are labeled as 14-population fits,
+and the linked predation/final-seed models use only seven populations
+(1, 3, 5, 8, 9, 10, 11). **The original source is internally inconsistent
+for initial seed set**: its Table 1 footnote labels Model 3 as populations
+1–14, but the Results and Supplementary Table S2 report seed-set outcomes
+from **12 populations**. We can faithfully reproduce Table 1 model AICc
+without knowing whether 14 populations actually contributed individual
+initial-seed records. No raw source rows were obtained to adjudicate
+this. The audit therefore flags Model 3's population scope as **unresolved**,
+not verified n=14.
+
 Population numbers or model AICc cannot be pooled across endpoints. Failure
 to select a population × exsertion effect is **not** statistical proof
 of identical consumer-preference slopes across populations.
