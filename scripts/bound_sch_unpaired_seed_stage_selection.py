@@ -108,6 +108,7 @@ def compare_settings(
         "claim_ceiling": [
             "source_lists_must_be_actual_unweighted_equal_size_marginals_not_just_means",
             "different_sample_units_or_weights_need_new_coupling_bounds",
+            "integer_ovule_and_seed_constraints_can_tighten_continuous_fraction_pairing_bounds",
             "matching_not_reconstructed_by_arbitrary_pairing",
             "I_positive_and_true_fruit_fate_required_for_predation_q",
             "unrecognized_total_consumption_breaks_I_q_observability",
