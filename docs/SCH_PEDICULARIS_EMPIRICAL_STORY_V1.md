@@ -239,9 +239,17 @@ Patch density is reconstructed on the historical scale as:
 patch_size_flowering_plants / patch_area_m2.
 ```
 
-The secondary uses only the NATURAL + EXPOSED state and is bound to the exact
-primary P2 surface-data fingerprint. It tests only the preregistered sign
-pattern:
+The secondary uses only NATURAL + EXPOSED flowers assigned to the
+**P0-validated sham/natural-exsertion level**, and is bound to the exact
+primary P2 surface-data fingerprint. It therefore does not mistake other
+randomized exsertion treatments for natural floral phenotypes. Seed-predation
+fractions are first calculated per capsule (the 2013 endpoint), then averaged
+within plant and independent patch. A fruit with no distinguishable developed
+seeds remains unresolved unless its fate can be independently established,
+so the historical comparison is NOT_MODELABLE rather than selectively
+excluding heavily damaged fruit.
+
+It tests only the preregistered sign pattern:
 
 ```text
 overall predation: sparse > dense
