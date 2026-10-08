@@ -144,6 +144,25 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## Which single lost fruit could decide the floral reproductive optimum?
+
+The new source-locked *P. rex* fruit-fate analysis now calculates
+**conditional integer outcomes that change the entire predator-state
+reproductive optimum** rather than only a HIGH-minus-LOW slope.
+When one missing fruit is counted and all others remain censored,
+the program recomputes the possible optimum ranks of every
+exsertion setting and the resulting predator EXCLUDED-minus-EXPOSED
+rank displacement. It solves exact algebraic boundary crossings,
+so it does not need to enumerate every possible seed count.
+
+A **synthetic** five-rank example gives a missing EXPOSED high-z
+fruit with x in [0,8]. If x=0–2 the predator-exclusion
+optimum shifts to higher z, if x=3 zero shift remains
+possible, and if x=4–8 the shift is strictly zero.
+These outcome ranges are **not probabilities**, and no
+new P. rex field outcome is claimed. See
+docs/SCH_PEDICULARIS_OPTIMUM_SHIFT_FATE_TIPPING_V1.md.
+
 ## Which missing fruit can resolve a biological selection question?
 
 The separate P. rex fruit-fate module now has an exact
