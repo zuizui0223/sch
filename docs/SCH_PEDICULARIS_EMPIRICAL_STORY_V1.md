@@ -42,9 +42,10 @@ This does not show that pollen is the predator cue.
 
 ### 3. Antagonist weight is strongly context dependent
 
-Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387) show that the same P. rex
-system can reorganize across spatial contexts even before any focal trait
-manipulation is introduced.
+Xia, Sun & Liu (2013; doi:10.1098/rsbl.2013.0387) report a
+density-dependent reversal in how patch size relates to seed-predator attack.
+This is an intriguing local context signal, not a proven change in floral
+optima or a patch-robust interaction effect.
 
 In their 2011 density x patch-size analysis:
 
@@ -58,18 +59,28 @@ seed predation     interaction F =106.270.
 The paper's post-hoc contrasts show that patch-size effects on predation can
 reverse between sparse and dense patches.
 
-The important implication is not the numerical F values themselves. It is that
-**enemy pressure can vary strongly with ecological context while the same
-context dependence is nearly invisible in final seed set**.
+The key contrast is that the authors report density x size interactions
+in initial seed set and predation but not final seed set. However, the
+predictors vary among only 11 independent patches (five sparse, six dense),
+whereas the original capsule-level ANOVAs report residual degrees of freedom
+of 2047 or 2345. The interaction significance therefore needs a
+patch-respecting reanalysis; lack of final-seed-set significance is not proof
+of buffering or biological cancellation.
 
-Thus an integrated reproductive endpoint can conceal strong changes in the
-component processes that produced it. This is one reason the focal experiment
-keeps pollen receipt, initial seed set, seed predation and final reproduction
-separate instead of treating final seed set as the only ecological response.
+A sharper mechanism to examine is **success–risk coupling**. On matched
+capsules, final intact seed set depends not just on average initial seed set
+and predation, but also on their within-context covariance:
 
-This historical result is observational and does not identify the registered G
-effect. It supports the biological premise that antagonist weight is a local
-ecological state rather than a species-wide constant.
+```text
+E[final] = E[initial] (1 - E[predation]) - Cov(initial, predation).
+```
+
+Whether that covariance changes with density and patch size is unknown and
+requires the Dryad workbook. This motivates separating initial reproduction,
+antagonist loss and final reproduction in the causal study. The historical
+Xia2013 data do not identify the registered independent G effect, floral
+optimum displacement or a capsule-level covariance result. See
+`SCH_PEDICULARIS_XIA2013_PATCH_UNIT_AUDIT_V1.md`.
 
 ### 4. The two functions may be separable in time
 
