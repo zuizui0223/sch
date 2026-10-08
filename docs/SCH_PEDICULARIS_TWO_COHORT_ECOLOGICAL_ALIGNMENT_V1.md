@@ -195,6 +195,27 @@ or imputes q for 0/0 completely destroyed/undeveloped capsules.
 See SCH_STAGE_COUPLING_SELECTION_SIGN_IDENTIFICATION_V1.md.
 The built-in witness is synthetic, not measured P. rex data.
 
+## Integer-count selection limits when fruit fates cannot be matched
+
+When initiated-seed counts and exact predation fractions come
+from genuinely unpaired observations, simple continuous-fraction
+bounds may be too wide for a physical seed-count dataset.
+A new method performs integer-feasible bipartite matching,
+preserving each fruit's **ovule count and initiated seeds**,
+and then testing whether a q value corresponds to a
+nonnegative *integer* number of damaged seeds.
+
+It computes exact extrema of both mean intact-seed **count**
+(the primary SCH fitness) and mean viable fraction
+(a distinct secondary fitness). This matters because different
+ovule counts can yield opposite count- versus fraction-based
+selection direction. The current complete intact-fruit P2
+design still requires matching all stages when feasible:
+mathematical bounds do not replace direct fruit-fate
+measurement or causal P0/P1/G readiness.
+
+See `SCH_INTEGER_FEASIBLE_STAGE_COUPLING_V1.md`.
+
 ## Analysis status and statistical limitation
 
 `scripts/analyze_pedicularis_two_cohort_ecological_bridge.py` reconstructs
