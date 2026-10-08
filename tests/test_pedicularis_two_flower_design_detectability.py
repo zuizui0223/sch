@@ -150,16 +150,6 @@ def test_distinct_patch_effect_plant_effect_and_missingness_are_preserved():
         )
 
 
-@pytest.mark.parametrize(
-    ("field","value","error"),
-    [
-        ("replicates_per_grid_point",2,"replicates"),
-        ("patch_stage_batch_grid",[0],"batch_grid"),
-        ("patch_stage_batch_grid",[1,1],"unique"),
-        ("maximum_intact_seeds_per_flower",0,"maximum_intact"),
-        ("random_seed",-1,"random_seed"),
-    ],
-)
 def test_unrun_plant_deletion_diagnostic_is_null_not_false_zero_rate():
     config, scene=_fixture()
     scene["include_plant_deletion_diagnostic"]=False
@@ -170,6 +160,16 @@ def test_unrun_plant_deletion_diagnostic_is_null_not_false_zero_rate():
         assert item["fraction_fate_bounded_guaranteed_positive_shift"]==1
 
 
+@pytest.mark.parametrize(
+    ("field","value","error"),
+    [
+        ("replicates_per_grid_point",2,"replicates"),
+        ("patch_stage_batch_grid",[0],"batch_grid"),
+        ("patch_stage_batch_grid",[1,1],"unique"),
+        ("maximum_intact_seeds_per_flower",0,"maximum_intact"),
+        ("random_seed",-1,"random_seed"),
+    ],
+)
 def test_invalid_scenario_configuration_fails_closed(field,value,error):
     c,scene=_fixture()
     c[field]=value
