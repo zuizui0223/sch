@@ -117,6 +117,21 @@ and cannot be remeasured; prospective monitoring,
 pre-dispersal collection and verified individual
 ovule/seed-potential caps are therefore necessary.
 
+## A separate full-optimum priority test
+
+The HIGH-minus-LOW contrast is not the same estimand as the
+identity of the best floral trait setting. An intermediate rank
+can change a reproductive optimum without changing the
+extreme-rank contrast. A companion
+scripts/prioritize_pedicularis_optimum_shift_remeasurement.py
+now calculates the conditional possible optimum-rank sets
+after exactly measuring one censored fruit, with all other
+unknown outcomes still bounded. Exact integer breakpoints
+handle ties and strict shifts across all z settings.
+This is non-gating synthetic work, not an observed P. rex
+fitness effect. See
+SCH_PEDICULARIS_OPTIMUM_SHIFT_FATE_TIPPING_V1.md.
+
 ## Scientific boundary
 
 The 2016 original P. rex paper excluded fully consumed,
