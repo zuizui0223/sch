@@ -127,6 +127,10 @@ def _validate_config(config: dict) -> dict:
         )
     if historical.get("exact_boundary_is_unclassified") is not True:
         raise ValueError("historical patch boundary must remain unclassified")
+    if historical.get("reference_z_scope") != "P0_VALIDATED_SHAM_Z_ONLY":
+        raise ValueError(
+            "historical comparison requires the validated P0 sham z level only"
+        )
 
     gate = config.get("analysis_gate")
     if not isinstance(gate, dict):
@@ -147,7 +151,7 @@ def _validate_config(config: dict) -> dict:
     }
 
 
-def _validate_surface_receipt(rows: list[dict[str, str]], receipt: dict) -> None:
+def _validate_surface_receipt(rows: list[dict[str, str]], receipt: dict) -> str:
     if receipt.get("system_wrapper_schema_version") != SURFACE_SCHEMA:
         raise ValueError("context analysis requires a canonical Pedicularis surface receipt")
     if receipt.get("system") != "Pedicularis rex":
@@ -169,6 +173,21 @@ def _validate_surface_receipt(rows: list[dict[str, str]], receipt: dict) -> None
         raise ValueError(
             "context analysis rows are not the exact data used for the P2 surface receipt"
         )
+    readiness_reference = receipt.get("readiness_reference")
+    sham_z = (
+        readiness_reference.get("p0_sham_z_level")
+        if isinstance(readiness_reference, dict)
+        else None
+    )
+    if not isinstance(sham_z, str) or not sham_z:
+        raise ValueError(
+            "surface receipt lacks the validated P0 sham z reference for Xia2013"
+        )
+    if sham_z not in {row["assigned_z_level"] for row in rows}:
+        raise ValueError(
+            "validated P0 sham z level is absent from the analyzed P2 dataset"
+        )
+    return sham_z
 
 
 def _validate_context(
@@ -268,6 +287,8 @@ def _patch_class(size: int, config: dict) -> str:
 
 def _plant_natural_exposed(
     rows: list[dict[str, str]],
+    *,
+    sham_z_level: str,
 ) -> tuple[dict[str, dict], list[str]]:
     """Use the Xia2013 per-capsule fraction, not a pooled seed-count ratio.
 
@@ -281,6 +302,7 @@ def _plant_natural_exposed(
         if (
             row["pollination_treatment"] == "NATURAL"
             and row["predator_treatment"] == "EXPOSED"
+            and row["assigned_z_level"] == sham_z_level
         ):
             grouped[row["plant_id"]].append(row)
 
@@ -362,7 +384,7 @@ def build(
     config_payload: dict,
 ) -> dict:
     config = _validate_config(config_payload)
-    _validate_surface_receipt(rows, surface_receipt)
+    sham_z_level = _validate_surface_receipt(rows, surface_receipt)
 
     population = {row["population_id"] for row in rows}
     season = {row["season_id"] for row in rows}
@@ -370,7 +392,9 @@ def build(
         raise ValueError("P2 rows do not match frozen context population/season")
 
     context = _validate_context(context_rows, rows, config)
-    natural_exposed, unresolved_zero_seed_flowers = _plant_natural_exposed(rows)
+    natural_exposed, unresolved_zero_seed_flowers = _plant_natural_exposed(
+        rows, sham_z_level=sham_z_level
+    )
 
     plants_by_patch: dict[str, list[dict]] = defaultdict(list)
     classified_plants = []
@@ -499,7 +523,15 @@ def build(
             "small_patch_lt_flowering_plants": config["patch_boundary_exclusive"],
             "large_patch_gt_flowering_plants": config["patch_boundary_exclusive"],
         },
-        "analysis_state": "NATURAL_POLLINATION_PLUS_PREDATOR_EXPOSED",
+        "analysis_state": "NATURAL_POLLINATION_PLUS_PREDATOR_EXPOSED_P0_SHAM_Z_ONLY",
+        "reference_sham_z_level": sham_z_level,
+        "n_excluded_nonsham_natural_exposed_flowers": sum(
+            1
+            for row in rows
+            if row["pollination_treatment"] == "NATURAL"
+            and row["predator_treatment"] == "EXPOSED"
+            and row["assigned_z_level"] != sham_z_level
+        ),
         "n_p2_plants": len(context),
         "n_plants_with_natural_exposed_rows": len(natural_exposed),
         "historical_predation_metric": (
@@ -533,7 +565,8 @@ def build(
             "does_not_claim_context_causes_optimum_displacement",
             "does_not_test_context_moderation_of_state_optima_without_separate_power",
             "historical_pattern_comparison_uses_Xia2013_thresholds_not_posthoc_cutpoints",
-            "natural_EXPOSED_state_only_for_historical_comparability",
+            "natural_EXPOSED_state_and_validated_P0_sham_z_only_for_historical_comparability",
+            "nonsham_randomized_z_cannot_be_called_a_natural_flower_replication",
             "seed_predation_is_per_capsule_fraction_not_ratio_of_pooled_seed_counts",
             "zero_developed_seed_fate_requires_independent_evidence_before_historical_comparison",
             "do_not_silently_drop_fully_destroyed_or_seedless_capsules",
