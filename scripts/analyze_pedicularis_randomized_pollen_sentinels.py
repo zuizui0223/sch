@@ -28,6 +28,7 @@ REQUIRED = (
     "realized_exsertion",
     "pollen_grains",
     "flower_age_at_sampling_hours",
+    "pollen_sampling_stage",
     "pollen_assay_method_id",
     "stigma_removed",
     "mechanical_damage",
@@ -227,6 +228,10 @@ def _validate(
             raise ValueError("every sentinel flower must have a POLLEN_SENTINEL cohort role")
         if row["pollen_assay_method_id"] != config["pollen_assay_method_id"]:
             raise ValueError("sentinel pollen assay differs from prospectively frozen method")
+        if row["pollen_sampling_stage"] != config["sampling_stage"]:
+            raise ValueError(
+                "sentinel pollen sampling stage differs from prospectively frozen stage"
+            )
         for field in ("stigma_removed", "mechanical_damage", "sham_control"):
             if row[field] not in ("0", "1"):
                 raise ValueError(f"{field} must be coded 0/1")
