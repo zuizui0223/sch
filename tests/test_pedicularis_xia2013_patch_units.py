@@ -101,7 +101,7 @@ def test_covariance_can_change_final_seed_output_with_identical_marginals() -> N
 def test_covariance_diagnostic_rejects_unmatched_or_impossible_capsule_data() -> None:
     with pytest.raises(ValueError, match="matched capsules"):
         seed_output_decomposition([0.2, 0.8], [0.5])
-    with pytest.raises(ValueError, match="\[0,1\]"):
+    with pytest.raises(ValueError, match=r"\[0,1\]"):
         seed_output_decomposition([0.2], [1.1])
     with pytest.raises(ValueError, match="at least one matched"):
         seed_output_decomposition([], [])
