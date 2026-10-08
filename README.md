@@ -144,6 +144,27 @@ COMPLETE_CAUSAL_COMPROMISE_EXPERIMENT_NOT_YET_EXECUTED
 PURE_FUNCTION_OPTIMA_NOT_IDENTIFIED_BY_DEFAULT
 ```
 
+## The mean intensity of interaction is not the trait-specific selection gradient
+
+A separate **2014 multiyear study** (Sletvold & Ågren,
+doi:10.1111/evo.12405) quantified pollinator-mediated selection across
+two populations each of *Gymnadenia conopsea* (nine population-year
+units) and *Dactylorhiza lapponica* (five). In *Gymnadenia*,
+population-year mean pollen limitation was associated with stronger
+**net** selection but was **not a detected predictor** of the
+**pollinator-mediated** selection component; the latter was strongest
+for spur length relative to the attraction/display traits.
+
+Together with the independent 2015 *Gymnadenia* factorial result
+(opposed phenology, reinforcing spur selection), this highlights
+**interaction intensity != trait-conditioned functional response !=
+fitness translation**. The 2014 *Gymnadenia* study deliberately **did not
+analyze flowering start**, so it cannot be used as a multiyear
+replication of the 2015 flowering-time sign reversal. The original
+2014 Dryad XLSX is catalogued but not ingested; no raw-data refit is
+claimed. See
+`docs/SCH_ORCHID_INTENSITY_VS_TRAIT_FUNCTION_2014_2015_V1.md`.
+
 ## Ecological correction: one changed factor can reverse realized selection
 
 The source-verified 2015 **Gymnadenia conopsea** four-arm
