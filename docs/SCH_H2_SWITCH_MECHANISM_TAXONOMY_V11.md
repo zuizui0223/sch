@@ -54,6 +54,16 @@ one-side supported               1
 
 Both Gymnadenia axes change point direction somewhere in the 2 × 2 pollination/herbivory experiment.
 
+**Important within-design refinement (source Table A2 re-audit):** the
+flowering-phenology supported reversal already occurs along a
+**single-factor edge**: among herbivore-excluded plants, open pollination
+has β = +0.094 (P<0.01), while supplemental hand pollination has
+β = −0.066 (P<0.05). Herbivory does **not** change between
+these two groups. This is one comparison within the registered
+factorial experiment, not an additional independent programme,
+and the unreported covariance means the beta *difference*
+cannot receive a new p-value.
+
 Flowering phenology contains a supported positive context and supported negative contexts.
 
 Spur length crosses zero only at the point-estimate level because the negative cell is not independently supported away from zero.
