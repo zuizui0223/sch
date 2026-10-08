@@ -251,6 +251,31 @@ validated P0 readiness p0_level_plan_sha256.
 and power. `realized_exsertion` remains the measured phenotype. Neither is a
 substitute for the physical manipulation identity.
 
+## Required biological dual-endpoint feasibility (new blocking gate)
+
+The original focal 2016 study measured stigmatic pollen by removing/crushing
+late-anthesis stigmas, but measured mature seeds about three weeks later on
+generally different flowers from the same plants. The present P2 data contract
+requires pollen plus mature seeds from **one and the same flower ID**. The
+historical protocol does not validate that joint measurement.
+
+Before **production** P2 allocation, obtain an independent, pre-outcome
+compatibility-pilot receipt showing that the intended same-flower assay can
+quantify stigma pollen accurately **and** preserve unbiased mature seed
+production, with P/G treatment compatibility. The alternative of destructive
+pollen sentinels on separate flowers is **not supported by the existing
+single-flower W1/W2 estimator or power model** and needs a separately frozen
+two-cohort redesign.
+
+See `docs/SCH_PEDICULARIS_P2_DUAL_ENDPOINT_FEASIBILITY_V1.md` for the
+prospective template, acceptable routes and stop conditions.
+
+The production P2 allocator additionally requires
+`--endpoint-feasibility <p2_endpoint_feasibility.json>`; this binding persists
+from allocation to field identity lock, complete verification, and the
+production full-surface analyzer. Internal synthetic analyzers remain
+available for simulation and cannot establish field feasibility.
+
 ## Raw-data contract
 
 Template:
