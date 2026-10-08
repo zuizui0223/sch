@@ -3,8 +3,10 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 from collections import Counter
 from pathlib import Path
+from statistics import median
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +33,93 @@ def _read(path: Path) -> list[dict[str, str]]:
             {key: (value or "").strip() for key, value in row.items()}
             for row in reader
         ]
+
+
+def _water_2015_site_evidence(priors: list[dict[str, str]]) -> dict:
+    """Audit source-scale *published coefficients*, not a new water experiment.
+
+    This diagnostic intentionally keeps treatment coding, model-based SE,
+    individual/inflorescence treatment unit, and the Shama-only visitor
+    experiment distinct. It does NOT pool published coefficients.
+    """
+    ids = {
+        "Baishuitai": "PRX2015_PRED_BAISHUITAI",
+        "Sanba": "PRX2015_PRED_SANBA",
+        "Zhongdian": "PRX2015_PRED_ZHONGDIAN",
+        "Deqin": "PRX2015_PRED_DEQIN",
+        "Daxueshan": "PRX2015_PRED_DAXUESHAN",
+        "Shama": "PRX2015_PRED_SHAMA",
+    }
+    lookup = {row["measurement_id"]: row for row in priors}
+    site_rows = [
+        row for row in priors
+        if row["source_id"] == "PRX2015_WATER"
+        and row["evidence_level"] == "SITE_MODEL_COEFFICIENT"
+    ]
+    if {row["measurement_id"] for row in site_rows} != set(ids.values()):
+        raise ValueError("2015 water site-model coefficient set is incomplete or expanded")
+
+    site_effects: dict[str, dict] = {}
+    for site, measurement_id in ids.items():
+        row = lookup[measurement_id]
+        if (row["population_scope"] != site
+            or row["uncertainty_type"] != "SE"
+            or row["direct_freeze_eligible"] != "NO"):
+            raise ValueError("2015 water site effect lost site, SE or external-prior identity")
+        try:
+            beta = float(row["estimate"])
+            se = float(row["uncertainty_value"])
+        except (ValueError, TypeError) as exc:
+            raise ValueError("2015 site coefficients and SE must be numeric") from exc
+        if not math.isfinite(beta) or not math.isfinite(se) or se <= 0:
+            raise ValueError("2015 site coefficients must be finite with positive SE")
+        site_effects[site] = {
+            "published_model_beta": beta,
+            "published_model_se": se,
+            # Wald intervals are a diagnostic from reported SE, NOT source CIs.
+            "approx_wald95_model_scale": [beta - 1.96 * se, beta + 1.96 * se],
+            "source_p_note": row["notes"],
+        }
+
+    zhong = site_effects["Zhongdian"]
+    informative_se = [v["published_model_se"] for site, v in site_effects.items()
+                      if site != "Zhongdian"]
+    visitor = lookup["PRX2015_POLLINATOR_TREAT_BETA"]
+    if visitor["population_scope"] != "Shama" or visitor["source_id"] != "PRX2015_WATER":
+        raise ValueError("2015 visitor-rate comparison was Shama only")
+
+    return {
+        "source_doi": "10.1093/aobpla/plv019",
+        "n_source_populations": len(site_effects),
+        "n_negative_signed_site_coefficients": sum(
+            effect["published_model_beta"] < 0 for effect in site_effects.values()
+        ),
+        "site_coefficients": site_effects,
+        "Zhongdian_se_relative_to_other_five_median": (
+            zhong["published_model_se"] / median(informative_se)
+        ),
+        "Zhongdian_approx_interval_contains_zero": (
+            zhong["approx_wald95_model_scale"][0] <= 0
+            <= zhong["approx_wald95_model_scale"][1]
+        ),
+        "site_effect_source_scale": "PUBLISHED_GLM_COEFFICIENT_NOT_RISK_DIFFERENCE",
+        "water_intervention": "BRACT_PUNCTURE_PLUS_DRAINAGE_AS_ONE_TREATMENT",
+        "water_only_vs_wounding_effect_identified": False,
+        "water_by_randomized_exsertion_interaction_identified": False,
+        "published_visitation_comparison_scope": "SHAMA_ONLY",
+        "published_visitation_comparison_source_p_note": visitor["notes"],
+        "water_state_is_main_SCH_independent_G": False,
+        "status": "SOURCE_LEVEL_WATER_EFFECT_AND_PRECISION_AUDITED_NO_MECHANISM_SPLIT",
+        "claim_ceiling": [
+            "negative_beta_direction_uses_original_paper_treatment_coding",
+            "all_six_coefficients_share_sign_but_one_non_significant_site_is_imprecise",
+            "Wald_interval_from_reported_SE_is_not_a_reanalysis_of_raw_capsules",
+            "no_plant_or_patch_robust_reanalysis_from_article_coefficients",
+            "water_effect_not_separated_from_bract_puncture",
+            "visitation_nonsignificance_at_Shama_is_not_global_equivalence",
+            "no_z_by_water_causal_interaction_or_optimum_identified",
+        ],
+    }
 
 
 def build(
@@ -151,6 +240,7 @@ def build(
         "rows_with_reported_se": sorted(se_rows),
         "n_rows_with_reported_sem": len(sem_rows),
         "rows_with_reported_sem": sorted(sem_rows),
+        "water_2015_site_evidence": _water_2015_site_evidence(priors),
         "external_support_by_calibration_module": external_support,
         "n_direct_F0_freeze_values_recovered": 0,
         "published_data_can_replace_same_context_calibration_package": False,
