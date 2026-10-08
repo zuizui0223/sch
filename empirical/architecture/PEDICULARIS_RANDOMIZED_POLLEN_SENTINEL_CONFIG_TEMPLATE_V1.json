@@ -13,5 +13,7 @@
   "min_biologically_meaningful_pollen_grains_per_rank": "REQUIRED_BEFORE_USE",
   "min_valid_plant_bootstrap_fraction": "REQUIRED_BEFORE_USE",
   "frozen_before_sentinel_outcomes": "REQUIRED_BEFORE_USE",
-  "claim_lane": "RANDOMIZED_POLLINATION_FUNCTION_ONLY_NOT_W1_W2"
+  "claim_lane": "RANDOMIZED_POLLINATION_FUNCTION_ONLY_NOT_W1_W2",
+  "max_mechanical_damage_fraction": "REQUIRED_BEFORE_USE",
+  "one_sided_randomization_alpha": "REQUIRED_BEFORE_USE"
 }
