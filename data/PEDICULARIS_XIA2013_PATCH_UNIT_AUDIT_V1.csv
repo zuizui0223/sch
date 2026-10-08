@@ -1,0 +1,6 @@
+endpoint,source_doi,study_year,predictor_unit,response_unit,reported_F_density_by_size,df_numerator,df_denominator,published_significance,independent_patches_2011,sparse_patches_2011,dense_patches_2011,sampled_spikes_2011
+fruit_set,10.1098/rsbl.2013.0387,2011,patch,plant_spike,3.060,1,54,NOT_SIGNIFICANT,11,5,6,58
+initial_seed_set,10.1098/rsbl.2013.0387,2011,patch,capsule,44.556,1,2047,P_LE_0_001,11,5,6,58
+final_seed_set,10.1098/rsbl.2013.0387,2011,patch,capsule,0.023,1,2345,NOT_SIGNIFICANT,11,5,6,58
+fruit_predation,10.1098/rsbl.2013.0387,2011,patch,plant_spike,10.605,1,54,P_LE_0_01,11,5,6,58
+seed_predation,10.1098/rsbl.2013.0387,2011,patch,capsule,106.270,1,2345,P_LE_0_001,11,5,6,58
