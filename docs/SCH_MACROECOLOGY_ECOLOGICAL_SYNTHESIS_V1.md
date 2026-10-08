@@ -89,6 +89,19 @@ Weak observed net selection therefore does not necessarily mean weak ecological 
 
 Treatment-cell beta ± SE values are now recovered from Appendix A Table A2. Cancellation magnitude based on mediated agent contrasts remains fail-closed because contrast uncertainty/covariance is not reported in Table A2.
 
+**Single-factor reversal within the existing factorial programme.**
+With herbivores excluded in both groups, open-pollinated
+flowering-start selection is β = +0.094 (source P<0.01),
+but hand-supplemented selection is β = −0.066
+(source P<0.05). Thus pollination treatment alone is
+associated with supported opposite *net selection* signs.
+The source-factorial additivity residual for flowering start
+is only −0.0042 in point estimates, but no covariance-aware
+interaction CI can be inferred. This is not a new independent
+cluster, proof of a pure-function optimum, or a change to
+frozen H2M1 held-out classes. See
+`SCH_GYMNADENIA_SINGLE_FACTOR_REVERSAL_V1.md`.
+
 ## Result 4 — context changes several different parts of the geometry
 
 H2 no longer uses one undifferentiated “context dependent” label.
