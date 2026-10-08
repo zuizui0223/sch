@@ -89,7 +89,7 @@ def test_ranking_does_not_assert_trait_optimum_or_factorial_interaction_p_value(
 @pytest.mark.parametrize(("key","value","expected_error"),[
     ("beta","nan","finite beta"),
     ("se","0","positive SE"),
-    ("source_table","Synthetic_A2","source"),
+    ("source_table","Synthetic_A2","published A2"),
     ("treatment_n","12","sample-size provenance"),
     ("significance","MADE_UP","statistical support code"),
 ])
