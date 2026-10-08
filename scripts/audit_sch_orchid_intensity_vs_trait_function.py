@@ -113,7 +113,7 @@ def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
             {"doi": "10.1890/14-0119.1",
              "publication": "Sletvold_Moritz_Agren_2015_Ecology",
              "n_source_treatment_cells": 20,
-             "same_site_year_matched_to_2014_series": False},
+             "same_site_year_match_to_2014_series_verified": False},
         ],
         "2014_published_results": {
             "Gymnadenia_abs_net_selection_associated_with_PL": True,
@@ -121,7 +121,7 @@ def build(rows: list[dict[str, str]], cells_2015: list[dict[str, str]]) -> dict:
             "Dactylorhiza_abs_pollinator_mediated_selection_associated_with_PL_detected": False,
             "Gymnadenia_spur_pollinator_mediation_stronger_than_attraction_traits": True,
             "Gymnadenia_multiyear_flowering_phenology_analyzed": False,
-            "pollen_limitation_explains_which_flower_trait_is_selected": False,
+            "pollen_limitation_alone_sufficient_to_explain_selected_trait": "NOT_ESTABLISHED",
             "functional_trait_response_causally_identified_from_PL_regression": False,
         },
         "2015_same_experiment_point_component_contrasts": pairwise,
