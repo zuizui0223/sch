@@ -239,7 +239,8 @@ def _compare_stage_outputs(low: dict, high: dict) -> dict:
         ),
         "high_minus_low_direction_given_margins": sign,
         "claim_ceiling": [
-            "same_known_ovule_count_for_each_fruit_in_each_setting_required",
+            "each_ovule_count_must_be_matched_to_its_own_initiated_count",
+            "identical_ovules_per_fruit_not_required_in_variable_mode",
             "exact_unrounded_predation_rational_values_required",
             "no_zero_initiated_unrecognizable_full_destruction_or_0_over_0_fruits",
             "only_countable_intact_and_damaged_initiated_seeds_allowed",
