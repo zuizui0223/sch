@@ -6,7 +6,7 @@ import pytest
 
 from scripts.simulate_pedicularis_two_flower_detectability import (
     SCHEMA, _config, _limiting_identification, _one_replicate,
-    _possible_optima, build,
+    _possible_optima, _screening_requirement, build,
 )
 
 
@@ -34,6 +34,29 @@ def _fixture(*, missing=0.0, plant_sd=0.0, null=False):
         "scenarios":[scene],
     }
     return config,scene
+
+
+def test_hypothetical_eligible_plant_screening_is_exact_binomial_not_observed_field_supply():
+    r=_screening_requirement(1,0.5,0.95)
+    assert r["minimal_plants_screened_per_batch"]==28
+    assert r["required_eligible_plants_per_batch"]==10
+    assert r["assumed_probability_every_batch_can_fill"]>=0.95
+    assert r["binomial_eligibility_screening_is_not_field_observation"] is True
+    assert _screening_requirement(1,0.3,0.95)[
+        "minimal_plants_screened_per_batch"
+    ]==49
+    assert _screening_requirement(1,0.8,0.95)[
+        "minimal_plants_screened_per_batch"
+    ]==16
+    assert _screening_requirement(4,0.5,0.95)[
+        "minimal_plants_screened_per_batch"
+    ]==32
+    assert _screening_requirement(4,0.5,0.95)[
+        "total_plants_screened_across_batches"
+    ]==128
+    assert _screening_requirement(1,1.0,0.95)[
+        "minimal_plants_screened_per_batch"
+    ]==10
 
 
 def test_all_original_synthetic_cyclic_design_slots_yield_correct_shift():
