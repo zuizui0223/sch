@@ -203,6 +203,33 @@ from the frozen source configuration. No real
 P. rex seed-count variance or true z×G shape
 has been recovered.
 
+## A sharp-null randomization test is now separate from these rates
+
+A new method performs a **conditional Fisher test** under the
+sharp null of no predator G effect on *any* allocated
+flower's mature seed count. It reuses the plant-level
+G assignment within each patch-stage-cycle-edge
+matched plant pair, rather than permuting individual
+flowers and inflating independent replicates.
+The test uses the signed peak-midrank difference
+across all five z settings as its predeclared
+statistic, with exact or plus-one Monte Carlo p.
+
+**This does NOT retroactively turn** the synthetic
+classification fractions above into inferential
+power or null-calibrated error rates. A separate
+data-generator × randomization-test benchmark,
+including strong-null negative controls, would
+be necessary to calibrate a powered field design.
+The Fisher sharp null is stronger than the
+scientific weak/null hypothesis that the
+*population reproductive optimum does not move*.
+Complete observed final seed fates and effective
+field G exclusion remain necessary for such tests.
+
+See
+`SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`.
+
 ## The crucial ecological limit: more plants may NOT rescue unobserved fruits
 
 If the fraction m of flowers whose maturity output
