@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
       - name: Simulate registered synthetic candidate scenarios
         run: |
-          python scripts/simulate_pedicularis_two_flower_detectability.py \
+          python -m scripts.simulate_pedicularis_two_flower_detectability \
             data/SCH_TWO_FLOWER_SYNTHETIC_DETECTABILITY_SCENARIOS_V1.json \
             --output sch-two-flower-synthetic-scenarios.json
       - name: Print inspectable sample size and identifiability table
