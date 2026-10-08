@@ -185,6 +185,32 @@ See `docs/SCH_PEDICULARIS_FITNESS_TRANSLATION_MOSAIC_V1.md` and
 model outputs are real evidence; no raw flower-level refit or
 causal mechanism identification is claimed.
 
+## Real population variation in antagonist defence payoffs (published data)
+
+Using six **published site-specific treatment effects** from Sun & Huang
+(2015), the water-bract puncture-plus-drainage experiment has directly
+reported site × treatment heterogeneity (chi-square = 36.782, df = 5).
+An independent table-value diagnostic gives inverse-variance
+Q = 30.282 (df = 5), descriptive I² = 0.835, and between-site
+model-coefficient SD ≈ 0.040. All six site coefficients have the
+same sign, and Zhongdian's nonsignificant estimate has an unusually
+large reported SE; this heterogeneity does not depend on classifying
+Zhongdian as a reversed or absent effect. These quantities are
+**within-one-study model-scale summaries**, not six independent
+studies, pooled field-level predation probabilities, or an identified
+z-specific selection gradient.
+
+The separate 2016 focal article reported predation ranging from
+0.8% to 27.42% and excluded up to five completely consumed unscorable
+capsules per population. A transparent **hypothetical equal-capsule
+sensitivity model** shows that this high–low contrast can persist
+despite those losses at plausible assessed fruit counts. It does not
+correct source predation fractions without raw sample counts and
+verified source aggregation grain. See
+`docs/SCH_PEDICULARIS_REAL_WORLD_ANTAGONIST_HETEROGENEITY_V1.md`.
+Water drainage remains a compound bract-damage intervention,
+not the qualified independent SCH G.
+
 ## Separate pollen and mature-seed flowers: marginal ecological bridge
 
 The destructive P. rex stigma assay does **not** require copying pollen counts
