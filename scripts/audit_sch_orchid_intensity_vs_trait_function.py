@@ -115,6 +115,7 @@ def audit_guild(rows: list[dict[str, str]]) -> dict:
         ),
         "claim_ceiling": [
             "non_detected_nocturnal_seed_loss_is_not_zero_nocturnal_service",
+            "one_significant_and_one_nonsignificant_is_not_a_direct_guild_difference_test",
             "2012_and_2015_source_programmes_may_share_sites_not_independent_field_replicates",
             "no_risk_or_absolute_visitor_effect_sizes_extracted",
             "not_proof_2012_to_2015_evolutionary_direction_changed",
@@ -223,6 +224,7 @@ def build(
         "claim_ceiling": [
             "n_population_years_not_independent_species_or_population_replicates",
             "no_detected_association_does_not_imply_zero_population_PL_effect",
+            "different_PL_regression_detection_statuses_do_not_test_their_slope_difference",
             "2014_multiyear_Gymnadenia_did_not_include_flowering_start",
             "2015_phenology_sign_change_has_no_multiyear_replication_from_2014",
             "2014_and_2015_sampling_frames_cannot_be_merged_as_one_experiment",
