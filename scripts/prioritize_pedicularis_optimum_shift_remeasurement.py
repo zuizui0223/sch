@@ -250,7 +250,7 @@ def build(rows: list[dict[str, str]], allocation: dict) -> dict:
         "baseline": current_shift,
         "prioritized_missing_fruit_optimum_shift_assessments": candidates,
         "one_fruit_integer_outcome_ranges_are_not_probabilities": True,
-        "outcomes_already_observed_in_p_rex": False,
+        "source_field_measurements_independently_verified_by_this_analysis": False,
         "no_joint_recovery_of_other_missing_fruits_assumed": True,
         "claim_ceiling": [
             "all_randomized_plant_and_flower_ids_retained_from_source_fate_receipt",
