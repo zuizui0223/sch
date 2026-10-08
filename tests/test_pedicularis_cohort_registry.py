@@ -178,3 +178,29 @@ def test_power_geometry_pilot_plant_cannot_reappear_in_calibration() -> None:
 
     with pytest.raises(ValueError, match="POWER_GEOMETRY_PILOT plants must be disjoint"):
         validate(rows)
+
+
+def test_pollen_sentinel_role_is_confirmatory_pollen_only() -> None:
+    rows = [
+        _row(
+            "PS1",
+            "POLLEN_PLANT_1",
+            "SENTINEL_1",
+            "POLLEN_SENTINEL",
+            "POLLEN",
+            "NO",
+            "YES",
+        ),
+    ]
+    receipt = validate(rows)
+    assert receipt["status"] == "PEDICULARIS_COHORT_REGISTRY_VALID"
+    assert receipt["role_counts"]["POLLEN_SENTINEL"] == 1
+
+
+def test_pollen_sentinel_flower_cannot_be_reused_as_mature_seed_flower() -> None:
+    rows = [
+        _row("PS1", "POLLEN_PLANT_1", "SENTINEL_1", "POLLEN_SENTINEL", "POLLEN", "NO", "YES"),
+        _row("FS1", "POLLEN_PLANT_1", "SENTINEL_1", "FULL_SURFACE", "P0_P1_G", "NO", "YES"),
+    ]
+    with pytest.raises(ValueError, match="globally unique"):
+        validate(rows)
