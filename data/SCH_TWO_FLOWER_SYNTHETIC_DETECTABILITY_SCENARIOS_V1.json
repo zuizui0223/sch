@@ -1,0 +1,148 @@
+{
+  "schema": "SCH_TWO_FLOWER_SCENARIO_DETECTABILITY_CONFIG_V1",
+  "patch_stage_batch_grid": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32
+  ],
+  "replicates_per_grid_point": 100,
+  "random_seed": 20261009,
+  "maximum_intact_seeds_per_flower": 25,
+  "scenarios": [
+    {
+      "scenario_id": "LOW_VARIANCE_NO_MISSING",
+      "fitness_curve_seed_counts": {
+        "EXCLUDED": [
+          4,
+          6,
+          8,
+          10,
+          14
+        ],
+        "EXPOSED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ]
+      },
+      "patch_sd": 1,
+      "plant_sd": 2,
+      "flower_sd": 2,
+      "maturity_fate_missing_rate": 0,
+      "missingness_mechanism": "MCAR",
+      "include_plant_deletion_diagnostic": true
+    },
+    {
+      "scenario_id": "HIGH_PLANT_VARIANCE_NO_MISSING",
+      "fitness_curve_seed_counts": {
+        "EXCLUDED": [
+          4,
+          6,
+          8,
+          10,
+          14
+        ],
+        "EXPOSED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ]
+      },
+      "patch_sd": 1,
+      "plant_sd": 6,
+      "flower_sd": 2,
+      "maturity_fate_missing_rate": 0,
+      "missingness_mechanism": "MCAR",
+      "include_plant_deletion_diagnostic": false
+    },
+    {
+      "scenario_id": "FIVE_PERCENT_UNOBSERVED",
+      "fitness_curve_seed_counts": {
+        "EXCLUDED": [
+          4,
+          6,
+          8,
+          10,
+          14
+        ],
+        "EXPOSED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ]
+      },
+      "patch_sd": 1,
+      "plant_sd": 2,
+      "flower_sd": 2,
+      "maturity_fate_missing_rate": 0.05,
+      "missingness_mechanism": "MCAR",
+      "include_plant_deletion_diagnostic": false
+    },
+    {
+      "scenario_id": "TWELVE_PERCENT_INFORMATIVE_UNOBSERVED",
+      "fitness_curve_seed_counts": {
+        "EXCLUDED": [
+          4,
+          6,
+          8,
+          10,
+          14
+        ],
+        "EXPOSED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ]
+      },
+      "patch_sd": 1,
+      "plant_sd": 2,
+      "flower_sd": 2,
+      "maturity_fate_missing_rate": 0.12,
+      "missingness_mechanism": "OUTCOME_DEPENDENT",
+      "include_plant_deletion_diagnostic": false
+    },
+    {
+      "scenario_id": "NULL_NO_TRUE_OPTIMUM_SHIFT",
+      "fitness_curve_seed_counts": {
+        "EXCLUDED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ],
+        "EXPOSED": [
+          5,
+          9,
+          11,
+          9,
+          6
+        ]
+      },
+      "patch_sd": 1,
+      "plant_sd": 2,
+      "flower_sd": 2,
+      "maturity_fate_missing_rate": 0,
+      "missingness_mechanism": "MCAR",
+      "include_plant_deletion_diagnostic": false
+    }
+  ],
+  "description": "Entirely synthetic 5-scenario sensitivity grid, not P. rex source data or a formal power calculation.",
+  "eligible_two_flower_plant_rate_scenarios": [
+    0.3,
+    0.5,
+    0.8
+  ],
+  "target_probability_all_strata_can_fill": 0.95
+}

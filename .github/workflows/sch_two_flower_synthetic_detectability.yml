@@ -1,0 +1,55 @@
+name: SCH two-flower scenario detectability (non-gating)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/simulate_pedicularis_two_flower_detectability.py'
+      - 'data/SCH_TWO_FLOWER_SYNTHETIC_DETECTABILITY_SCENARIOS_V1.json'
+      - '.github/workflows/sch_two_flower_synthetic_detectability.yml'
+  workflow_dispatch:
+
+jobs:
+  synthetic-scenario-grid:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner for design and missingness invariants
+        run: python -m pip install pytest
+      - name: Test two-flower scenario methods against synthetic controls
+        run: python -m pytest -q tests/test_pedicularis_two_flower_design_detectability.py
+      - name: Simulate registered synthetic candidate scenarios
+        run: |
+          python -m scripts.simulate_pedicularis_two_flower_detectability \
+            data/SCH_TWO_FLOWER_SYNTHETIC_DETECTABILITY_SCENARIOS_V1.json \
+            --output sch-two-flower-synthetic-scenarios.json
+      - name: Print inspectable sample size and identifiability table
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("sch-two-flower-synthetic-scenarios.json",encoding="utf-8"))
+          print("WARNING: synthetic scenario classification fractions; NOT calibrated power or source P. rex data.")
+          for line in r["scenario_grid"]:
+              print("SCENARIO_GRID", json.dumps({
+                  k: line[k] for k in (
+                      "scenario_id", "n_plants", "n_per_z_by_G",
+                      "fraction_complete_latent_guaranteed_positive_shift",
+                      "fraction_fate_bounded_guaranteed_positive_shift",
+                      "fraction_fate_bounded_positive_and_stable_to_plant_deletion",
+                      "mean_fraction_missing_mature_fruit_outcomes"
+                  )
+              }, sort_keys=True))
+          for line in r["hypothetical_two_flower_plant_supply"]:
+              if line["n_patch_stage_batches"] in (1,4,16,32):
+                  print("SYNTHETIC_SCREENING", json.dumps(line,sort_keys=True))
+          for name,values in r["uniform_cell_missingness_analytic_limit"].items():
+              print("STRUCTURAL_FATE_BOUND",name,
+                    values["outer_rank_shift"],values["guaranteed_positive"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-two-flower-synthetic-detectability
+          path: sch-two-flower-synthetic-scenarios.json

@@ -129,6 +129,41 @@ treatment is qualified just by generating a manifest.
 Neither P0 phenotype effectiveness nor G predator
 selectivity is certified by the candidate seed/hash.
 
+## Prospective sample demand and missing-fate information bottleneck
+
+A new simulation framework executes the actual
+cyclic plant-level G allocator on explicitly
+hypothetical seed-count response curves,
+varying the variance attributable to patches,
+plants and individual flowers, and the
+rate and mechanism of missing maturity outcomes.
+It compares complete-outcome and worst-case
+fate-bound reproductive optimum shift
+classification. These scenario success rates
+are **not calibrated confirmatory power**.
+
+A separate exact binomial screening model
+reports how many total plants need examination
+to fill ten two-flower-eligible plant slots
+in every patch-stage batch, conditional on
+explicitly assumed (not observed) eligibility
+probabilities. In particular, if half the
+plants were eligible, 28 screened for one
+batch or 32 per batch for four batches
+would meet the model's joint 95% fill target.
+
+However, if a fixed fraction of mature
+fruits stays unobservable, its worst-case
+seed-count uncertainty need not diminish
+as additional plants are enrolled.
+**Maturity follow-up and source-specific
+upper seed caps are therefore part of
+sample-size planning**, rather than
+treating lost outcomes as ordinary
+observed zero seed counts.
+
+See `SCH_PEDICULARIS_TWO_FLOWER_DETECTABILITY_AND_ELIGIBILITY_V1.md`.
+
 ## Pollen sentinel cohort
 
 The destructive pollen-stigma assay cannot be run on
