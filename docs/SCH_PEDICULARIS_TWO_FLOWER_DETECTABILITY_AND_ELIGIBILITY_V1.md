@@ -230,7 +230,7 @@ for SCH's core W1/W2 claims.
 
 ## Reproduce the synthetic grid
 
-    python scripts/simulate_pedicularis_two_flower_detectability.py \
+    python -m scripts.simulate_pedicularis_two_flower_detectability \
       data/SCH_TWO_FLOWER_SYNTHETIC_DETECTABILITY_SCENARIOS_V1.json \
       --output scenario_detectability.json
 
