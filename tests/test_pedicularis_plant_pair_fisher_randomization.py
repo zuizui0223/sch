@@ -7,6 +7,7 @@ import pytest
 
 from scripts.fisher_pedicularis_plant_pair_G_randomization import (
     _pairs, _p_from_stats, build, fisher_from_pairs, statistic,
+    uniform_additive_G_sensitivity,
 )
 from scripts.plan_pedicularis_two_flower_cyclic_blocks import (
     build as allocate, ALLOC_FIELDS,
@@ -35,6 +36,10 @@ def _packet(n_batches=1, *, kind="SHARP_NULL"):
             y=3+plant%5 + 2*z
         elif kind=="ALL_EQUAL":
             y=6
+        elif kind=="CONSTANT_ADDITIVE":
+            y=3+plant%5+2*z + (
+                2 if row["predator_treatment"]=="EXCLUDED" else 0
+            )
         elif kind=="POSITIVE_SHIFT":
             y=(
                 [2,4,6,10,20][z] if row["predator_treatment"]=="EXCLUDED"
@@ -134,6 +139,80 @@ def test_four_batch_monte_carlo_is_reproducible_and_uses_plus_one_correction():
     assert (
         1000*a["one_sided_Fisher_sharp_null_p"]
     )==pytest.approx(round(1000*a["one_sided_Fisher_sharp_null_p"]))
+
+
+def test_constant_additive_sharp_effect_is_a_separate_biological_null():
+    rows,receipt=_packet(kind="CONSTANT_ADDITIVE")
+    source=_pairs(rows,receipt)
+    result=uniform_additive_G_sensitivity(source)
+    assert result["tested_null"]==(
+        "UNION_OF_SHARP_UNIFORM_ADDITIVE_G_SEED_COUNT_EFFECTS"
+    )
+    assert result["tau_zero_is_included_in_source_compatible_nulls"] is True
+    assert 2 in [
+        v["hypothesized_constant_seed_gain_per_flower"]
+        for v in result["individual_sharp_tau_sensitivity"]
+    ]
+    assert result["conditional_p_upper_over_constant_tau_nulls"]>=next(
+        x["one_sided_sharp_null_p"]
+        for x in result["individual_sharp_tau_sensitivity"]
+        if x["hypothesized_constant_seed_gain_per_flower"]==2
+    )
+    assert result["rejecting_uniform_tau_is_not_proof_of_G_by_z_interaction"] is True
+    assert result["not_test_of_weak_same_population_peak_null"] is True
+    all_out=build(rows,receipt,test_uniform_additive_constant=True)
+    assert all_out["uniform_additive_seed_gain_sharp_null_sensitivity"]==result
+
+
+def test_union_of_constant_effect_nulls_is_superuniform_at_true_tau():
+    rows,receipt=_packet(kind="CONSTANT_ADDITIVE")
+    pairs=_pairs(rows,receipt)
+    true_tau=2
+    pvalues=[]
+    for flip_bits in range(32):
+        hypothetical=[]
+        for j,pair in enumerate(pairs):
+            flip=bool(flip_bits & (1<<j))
+            first=pair["exposed"] if flip else pair["excluded"]
+            second=pair["excluded"] if flip else pair["exposed"]
+            # Fixed no-G outcomes imputed by removing tau from
+            # original excluded, then assigned tau in new excluded.
+            def get_values(item,original_g,new_g):
+                orig=item["by_z"]
+                return {
+                    **item,
+                    "by_z":{
+                        z:y-(true_tau if original_g=="EXCLUDED" else 0)
+                        +(true_tau if new_g=="EXCLUDED" else 0)
+                        for z,y in orig.items()
+                    },
+                }
+            alt={
+                **pair,
+                "excluded":get_values(
+                    first,
+                    "EXPOSED" if flip else "EXCLUDED","EXCLUDED"
+                ),
+                "exposed":get_values(
+                    second,
+                    "EXCLUDED" if flip else "EXPOSED","EXPOSED"
+                ),
+            }
+            hypothetical.append(alt)
+        result=uniform_additive_G_sensitivity(hypothetical)
+        pvalues.append(result["conditional_p_upper_over_constant_tau_nulls"])
+    assert len(pvalues)==32
+    for alpha in (.01,.05,.10,.20,.50,1.):
+        assert sum(p<=alpha+1e-12 for p in pvalues)/32<=alpha+1e-12
+
+
+def test_constant_additive_tau_cannot_exceed_source_seed_cap_and_budget():
+    rows,receipt=_packet(kind="ALL_EQUAL")
+    pairs=_pairs(rows,receipt)
+    with pytest.raises(ValueError,match="too many physically feasible"):
+        uniform_additive_G_sensitivity(pairs,maximum_tau_candidates=2)
+    with pytest.raises(ValueError,match="maximum candidate limit"):
+        uniform_additive_G_sensitivity(pairs,maximum_tau_candidates=0)
 
 
 def test_missing_maturity_output_never_fabricated_for_randomization():
