@@ -4,7 +4,9 @@ from copy import deepcopy
 
 import pytest
 
-from scripts.audit_sch_orchid_intensity_vs_trait_function import read, build
+from scripts.audit_sch_orchid_intensity_vs_trait_function import (
+    read, build, read_guild, audit_guild,
+)
 from scripts.audit_sch_gymnadenia_factorial_reversal import read as read_2015
 
 
@@ -92,3 +94,51 @@ def test_no_causal_functional_mapping_or_multiyear_phenology_replication_claim()
         result["claim_ceiling"]
     )
     assert result["sources"][1]["same_site_year_match_to_2014_series_verified"] is False
+
+
+
+def test_real_guild_exclusion_mean_service_and_trait_selection_are_distinct() -> None:
+    r = build(read(), read_2015())
+    guild = r["independent_published_guild_exclusion_evidence"]
+    assert [q["doi"] for q in guild["source_programmes"]] == [
+        "10.1890/11-2044.1", "10.1111/nph.13555"
+    ]
+    assert guild["2012_diurnal_removal_mean_seed_production_decreased_both_pops"]
+    assert guild["2012_nocturnal_removal_mean_seed_production_decrease_detected"] is False
+    assert guild["2012_both_guilds_contributed_to_flower_trait_selection"] is True
+    assert guild["2012_direction_of_selection_consistent_across_guild_treatments"] is True
+    assert guild["2015_nocturnal_guild_selected_longer_spur_in_guild_subset"] is True
+    assert guild["2015_guild_specific_correlational_trait_combinations"] is True
+    assert guild["guild_specific_selection_coefficients_recovered"] is False
+    assert "non_detected_nocturnal_seed_loss_is_not_zero_nocturnal_service" in guild["claim_ceiling"]
+
+
+@pytest.mark.parametrize(
+    ("outcome", "field", "replacement", "match"),
+    [
+        ("diurnal_exclusion_effect_on_mean_seed_production", "reported_result",
+         "NOT_SIGNIFICANT", "published result"),
+        ("nocturnal_exclusion_effect_on_mean_seed_production", "raw_estimates_recovered",
+         "YES", "remain qualitative"),
+        ("guild_effect_on_spur_length_selection", "populations_total",
+         "2", "scope drift"),
+        ("guild_effect_on_correlational_trait_selection", "source_doi",
+         "10.1000/none", "unknown or duplicate"),
+    ]
+)
+def test_guild_source_audit_rejects_invented_results_or_replicates(
+    outcome, field, replacement, match
+):
+    rows = deepcopy(read_guild())
+    cell = next(x for x in rows if x["outcome"] == outcome)
+    cell[field] = replacement
+    with pytest.raises(ValueError, match=match):
+        audit_guild(rows)
+
+
+def test_guild_source_row_loss_and_duplicate_are_not_independent_systems() -> None:
+    rows = read_guild()
+    with pytest.raises(ValueError, match="incomplete"):
+        audit_guild(rows[:-1])
+    with pytest.raises(ValueError, match="duplicate"):
+        audit_guild(rows + [deepcopy(rows[0])])
