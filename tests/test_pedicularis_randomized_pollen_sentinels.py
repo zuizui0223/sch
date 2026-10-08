@@ -150,6 +150,36 @@ def test_randomized_exsertion_increases_pollen_receipt_in_synthetic_positive_wor
     assert "not_a_W1_W2_or_causal_compromise_receipt" in result["claim_ceiling"]
 
 
+def test_symmetric_interior_pollen_peak_is_visible_without_false_linear_promotion() -> None:
+    rows, receipt, registry = _packet(slope=0.0)
+    for row in rows:
+        rank = int(row["assigned_z_rank"])
+        row["pollen_grains"] = str(25 + [0, 4, 9, 4, 0][rank])
+
+    result = analyze(rows, receipt, _p0(), registry, _config())
+    profile = result["non_gating_randomized_dose_response"]
+
+    assert result["assigned_z_rank_itt_slope"] == pytest.approx(0.0)
+    assert result["pollen_benefit_supported_in_tested_population_season"] is False
+    assert profile["mean_pollen_grains_by_assigned_rank"]["2"] == pytest.approx(34)
+    assert profile["predefined_central_vs_endpoints_contrast"] == pytest.approx(9)
+    assert profile["predefined_central_vs_endpoints_bootstrap_ci95"][0] == pytest.approx(9)
+    assert profile["highest_observed_mean_rank"] == 2
+    assert profile["interior_peak_in_observed_means"] is True
+    assert profile["status"] == "DESCRIPTIVE_NON_GATING_NOT_A_PURE_FUNCTION_OPTIMUM"
+
+
+def test_monotonic_pollen_gain_has_no_spurious_interior_peak() -> None:
+    rows, receipt, registry = _packet(slope=4.0)
+    profile = analyze(rows, receipt, _p0(), registry, _config())[
+        "non_gating_randomized_dose_response"
+    ]
+    assert profile["highest_observed_mean_rank"] == 4
+    assert profile["interior_peak_in_observed_means"] is False
+    assert profile["adjacent_rank_mean_differences"]["0_to_1"] == pytest.approx(4)
+    assert profile["predefined_central_vs_endpoints_contrast"] == pytest.approx(0)
+
+
 def test_negative_pollen_effect_does_not_pass_biological_benefit_gate() -> None:
     rows, receipt, registry = _packet(slope=-2.0)
     result = analyze(rows, receipt, _p0(), registry, _config())
