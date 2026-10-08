@@ -96,6 +96,36 @@ the preregistered minimal pollen gain and a one-sided within-plant randomization
 test passing its prospective alpha. This is a **biological causal response
 for the test context**, not a pure pollinator function optimum.
 
+## Full randomized dose-response: do not hide an intermediate peak
+
+The registered linear ITT test is intentionally directional, following the
+2016 observational positive exsertion–pollen association. But **five assigned
+physical settings** also allow the experiment to show whether pollen delivery
+is hump-shaped, flat or locally reversed. An intermediate exsertion optimum is
+biologically plausible if visitor contact geometry deteriorates at the
+highest positions. A zero linear slope can coexist with a large positive
+intermediate response.
+
+The production receipt now preserves a **non-gating descriptive curve**:
+mean stigmatic pollen grains by randomized setting rank, plant-cluster bootstrap
+intervals at each rank, adjacent mean differences, and a predefined
+central-rank versus two-endpoints contrast with a plant-cluster interval.
+The highest observed mean rank and whether it lies inside the tested range
+are reported explicitly.
+
+These summaries are **not an alternative significance test**. They cannot
+rescue or reverse the prospective linear-benefit decision, identify a
+population-level pollinator optimum, establish the source of pollen grains,
+or promote W1/W2. A shape-specific ecological hypothesis would require
+separate prospective registration and sufficient field replication.
+
+An additional mechanism boundary matters: the experiment grants **ambient
+visitor access**, but an open-flower pollen count does not isolate pollinator
+deposition from possible manipulation-related pollen transfer. Direct
+pollinator mediation would need an independently validated visitor-exclusion
+or pollen-source control; this cannot be inferred from the recorded pollen
+count alone.
+
 ## Files
 
 ```text
