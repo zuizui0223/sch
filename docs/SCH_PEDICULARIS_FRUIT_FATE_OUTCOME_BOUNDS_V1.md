@@ -187,6 +187,30 @@ censoring, source-ID/allocation drift, false pre-dispersal
 proof, invalid counts and both identified/unidentified
 trait responses.
 
+## Field ascertainment priorities from exact bounded outcomes
+
+A separate non-gating analysis now reports which *one*
+unresolved fruit outcome would be most consequential
+for a **prespecified** high-minus-low exsertion or
+predator-exclusion contrast. It calculates the
+conditional integer viable seed counts that would
+certify each contrast's sign, with all remaining
+uncertain flowers still bounded rather than imputed.
+
+The method never confuses a verified zero-fitness
+fruit with an unknown-fate fruit, and requires the
+full original allocation identity and all fruit-fate
+checks before ranking. One source-fate outcome may
+reduce an interval yet **not** change an already
+identified sign; another may turn an unresolved
+trait contrast positive or negative depending on
+the seed count found.
+
+This is **measurement information** rather than
+a prediction of the missing value or of retrospective
+recoverability. See
+SCH_PEDICULARIS_FRUIT_FATE_MEASUREMENT_PRIORITY_V1.md.
+
 ## Research priority
 
 In the next field pilot, the most informative protocol
