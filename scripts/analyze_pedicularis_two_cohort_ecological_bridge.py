@@ -13,6 +13,7 @@ from scripts.build_pedicularis_p0_randomized_assignment import _semantic_sha256
 from scripts import analyze_pedicularis_randomized_pollen_sentinels as sentinel
 from scripts import validate_pedicularis_cohort_registry as cohort
 from scripts.analyze_pedicularis_full_surface import _validate_readiness
+from scripts.audit_pedicularis_xia2013_patch_units import seed_output_decomposition
 from scripts.build_pedicularis_two_cohort_fruit_allocation import (
     FROZEN_FIELDS as FRUIT_FROZEN_FIELDS,
     RECEIPT_SCHEMA as FRUIT_SCHEMA,
@@ -265,6 +266,134 @@ def _profile(
     }
 
 
+def _seed_fitness_translation(
+    fruit_rows: list[dict[str, str]], ranks: list[int]
+) -> dict:
+    """Descriptive within-FRUIT decomposition; no pollen/seed row imputation.
+
+    The source columns distinguish damaged and intact seed coats but do not
+    resolve 0/0 seed fate, so any cell containing 0/0 fails the stage
+    decomposition rather than dropping those flowers or setting q=1.
+    """
+    cells: dict[tuple[str, int], list[dict[str, str]]] = defaultdict(list)
+    for row in fruit_rows:
+        cells[row["predator_treatment"], int(row["assigned_z_rank"])].append(row)
+    result: dict[str, dict[str, dict]] = {}
+    for treatment in ("EXCLUDED", "EXPOSED"):
+        result[treatment] = {}
+        for rank in ranks:
+            subset = cells[treatment, rank]
+            if not subset:
+                raise ValueError("missing fruit z by predator cell for decomposition")
+            u = [float(r["undamaged_seed_count"]) for r in subset]
+            d = [float(r["damaged_seed_count"]) for r in subset]
+            n = [float(r["ovule_count"]) for r in subset]
+            final = mean(ui / ni for ui, ni in zip(u, n, strict=True))
+            zero_fate = [
+                r["flower_id"] for r, ui, di in zip(subset, u, d, strict=True)
+                if ui + di == 0
+            ]
+            if zero_fate:
+                result[treatment][str(rank)] = {
+                    "status": "NOT_MODELABLE_ZERO_DISTINGUISHABLE_SEED_FATE",
+                    "n_flowers": len(subset),
+                    "zero_distinguishable_seed_flower_ids": sorted(zero_fate),
+                    "mean_final_viable_seed_fraction_all_flowers": final,
+                    "mean_initial_seed_fraction": None,
+                    "mean_predation_fraction": None,
+                    "initial_predation_covariance": None,
+                    "complete_stage_identity_checked": False,
+                }
+                continue
+            initial = [(ui + di) / ni for ui, di, ni in zip(u, d, n, strict=True)]
+            predation = [di / (ui + di) for ui, di in zip(u, d, strict=True)]
+            detail = seed_output_decomposition(initial, predation)
+            if not math.isclose(
+                detail["mean_final_seed_fraction"], final, rel_tol=1e-10, abs_tol=1e-12
+            ):
+                raise ValueError("within-fruit seed initiation–predation identity failed")
+            result[treatment][str(rank)] = {
+                "status": "DISTINGUISHABLE_SEED_DECOMPOSITION",
+                "n_flowers": len(subset),
+                "zero_distinguishable_seed_flower_ids": [],
+                "mean_final_viable_seed_fraction_all_flowers": final,
+                "mean_initial_seed_fraction": detail["mean_initial_seed_fraction"],
+                "mean_predation_fraction": detail["mean_seed_predation_fraction"],
+                "initial_predation_covariance": detail["initial_predation_covariance"],
+                "complete_stage_identity_checked": True,
+            }
+
+    endpoints: dict[str, dict] = {}
+    for treatment, profile in result.items():
+        low, high = profile[str(ranks[0])], profile[str(ranks[-1])]
+        if any(
+            entry["status"] != "DISTINGUISHABLE_SEED_DECOMPOSITION"
+            for entry in (low, high)
+        ):
+            endpoints[treatment] = {
+                "status": "NOT_MODELABLE_ZERO_SEED_FATE_AT_ENDPOINT",
+                "rank_low": ranks[0],
+                "rank_high": ranks[-1],
+            }
+            continue
+        delta_initial = (
+            high["mean_initial_seed_fraction"] - low["mean_initial_seed_fraction"]
+        )
+        delta_predation = (
+            high["mean_predation_fraction"] - low["mean_predation_fraction"]
+        )
+        middle_initial = (
+            high["mean_initial_seed_fraction"] + low["mean_initial_seed_fraction"]
+        ) / 2
+        middle_predation = (
+            high["mean_predation_fraction"] + low["mean_predation_fraction"]
+        ) / 2
+        delta_cov = (
+            high["initial_predation_covariance"] - low["initial_predation_covariance"]
+        )
+        initiation = (1 - middle_predation) * delta_initial
+        predation = -middle_initial * delta_predation
+        covariance = -delta_cov
+        observed_change = (
+            high["mean_final_viable_seed_fraction_all_flowers"]
+            - low["mean_final_viable_seed_fraction_all_flowers"]
+        )
+        if not math.isclose(
+            initiation + predation + covariance, observed_change,
+            rel_tol=1e-10, abs_tol=1e-12,
+        ):
+            raise ValueError("fruit endpoint decomposition does not sum to fitness change")
+        endpoints[treatment] = {
+            "status": "MATCHED_FRUIT_IDENTITY_VALIDATED_DESCRIPTIVE",
+            "rank_low": ranks[0],
+            "rank_high": ranks[-1],
+            "viable_seed_change": observed_change,
+            "seed_initiation_contribution": initiation,
+            "seed_predation_contribution": predation,
+            "within_fruit_covariance_contribution": covariance,
+        }
+    unresolved = sum(
+        v["status"] != "DISTINGUISHABLE_SEED_DECOMPOSITION"
+        for cells_for_g in result.values() for v in cells_for_g.values()
+    )
+    return {
+        "by_predator_state_and_rank": result,
+        "fixed_extreme_rank_decomposition": endpoints,
+        "n_unresolved_z_by_G_cells": unresolved,
+        "status": (
+            "ALL_MATCHED_DISTINGUISHABLE_SEED_CELLS_DECOMPOSABLE"
+            if unresolved == 0 else "PARTIAL_DECOMPOSITION_ZERO_SEED_FATE_UNRESOLVED"
+        ),
+        "claim_ceiling": [
+            "matched_distinguishable_seed_counts_only_not_causal_mediation",
+            "fully_consumed_seeds_without_coats_may_be_misclassified",
+            "0_over_0_seed_fate_cannot_be_assigned_100_percent_predation",
+            "true_initial_seed_set_requires_qualified_seed_fate_and_stage_protocol",
+            "no_causal_exsertion_by_G_selection_gradient_identified_from_this_identity",
+        ],
+    }
+
+
 def _unique_peak(profile: dict[int, float]) -> int | None:
     top = max(profile.values())
     best = [rank for rank, value in profile.items() if value == top]
@@ -360,6 +489,7 @@ def build(
     pollen_profile = _profile(list(pollen_blocks.values()), ranks, "pollen")
     seed_profile = _profile(list(fruit_blocks.values()), ranks, "seed")
     observed = _comparison(pollen_profile, seed_profile)
+    fitness_translation = _seed_fitness_translation(fruit_rows, ranks)
 
     rng = random.Random(cfg["random_seed"])
     pids, fids = sorted(pollen_keys), sorted(fruit_keys)
@@ -413,6 +543,7 @@ def build(
             for g, values in seed_profile.items()
         },
         "observed_discrete_contrast": observed,
+        "fruit_stage_fitness_translation_non_gating": fitness_translation,
         "plant_overlap_resampling": relationship,
         "plant_bootstrap": {
             "reps": cfg["bootstrap_reps"],
@@ -442,6 +573,7 @@ def build(
             "experimental_descriptive_profiles_not_preregistered_confirmatory_W1_W2",
             "separate_cohorts_identify_population_means_under_exchangeability",
             "same_flower_pollen_seed_covariance_not_identified",
+            "within_fruit_seed_coupling_does_not_identify_pollen_seed_mediation",
             "no_pure_pollinator_optimum_or_genetic_architecture_identified",
             "argmax_bootstrap_percentiles_are_nonregular_not_formal_95pct_inference",
             "predator_barrier_spillover_and_maternal_resource_competition_need_pilot",
