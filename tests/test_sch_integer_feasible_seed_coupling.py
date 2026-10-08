@@ -8,6 +8,7 @@ import pytest
 
 from scripts.bound_sch_integer_feasible_seed_stage_selection import (
     build, compare_settings_integer, integer_stage_bounds,
+    integer_stage_bounds_variable_ovules, compare_settings_variable_ovules,
 )
 
 
@@ -174,3 +175,90 @@ def test_schema_and_setting_loss_fail_closed():
     p["setting_margins"]["LOW"]["q"]="1/2"
     with pytest.raises(ValueError,match="count and ratio"):
         build(p)
+
+
+def test_variable_ovule_counts_recover_positive_sign_and_preserve_per_fruit_weights():
+    # Ovules vary across individual fruits. The ovule/initiation pair is
+    # measured on one fruit; only the q origin is unlinked.
+    low=[{"ovules":12,"initiated":1},{"ovules":8,"initiated":2}]
+    high=[{"ovules":15,"initiated":1},{"ovules":10,"initiated":4}]
+    r=compare_settings_variable_ovules(low,["1/2","1"],high,["1/2","1"])
+    assert r["low"]["ovule_count_heterogeneous"] is True
+    assert r["high"]["ovule_count_heterogeneous"] is True
+    assert r["low"]["ovules_per_fruit"] is None
+    assert r["high"]["ovules_per_fruit"] is None
+    assert r["low"]["sharp_integer_feasible_mean_viable_fraction"] == pytest.approx(
+        [1/16,1/16]
+    )
+    assert r["high"]["sharp_integer_feasible_mean_viable_fraction"] == pytest.approx(
+        [1/10,1/10]
+    )
+    assert r["integer_feasible_high_minus_low_interval"] == pytest.approx(
+        [3/80,3/80]
+    )
+    relaxed=r["fractionally_relaxed_high_minus_low_interval"]
+    assert relaxed[0] < 0 < relaxed[1]
+    assert r["integer_constraint_changes_sign_identifiability"] is True
+    assert r["high_minus_low_direction_given_margins"] == (
+        "POSITIVE_FOR_ALL_INTEGER_FEASIBLE_COUPLINGS"
+    )
+    # The mean of fractions is the target, NOT the pooled viable seed
+    # count divided by the pooled number of ovules.
+    witnesses=r["high"]["maximum_fitness_attaining_matching"]
+    assert sum(x["viable_count"]/x["ovule_count"] for x in witnesses)/2 == pytest.approx(
+        .1
+    )
+
+
+def test_variable_ovule_cli_schema_and_ambiguous_ovule_pairs_are_rejected():
+    p=_demo()
+    p["ovule_count_mode"]="VARIABLE_OVULES_PER_FRUIT"
+    p.pop("ovules_per_fruit")
+    p["setting_margins"]={
+        "LOW":{"ovule_and_initiated_counts":[
+            {"ovules":12,"initiated":1},{"ovules":8,"initiated":2}],
+            "predation_fractions":["1/2","1"]},
+        "HIGH":{"ovule_and_initiated_counts":[
+            {"ovules":15,"initiated":1},{"ovules":10,"initiated":4}],
+            "predation_fractions":["1/2","1"]},
+    }
+    r=build(p)
+    assert r["integer_constraint_changes_sign_identifiability"] is True
+    assert r["observed_field_data_independently_verified"] is False
+    broken=deepcopy(p)
+    del broken["setting_margins"]["LOW"]["ovule_and_initiated_counts"][0]["ovules"]
+    with pytest.raises(ValueError,match="must pair ovules"):
+        build(broken)
+    broken=deepcopy(p)
+    broken["setting_margins"]["HIGH"]["ovule_and_initiated_counts"][0]["initiated"]=0
+    with pytest.raises(ValueError,match="exact integer"):
+        build(broken)
+    broken=deepcopy(p)
+    broken["ovule_count_mode"]="UNKNOWN"
+    with pytest.raises(ValueError,match="unregistered ovule_count_mode"):
+        build(broken)
+
+
+def test_variable_fruit_count_exact_permutation_optimization():
+    fruits=[{"ovules":6,"initiated":2},
+            {"ovules":10,"initiated":5},
+            {"ovules":12,"initiated":6}]
+    fractions=["0","1/2","1"]
+    values=[]
+    for ordering in permutations(fractions):
+        part=[]
+        for f,q in zip(fruits,ordering,strict=True):
+            damaged=f["initiated"]*Fraction(q)
+            if damaged.denominator!=1:
+                break
+            part.append(Fraction(f["initiated"]-int(damaged),f["ovules"]))
+        else:
+            values.append(sum(part)/len(part))
+    assert values
+    fitted=integer_stage_bounds_variable_ovules(fruits,fractions)
+    assert fitted["sharp_integer_feasible_mean_viable_fraction"] == pytest.approx(
+        [float(min(values)),float(max(values))]
+    )
+    assert fitted["exact_fractional_mean_viability_extrema"] == [
+        str(min(values)),str(max(values))
+    ]
