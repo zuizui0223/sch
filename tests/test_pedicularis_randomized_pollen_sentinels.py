@@ -101,6 +101,7 @@ def _packet(
             "realized_exsertion": repr(0.1 + 0.17 * rank + 0.001 * plant),
             "pollen_grains": repr(25 + rank * slope + (plant % 3) * 0.2),
             "flower_age_at_sampling_hours": "48",
+            "pollen_sampling_stage": "LATE_ANTHESIS",
             "pollen_assay_method_id": "SYNTHETIC_DESTRUCTIVE_STIGMA_COUNT",
             "stigma_removed": "1",
             "mechanical_damage": "0",
@@ -228,4 +229,12 @@ def test_registry_prevents_same_flower_reuse_in_pollen_and_seed_cohorts() -> Non
     seed_row["lane"] = "P0_P1_G"
     registry.append(seed_row)
     with pytest.raises(ValueError, match="globally unique"):
+        analyze(rows, receipt, _p0(), registry, _config())
+
+
+def test_sentinel_sampling_stage_must_match_prospective_protocol() -> None:
+    rows, receipt, registry = _packet()
+    rows[0]["pollen_sampling_stage"] = "EARLY_ANTHESIS"
+
+    with pytest.raises(ValueError, match="sampling stage differs"):
         analyze(rows, receipt, _p0(), registry, _config())
