@@ -135,7 +135,7 @@ def outcome_ranges(
                     cuts.add(point)
     ordered = sorted(cuts)
     segments = []
-    for left, next_start in zip(ordered, ordered[1:], strict=True):
+    for left, next_start in zip(ordered, ordered[1:]):
         right = next_start - 1
         if right < left:
             continue
