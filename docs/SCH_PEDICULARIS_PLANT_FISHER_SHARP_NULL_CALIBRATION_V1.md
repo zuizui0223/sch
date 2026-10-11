@@ -48,7 +48,9 @@ the same-peak shape change, and [5,7,10,14,19] for the
 assumed peak displacement.
 
 Potential seed counts are generated **before choosing
-the observed G result**, with a shared patch effect,
+the observed G result**, using an independent deterministic
+random-number substream from the hashed plant G
+randomization seed, with a shared patch effect,
 a mother-plant effect shared by both flowers and
 independent flower noise. Counts are rounded and
 clipped to a synthetic finite upper seed cap. Such
