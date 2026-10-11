@@ -215,6 +215,30 @@ New regression tests verify that:
 All new numeric tests use **synthetic** input.
 None is a real P. rex antagonist selection p-value.
 
+## Synthetic size calibration without conflating statistical nulls
+
+A new non-gating simulator runs the **actual**
+plant-pair Fisher statistic after repeatedly
+randomizing the two-flower cyclic source design.
+It contains an exact sharp-null data generator
+and four structurally different alternatives,
+including uniform additive G gain and
+different z-dependent seed curves with the
+**same** optimum rank. It reports both
+the fraction rejecting the Fisher sharp
+no-effect null and the distinct fraction
+with a positive sample peak displacement.
+
+The former can assess Type-I calibration
+**only under the true sharp-null generator**.
+Under additive and heterogeneous effects,
+it describes rejection of a stronger null
+that is false, **not** power to detect
+a changed population optimum. No actual
+reproductive fitness records or G method
+validation is claimed. See
+`SCH_PEDICULARIS_PLANT_FISHER_SHARP_NULL_CALIBRATION_V1.md`.
+
 ## What has actually become possible
 
 Before this addition, SCH could compute only:
