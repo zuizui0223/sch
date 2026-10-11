@@ -1,0 +1,25 @@
+{
+  "schema": "SCH_P_REX_MATCHED_PLANT_FISHER_SIMULATION_CONFIG_V1",
+  "description": "ENTIRELY SYNTHETIC; compares Fisher sharp no-G-effect calibration to biologically different nonsharp alternatives. NOT a calibrated test of unchanged reproductive optimum.",
+  "patch_stage_batch_grid": [
+    1,
+    2,
+    4
+  ],
+  "replicates_per_condition": 60,
+  "random_seed": 20261011,
+  "intact_seeds_upper_cap": 40,
+  "one_sided_alpha": 0.05,
+  "monte_carlo_permutations": 999,
+  "plant_sd": 2,
+  "flower_sd": 1.5,
+  "patch_sd": 1,
+  "G_gain_plant_heterogeneity_sd": 2.5,
+  "scenario_modes": [
+    "SHARP_NO_G_EFFECT",
+    "COMMON_ADDITIVE_G_GAIN",
+    "HETEROGENEOUS_PLANT_G_GAIN",
+    "CHANGED_G_BY_Z_SAME_PEAK",
+    "PREDATOR_EXCLUSION_SHIFTS_PEAK"
+  ]
+}
