@@ -114,10 +114,14 @@ def simulate_pairs(*,scenario_mode,n_batches,seed,cap,
     """
     if scenario_mode not in MODES:
         raise ValueError("unknown potential-outcome scenario")
-    rng=random.Random(seed)
+    # Two independent deterministic substreams: the random assignment
+    # must not share its seed stream with potential-outcome generation.
+    rng=random.Random(_subseed(seed,"POTENTIAL_OUTCOMES"))
     assigned,_=allocate(
         _manifest(n_batches),_settings(),
-        allocation_seed=f"SHARP_FISHER_DESIGN_SEED_{seed:020d}",
+        allocation_seed=(
+            f"SHARP_FISHER_DESIGN_SEED_{_subseed(seed,'PLANT_G_RANDOMIZATION'):020d}"
+        ),
         g_exclusion_candidate_method="SYNTHETIC_INDEPENDENT_G_UNQUALIFIED",
         g_exposed_sham_candidate_method="SYNTHETIC_G_EXPOSED_SHAM",
     )
