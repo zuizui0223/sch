@@ -1,0 +1,42 @@
+{
+  "schema": "SCH_P_REX_ORACLE_SIMULTANEOUS_PEAK_ASSUMPTIONS_V1",
+  "data_kind": "SYNTHETIC_ASSUMPTIONS_NOT_FIELD_DATA",
+  "description": "Noiseless oracle *assumptions* for PR #218's strong synthetic peak-shift seed response; only source-independent Hoeffding/Bonferroni design bounds, not estimated field variance or sample requirements.",
+  "familywise_alpha": 0.05,
+  "global_potential_seed_cap": 25,
+  "assumed_complete_maturity_seed_means": {
+    "EXCLUDED": [
+      4,
+      6,
+      8,
+      10,
+      14
+    ],
+    "EXPOSED": [
+      5,
+      9,
+      11,
+      9,
+      6
+    ]
+  },
+  "candidate_batch_counts": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    100,
+    300,
+    468,
+    469,
+    1000,
+    1872,
+    1873,
+    7490
+  ],
+  "max_batches_to_examine": 12000,
+  "interpretation": "Cell interval halfwidth is K sqrt(log(20/alpha)/(2 B)), with B truly independently randomized patch-stage 10-plant batches and five registered exsertion settings. No outcome censoring; any observed missingness further widens intervals."
+}
