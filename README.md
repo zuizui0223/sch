@@ -166,6 +166,35 @@ This is synthetic-validated, not field
 evidence. See
 `docs/SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`.
 
+## Calibrate the plant-pair Fisher test, not an untested optimum-shift power claim
+
+A dedicated, entirely **synthetic** experiment now runs the
+actual source-aligned two-flower cyclic allocator and
+whole-plant-pair Fisher test under a **true sharp no-G-effect**
+null, a constant additive G gain, plant-heterogeneous
+but not designed z-dependent effects, a **changed G-by-z
+response without changed optimal z**, and a genuinely
+shifted optimum profile. It reports the rejection
+fraction for the **sharp no-effect null** and the
+fraction showing a positive *descriptive* optimum
+displacement separately, with a simulation-proportion
+uncertainty interval.
+
+Rejecting the sharp null, even when the observed
+peak difference is positive, **does not prove the
+population optimum moved**. Nonsharp alternatives
+can preserve the intended optimum while violating
+the test's null, and complete maturity outcomes
+are required for this Fisher test. An exact null-size
+check over all 32 plant-pair assignments remains
+a critical negative control.
+
+The runnable experiment, explicit synthetic
+potential-outcome curves, provenance and limitations
+are in
+`docs/SCH_PEDICULARIS_PLANT_FISHER_SHARP_NULL_CALIBRATION_V1.md`.
+No actual P. rex sample-size recommendation is made.
+
 ## Conditional plant-level randomization test for predator-state peak changes
 
 The two-flower cyclic P. rex candidate now has a **Fisher

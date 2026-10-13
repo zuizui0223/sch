@@ -1,0 +1,51 @@
+name: SCH plant-pair Fisher synthetic size and alternative calibration
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/simulate_pedicularis_plant_pair_fisher_calibration.py'
+      - 'tests/test_pedicularis_plant_pair_fisher_calibration.py'
+      - 'data/SCH_P_REX_MATCHED_PLANT_FISHER_CALIBRATION_SCENARIOS_V1.json'
+      - '.github/workflows/sch_fisher_sharp_null_calibration.yml'
+  workflow_dispatch:
+
+jobs:
+  calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused test runner
+        run: python -m pip install pytest
+      - name: Verify Fisher calibration and alternative controls
+        run: python -m pytest -q tests/test_pedicularis_plant_pair_fisher_calibration.py
+      - name: Execute exact or seeded plant-pair randomization scenarios
+        run: |
+          python -m scripts.simulate_pedicularis_plant_pair_fisher_calibration \
+            data/SCH_P_REX_MATCHED_PLANT_FISHER_CALIBRATION_SCENARIOS_V1.json \
+            --output sch-plant-pair-fisher-synthetic-calibration.json
+      - name: Print reproducible reject/peak proportions separately
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("sch-plant-pair-fisher-synthetic-calibration.json",encoding="utf-8"))
+          print("SYNTHETIC ONLY: sharp-null rejection rate is NOT power to detect weak optimum-shift hypothesis.")
+          for x in r["scenario_grid"]:
+              print("FISHER_SYNTHETIC",json.dumps({
+                  k:x[k] for k in (
+                      "mode","n_eligible_plants","n_matched_plant_pairs",
+                      "n_simulated_allocations","exact_assignment_enumeration",
+                      "fraction_positive_descriptive_peak_shifts",
+                      "fraction_Fisher_sharp_null_rejections",
+                      "simulation_rejection_fraction_Wilson95",
+                      "fraction_both_rejected_and_descriptively_positive"
+                  )
+              },sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-plant-pair-fisher-synthetic-calibration
+          path: sch-plant-pair-fisher-synthetic-calibration.json
