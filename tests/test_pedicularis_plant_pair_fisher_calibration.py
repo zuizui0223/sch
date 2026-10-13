@@ -8,7 +8,7 @@ from scripts.fisher_pedicularis_plant_pair_G_randomization import (
     _p_from_stats, fisher_from_pairs, statistic, uniform_additive_G_sensitivity,
 )
 from scripts.simulate_pedicularis_plant_pair_fisher_calibration import (
-    SCHEMA, RESULT, _validate, _wilson, build, simulate_pairs,
+    SCHEMA, RESULT, _validate, _wilson, _subseed, build, simulate_pairs,
 )
 
 
@@ -41,6 +41,17 @@ def _pairs(mode, batches=1, *, noise=False, seed=314159):
         plant_sd=2 if noise else 0,
         flower_sd=1 if noise else 0,
         heterogeneous_G_sd=2,
+    )
+
+
+def test_hash_substreams_satisfy_exact_Fisher_63_bit_seed_contract():
+    for source_seed in (0,1,17,20261011,2**63-1):
+        for serial in range(100):
+            generated=_subseed(source_seed,"FISHER_SWAPS",str(serial))
+            assert type(generated) is int
+            assert 0<=generated<=2**63-1
+    assert _subseed(20261011,"PLANT_G_RANDOMIZATION") != _subseed(
+        20261011,"POTENTIAL_OUTCOMES"
     )
 
 
