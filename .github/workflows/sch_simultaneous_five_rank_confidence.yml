@@ -1,0 +1,55 @@
+name: SCH simultaneous five-rank peak confidence audit
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/infer_pedicularis_simultaneous_design_peaks.py'
+      - 'tests/test_pedicularis_simultaneous_design_peaks.py'
+      - 'data/SCH_P_REX_SYNTHETIC_ORACLE_SIMULTANEOUS_PEAK_V1.json'
+      - '.github/workflows/sch_simultaneous_five_rank_confidence.yml'
+  workflow_dispatch:
+
+jobs:
+  bounded-joint-peak-sets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused tests
+        run: python -m pip install pytest
+      - name: Verify 10-cell union-bound peak inference and synthetic oracle
+        run: |
+          python -m pytest -q tests/test_pedicularis_simultaneous_design_peaks.py
+      - name: Reproduce synthetic oracle sample-size bound
+        run: |
+          python -m scripts.infer_pedicularis_simultaneous_design_peaks \
+            --synthetic-oracle \
+            data/SCH_P_REX_SYNTHETIC_ORACLE_SIMULTANEOUS_PEAK_V1.json \
+            --output sch-synthetic-oracle-joint-peaks.json
+      - name: Print non-field inference result and thresholds
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('sch-synthetic-oracle-joint-peaks.json',encoding='utf-8'))
+          print("SYNTHETIC ORACLE, NOT A P. rex FIELD SAMPLE SIZE.")
+          print("NOISY RANDOMIZED OUTCOMES REQUIRE MORE THAN PERFECT ORACLE CENTERING.")
+          for b in ("32","468","469","1872","1873","7490"):
+              s=x["per_candidate_batch"][b]
+              print("ORACLE_JOINT_PEAK",json.dumps({
+                  "batches":b,
+                  "plants":s["n_eligible_plants_in_design"],
+                  "epsilon":s["per_cell_Hoeffding_halfwidth_before_clipping"],
+                  "positive":s["positive_shift_certified"],
+                  "both_unique":s["both_state_peaks_unique"],
+                  "rank_shift_interval":s["peak_rank_shift_outer_confidence_interval"]
+              },sort_keys=True))
+          print("ORACLE_CERTIFICATION",json.dumps(
+              x["idealized_certification_thresholds"],sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-synthetic-oracle-joint-peak-bounds
+          path: sch-synthetic-oracle-joint-peaks.json
