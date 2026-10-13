@@ -166,6 +166,44 @@ This is synthetic-validated, not field
 evidence. See
 `docs/SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`.
 
+## Targeted ecological selection contrast that tolerates maternal additive G gains
+
+The actual 900-run plant-pair calibration exposed a
+substantial weakness of the **peak-midrank** Fisher statistic:
+under an invented large predator-mediated optimum shift,
+the peaks appeared displaced in all simulated studies,
+yet the Fisher sharp no-G-effect null was rejected
+only **0/60, 0/60 and 1/60** times at 10, 20 and
+40 plants respectively. This is a negative method
+sensitivity result, not empirical evidence for P. rex.
+
+A new plant-pair Fisher test instead uses the **difference
+between a mother's TWO z-assigned flowers**, and
+the five-edge cyclic design's symmetric graph contrast
+to target the relative z4-versus-z2 seed-fitness
+benefit of excluding seed predators.
+
+Under a **weaker sharp null**, the within-plant z contrast
+is invariant across predator treatments, while an
+arbitrary mother-specific **additive** G gain may
+exist in absolute seed counts. Thus it directly
+addresses functional trait-dependent antagonist
+response rather than just overall reproductive gain.
+The exact statistic is a half-weighted combination
+of both routes through the z cycle, and preserves
+whole-mother randomization.
+
+In the synthetic 10-plant large-shift fixture,
+the targeted relative-fitness contrast is
+**+17 intact seeds/flower**, with exact one-sided
+Fisher p=**1/32**. This does **not** prove the
+full population optimum shifted or establish a
+weak-null test of equal optimal ranks.
+A separate six-scenario benchmark compares both
+tests on the SAME source assignment data.
+See
+`docs/SCH_PEDICULARIS_WITHIN_PLANT_G_BY_Z_SHAPE_FISHER_V1.md`.
+
 ## Calibrate the plant-pair Fisher test, not an untested optimum-shift power claim
 
 A dedicated, entirely **synthetic** experiment now runs the
