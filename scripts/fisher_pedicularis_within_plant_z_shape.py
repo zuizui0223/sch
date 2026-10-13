@@ -122,8 +122,10 @@ def fisher_within_plant_shape_pairs(
     ]
     test=_p_from_stats(observed_twice,statistics,exact=exact)
     return {
-        "predeclared_shape_estimand":
-            "(Y_excluded_z4-Y_excluded_z2)-(Y_exposed_z4-Y_exposed_z2)",
+        "population_target_under_unconditional_z_slot_randomization":
+            "(mu_excluded_z4-mu_excluded_z2)-(mu_exposed_z4-mu_exposed_z2)",
+        "finite_source_statistic_is_symmetrically_weighted_within_plant_path_score":True,
+        "finite_source_score_not_identical_to_raw_cell_mean_difference":True,
         "source_contrast_ranks":{"high":4,"intermediate":2},
         "observed_relative_exsertion_advantage_count_per_flower":
             observed_twice/(2*batches),
@@ -174,6 +176,7 @@ def build(rows:list[dict],receipt:dict, *,
             "G_randomization_must_truly_pair_whole_plants_by_z_edge",
             "no_between_plant_G_spillover_or_trait_geometry_interference_verified",
             "within_plant_pair_difference_null_not_population_mean_shape_null",
+            "conditional_edge_pair_score_not_raw_z4_z2_cell_mean_difference",
             "arbitrary_plant_specific_common_additive_G_gain_cancels_in_D",
             "observed_G_by_z_shape_effect_not_proof_of_changed_fitness_optimum",
             "pilot_z_manipulation_first_stage_and_G_selectivity_unqualified",
