@@ -97,7 +97,10 @@ def _validate(config):
 
 def _subseed(seed,*tokens):
     s=json.dumps([seed,*tokens],separators=(",",":"))
-    return int.from_bytes(hashlib.sha256(s.encode()).digest()[:8],"big")
+    # The source Fisher test accepts seeds in 0..2**63-1.
+    # Derive independent reproducible hash-based substreams without
+    # overflowing that exact input contract.
+    return int.from_bytes(hashlib.sha256(s.encode()).digest()[:8],"big") & ((1<<63)-1)
 
 
 def _outcome(latent,cap):
