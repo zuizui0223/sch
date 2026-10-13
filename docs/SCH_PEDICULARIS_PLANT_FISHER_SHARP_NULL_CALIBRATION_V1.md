@@ -185,6 +185,37 @@ population optimum. Rejecting a targeted
 interaction contrast is not itself proof
 of an optimum shift.
 
+## A more biologically targeted, difference-based Fisher statistic
+
+The low synthetic sensitivity of the peak-midrank
+statistic led to a new matched-parent method:
+difference each mother's two z-assigned flower
+maturity outputs FIRST, then test whether predator
+G changes that **within-mother shape contrast**.
+An arbitrary mother-specific z-independent
+additive G gain cancels before the test.
+
+A half-weighted symmetric combination of
+all five cyclic z-pair differences targets
+the biologically preselected relative fitness
+change between exsertion ranks z4 and z2.
+It has its own **sharp null** (invariant
+within-parent z contrast across G), which
+is weaker than the original sharp no-G
+effect on any mature seed count. Under
+the strong noiseless synthetic shift it
+has exact conditional Fisher p=1/32
+with just ten plants; this is not a
+result from real P. rex floral fitness data.
+
+The two different nulls and statistics
+are benchmarked using the SAME frozen
+potential-outcome generator. Neither
+alone validates the weak hypothesis
+that the **population fitness optimum
+moves**. See
+`SCH_PEDICULARIS_WITHIN_PLANT_G_BY_Z_SHAPE_FISHER_V1.md`.
+
 ## Critical formal-null distinction
 
 The existing optional PR #219 sensitivity test
