@@ -120,6 +120,71 @@ Carlo tail inference at 40 enrolled plants
 simulated dataset). This distinction is explicit
 in the output.
 
+## Executed synthetic calibration — negative sensitivity finding
+
+After fixing the random-seed range bug, the dedicated
+[GitHub Actions run 38403310656](https://github.com/zuizui0223/sch/actions/runs/38403310656)
+completed the entire **900 dataset** frozen study
+(5 scenarios × 3 independent-plant counts × 60
+realizations), including source-consistent whole-plant
+assignments and exact or plus-one Fisher permutations.
+
+The numbers below report two **different** simulation
+frequencies, each out of 60 replicates. Cells read
+**positive sample-peak shift / p≤0.05 sharp-null
+rejection**, in percent:
+
+| Synthetic potential-outcome world | 10 plants | 20 plants | 40 plants |
+|---|---:|---:|---:|
+| Sharp no-G-effect null | 0 / 0 | 0 / 0 | 0 / 0 |
+| Constant additive G gain | 1.7 / 0 | 0 / 0 | 0 / 0 |
+| G gain heterogeneous by plant | 5.0 / 0 | 0 / 0 | 0 / 0 |
+| G changes z-response but optimum still z2 | 0 / 0 | 0 / 0 | 0 / 0 |
+| **Excluded peak z4, exposed peak z2** | **100 / 0** | **100 / 0** | **100 / 1.7** |
+
+The **unexpected central result** is that under this
+very favorable large peak-shift alternative,
+the peak-midrank Fisher test rejected the sharp
+null in **only 1 of 180 true-shift synthetic
+allocations** across all tested sizes.
+At 40 plants, the estimated rejection
+frequency is 1/60=1.7%, Wilson Monte Carlo
+95% interval approximately **0.3%–8.9%**;
+at 10 and 20 plants, 0/60 each permits
+rejection frequencies up to ~6.0% at 95%
+Wilson confidence under repeated simulation.
+
+This is **not evidence that predator selection
+is absent in P. rex**. It shows this bounded,
+coarse **peak-midrank statistic has very
+low sensitivity under our synthetic design
+and effect curves**, even when the sample
+peak ranks differ in the expected direction
+in every replicate.
+
+Likewise, 0/60 rejections under the true
+sharp null does not establish exact Type-I
+error = 0; exact Fisher superuniformity
+is a *theorem conditional on assignment*,
+while 60 synthetic draws are an imprecise
+empirical diagnostic. No null or non-null
+simulation rate is a confidence interval
+for an actual P. rex experimental effect.
+
+**Protocol consequence:** do not register
+peak-midrank Fisher p alone as the
+primary powered test of predator-mediated
+optimum displacement. The next method
+should compare **prospectively specified
+quantitative cross-z G-response contrasts**
+against the original peak-midrank test,
+then separately establish simultaneous
+peak identification and a valid test of
+the *weak hypothesis* of unchanged
+population optimum. Rejecting a targeted
+interaction contrast is not itself proof
+of an optimum shift.
+
 ## Critical formal-null distinction
 
 The existing optional PR #219 sensitivity test
