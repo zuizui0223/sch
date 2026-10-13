@@ -1,0 +1,55 @@
+name: P. rex maternal z-contrast Fisher null and sensitivity
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/fisher_pedicularis_within_plant_z_shape.py'
+      - 'scripts/benchmark_pedicularis_within_plant_shape_fisher.py'
+      - 'tests/test_pedicularis_within_plant_z_shape_fisher.py'
+      - 'tests/test_pedicularis_within_plant_shape_fisher_benchmark.py'
+      - '.github/workflows/sch_p_rex_within_plant_z_shape_fisher.yml'
+  workflow_dispatch:
+
+jobs:
+  shape-contrast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Test source validation and contrast-null randomization
+        run: |
+          python -m pytest -q \
+            tests/test_pedicularis_within_plant_z_shape_fisher.py \
+            tests/test_pedicularis_within_plant_shape_fisher_benchmark.py
+      - name: Benchmark frozen Fisher peak against maternal z-shape contrast
+        run: |
+          python -m scripts.benchmark_pedicularis_within_plant_shape_fisher \
+            data/SCH_P_REX_MATCHED_PLANT_FISHER_CALIBRATION_SCENARIOS_V1.json \
+            --output sch-maternal-shape-fisher-benchmark.json
+      - name: Print null and targeted-shape rejection rates separately
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open("sch-maternal-shape-fisher-benchmark.json",encoding="utf-8"))
+          print("SYNTHETIC: Different Fisher sharp nulls. No unchanged-optimum weak-null test.")
+          for x in r["scenario_grid"]:
+              print("MATERNAL_SHAPE_FISHER",json.dumps({
+                  k:x[k] for k in (
+                      "mode","n_eligible_plants","n_simulated_assignments",
+                      "fraction_peak_midrank_Fisher_rejections",
+                      "fraction_within_plant_shape_Fisher_rejections",
+                      "shape_rejection_Wilson95_simulation_interval",
+                      "n_descriptive_positive_peak_shifts",
+                      "n_positive_z4_vs_z2_G_shape_contrasts"
+                  )
+              },sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-maternal-shape-fisher-benchmark
+          path: sch-maternal-shape-fisher-benchmark.json
