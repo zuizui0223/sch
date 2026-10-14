@@ -206,6 +206,73 @@ def possible_optimum_rank_set(cells:dict[str,dict])->dict:
     }
 
 
+def hypothetical_perfect_curve_horizon(
+    *,excluded_curves:list[float],exposed_curves:list[float],
+    seed_cap:int,alpha:float,max_batches:int=100000,
+)->dict:
+    """Smallest B for conservative sign vs *both ranks uniquely* known.
+
+    Extremely optimistic synthetic radius geometry: batch sample
+    means are stipulated EXACTLY equal to the guessed potential
+    curves. This is not a real study design calculation, power
+    curve, field result, or a population-transport inference.
+    """
+    if (
+        len(excluded_curves)!=5 or len(exposed_curves)!=5
+        or type(max_batches) is not int or not 1<=max_batches<=10000000
+    ):
+        raise ValueError("hypothetical horizon needs five ranks and finite batch search")
+    hoeffding_radius(batches=1,seed_cap=seed_cap,alpha=alpha)
+    for curve in (excluded_curves,exposed_curves):
+        for val in curve:
+            if (
+                type(val) not in (int,float)
+                or not math.isfinite(val) or not 0<=val<=seed_cap
+            ):
+                raise ValueError("hypothetical curves must lie within global K")
+    curves={"EXCLUDED":excluded_curves,"EXPOSED":exposed_curves}
+    def classify(batches):
+        r=hoeffding_radius(batches=batches,seed_cap=seed_cap,alpha=alpha)
+        cells={
+            g:{
+                str(z):{
+                    "simultaneous_lower":max(0.,curve[z]-r),
+                    "simultaneous_upper":min(float(seed_cap),curve[z]+r),
+                } for z in Z
+            } for g,curve in curves.items()
+        }
+        return possible_optimum_rank_set(cells)
+    def lower_b(target):
+        if not target(max_batches):
+            return None
+        left,right=1,max_batches
+        while left<right:
+            mid=(left+right)//2
+            if target(mid):
+                right=mid
+            else:
+                left=mid+1
+        return left
+    def shift_cert(B):
+        s=classify(B)["excluded_minus_exposed_optimum_rank_shift_outer_interval"]
+        return s[0]>0 or s[1]<0
+    def both_unique(B):
+        st=classify(B)["states"]
+        return all(st[g]["guaranteed_unique_optimum_rank"] is not None for g in G)
+    shift_b=lower_b(shift_cert)
+    both_b=lower_b(both_unique)
+    return {
+        "input_kind":"FULLY_HYPOTHETICAL_MEANS_WITH_NO_SAMPLING_VARIABILITY",
+        "smallest_batches_certifying_direction_under_joint_hoeffding":shift_b,
+        "smallest_batches_with_both_state_optima_unique_under_joint_hoeffding":both_b,
+        "max_batch_search_bound":max_batches,
+        "direction_result_at_first_certificate":(
+            classify(shift_b) if shift_b is not None else None
+        ),
+        "min_required_B_is_not_empirical_power_or_sample_size":True,
+    }
+
+
 def build(rows:list[dict],source_design_receipt:dict,raw_config:dict)->dict:
     cfg=_config(raw_config)
     # Reuse source-locked flower identity, plant-level G and true-zero/fate
