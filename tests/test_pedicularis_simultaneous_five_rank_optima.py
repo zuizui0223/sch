@@ -42,6 +42,7 @@ def _config(cap=K):
         "global_max_intact_seeds_per_flower":cap,
         "global_cap_source_status":CAP_PROVENANCE,
         "independent_batch_randomization_assumed":True,
+        "cap_assumption_kind":"SYNTHETIC_NOT_FIELD_VERIFIED",
     }
 
 
@@ -154,6 +155,7 @@ def test_source_receipt_and_missing_mature_outcome_are_retained():
     assert r["actual_pre_treatment_cap_authentication_completed"] is False
     assert r["batch_assignments_independently_randomized_verified"] is False
     assert r["global_seed_cap_K"]==25
+    assert r["global_seed_cap_assumption_kind"]=="SYNTHETIC_NOT_FIELD_VERIFIED"
     assert r["legacy_descriptive_optimum_outer_interval"]!=[2,2]
     unknown=r["simultaneous_result"]["cells"]["EXPOSED"]["4"]
     assert unknown["mean_observed_fate_lower"]<=6
