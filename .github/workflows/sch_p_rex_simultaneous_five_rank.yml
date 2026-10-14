@@ -1,0 +1,74 @@
+name: SCH five-rank simultaneous source-bound checks
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/bound_pedicularis_simultaneous_five_rank_optima.py'
+      - 'tests/test_pedicularis_simultaneous_five_rank_optima.py'
+      - '.github/workflows/sch_p_rex_simultaneous_five_rank.yml'
+  workflow_dispatch:
+
+jobs:
+  all-rank-bands:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Validate all-ten-cell coverage and complete source ID constraints
+        run: |
+          python -m pytest -q tests/test_pedicularis_simultaneous_five_rank_optima.py
+      - name: Produce inspectable synthetic worst-case joint-band horizon
+        run: |
+          python - <<'PY'
+          import json
+          from scripts.bound_pedicularis_simultaneous_five_rank_optima import (
+              hoeffding_radius, simultaneous_cell_intervals,
+              possible_optimum_rank_set,
+              sufficient_batches_for_symmetric_gap,
+          )
+          excluded=[4,6,8,10,14]
+          exposed=[5,9,11,9,6]
+          pattern={
+              (g,z):(curve[z],curve[z])
+              for g,curve in (("EXCLUDED",excluded),("EXPOSED",exposed))
+              for z in range(5)
+          }
+          rows=[]
+          for B in (1,4,16,32,469,1873):
+              bands=simultaneous_cell_intervals(
+                  [pattern]*B,seed_cap=25,alpha=0.05
+              )
+              ranking=possible_optimum_rank_set(bands["cells"])
+              row={
+                  "n_independently_randomized_batches_ASSUMED":B,
+                  "n_eligible_plants":10*B,
+                  "simultaneous_half_width":bands["hoeffding_radius_seeds_per_flower"],
+                  "excluded_possible_optima":ranking["states"]["EXCLUDED"]["possible_optimum_ranks"],
+                  "exposed_possible_optima":ranking["states"]["EXPOSED"]["possible_optimum_ranks"],
+                  "outer_optimum_shift":ranking[
+                      "excluded_minus_exposed_optimum_rank_shift_outer_interval"
+                  ],
+                  "source_kind":"SYNTHETIC_NOT_P_REX_FIELD_DATA",
+              }
+              rows.append(row)
+              print("SYNTHETIC_SIMULTANEOUS_PEAK",json.dumps(row,sort_keys=True))
+          print("Hypothetical gap=2, K=25, minimum radius-only B:",
+                sufficient_batches_for_symmetric_gap(
+                    hypothetical_gap=2,seed_cap=25,alpha=0.05
+                ))
+          with open("sch-five-rank-synthetic-joint-bands.json","w",encoding="utf-8") as f:
+              json.dump({
+                  "data_kind":"SYNTHETIC_UNVERIFIED_GLOBAL_K_25",
+                  "interpretation":"Conservative conditional design assignment Hoeffding benchmark, NOT field CI or calibrated sample size.",
+                  "rows":rows,
+              },f,indent=2)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-five-rank-synthetic-joint-bands
+          path: sch-five-rank-synthetic-joint-bands.json
