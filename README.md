@@ -204,6 +204,45 @@ tests on the SAME source assignment data.
 See
 `docs/SCH_PEDICULARIS_WITHIN_PLANT_G_BY_Z_SHAPE_FISHER_V1.md`.
 
+## All-five-rank simultaneous confidence for predator-state reproductive optima
+
+The sensitive **within-mother exsertion difference** Fisher test
+(PR #221) addresses a prespecified G-dependent shape contrast,
+not whether the **full five-rank reproductive optimum**
+moves. A new *non-gating* companion now computes
+**simultaneous confidence bands for all ten G×z viable-seed
+means**, then projects them into possible state-specific
+optimum ranks and an excluded-minus-exposed shift interval.
+
+The method counts the **entire independently randomized
+ten-parent patch-stage batch as one bounded unit**,
+never 20 independent flowers. Under a *genuine
+prospectively executed independent batch randomization*,
+no cross-batch interference and a **physical potential
+mature seed-count cap K** valid for every potential
+outcome, Hoeffding + a ten-cell union bound provide
+conditional simultaneous ≥95% coverage.
+
+A striking **negative feasibility result** is that even
+under perfect fully observed synthetic z response curves
+with peaks z4 and z2, K=25 and 32 independent
+ten-parent batches (320 plants) yield a **±7.65
+intact-seeds/flower** radius, leaving every z rank
+possibly optimal. Separating a two-seed best-versus-
+runner-up gap by nonoverlapping intervals requires
+**1,873 batches (18,730 plants)** under that *extremely
+conservative* radius-only calculation.
+This is **NOT an empirical sample-size requirement**;
+it shows why distribution-free worst-case full-peak
+inference cannot simply replace real covariance/
+variance calibration.
+
+Missing final seed outcomes remain interval-censored;
+synthetic cap declarations are not field-authenticated.
+See
+`docs/SCH_PEDICULARIS_FIVE_RANK_SIMULTANEOUS_INFERENCE_V1.md`
+and `scripts/bound_pedicularis_simultaneous_five_rank_optima.py`.
+
 ## Calibrate the plant-pair Fisher test, not an untested optimum-shift power claim
 
 A dedicated, entirely **synthetic** experiment now runs the
