@@ -249,6 +249,52 @@ integer meeting that inequality is
 eligible plants**, even under perfect
 noiseless mean curves.
 
+### A subtle ecological distinction: direction versus exact optimum
+
+The synthetic test now *exactly searches* the
+smallest whole-batch B satisfying either
+(i) a **strictly positive excluded-minus-exposed
+shift** or (ii) identification of **both**
+state-specific optimal ranks individually,
+under the entirely hypothetical perfect
+mean curves above.
+
+At B=468, a positive shift is **not yet
+certified**. At B=469 (4,690 plants),
+the possible EXCLUDED optimum is **only
+z4**, while the EXPOSED optimum might
+still be **z1, z2 or z3**. Nonetheless,
+**every** compatible excluded optimum
+is greater than **every** compatible
+exposed optimum: the shift interval
+is **[+1,+3]**. The **direction of
+optimum displacement** is therefore
+already conservatively certified.
+
+To identify both exact state-specific
+optima z4 and z2, B=1,873
+(18,730 plants) is necessary under
+the same artificial radius-only
+condition.
+
+This distinguishes a **scientifically
+weaker but directly relevant ecological
+claim** (the fitness optimum moves
+toward higher exsertion) from the
+stronger claim that both optimal z
+settings are individually recovered.
+Both thresholds are extreme because
+the chosen distribution-free confidence
+method ignores realized seed-fitness
+variance and plant/patch covariance.
+
+The earliest batch horizons are computed
+by `hypothetical_perfect_curve_horizon()`
+and are protected by deterministic
+tests at their **B−1/B** boundaries.
+They are **not** an empirical sample-
+size or 80%-power recommendation.
+
 This is **NOT a biological sample-size
 recommendation, minimum powered design,
 or evidence about P. rex population size**.
