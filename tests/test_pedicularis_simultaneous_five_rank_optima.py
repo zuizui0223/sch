@@ -10,6 +10,7 @@ from scripts.bound_pedicularis_simultaneous_five_rank_optima import (
     CONFIG_SCHEMA, CAP_PROVENANCE, SCHEMA, build,
     hoeffding_radius, possible_optimum_rank_set,
     simultaneous_cell_intervals, sufficient_batches_for_symmetric_gap,
+    hypothetical_perfect_curve_horizon,
 )
 from scripts.plan_pedicularis_two_flower_cyclic_blocks import (
     build as allocate, ALLOC_FIELDS,
@@ -112,6 +113,32 @@ def test_32_batches_source_like_perfect_profiles_still_cannot_prove_peak_move():
     assert a["states"]["EXPOSED"]["possible_optimum_ranks"]==[0,1,2,3,4]
     assert a["excluded_minus_exposed_optimum_rank_shift_outer_interval"]==[-4,4]
     assert a["zero_optimum_displacement_ruled_out"] is False
+
+
+def test_directional_shift_can_be_identified_before_either_peak_is_fully_unique():
+    # The biological claim "predator exclusion shifts optimum higher" is
+    # weaker than exact identification of both optima separately.
+    earlier=simultaneous_cell_intervals(
+        [_perfect_batch() for _ in range(468)],seed_cap=25,alpha=.05
+    )
+    shift_earlier=possible_optimum_rank_set(earlier["cells"])
+    assert shift_earlier["zero_optimum_displacement_ruled_out"] is False
+    out=simultaneous_cell_intervals(
+        [_perfect_batch() for _ in range(469)],seed_cap=25,alpha=.05
+    )
+    shift=possible_optimum_rank_set(out["cells"])
+    assert shift["states"]["EXCLUDED"]["possible_optimum_ranks"]==[4]
+    assert shift["states"]["EXPOSED"]["possible_optimum_ranks"]==[1,2,3]
+    assert shift["excluded_minus_exposed_optimum_rank_shift_outer_interval"]==[1,3]
+    assert shift["zero_optimum_displacement_ruled_out"] is True
+    assert shift["states"]["EXPOSED"]["guaranteed_unique_optimum_rank"] is None
+    horizon=hypothetical_perfect_curve_horizon(
+        excluded_curves=list(EXCLUDED),exposed_curves=list(EXPOSED),
+        seed_cap=25,alpha=.05,max_batches=2000,
+    )
+    assert horizon["smallest_batches_certifying_direction_under_joint_hoeffding"]==469
+    assert horizon["smallest_batches_with_both_state_optima_unique_under_joint_hoeffding"]==1873
+    assert horizon["min_required_B_is_not_empirical_power_or_sample_size"] is True
 
 
 def test_enough_independent_batches_can_certify_discrete_peak_shift_under_ideal_conditions():
