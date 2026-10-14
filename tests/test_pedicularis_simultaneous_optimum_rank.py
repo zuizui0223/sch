@@ -133,15 +133,23 @@ def test_source_locked_five_rank_fruit_fate_intervals_are_retained_without_imput
     assert result["positive_optimum_shift_certified_conditional_on_assumptions"] is False
     # A missing high-exsertion outcome has [0,40], not a fabricated 0.
     partially=deepcopy(rows)
-    missing=next(r for r in partially if
-                 r["predator_treatment"]=="EXCLUDED" and
-                 r["assigned_z_rank"]=="4")
-    missing.update(
-        fate_status="FATE_UNOBSERVED",intact_seeds="",
-        damaged_seeds="",seed_stage_proof="",
-    )
+    # Two high-z maturity fates in ONE independent batch disappear;
+    # preserve both as [0,40], not a false observed zero.
+    missing=[
+        r for r in partially if (
+            r["patch_id"]=="INDEPENDENT_PATCH_000"
+            and r["predator_treatment"]=="EXCLUDED"
+            and r["assigned_z_rank"]=="4"
+        )
+    ]
+    assert len(missing)==2
+    for row in missing:
+        row.update(
+            fate_status="FATE_UNOBSERVED",intact_seeds="",
+            damaged_seeds="",seed_stage_proof="",
+        )
     after=build(partially,receipt,registered_global_viable_seed_cap=40)
-    assert after["n_source_fruit_outcomes_unresolved"]==1
+    assert after["n_source_fruit_outcomes_unresolved"]==2
     target=next(x for x in after["all_contrast_intervals"] if
                 x["predator_treatment"]=="EXCLUDED" and
                 x["rank_a"]==3 and x["rank_b"]==4)
