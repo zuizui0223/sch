@@ -147,12 +147,10 @@ def test_source_receipt_and_missing_mature_outcome_are_retained():
     rows,receipt=_packet(unknown_fates=True)
     r=build(rows,receipt,_config())
     assert r["receipt_schema"]==SCHEMA
-    assert r["n_patch_stage_batches"] if "n_patch_stage_batches" in r else (
-        r["simultaneous_result"]["n_independently_randomized_batches_assumed"]==2
-    )
-    assert r["source_field_data_independently_verified"] if (
-        "source_field_data_independently_verified" in r
-    ) else r["actual_pre_treatment_cap_authentication_completed"] is False
+    assert r["simultaneous_result"][
+        "n_independently_randomized_batches_assumed"
+    ]==2
+    assert r["actual_pre_treatment_cap_authentication_completed"] is False
     assert r["actual_pre_treatment_cap_authentication_completed"] is False
     assert r["batch_assignments_independently_randomized_verified"] is False
     assert r["global_seed_cap_K"]==25
