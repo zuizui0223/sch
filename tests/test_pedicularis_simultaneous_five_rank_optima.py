@@ -141,6 +141,17 @@ def test_directional_shift_can_be_identified_before_either_peak_is_fully_unique(
     assert horizon["min_required_B_is_not_empirical_power_or_sample_size"] is True
 
 
+def test_both_state_optima_are_not_individually_unique_just_below_the_1873_batch_horizon():
+    bands=simultaneous_cell_intervals(
+        [_perfect_batch() for _ in range(1872)],seed_cap=25,alpha=.05
+    )
+    assert 2*bands["hoeffding_radius_seeds_per_flower"]>=2
+    classification=possible_optimum_rank_set(bands["cells"])
+    assert classification["zero_optimum_displacement_ruled_out"] is True
+    assert classification["states"]["EXCLUDED"]["guaranteed_unique_optimum_rank"]==4
+    assert classification["states"]["EXPOSED"]["guaranteed_unique_optimum_rank"] is None
+
+
 def test_enough_independent_batches_can_certify_discrete_peak_shift_under_ideal_conditions():
     no_missing=[_perfect_batch() for _ in range(1873)]
     out=simultaneous_cell_intervals(no_missing,seed_cap=25,alpha=.05)
