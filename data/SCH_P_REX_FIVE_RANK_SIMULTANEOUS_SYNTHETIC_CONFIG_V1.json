@@ -1,0 +1,9 @@
+{
+  "schema": "SCH_PEDICULARIS_FIVE_Z_SIMULTANEOUS_BOUNDS_CONFIG_V1",
+  "description": "SYNTHETIC configuration only; K=25 and independent randomized batch assumptions are UNVERIFIED for P. rex field experiments. Must replace with legitimately preregistered biological cap and executed randomizations before field inference.",
+  "simultaneous_alpha": 0.05,
+  "global_max_intact_seeds_per_flower": 25,
+  "global_cap_source_status": "PRE_TREATMENT_REGISTERED_GLOBAL_POTENTIAL_SEED_CAP",
+  "cap_assumption_kind": "SYNTHETIC_NOT_FIELD_VERIFIED",
+  "independent_batch_randomization_assumed": true
+}
