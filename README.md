@@ -166,6 +166,55 @@ This is synthetic-validated, not field
 evidence. See
 `docs/SCH_PEDICULARIS_TWO_FLOWER_PLANT_RANDOMIZATION_TEST_V1.md`.
 
+## Five-rank simultaneous confidence sets for predator-driven reproductive optima
+
+SCH now has an explicitly **conditional population-level
+simultaneous rank-set analysis** for the two-flower
+cyclic P. rex design. It validates every frozen flower
+and seed fate, treats each **independent patch-stage
+batch** (ten distinct mother plants, twenty flowers)
+as a single independent sampling/assignment vector,
+and protects all **20 within-G z-rank mean differences**
+at once. Each genuine unknown mature seed fate
+remains an intact-seed outcome interval, not an
+imputed zero or a deleted record.
+
+Using a **prospectively justified global bound K**
+on intact seeds per eligible flower, one-sided
+Hoeffding and a union bound over 40 endpoints
+yield a simultaneous confidence enclosure
+conditional on independent, representative
+patches and genuine G/z randomization. A
+rank may be excluded from best only if another
+has a strictly higher simultaneous lower
+confidence difference. If all remaining
+excluded-state ranks exceed all remaining
+exposed-state ranks, a positive peak shift
+is supported conditionally — unlike the
+previously tested Fisher strong null.
+
+A sobering **synthetic negative result**:
+at K=40 seeds and a .05 familywise error
+budget, even NOISELESS profiles with clear
+excluded peak z4 and exposed peak z2 need
+**856 independent patch-stage batches
+(8,560 plants)** for this strict worst-case
+method to certify their 5-seed/flower
+competitor gaps. That is NOT a field
+recruitment recommendation; it demonstrates
+why realistic variance-aware simultaneous
+best-treatment inference and better maturity
+follow-up are needed.
+
+See
+`docs/SCH_PEDICULARIS_FIVE_RANK_SIMULTANEOUS_OPTIMUM_CONFIDENCE_V1.md`
+and
+`scripts/certify_pedicularis_simultaneous_optimum_rank.py`.
+The nominal coverage depends on assumptions
+that have NOT been verified in P. rex field
+experiments. Neither this tool nor synthetic
+profiles open P0/G/W1/W2 or pure-function gates.
+
 ## Targeted ecological selection contrast that tolerates maternal additive G gains
 
 The actual 900-run plant-pair calibration exposed a

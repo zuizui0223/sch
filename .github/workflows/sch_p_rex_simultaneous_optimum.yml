@@ -1,0 +1,82 @@
+name: SCH five-rank simultaneous optimum certificate checks
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/certify_pedicularis_simultaneous_optimum_rank.py'
+      - 'tests/test_pedicularis_simultaneous_optimum_rank.py'
+      - 'docs/SCH_PEDICULARIS_FIVE_RANK_SIMULTANEOUS_OPTIMUM_CONFIDENCE_V1.md'
+      - '.github/workflows/sch_p_rex_simultaneous_optimum.yml'
+  workflow_dispatch:
+
+jobs:
+  simultaneous-ranks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install regression test runner
+        run: python -m pip install pytest
+      - name: Test 20-contrast familywise bound and source fruit-fate protections
+        run: |
+          python -m pytest -q tests/test_pedicularis_simultaneous_optimum_rank.py
+      - name: Materialize synthetic no-noise best-rank confidence sensitivity
+        run: |
+          python - <<'PY'
+          import json
+          from scripts.certify_pedicularis_simultaneous_optimum_rank import (
+              simultaneous_from_batch_cell_bounds
+          )
+          e=(5,7,10,14,19)
+          x=(5,8,13,8,5)
+          result=[]
+          for B in (2,8,32,100,855,856,1000):
+              batches=[
+                  {
+                      "patch_id":f"SYNTHETIC_INDEPENDENT_PATCH_{b:05d}",
+                      "stage_block_id":"SYNTHETIC_STAGE",
+                      "cells":{
+                          (g,z):(value,value)
+                          for g,curve in (("EXCLUDED",e),("EXPOSED",x))
+                          for z,value in enumerate(curve)
+                      }
+                  }
+                  for b in range(B)
+              ]
+              receipt=simultaneous_from_batch_cell_bounds(
+                  batches,registered_global_viable_seed_cap=40,alpha=0.05,
+              )
+              item={
+                  "n_independent_patches":B,
+                  "n_synthetic_plants":B*10,
+                  "simultaneous_Hoeffding_radius":receipt[
+                      "per_contrast_Hoeffding_half_width_before_physical_clipping"
+                  ],
+                  "sample_optimum_shift_interval":receipt[
+                      "descriptive_finite_allocated_sample_rank_sets"
+                  ]["excluded_minus_exposed_rank_shift_outer_interval"],
+                  "population_confidence_optimum_shift_interval":receipt[
+                      "patch_level_simultaneous_population_rank_sets"
+                  ]["excluded_minus_exposed_rank_shift_outer_interval"],
+                  "confidence_positive_optimum_shift":receipt[
+                      "positive_optimum_shift_certified_conditional_on_assumptions"
+                  ]
+              }
+              print("SYNTHETIC_SIMULTANEOUS_RANK",json.dumps(item,sort_keys=True))
+              result.append(item)
+          with open("sch-five-rank-synthetic-simultaneous.json","w") as f:
+              json.dump({
+                  "status":"SYNTHETIC_NO_FIELD_DATA",
+                  "alpha":0.05,
+                  "registered_hypothetical_global_seed_cap":40,
+                  "samples":result,
+                  "conditional_on_independent_patch_sampling":True
+              },f,indent=2,sort_keys=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-synthetic-simultaneous-optimum-confidence
+          path: sch-five-rank-synthetic-simultaneous.json

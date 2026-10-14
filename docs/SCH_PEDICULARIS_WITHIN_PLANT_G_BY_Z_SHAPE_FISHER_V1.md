@@ -308,6 +308,38 @@ insufficient even with perfect mean fitness
 curves** under K=25. See
 `SCH_PEDICULARIS_FIVE_RANK_SIMULTANEOUS_INFERENCE_V1.md`.
 
+## Simultaneous whole-surface optimum inference is a distinct target
+
+A companion module now considers **all five z
+levels simultaneously in both G states**,
+rather than the selected z4-versus-z2
+within-mother contrast. Using the source-
+validated cyclic fruit design with each
+independent patch-stage block treated as
+one independent observation vector, it
+computes Hoeffding/Bonferroni confidence
+enclosures on all twenty pairwise rank
+differences and a confidence set of
+non-eliminated candidate optima.
+
+This procedure can conservatively support
+a positive or negative rank shift as a
+weak optimum-direction statement **under
+strong verified source sampling and
+randomization assumptions**, unlike
+rejecting the Fisher sharp within-mother
+contrast null. However, the method is
+too conservative for typical sample sizes:
+in the strong noiseless synthetic curves
+with global K=40 it would need 856
+independent patches before both sample
+optima are uniquely certified.
+
+No source P. rex field validity or
+population patch independence is assumed
+already qualified. See
+`SCH_PEDICULARIS_FIVE_RANK_SIMULTANEOUS_OPTIMUM_CONFIDENCE_V1.md`.
+
 ## Limits for a real field experiment
 
 The method requires every originally randomized flower's **exact**
