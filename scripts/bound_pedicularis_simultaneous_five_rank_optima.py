@@ -68,7 +68,13 @@ def _config(raw:dict)->dict:
         raise ValueError("global biological cap must be prospectively registered")
     if raw.get("independent_batch_randomization_assumed") is not True:
         raise ValueError("independent source batch randomization must be an explicit assumption")
-    return {"alpha":float(alpha),"cap":cap}
+    kind=raw.get("cap_assumption_kind")
+    if kind not in (
+        "SYNTHETIC_NOT_FIELD_VERIFIED",
+        "PROSPECTIVE_FIELD_CAP_CLAIM_NOT_EXTERNALLY_VERIFIED",
+    ):
+        raise ValueError("cap_assumption_kind must retain synthetic or user-attested provenance")
+    return {"alpha":float(alpha),"cap":cap,"cap_assumption_kind":kind}
 
 
 def hoeffding_radius(*,batches:int,seed_cap:int,alpha:float,n_cells:int=10)->float:
@@ -243,6 +249,7 @@ def build(rows:list[dict],source_design_receipt:dict,raw_config:dict)->dict:
         "validated_fruit_source_sha256":source["source_fate_rows_sha256"],
         "global_seed_cap_K":cap,
         "cap_provenance_user_declared":CAP_PROVENANCE,
+        "global_seed_cap_assumption_kind":cfg["cap_assumption_kind"],
         "actual_pre_treatment_cap_authentication_completed":False,
         "batch_assignments_independently_randomized_verified":False,
         "physical_z_first_stage_and_G_selectivity_verified":False,
