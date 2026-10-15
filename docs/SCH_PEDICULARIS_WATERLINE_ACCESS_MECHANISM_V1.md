@@ -45,6 +45,18 @@ plots across 2010–2011, not in all six study populations. Its water-treatment
 pollinator P=0.958 is a non-rejection of the null, **not** a prospective
 equivalence demonstration or proof that water handling is neutral everywhere.
 
+An additional source-locked Table 1 audit gives β=0.012, SE=0.224 for
+the Shama pollinator treatment term, yielding a normal-approximation
+90% Wald interval [−0.35645, 0.38045] (95% [−0.42703, 0.45103])
+on the original GLM logit coefficient scale. An ordinary 5% TOST would
+require an independently justified symmetric equivalence margin greater
+than 0.38045 for that SINGLE term, and a valid analysis of plot clustering.
+The source includes a YEAR × TREATMENT term whose covariance is not
+available, so the Table 1 main term is not a verified two-year marginal
+response. None of these calculations establishes biological equivalence,
+and all are conditional on the source model's uncertainty. See
+`SCH_PEDICULARIS_SHAMA_VISITOR_EQUIVALENCE_LIMITS_V1.md`.
+
 **2016**: Corolla exsertion
 `(flower_length - bract_height) / flower_length` was observationally
 associated with both greater stigmatic pollen receipt and greater seed
