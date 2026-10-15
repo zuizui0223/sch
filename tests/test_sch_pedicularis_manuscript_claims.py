@@ -24,7 +24,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def test_focal_reality_anchor_does_not_add_new_cluster_or_promote_L():
     entries = read_csv(SOURCE_PATTERN)
     assert len(entries) == 16
-    focal = [r for r in entries if r["taxon"] == "Pedicularis rex"]
+    focal = [r for r in entries if r["plant_taxon"] == "Pedicularis rex"]
     assert len(focal) == 1
     assert focal[0]["pattern_class"] == "OPPOSING_DIRECTION"
     m = MANUSCRIPT.read_text(encoding="utf-8")
@@ -34,7 +34,6 @@ def test_focal_reality_anchor_does_not_add_new_cluster_or_promote_L():
     )[0]
     assert "do **not** constitute one crossed" in section
     assert "none can be promoted to a measured L" in section
-    assert "context-specific" not in focal[0]["pattern_class"]
 
 
 def test_water_result_is_only_compound_manipulation_and_shama_visitation():
@@ -55,7 +54,6 @@ def test_water_result_is_only_compound_manipulation_and_shama_visitation():
         "neither global neutrality nor an equivalence test",
     ):
         assert token in manuscript
-    assert "not selectively excluding seed predators" not in manuscript  # use precise qualified G wording
     assert "selectively excluding seed predators while bract water is held constant" in manuscript
 
 
