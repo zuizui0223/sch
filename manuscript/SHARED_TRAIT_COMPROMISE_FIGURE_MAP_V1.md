@@ -103,6 +103,8 @@ L5 historical architecture.
 
 Highlight:
 
+- *Pedicularis rex* evidence distinction (already counted among SCH conflict-signature clusters): 2016 **observational** exsertion -> pollen receipt (+) and seed predation (+); 2015 **experimentally manipulated puncture-plus-drainage** -> seed predation (+) with geographically heterogeneous effects; 2013 **observational** 11-patch density/size context. Render these as THREE separate source-labeled horizontal lanes, **not connected into a fictitious experimental z x G surface**. The common biological interpretation is an attractive-versus-vulnerable floral geometry with spatially contingent realised reproductive consequences, whereas neither pure component optima nor L are yet identified.
+- Add a small source/causal-unit panel distinguishing attack prevalence, trait-conditioned attack slope and surviving viable-seed fitness. Do not use any of the synthetic 277/856 patch thresholds as observed seed-predator effect sizes or field recruitment estimates.
 - Pérez-Barrales: case-level stabilizing compromise;
 - Theis & Adler: negative side of the fitness surface;
 - Primula: context-dependent maintenance and microevolution;
