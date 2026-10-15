@@ -95,3 +95,24 @@ def test_source_audit_is_not_novel_randomized_z_G_field_evidence():
     assert "does_not_estimate_water_fixed_selective_predator_G" in ceiling
     assert "does_not_identify_P_rex_optimum_shift_or_SCH_L" in ceiling
     assert "same_six_sites_are_not_six_independent_experiments" in ceiling
+
+
+def test_manuscript_and_figure_cite_actual_cross_endpoint_source_without_equivalence():
+    from pathlib import Path
+    root=Path(__file__).resolve().parents[1]
+    paper=(root/"manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md").read_text(encoding="utf-8")
+    figure=(root/"manuscript/SHARED_TRAIT_COMPROMISE_FIGURE_MAP_V1.md").read_text(encoding="utf-8")
+    doc=(root/"docs/SCH_PEDICULARIS_2015_REAL_CROSS_ENDPOINT_DEFENCE_MOSAIC_V1.md").read_text(encoding="utf-8")
+    for token in (
+        "chi-square = 36.782",
+        "chi-square = 4.913",
+        "P = 0.4265",
+        "P = 0.960",
+        "SCH_PEDICULARIS_2015_REAL_CROSS_ENDPOINT_DEFENCE_MOSAIC_V1.md",
+    ):
+        assert token in paper
+    assert "not evidence that final-seed effects are uniform among sites" in paper
+    assert "NOT EQUIVALENCE" in figure
+    assert "different significance outcomes" not in doc
+    assert "not a formal test of the difference" in doc
+    assert "No plant data were retrieved" in doc
