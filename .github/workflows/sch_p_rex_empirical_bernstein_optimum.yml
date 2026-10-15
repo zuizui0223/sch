@@ -1,0 +1,45 @@
+name: SCH P rex variance-aware optimum confidence tests
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/certify_pedicularis_empirical_bernstein_optimum.py'
+      - 'tests/test_pedicularis_empirical_bernstein_optimum.py'
+      - 'docs/SCH_PEDICULARIS_VARIANCE_AWARE_SIMULTANEOUS_OPTIMUM_V1.md'
+      - '.github/workflows/sch_p_rex_empirical_bernstein_optimum.yml'
+  workflow_dispatch:
+
+jobs:
+  empirical-bernstein-optimum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Verify joint bounds, independent patches, missing fruits and source receipts
+        run: python -m pytest -q tests/test_pedicularis_empirical_bernstein_optimum.py
+      - name: Show synthetic 276 versus 277 patch feasibility
+        run: |
+          python - <<'PY'
+          from scripts.certify_pedicularis_empirical_bernstein_optimum import (
+              empirical_bernstein_from_patch_cell_bounds,
+          )
+          e=(5,7,10,14,19)
+          x=(5,8,13,8,5)
+          for B in (32,100,276,277,856):
+              blocks=[{
+                  'patch_id':f'SYNTHETIC_PATCH_{i}','stage_block_id':'SYNTHETIC',
+                  'cells':{(g,z):(v,v) for g,curve in (('EXCLUDED',e),('EXPOSED',x))
+                           for z,v in enumerate(curve)},
+              } for i in range(B)]
+              r=empirical_bernstein_from_patch_cell_bounds(
+                  blocks,registered_global_viable_seed_cap=40,alpha=.05,
+              )
+              print('SYNTHETIC B=',B,'plants=',10*B,
+                    'EB positive=',r['positive_optimum_shift_certified_conditional_on_assumptions'],
+                    'Hoeffding positive=',r['hoeffding_companion_positive_certificate_at_same_nominal_alpha'])
+          PY
