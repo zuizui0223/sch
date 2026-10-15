@@ -1,0 +1,10 @@
+source_doi,source_table,study_cluster,biological_intervention,endpoint,term,reported_beta,reported_se,reported_df,reported_chi2,reported_p
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,initial_seed_set,SITE,-0.066,0.069,5,56.522,<0.0001
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,initial_seed_set,TREATMENT,0.001,0.006,1,0.014,0.906
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,initial_seed_set,SITE_X_TREATMENT,-0.010,0.069,5,1.032,0.960
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,final_seed_set,SITE,-0.015,0.068,5,18.157,0.0028
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,final_seed_set,TREATMENT,0.025,0.006,1,16.710,<0.0001
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,final_seed_set,SITE_X_TREATMENT,0.013,0.068,5,4.913,0.4265
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,seed_predation,SITE,-0.081,0.076,5,46.755,<0.0001
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,seed_predation,TREATMENT,-0.072,0.007,1,92.808,<0.0001
+10.1093/aobpla/plv019,Table_2,Sun_Huang_2015_one_experiment,BRACT_PUNCTURE_PLUS_WATER_DRAINAGE,seed_predation,SITE_X_TREATMENT,-0.053,0.076,5,36.782,<0.0001
