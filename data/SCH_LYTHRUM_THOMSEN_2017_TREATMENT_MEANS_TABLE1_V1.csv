@@ -1,0 +1,8 @@
+source_doi,source_table,plant_taxon,trait,unit,clipped_mean,clipped_se,control_mean,control_se,source_test,source_p,model_transform
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,number_of_inflorescences,count_per_plant,8,0.51,5.4,0.72,F_17.65,<0.0001,SQRT_FOR_F_TEST
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,flowering_start_julian,day_of_year,196,1.06,191,0.98,W_3497,<0.0001,NONPARAMETRIC
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,flowering_end_julian,day_of_year,236,0.75,236,0.68,W_2187,0.4159,NONPARAMETRIC
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,number_of_flowers,count_per_plant,1048,83.4,825,80.6,W_2943,0.0244,NONPARAMETRIC
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,number_of_fruit,count_per_plant,584,46.9,445,43.2,F_4.967,0.0275,LOG_FOR_F_TEST
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,inflorescence_height_cm,cm,111.6,3.18,121.8,2.78,F_5.623,0.0191,UNTRANSFORMED
+10.1093/aob/mcx026,Table_1,Lythrum salicaria,seeds_per_fruit,count_per_fruit,43.7,2.65,39.6,3.02,F_1.010,0.3168,UNTRANSFORMED
