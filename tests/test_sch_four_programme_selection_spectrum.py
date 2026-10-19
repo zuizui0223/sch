@@ -148,11 +148,14 @@ def test_manuscript_source_bounded_spectrum_not_pooled_prevalence():
     note=(ROOT/"docs/SCH_FOUR_PROGRAMME_POLLINATION_SELECTION_SPECTRUM_V1.md").read_text(encoding="utf-8")
     figure=(ROOT/"manuscript/SHARED_TRAIT_COMPROMISE_FIGURE_MAP_V1.md").read_text(encoding="utf-8")
     for word in (
-        "24", "11", "only one", "two", "rounding",
-        "four published", "not a natural prevalence",
+        "24", "11", "only **one**", "two", "rounding",
+        "four published", "not estimates of natural prevalence",
     ):
         assert word in manuscript.lower()
-    for word in ("24","11","two","0 rounding","1 nominal","source decimal"):
-        assert word.lower() in note.lower()
+    for word in (
+        "24", "11", "**one**", "**two**", "**zero**",
+        "source-decimal-rounding", "none constitutes randomization",
+    ):
+        assert word in note.lower()
     assert "four-programme" in figure.lower()
-    assert "not a direct" in note.lower()
+    assert "no study here identifies" in note.lower()
