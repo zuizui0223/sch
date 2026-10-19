@@ -133,7 +133,7 @@ def test_manuscript_and_source_note_state_experimental_but_nonoptimum_conclusion
     assert "### 7.8 Independent pollination-treatment programmes" in manuscript
     for x in ("0.324","0.206","4.41","14","magnitude","not a direct z"):
         assert x in manuscript.lower()
-    assert "2019 correction" in note
+    assert "2019 Primula correction" in note
     assert "1.545" in note
     assert "Primula" in note
     assert "all 14" in note
