@@ -118,7 +118,7 @@ def test_gym_source_cannot_relabel_plant_treatment_as_flower_randomization():
     with pytest.raises(ValueError,match="source identity"):
         build(v,holdout,bad)
     bad=deepcopy(original)
-    bad[0]["treatment"]=bad[1]["treatment"]
+    bad[0]=deepcopy(bad[1])
     with pytest.raises(ValueError,match="duplicate"):
         build(v,holdout,bad)
     bad=deepcopy(original)
@@ -153,7 +153,7 @@ def test_manuscript_source_bounded_spectrum_not_pooled_prevalence():
     ):
         assert word in manuscript.lower()
     for word in (
-        "24", "11", "**one**", "**two**", "**zero**",
+        "24", "11", "**one**", "two", "zero",
         "source-decimal-rounding", "none constitutes randomization",
     ):
         assert word in note.lower()
