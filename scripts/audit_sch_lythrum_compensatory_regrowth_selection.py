@@ -260,8 +260,13 @@ def build(phenotypes:list[dict[str,str]],
             for v in gradient.values()
         ),
         "n_all_9_contrast_bonferroni_supported":sum(
-            v["bonferroni_all_nine_source_interactions_difference_supported"]
-            for v in gradient.values()
+            abs(s[trait][key]["beta"])>z9*s[trait][key]["se"]
+            for trait in s
+            for key in (
+                "DAMAGE_TREATMENT_X_TRAIT",
+                "POLLINATION_TREATMENT_X_TRAIT",
+                "POLLINATION_X_DAMAGE_X_TRAIT",
+            )
         ),
         "ecological_signature":[
             "apical_damage_increases_mean_inflorescences_but_reduces_positive_selection_for_more",
