@@ -99,7 +99,7 @@ def test_multiplicity_and_posthoc_limits_remain_explicit():
     original=json.loads(READOUT.read_text(encoding="utf-8"))
     assert original["n_supported_reversal_axes"]==2
     assert original["n_programmes_adjudicated"]==3
-    assert original["primary_test"] if "primary_test" in original else True
+    assert original["status"].startswith("THREE_HELDOUT_PROGRAMMES")
 
 
 @pytest.mark.parametrize(("field","value"),[
