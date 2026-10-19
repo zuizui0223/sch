@@ -84,4 +84,4 @@ def test_manuscript_promotes_real_ecology_but_not_theory_or_prevalence():
     ):
         assert token in sec
     assert "source-point contrast −0.160" in figure
-    assert "experimental Gymnadenia" not in text.lower() or len(patterns)==1
+    assert "not a manipulated flowering-time optimum" in text
