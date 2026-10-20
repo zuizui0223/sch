@@ -292,7 +292,7 @@ The three sources separate ecological quantities that SCH must not conflate:
 2. **Trait discrimination:** change in attack with assigned exsertion at fixed physical defense and opponent exposure.
 3. **Fitness translation:** conversion of initiated seeds, damaged seeds and uncertain capsule fates into mature viable reproduction.
 
-A patch may show higher mean attack but weaker exsertion discrimination, or similar attacks but different final fitness gradients; those are **alternative untested mechanisms**, not recovered effect estimates. Identifying the causal reproductive surface requires randomizing several realized exsertion ranks while **selectively excluding seed predators while bract water is held constant** and recording early attack plus intact viable seeds. Historical fully consumed capsules cannot be reclassified as observed zeros. The 2013–2016 studies **do **not** constitute one crossed** exsertion-by-pollinator-by-predator experiment; **none can be promoted to a measured L** or SLK architecture value.
+A patch may show higher mean attack but weaker exsertion discrimination, or similar attacks but different final fitness gradients; those are **alternative untested mechanisms**, not recovered effect estimates. Identifying the causal reproductive surface requires randomizing several realized exsertion ranks while **selectively excluding seed predators while bract water is held constant** and recording early attack plus intact viable seeds. historical fully consumed capsules cannot be reclassified as observed zeros. The 2013–2016 studies do **not** constitute one crossed exsertion-by-pollinator-by-predator experiment; **none can be promoted to a measured L** or SLK architecture value.
 
 ### 7.7 Experimentally changing one ecological input can reverse selection on one floral trait
 
@@ -349,6 +349,23 @@ Knauer and Schiestl (2017; doi:10.1007/s10682-016-9878-8) manipulated **consumer
 **Different reproductive stages explain the apparent contradiction.** Source-fitted seed production associations were positive for bee visits (+20.5±4.8) and butterfly visits (+6.8±2.0) but negative for subsequent caterpillar infestation (−104.5±19.0). This is not a new individual-level mediation analysis. Under mixed insects, the source reported nominally negative corolla-size × phenylacetaldehyde correlational selection (γ=**−0.17±0.08, P=0.029**), but none of the **18** original trait-pair-by-regime tests clears Bonferroni correction; no regime difference in correlational selection was detected. Under the original authors' additive mixed-versus-single-regime gradient benchmark, their fitted nonadditivity contrasts were −0.20±0.08 (P=0.009) for phenylacetaldehyde and +0.19±0.08 (P=0.018) for 1-butene-4-isothiocyanate. These source tests are not equivalent to a demonstrated change in pure-function optima or to experiment-wide multiplicity control.
 
 Finally, (E)-α-farnesene predicted bee visits (+0.18±0.05, P<0.001) while butterfly visitation and egg-response associations were not detected. Such a candidate biased signal remains neither an equivalence test of butterfly indifference nor a demonstrated functionally private cue. *Brassica* therefore shows genuine shared attraction plus opposite adult-benefit/offspring-cost pathways, while net flower-size selection remains positive. It provides **no causal** randomized trait-by-selective-consumer reproductive surface, pure-function optimum, measured SCH loss L or downstream SLK architecture payoff. Source-linked Table 1–3 details: SCH_BRASSICA_2017_MULTISTAGE_RECEIVER_ROLE_CONFLICT_V1.md.
+
+### 7.12 A unifying ecological test: where does context enter the selection chain?
+
+These published systems are **not replications of one mechanism**. They locate context-dependence at different points between phenotype, receivers, development, and reproductive success. This distinction is the nontrivial ecological contribution of the comparison: changes in net selection do not imply changes in consumer trait preference, and aligned preferences do not imply aligned reproductive contributions.
+
+**Table 1. Four source-supported ecological signatures and their unresolved causal steps.** The table is an evidence map, not a pooled effect or a natural-prevalence estimator.
+
+| Context-sensitive link | Real study-specific observation | What remains unidentified |
+|---|---|---|
+| Relative functional selection | *Gymnadenia*: flowering-start β +0.094 to −0.066 under pollen supplementation with herbivores excluded | Randomized flowering time and pure-function optima |
+| Developmental phenotype and selection | *Lythrum*: clipped mean inflorescences 5.4 to 8.0 while β +0.47 to +0.20 | Unique mediation by compensatory regrowth |
+| Receiver versus lifetime role | *Brassica*: corolla size predicts adult visits and oviposition, yet positive net seed-fitness selection across three insect regimes | Selective cue causation and pure antagonist cost |
+| Predation versus final reproduction | *Pedicularis*: 2015 predation site-by-treatment χ²=36.782, but final-seed interaction P=0.4265 | A direct statistical test of cross-endpoint effect equality or an exsertion-by-enemy optimum shift |
+
+This yields a prospective discriminating experiment rather than an untested claim of a universal process. Randomize a shared floral trait across independently assigned consumer states, then observe receiver visits or attacks, developmental allocation, initiated seeds, and viable maturity outcomes **on linked, defensibly sampled biological units**. If receiver preference is the changing mechanism, the trait-conditioned early receiver response should vary with context. If instead **fitness translation** changes, early trait-conditioned receiver responses can remain similar while conditional seed survival or trait–fitness slopes differ. If damage-induced developmental compensation dominates, trait expression and resource allocation should shift even without changed receiver preferences. These alternatives are hypotheses, not retrospectively identified mediators in the studies above.
+
+The empirical synthesis therefore supports **multiple locations for ecological reweighting**, not an estimated shared constraint loss L or a demonstrated trait-splitting evolutionary transition. The 16-cluster conceptual ledger and the prospectively frozen quantitative holdouts are not expanded by this table.
 
 ## 8. Final causal identification layer
 
