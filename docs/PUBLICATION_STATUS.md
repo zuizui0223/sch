@@ -373,7 +373,7 @@ The official American Naturalist Major Article instructions were checked at http
 After removing repeated empirical source detail and foregrounding one common ecological question:
 
     Abstract:                 178 whitespace-separated Markdown words
-    Entire Markdown draft:   6,689 whitespace-separated words
+    Entire Markdown draft:   6,698 whitespace-separated words
     Figure storyboard:       5 distinct figures
     Ecological synthesis:    1 source-backed table (Table 1)
     Display-count target:    6 combined prospective items
