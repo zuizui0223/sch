@@ -162,9 +162,9 @@ def test_canonical_manuscript_preserves_original_one_study_and_stage_limits():
     sec=m.split("### 7.11 ",1)[1].split("## 8. Final causal identification layer",1)[0]
     for cue in (
         "Brassica rapa","phenylacetaldehyde","0.029","−0.17",
-        "three","net positive","not a 27-test","no causal",
+        "three","positive net seed-fitness selection","not a 27-test","no causal",
     ):
         assert cue.lower() in sec.lower()
     assert "Brassica" in fig
-    for cue in ("18-test","not an equivalence","no significant","one independent"):
+    for cue in ("18-test","neither an equivalence test","no significant","one source-backed"):
         assert cue.lower() in doc.lower()
