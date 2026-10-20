@@ -362,3 +362,27 @@ FOCAL_EXPERIMENT_ROLE = RESIDUAL_IDENTIFICATION_UPGRADE
 INTERNAL_SCIENTIFIC_BLOCKERS = NONE
 EXTERNAL_BLOCKER = AUTHOR_METADATA_AND_APPROVAL
 ```
+
+
+## Parallel ecology Major Article: The American Naturalist (2026-10-21)
+
+This **parallel full-length article** is not a decision to replace the current **New Phytologist Viewpoint** as SCH's primary submission route. The canonical full-paper source is manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md.
+
+The official American Naturalist Major Article instructions were checked at https://www.journals.uchicago.edu/journals/an/instruct. They specify an abstract maximum of 200 words, a usual manuscript length of 7,500 words, and no more than six figures and/or tables. This is a journal-target **soft publication gate**, not a promise that the current draft meets every styling or submission rule.
+
+After removing repeated empirical source detail and foregrounding one common ecological question:
+
+    Abstract:                 178 whitespace-separated Markdown words
+    Entire Markdown draft:   6,689 whitespace-separated words
+    Figure storyboard:       5 distinct figures
+    Ecological synthesis:    1 source-backed table (Table 1)
+    Display-count target:    6 combined prospective items
+    Source biological units: 16 in original conceptual pattern ledger (UNCHANGED)
+
+The full draft's compact Table 1 separates four **non-equivalent ecological routes** to different selection: functional-weight changes (Gymnadenia), damage-associated phenotype and selection discordance (Lythrum), adult visitor versus offspring herbivore roles (Brassica), and attack versus viable-seed endpoint translation (Pedicularis). These four cited focal examples are NOT added as 4 new independent clusters, nor pooled into a quantitative meta-analysis. The quantitative evidence ledgers remain untouched.
+
+Use scripts/audit_sch_amnat_major_article_science.py and tests/test_sch_amnat_major_article_science.py to recalculate the current word limits, storyboard figure count and source-verified original trait data. They fail when an unbounded new text block pushes the Major Article beyond its current target. All article word counts are **conservative plain-Markdown proxies**, not final typeset journal counts.
+
+**Still not submission-ready:** (1) all five publication-grade figures must be composed, visually checked and captioned; (2) full author-year Literature Cited requires source-by-source verification and style formatting; (3) full journal-specific source citation, double-anonymous manuscript, data availability and author declarations remain unaudited; and (4) formal author metadata and approval remain user-controlled. Neither a complete causal P. rex trait × consumer experiment nor a measured SCH loss L is implied.
+
+Status: PARALLEL_AMNAT_MAJOR_ARTICLE_LENGTH_GATE_MET_NOT_SUBMITTED; NPH_VIEWPOINT_PRIMARY_ROUTE_UNCHANGED.
