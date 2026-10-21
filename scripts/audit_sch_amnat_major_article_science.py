@@ -20,10 +20,12 @@ import csv
 import json
 import re
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 PAPER=ROOT/"manuscript/MANUSCRIPT_SHARED_TRAIT_COMPROMISE.md"
 FIGURE_MAP=ROOT/"manuscript/SHARED_TRAIT_COMPROMISE_FIGURE_MAP_V1.md"
+FIGURE_ASSETS=ROOT/"manuscript/amnat_figures"
 PATTERN=ROOT/"data/SCH_PATTERN_LEDGER_V1.csv"
 GYM=ROOT/"data/SCH_H2_GYMNADENIA_A2_SELECTION_GRADIENTS_V1.csv"
 LYTHRUM_PHENOTYPE=ROOT/"data/SCH_LYTHRUM_THOMSEN_2017_TREATMENT_MEANS_TABLE1_V1.csv"
@@ -124,6 +126,13 @@ def build(paper:str,figure_map:str)->dict:
     table_number=1
     if len(figures)+table_number>COMBINED_FIGURE_TABLE_LIMIT:
         raise ValueError("Am Nat combined tables/figures threshold crossed")
+    vector_sources=sorted(FIGURE_ASSETS.glob("figure_*.svg"))
+    if len(vector_sources)!=len(figures):
+        raise ValueError("Am Nat five SVG candidate sources incomplete")
+    for filename in vector_sources:
+        root=ET.parse(filename).getroot()
+        if root.tag!="{http://www.w3.org/2000/svg}svg":
+            raise ValueError("Am Nat source vector is not well-formed SVG")
     if len(source(PATTERN))!=16:
         raise ValueError("published source universe changed without a new review")
     for anchor in (
@@ -151,13 +160,16 @@ def build(paper:str,figure_map:str)->dict:
         "abstract_word_limit":ABSTRACT_LIMIT,
         "soft_full_article_word_target":MAJOR_ARTICLE_WORD_TARGET,
         "figure_map_described_figures":len(figures),
+        "editable_svg_candidate_files_committed":len(vector_sources),
+        "svg_structural_check_passed":True,
+        "rendered_optical_visual_QA_passed":False,
         "new_ecological_synthesis_tables_in_manuscript":table_number,
         "combined_figure_table_limit":COMBINED_FIGURE_TABLE_LIMIT,
         "original_16_cluster_ledger_unchanged":True,
         "source_verified_cross_system_individual_figures":original_biological_numbers(),
         "submission_ready":False,
         "remaining_before_submission":[
-            "five_camera_ready_figures_not_created_by_this_audit",
+            "five_camera_ready_pdf_eps_exports_and_rendered_manual_visual_QA_pending",
             "journal_formatted_literature_cited_and_article_type_positioning_not_certified",
             "author_metadata_and_ethics_or_data_statements_not_checked",
             "full manuscript source-by-source journal stylistic review pending",
