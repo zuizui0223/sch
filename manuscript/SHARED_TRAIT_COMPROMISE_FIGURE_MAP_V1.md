@@ -1,5 +1,12 @@
 # SCH shared-trait compromise figure map v1
 
+## Implemented Major Article vector source set
+
+All five editable SVG **candidate** figures are now stored under `manuscript/amnat_figures/`. Figure numbers, scientific citations and publication-readiness boundaries are in `manuscript/amnat_figures/README.md`. The diagrams in Figures 1–3 and 5 are **schematic, not field measurements**; Figure 4 alone depicts directly source-backed original biological coefficients and tests.
+
+Figure 4's final candidate emphasizes **four independently studied ecological pathways** rather than attempting to put every post hoc study-comparison panel onto one canvas. The older design ideas retained below are source-backed layout options and annotations, **not proof that every optional inset is currently drawn**. In particular, the 14-edge/24-edge exploratory pollination family remains in manuscript Results §§7.8–7.9 and source ledgers, outside the Figure 4 vector. Five figures plus one synthesis table use the current six-display-item target. Exports and rendered layout checking are still required.
+
+
 ## Figure 1 — Theory: why one shared coordinate can produce compromise
 
 Four aligned panels:
@@ -89,6 +96,8 @@ z_G* != automatically z_F2*.
 Primary message: the empirical experiment identifies state-specific compromise geometry without overclaiming pure function optima.
 
 ## Figure 4 — Real-world evidence and claim ladder
+
+**Current realized SVG focus:** four independently sourced mechanisms (Gymnadenia agent-weight selection, Lythrum clipping-induced phenotype/selection divergence, Brassica receiver roles, Pedicularis reproductive endpoint tests). Each panel has its own source and outcome scale. Expanded optional insets described below are not yet plotted in the actual SVG and cannot be treated as rendered panels.
 
 Place source classes along:
 
