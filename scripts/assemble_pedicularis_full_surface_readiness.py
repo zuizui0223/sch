@@ -82,6 +82,16 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         and len(z_levels) == len(set(z_levels))
         and all(isinstance(value, str) and bool(value) for value in z_levels)
     )
+    sham_rank = z_receipt.get("sham_rank")
+    validated_sham_z_level = (
+        z_levels[sham_rank]
+        if (
+            checks["z_levels_validated"]
+            and type(sham_rank) is int
+            and 0 <= sham_rank < len(z_levels)
+        )
+        else None
+    )
     z_manipulation_settings = z_receipt.get("z_manipulation_settings")
     setting_ids = (
         [
@@ -202,6 +212,7 @@ def assemble(z_receipt: dict, p_receipt: dict, g_receipt: dict) -> dict:
         },
         "validated_execution": {
             "z_levels": list(z_levels) if checks["z_levels_validated"] else None,
+            "p0_sham_z_level": validated_sham_z_level,
             "z_manipulation_settings": (
                 z_manipulation_settings
                 if checks["z_manipulation_settings_validated"]
