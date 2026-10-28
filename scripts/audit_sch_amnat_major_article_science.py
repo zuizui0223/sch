@@ -111,10 +111,14 @@ def build(paper:str,figure_map:str)->dict:
     abstract=paper.split("## Abstract\n",1)[1].split("**Keywords:**",1)[0].strip()
     abstract_words=wordcount(abstract)
     paper_words=wordcount(paper)
+    # Author guidelines count manuscript prose, not Literature Cited, toward
+    # the ordinary major-article length. Keep both observable counts.
+    manuscript_prose=paper.split("## Literature Cited\n",1)[0]
+    prose_words=wordcount(manuscript_prose)
     if abstract_words>ABSTRACT_LIMIT:
         raise ValueError(f"Am Nat Major Article abstract {abstract_words}>{ABSTRACT_LIMIT}")
-    if paper_words>MAJOR_ARTICLE_WORD_TARGET:
-        raise ValueError(f"Am Nat soft major-article word target {paper_words}>{MAJOR_ARTICLE_WORD_TARGET}")
+    if prose_words>MAJOR_ARTICLE_WORD_TARGET:
+        raise ValueError(f"Am Nat soft major-article word target {prose_words}>{MAJOR_ARTICLE_WORD_TARGET}")
     figures=re.findall(r"^## Figure ([0-9]+)\b",figure_map,flags=re.MULTILINE)
     unique_figures={int(i) for i in figures}
     if len(figures)!=len(unique_figures) or unique_figures!=set(range(1,6)):
@@ -155,6 +159,8 @@ def build(paper:str,figure_map:str)->dict:
         "current_official_instructions":"https://www.journals.uchicago.edu/journals/an/instruct",
         "article_type":"Major Article (target, not accepted/submitted)",
         "full_markdown_whitespace_word_proxy":paper_words,
+        "manuscript_before_literature_cited_whitespace_word_proxy":prose_words,
+        "references_are_excluded_from_soft_major_article_prose_gate":True,
         "abstract_whitespace_word_proxy":abstract_words,
         "word_proxy_is_not_journal_final_rendered_count":True,
         "abstract_word_limit":ABSTRACT_LIMIT,
