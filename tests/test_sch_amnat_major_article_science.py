@@ -24,7 +24,8 @@ def test_major_article_scope_and_words_are_now_within_official_guidelines():
     assert a["target_journal"]=="The American Naturalist"
     assert a["abstract_whitespace_word_proxy"]<=200
     assert a["full_markdown_whitespace_word_proxy"]<=7500
-    assert a["full_markdown_whitespace_word_proxy"]<7000
+    assert a["manuscript_before_literature_cited_whitespace_word_proxy"]<7000
+    assert a["references_are_excluded_from_soft_major_article_prose_gate"]
     assert a["abstract_whitespace_word_proxy"]<195
     assert a["figure_map_described_figures"]==5
     assert a["new_ecological_synthesis_tables_in_manuscript"]==1
@@ -73,7 +74,9 @@ def test_journal_length_budget_fails_closed_for_unbounded_source_additions(bad,r
     if bad.startswith("## Abstract"):
         m=m.replace("## Abstract\n",bad+"\n",1)
     else:
-        m+="\n"+bad
+        # The added material must enter article PROSE, not be appended to
+        # bibliography after the current final Literature Cited heading.
+        m=m.replace("## Literature Cited\n",bad+"\n## Literature Cited\n",1)
     with pytest.raises(ValueError,match=reason):
         build(m,fig)
 
