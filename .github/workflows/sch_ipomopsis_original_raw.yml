@@ -1,0 +1,48 @@
+name: SCH Ipomopsis genuine individual-level dataset ingress
+
+on:
+  push:
+    branches:
+      - empirical/ipomopsis-raw-stage-coupling-20261028
+    paths:
+      - "scripts/ingest_sch_ipomopsis_public_raw.py"
+      - "scripts/audit_sch_ipomopsis_source_grain.py"
+      - "scripts/analyze_sch_ipomopsis_primary_coupling.py"
+      - "tests/test_sch_ipomopsis_primary_coupling.py"
+      - "tests/test_sch_ipomopsis_original_raw_ingress.py"
+      - ".github/workflows/sch_ipomopsis_original_raw.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recover-original-dataset:
+    name: Source identity and real plant-row schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fetch actual archived rows and verify both exact MD5s
+        run: python scripts/ingest_sch_ipomopsis_public_raw.py --outdir artifacts/ipomopsis_original_ingress
+      - name: Audit original site × year × plant type and reproductive-stage matchability
+        run: >-
+          python scripts/audit_sch_ipomopsis_source_grain.py
+          --source artifacts/ipomopsis_original_ingress/Selection_by_pollinators_and_predators.csv
+          --output artifacts/ipomopsis_original_ingress/cohort_and_stages_qc.json
+      - name: Estimate original cohort-stratified stage coupling and trait moderation
+        run: >-
+          python -m scripts.analyze_sch_ipomopsis_primary_coupling
+          --source artifacts/ipomopsis_original_ingress/Selection_by_pollinators_and_predators.csv
+          --output artifacts/ipomopsis_original_ingress/original_stage_coupling_permutation_result.json
+      - name: Publish verified dataset + original column dictionary
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-ipomopsis-original-record-5083399
+          path: artifacts/ipomopsis_original_ingress/
+          if-no-files-found: error
+          retention-days: 15

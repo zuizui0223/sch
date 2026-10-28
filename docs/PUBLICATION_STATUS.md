@@ -405,3 +405,24 @@ The programme's primary NPH Viewpoint package is not modified by this parallel s
 
 Status: PARALLEL_AMNAT_CORE_TEN_REFERENCES_VERIFIED_CONCEPTUAL_BIBLIOGRAPHY_INCOMPLETE.
 
+
+
+## Separate original ecological row analysis: Ipomopsis public archival plants (2026-10-28)
+
+The SCH full-manuscript/NPH Viewpoint evidence remains a **conceptual, targeted source synthesis** and must NOT be described as an independently validated new ecological law. An independent **post-publication raw-data reanalysis** is now implemented separately to develop genuinely new quantitative ecology rather than only add published coefficients.
+
+Original archived observations: Campbell et al. Dryad DOI `10.7280/D1KM49`, mirrored Zenodo record `5083399`, **437 source plant records**, raw CSV MD5 `12ed3dbe6d269c5f808f9c6b230d468c`; full original dictionary and source are obtained with checksum validation by `.github/workflows/sch_ipomopsis_original_raw.yml`.
+
+The source-level grain audit establishes 375 plants with matched initiated-seed estimate and fraction-of-fruits-escaping-predation estimate. Fifteen eligible original Site×Year×Type cohorts contain 297 plants; 277 width-stratified cases enter the secondary test. Eight eligible year blocks are available. Importantly, **40/375** source final-seed estimates exceed initiated-seed estimates, and the fruits-escaping measure is **NOT** a seed-survival fraction. Multiplication is only an ecological stage-product **proxy**, not observed final fitness.
+
+Independent fixed-seed stratified permutation tests on the genuine rows give:
+
+- Initiation/fruit-escape coupling C = **−0.01490**, P = **0.1020**, two-test adjusted P = **0.2040**, year-block interval approximately [−0.0292,+0.0008].
+- Corolla-width modification of coupling ΔC = **−0.01913**, P = **0.2566**, two-test adjusted P = **0.5132**, year-block interval approximately [−0.0393,+0.0129].
+- 0/15 of the stage-proxy cohort width contrasts reverse sign relative to the independence-marginal prediction. This is not a natural prevalence statistic or a causal selection result.
+
+**Interpretation: first original archive test is quantitatively real but does not support the proposed additional stage-coupling effect**. It is a scoped negative result; the prior synthetic mathematical possibility must not be promoted as measured SCH functional conflict. This is one original published biological programme, not new fieldwork or a multi-species macroecological replication.
+
+Source and inference: `scripts/ingest_sch_ipomopsis_public_raw.py`, `scripts/audit_sch_ipomopsis_source_grain.py`, `scripts/analyze_sch_ipomopsis_primary_coupling.py`, `data/SCH_IPOMOPSIS_REAL_RAW_STAGE_COUPLING_RESULT_V1.json`, `docs/SCH_IPOMOPSIS_ORIGINAL_ROW_COUPLING_EMPIRICAL_RESULT_V1.md`. Source-run GitHub Actions receipt retained. The original SCH L and pure optimum remain unmeasured. To support a genuinely original ecological research article, an independent second raw-data system or new targeted consumer-intervention field evidence is still required.
+
+Status: ORIGINAL_RAW_DATA_REANALYZED_NO_SUPPORTED_STAGE_COUPLING; SCH_CONCEPTUAL_VIEWPOINT_UNCHANGED.
