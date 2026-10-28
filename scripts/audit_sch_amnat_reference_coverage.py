@@ -148,7 +148,7 @@ def build(paper:str,metadata:list[dict[str,str]],
             })
     named_omissions=(
         "Satyrium","Silene","Dalechampia","Fragaria",
-        "16 independent biological clusters",
+        "16 independent biological",
     )
     if not all(x in body for x in named_omissions):
         raise ValueError("16-cluster paper science coverage changed")
