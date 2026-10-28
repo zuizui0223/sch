@@ -426,3 +426,20 @@ Independent fixed-seed stratified permutation tests on the genuine rows give:
 Source and inference: `scripts/ingest_sch_ipomopsis_public_raw.py`, `scripts/audit_sch_ipomopsis_source_grain.py`, `scripts/analyze_sch_ipomopsis_primary_coupling.py`, `data/SCH_IPOMOPSIS_REAL_RAW_STAGE_COUPLING_RESULT_V1.json`, `docs/SCH_IPOMOPSIS_ORIGINAL_ROW_COUPLING_EMPIRICAL_RESULT_V1.md`. Source-run GitHub Actions receipt retained. The original SCH L and pure optimum remain unmeasured. To support a genuinely original ecological research article, an independent second raw-data system or new targeted consumer-intervention field evidence is still required.
 
 Status: ORIGINAL_RAW_DATA_REANALYZED_NO_SUPPORTED_STAGE_COUPLING; SCH_CONCEPTUAL_VIEWPOINT_UNCHANGED.
+
+
+## Separate quantitative cross-study pollen selection meta pilot (2026-10-28)
+
+As explicitly requested, SCH must **not** pass the current selected-literature NPH Viewpoint/AmNat manuscript off as original ecological field research. A new **post-publication, source-numeric, eight-independent-programme meta pilot** has therefore been completed in a separate analysis file. This is a new quantitative cross-study calculation, though still **not a systematic field-plant meta-analysis or novel experimental measurement**.
+
+Original verified source-study tables (not paper review claims): `data/SCH_META_ACONITUM_2016_SOURCE_TABLE3_SELECTION_V1.csv` (4 traits × 2 pollen regimes) and `data/SCH_META_LOBELIA_SIPHILITICA_2023_SOURCE_TABLE2_SELECTION_V1.csv` (6 traits × 3 pollination regimes × 2 source fitness endpoints), alongside frozen 24 existing Dactylorhiza/Primula/Trillium/Gymnadenia paired edges plus original Lobelia cardinalis and Trifolium source numbers. Trifolium DOI 10.1111/jeb.13392 verified separately from the primary published source (2019), without inventing absent cell SEs.
+
+**Actual eight original studies**: **41 matched trait/context pollen contrasts** with 40 original SE-equipped pairs. **16/41 point signs switch** but only **1/40** has both opposite arm slopes individually source-SE supported; a strict 40-edge covariance-worst-case normal Bonferroni gives **zero** recovered whole-family change certificates. Six of eight study-average absolute gradient differences favor weaker selection in supplemental pollen conditions (two-sided **exact study-sign P=0.28906**), which **does not support a general selection attenuation law**. Excluding SE-absent Trifolium gives 6/7, two-sided P=0.125, also unsupported.
+
+The narrower five-study source-compatible flower-number sensitivity yields beta_open minus beta_supplemented **+0.061923** with source-covariance conservative SE upper **0.042845**, approximate 95% interval **[−0.02205,+0.14590]** and P upper **0.14838**. This is NOT a population random-effects estimate; individual studies and source trait scales differ. New *Lobelia siphilitica* data supply an opposite-direction attenuation exception (study-average −0.0295), not a new significant across-taxon effect.
+
+The much larger Caruso 2018 Dryad original unduplicated workbook cannot presently be ingested: metadata are public, original download endpoint HTTP 401 and alternative publicly advertised web routes HTTP 403. `.github/workflows/sch_caruso2018_meta_source.yml` has been restricted to **manual-only**, not considered a successful full-source retrieval. No unverifiable original records are imputed or pseudo-deduplicated.
+
+Reproducible numerical output: `data/SCH_META_EIGHT_PROGRAMME_EXPERIMENTAL_POLLEN_READOUT_V1.json`; source code `scripts/analyze_sch_experimental_pollen_meta_8_programmes.py`; verified study-grain interpretation `docs/SCH_EIGHT_PROGRAMME_EXPERIMENTAL_POLLEN_META_PILOT_V1.md`; GitHub Actions `.github/workflows/sch_experimental_pollen_meta_8.yml`; CI regression tests. No SCH L, pure functional optima, synthetic field evidence or source-prevalence effects claimed.
+
+Scientific status: **SOURCE-VERIFIED_META_PILOT_COMPLETE; EIGHT_STUDIES; GENERAL_POLLINATION_SELECTION_ATTENUATION_UNSUPPORTED; FULL_SYSTEMATIC_META_NOT_READY**. The primary conceptual NPH Viewpoint remains unchanged.

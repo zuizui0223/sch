@@ -1,0 +1,29 @@
+name: SCH experimental floral-selection meta source original ingest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ingest-and-recover-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install archival spreadsheet readers
+        run: python -m pip install --quiet openpyxl xlrd
+      - name: Fetch Dryad version and checksum-verify two ORIGINAL database workbooks
+        run: python scripts/ingest_sch_caruso2018_meta_source.py --outdir artifacts/sch_caruso_meta_raw
+      - name: Upload original source and provenance receipts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-caruso-meta-original-files
+          path: artifacts/sch_caruso_meta_raw/
+          if-no-files-found: error
+          retention-days: 15
