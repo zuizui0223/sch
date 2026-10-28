@@ -34,6 +34,8 @@ descriptively. Year-cluster bootstrap and leave-year-out are sensitivities.
 
 This is a post-publication observational reanalysis of genuine raw data,
 not independent experimental validation of a general ecological law.
+It is not a causal effect of the floral trait, the predator, or the consumer
+regime; source plants were not randomly assigned to trait values.
 """
 from __future__ import annotations
 
