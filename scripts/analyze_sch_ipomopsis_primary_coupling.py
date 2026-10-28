@@ -205,7 +205,7 @@ def analyze(original:list[dict[str,str]], *, permutations:int=4999,
     p_primary=(extreme_primary+1)/(permutations+1)
     p_secondary=(extreme_secondary+1)/(permutations+1)
     # Bootstrap entire year blocks, not 437 individual plants or 15
-    # allegedly independent cohort units. Nine years are still not a
+    # allegedly independent cohort units. Eight eligible years are still not a
     # broad regional/geographic sampling frame.
     years=sorted({c["key"][1] for c in cohorts})
     byyear={year:[c for c in cohorts if c["key"][1]==year] for year in years}
@@ -270,10 +270,11 @@ def analyze(original:list[dict[str,str]], *, permutations:int=4999,
             "initiation_and_fruit_escape_fraction"
         ),
         "registered_secondary":(
-            "equal_weight_high_minus_low_coupling_delta_within_corrolla_"
+            "equal_weight_high_minus_low_coupling_delta_within_corolla_"
             "width_median_strata_excluding_exact_width_ties"
         ),
         "n_cohorts_eligible":len(cohorts),
+        "n_eligible_original_year_blocks":len(years),
         "n_cohorts_secondary":len(secondary_cohorts),
         "n_matched_rows_primary":sum(c["n"] for c in cohorts),
         "n_matched_rows_secondary":sum(
@@ -305,7 +306,7 @@ def analyze(original:list[dict[str,str]], *, permutations:int=4999,
             "original_archived_individual_rows_not_author_generated_new_fieldwork",
             "observational_floral_width_not_randomized",
             "site_year_type_groups_are_not_independent_species_or_experiments",
-            "year_bootstrap_only_nine_year_blocks_in_one_original_study",
+            "year_bootstrap_only_eight_eligible_year_blocks_in_one_original_study",
             "primary_permutation_conditions_on_within_cohort_exchangeability",
             "fruit_escape_is_proportion_of_fruits_not_seed_survival",
             "initiated_times_escape_is_a_labelled_proxy_not_real_final_seeds",
