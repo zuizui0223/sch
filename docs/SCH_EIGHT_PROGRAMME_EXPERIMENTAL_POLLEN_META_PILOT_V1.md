@@ -95,5 +95,5 @@ The source-labeled 41-edge JSON, exact study-level numerator/denominator, confid
 - No source-independent *between-species taxon* sample probability: avoid frequency estimates.
 - No source full study-level covariance: use source-SE compatible bounds for a small, defined continuous trait.
 - Original studies chosen for existing SCH/source recovery, not by a registered comprehensive PRISMA gate.
-- Source values are published numeric source tables, **not** an analysis of independent original field plant rows (contrast with SCH's separately completed Ipomopsis original-data result).
+- Source values are published numeric source tables, **not** independent original field plant rows (contrast with SCH's separately completed Ipomopsis original-data result). This is not a new field experiment and not an analysis of independent original field plant rows.
 - Original real palaeoclimate/phylogeny/biogeography moderators absent; this is a selected-study meta pilot, NOT geographic macroecology.
