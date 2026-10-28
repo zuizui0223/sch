@@ -312,11 +312,11 @@ The exact source Table A2 cell values, covariance-worst-case calculation and all
 
 ### 7.8 Independent pollination-treatment programmes: strong selection changes need not reverse sign
 
-A complete secondary analysis of the already frozen V27 source tables examines all **14** same-year, within-trait open-versus-supplemented pollination contrasts from three independent published studies, without selecting comparisons by outcome: *Dactylorhiza lapponica* (five traits; doi:10.1111/j.1469-8137.2010.03296.x), *Primula alpicola* (four; doi:10.1038/s41598-017-13340-0) and *Trillium discolor* (five trait-year contrasts; doi:10.1002/ajb2.16101). These constitute three studies, not 14 independent field experiments; the Poisson-linked *Trillium* gradients cannot be pooled numerically with linear gradients.
+A complete secondary analysis of the already frozen V27 source tables examines all **14** same-year, within-trait open-versus-supplemented pollination contrasts from three independent published studies, without selecting comparisons by outcome: *Dactylorhiza lapponica* (Sletvold, Grindeland and Ågren 2010; five traits; doi:10.1111/j.1469-8137.2010.03296.x), *Primula alpicola* (Chen, Zhang and Li 2017; four; doi:10.1038/s41598-017-13340-0) and *Trillium discolor* (Koski 2023; five trait-year contrasts; doi:10.1002/ajb2.16101). These constitute three studies, not 14 independent field experiments; the Poisson-linked *Trillium* gradients cannot be pooled numerically with linear gradients.
 
 Within each source metric, the difference in selection magnitude is open minus supplemented. Under any covariance compatible with the original two reported SEs, the difference SE cannot exceed their sum. Applying a conditional normal-Wald Bonferroni correction across all 14 source-qualified contrasts, *Dactylorhiza* spur length changes **+0.324** (maximum SE 0.105; simultaneous interval approximately [+0.018,+0.630]) and *Primula* flowering start changes **+0.206** (maximum SE 0.066; interval [+0.014,+0.398]). Both remain positive under source decimal rounding for the **14-edge** family; neither gives two independently supported opposite-direction gradients. *Trillium* 2020 petal size changes **−4.41** in printed Poisson coefficients, but its reconstructed simultaneous guarantee fails source one-decimal SE rounding; the original authors independently report a strong direct treatment contrast (P<0.0001), not our refitted result. Full provenance and uncertainty boundaries appear in SCH_H2_THREE_PROGRAMME_POLLINATION_SELECTION_V1.md.
 
-The *Primula* open group combined two style morphs while the supplemented group was long-styled only, leaving a composition caveat. The studies manipulated pollen supply, not the trait coordinate. Hence a meaningful between-regime change is **not a direct z** manipulation, a supported optimum shift, or automatic evidence of functional opposition. The biological conclusion is that the **magnitude** of selection can change without two significant and opposed cell gradients; original H2M1 holdout classifications remain unchanged.
+The *Primula* 2019 author correction (Chen, Zhang and Li 2019; doi:10.1038/s41598-019-43381-6) updates Figure 1 and Table 3 notation, not the original Table 2 linear selection coefficients and standard errors used here. The *Primula* open group combined two style morphs while the supplemented group was long-styled only, leaving a composition caveat. The studies manipulated pollen supply, not the trait coordinate. Hence a meaningful between-regime change is **not a direct z** manipulation, a supported optimum shift, or automatic evidence of functional opposition. The biological conclusion is that the **magnitude** of selection can change without two significant and opposed cell gradients; original H2M1 holdout classifications remain unchanged.
 
 ### 7.9 From a striking reversal to a four-programme ecological response spectrum
 
@@ -495,3 +495,25 @@ SCH turns compromise from an intuitive label into an identification problem. The
 This combination is the point of the paper: mathematics defines the promotion gates, the literature tests whether their observable signatures occur in reality, and the focal crossed experiment is reserved for the residual causal quantities that published studies do not identify. A strong final causal claim requires opposing geometry on the same coordinate, a supported combined optimum, predictable shifts when each functional demand is removed, and opposing component gradients. A still stronger pure-function claim requires context-stable component optima rather than a relabelled ecological state.
 
 This narrower ownership keeps the programme clean. Once conflict is identified, downstream architecture value and evolutionary realization belong to SLK. Once multiple traits interact, mechanism allocation belongs to BITA. SCH's job is earlier and more basic: determine whether the conflict being transported downstream has actually been identified at all.
+
+## Literature Cited
+
+Chen, L., B. Zhang, and Q. Li. 2017. Pollinator-mediated selection on flowering phenology and floral display in a distylous herb *Primula alpicola*. *Scientific Reports* **7**:13157. https://doi.org/10.1038/s41598-017-13340-0
+
+Chen, L., B. Zhang, and Q. Li. 2019. Author Correction: Pollinator-mediated selection on flowering phenology and floral display in a distylous herb *Primula alpicola*. *Scientific Reports* **9**:7054. https://doi.org/10.1038/s41598-019-43381-6
+
+Knauer, A. C., and F. P. Schiestl. 2017. The effect of pollinators and herbivores on selection for floral signals: a case study in *Brassica rapa*. *Evolutionary Ecology* **31**:285–304. https://doi.org/10.1007/s10682-016-9878-8
+
+Koski, M. H. 2023. Pollinators exert selection on floral traits in a pollen-limited, narrowly endemic spring ephemeral. *American Journal of Botany* **110**:e16101. https://doi.org/10.1002/ajb2.16101
+
+Sletvold, N., J. M. Grindeland, and J. Ågren. 2010. Pollinator-mediated selection on floral display, spur length and flowering phenology in the deceptive orchid *Dactylorhiza lapponica*. *New Phytologist* **188**:385–392. https://doi.org/10.1111/j.1469-8137.2010.03296.x
+
+Sletvold, N., K. K. Moritz, and J. Ågren. 2015. Additive effects of pollinators and herbivores result in both conflicting and reinforcing selection on floral traits. *Ecology* **96**:214–221. https://doi.org/10.1890/14-0119.1
+
+Sun, S.-G., and S.-Q. Huang. 2015. Rainwater in cupulate bracts repels seed herbivores in a bumblebee-pollinated subalpine flower. *AoB PLANTS* **7**:plv019. https://doi.org/10.1093/aobpla/plv019
+
+Sun, S.-G., W. S. Armbruster, and S.-Q. Huang. 2016. Geographic consistency and variation in conflicting selection generated by pollinators and seed predators. *Annals of Botany* **118**:227–237. https://doi.org/10.1093/aob/mcw097
+
+Thomsen, C. J. M., and R. D. Sargent. 2017. Evidence that a herbivore tolerance response affects selection on floral traits and inflorescence architecture in purple loosestrife (*Lythrum salicaria*). *Annals of Botany* **119**:1295–1303. https://doi.org/10.1093/aob/mcx026
+
+Xia, J., S.-G. Sun, and G.-H. Liu. 2013. Evidence of a component Allee effect driven by predispersal seed predation in a plant (*Pedicularis rex*, Orobanchaceae). *Biology Letters* **9**:20130387. https://doi.org/10.1098/rsbl.2013.0387
