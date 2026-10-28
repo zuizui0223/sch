@@ -24,8 +24,8 @@ def test_eight_original_studies_and_verbatim_source_receipt_denominators():
     assert r["n_matched_edges_with_original_SEs"]==40
     assert len(r["matched_source_edges"])==41
     assert len({x["programme"] for x in r["matched_source_edges"]})==8
-    assert r["provenance"]["github_run_id"]==40619754248
-    assert r["provenance"]["github_job_id"]==122590648023
+    assert r["provenance"]["github_run_id"]==40620004537
+    assert r["provenance"]["github_job_id"]==122591468125
     assert r["provenance"]["github_artifact_id"]==12787125160
     assert r["provenance"]["original_Dryad_2018_full_meta_dataset_recovered"] is False
     assert r["n_distinct_original_DOIs_with_verified_primary_metadata"]==8
