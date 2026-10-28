@@ -6,6 +6,7 @@ on:
       - empirical/global-functional-trait-meta-real-source-20261028
     paths:
       - scripts/ingest_sch_plant_functional_selection_2020_raw.py
+      - scripts/audit_sch_plant_functional_meta_grain.py
       - .github/workflows/sch_plant_functional_selection_2020.yml
   workflow_dispatch:
 
@@ -27,6 +28,11 @@ jobs:
         run: >-
           python scripts/ingest_sch_plant_functional_selection_2020_raw.py
           --outdir artifacts/plant_functional_selection_original
+      - name: Profile true study-level treatment matches and original selection estimands
+        run: >-
+          python scripts/audit_sch_plant_functional_meta_grain.py
+          --outdir artifacts/plant_functional_selection_original
+          --output artifacts/plant_functional_selection_original/unduplicated_meta_grain_audit.json
       - name: Save checksum-verified public research sources and schema
         if: success()
         uses: actions/upload-artifact@v4
