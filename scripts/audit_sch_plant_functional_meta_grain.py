@@ -153,6 +153,12 @@ def profile_source(root:Path)->dict:
         "column_names_experimental_master":mheaders,
         "column_names_observational":oheaders,
         "column_names_original_duplicated":dheaders,
+        "agent_to_original_treatment_labels":{
+            agent:sorted({strkey(r.get("treatment.defined"))
+                          for r in master if strkey(r.get("agent.selection.defined"))==agent})
+            for agent in sorted({strkey(r.get("agent.selection.defined"))
+                                 for r in master})
+        },
         "metadata_fields":{
             f:_counts(master,f) for f in (
                 "Paper ID","pub.year","trait.class",
