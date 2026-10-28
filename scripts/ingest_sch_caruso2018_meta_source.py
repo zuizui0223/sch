@@ -86,6 +86,43 @@ def get_dataset()->tuple[dict,dict,list[dict]]:
     return doc,version,files
 
 
+def download_published_file(file_metadata:dict)->tuple[bytes,str,list[str]]:
+    """Try documented API and Dryad public click-to-download routes.
+
+    Dryad's public REST metadata API can advertise a download link that
+    answers 401 without a registered API token. The published dataset's
+    browser download route is publicly accessible via /downloads/file_stream
+    on many Dryad releases. We accept bytes ONLY if matching the published
+    archive digest, so an HTML login screen never passes.
+    """
+    rel=file_metadata.get("_links",{}).get("stash:download",{}).get("href")
+    self_href=file_metadata.get("_links",{}).get("self",{}).get("href","")
+    if not rel or not re.fullmatch(r"/api/v2/files/[0-9]+",self_href):
+        raise ValueError("unexpected Dryad source metadata links")
+    file_id=self_href.split("/")[-1]
+    urls=(
+        absolute_api(rel),
+        f"https://datadryad.org/downloads/file_stream/{file_id}",
+        f"https://datadryad.org/stash/downloads/file_stream/{file_id}",
+    )
+    errors=[]
+    algorithm=(file_metadata.get("digestType") or "").lower().replace("-","")
+    digest=(file_metadata.get("digest") or "").lower()
+    if algorithm not in {"md5","sha256"} or not digest:
+        raise ValueError("Dryad source has no known digest/checksum")
+    for url in urls:
+        try:
+            raw=get_bytes(url)
+            actual=hashlib.new(algorithm,raw).hexdigest()
+            if actual!=digest:
+                raise ValueError(f"source bytes have mismatched digest {actual}")
+            return raw,url,errors
+        except Exception as err:
+            errors.append(f"{url} {type(err).__name__}: {err}")
+    raise ConnectionError("Dryad exact original file not available through public links: "
+                          +"; ".join(errors))
+
+
 def inspect_workbook(path:Path)->dict:
     name=path.name
     if name.endswith(".xls"):
@@ -145,11 +182,7 @@ def main()->None:
     }
     for f in sorted(files,key=lambda f:f["path"]):
         filename=f["path"]
-        rel=f.get("_links",{}).get("stash:download",{}).get("href")
-        if not rel:
-            raise ValueError("Dryad original file missing download link")
-        url=absolute_api(rel)
-        b=get_bytes(url)
+        b,url,prior_route_failures=download_published_file(f)
         low,high=EXPECTED_FILES[filename]
         if not low<=len(b)<=high:
             raise ValueError("Unexpected original file size "+filename+" "+str(len(b)))
@@ -167,7 +200,8 @@ def main()->None:
             "filename":filename,"n_bytes":len(b),
             "source_digest_algorithm":algorithm,"source_digest":expected,
             "sha256":hashlib.sha256(b).hexdigest(),
-            "url":url,"workbook":inspect_workbook(dest),
+            "url":url,"other_route_failures":prior_route_failures,
+            "workbook":inspect_workbook(dest),
         })
     receipt=args.outdir/"original_meta_source_schema_receipt.json"
     receipt.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
