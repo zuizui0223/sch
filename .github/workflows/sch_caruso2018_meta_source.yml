@@ -1,13 +1,6 @@
 name: SCH experimental floral-selection meta source original ingest
 
 on:
-  push:
-    branches:
-      - empirical/meta-directional-floral-selection-20261028
-    paths:
-      - "scripts/ingest_sch_caruso2018_meta_source.py"
-      - "scripts/analyze_sch_caruso_meta_direction.py"
-      - ".github/workflows/sch_caruso2018_meta_source.yml"
   workflow_dispatch:
 
 permissions:
