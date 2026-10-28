@@ -79,6 +79,5 @@ def test_genuine_observational_result_is_explicitly_separate_from_main_review():
     assert "0.1020" in note
     assert "0.2566" in note
     assert "NOT rejected" in note
-    assert "not a new field experiment" in note.lower() or "not a new field experiment" in (
-        "This is not a new field experiment").lower()
-    assert "no empirical SCH loss" not in note.lower() or "not estimated" in note.lower()
+    assert "do not confuse this with a new field experiment" in note.lower()
+    assert "not estimated:" in note.lower()
