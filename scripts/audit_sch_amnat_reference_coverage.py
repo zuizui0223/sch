@@ -73,8 +73,15 @@ def build(paper:str,metadata:list[dict[str,str]],
         raise ValueError("reference metadata DOI set was unexpectedly changed")
     if doi_set(body)!=expected or doi_set(bib)!=expected:
         raise ValueError("all verified DOI source items must occur both in text and bibliography")
-    if doi_set(note)!=expected:
-        raise ValueError("independent source-verification note DOI set disagrees")
+    if "## Core Literature Cited\n" not in note or "\n## Corrections, identity" not in note:
+        raise ValueError("verified note core reference section missing")
+    note_core=note.split("## Core Literature Cited\n",1)[1].split(
+        "\n## Corrections, identity",1)[0]
+    # Publisher link URLs can themselves contain a DOI followed by a
+    # page-path suffix (e.g. /200213). Only the actual reference list
+    # represents bibliographic DOI identities, not that lookup URL.
+    if doi_set(note_core)!=expected:
+        raise ValueError("independent core source-verification citations disagree")
 
     # Every paragraph is one bibliography item; require both identity and
     # key journal-year-volume-locator metadata, avoiding title guesses.
