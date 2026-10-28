@@ -108,6 +108,19 @@ def summarize(rows:list[dict],keyfields:tuple[str,...])->dict:
     }
 
 
+def original_column_dictionary(path:Path)->list[dict[str,str]]:
+    import openpyxl
+    book=openpyxl.load_workbook(path,read_only=True,data_only=True)
+    table=book["Sheet1"]
+    out=[]
+    for row in table.values:
+        if row[0] is None: continue
+        out.append({"column":str(row[0]).strip(),
+                    "source_definition":str(row[1]) if len(row)>1 and row[1] is not None else ""})
+    book.close()
+    return out
+
+
 def profile_source(root:Path)->dict:
     master,mheaders=source_rows(root/SOURCE_MASTER)
     observational,oheaders=source_rows(root/SOURCE_OBS)
@@ -136,6 +149,7 @@ def profile_source(root:Path)->dict:
         "n_original_rows_with_numeric_selection_differential_and_SE":
             sum(number(r["diff.linear.value"]) is not None and
                 number(r["diff.linear.sterr"]) is not None for r in master),
+        "source_master_column_dictionary":original_column_dictionary(root/SOURCE_MASTER),
         "column_names_experimental_master":mheaders,
         "column_names_observational":oheaders,
         "column_names_original_duplicated":dheaders,
