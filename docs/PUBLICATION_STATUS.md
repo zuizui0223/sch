@@ -388,3 +388,20 @@ Use scripts/audit_sch_amnat_major_article_science.py and tests/test_sch_amnat_ma
 **Still not submission-ready:** (1) rendered optical figure review and journal-accepted vector/PDF/EPS/TIFF conversion, with print-size legibility and complete editorial figure legend QA; (2) full author-year Literature Cited source-by-source verification and style formatting; (3) journal-specific citation/ethics/data-availability and author declarations; (4) user-controlled author metadata and approval. Neither a complete causal P. rex trait × consumer experiment nor a measured SCH conflict loss L is implied.
 
 Status: PARALLEL_AMNAT_MAJOR_ARTICLE_LENGTH_GATE_MET_NOT_SUBMITTED; NPH_VIEWPOINT_PRIMARY_ROUTE_UNCHANGED.
+
+
+## Verified core citations and incomplete synthesis bibliography (2026-10-28)
+
+Core references have now been retrieved from publishers/PubMed and written to the **parallel American Naturalist Major Article**. The committed provenance is \`manuscript/AMNAT_CORE_REFERENCES_VERIFIED_20261028.md\`, machine metadata are \`data/SCH_AMNAT_CORE_BIBLIOGRAPHY_VERIFIED_20261028.csv\`, and the two-way manuscript/bibliography coverage audit is \`scripts/audit_sch_amnat_reference_coverage.py\`.
+
+- **9 original DOI-bearing ecological studies** cited in the original full-paper text were verified against publisher/indexer records and moved into Literature Cited.
+- **1 linked 2019 correction** to Chen et al. (2017) was additionally source-verified, formally cited in the paper, and included in Literature Cited. It updates Figure 1 and Table 3 notation, not the Table 2 selection coefficient data used in SCH.
+- **Koski's Trillium source** is cited as **2023**, following the publisher's issue and "How to cite" metadata, despite a 2022 online-first date and 2020–2021 field observations.
+- After this operation: **178 abstract words**, **6,741 whitespace-separated Markdown words before references**, **7,018 including references**. These are conservative whitespace counts, not final journal typesetting counts.
+- The 16-cluster design summary is UNCHANGED. At this point, only **two** of its 16 ledger-specific source IDs (*Pedicularis rex* 2016 and *Gymnadenia conopsea* 2015) are explicitly DOI-linked in the manuscript prose; the remaining **14 cluster-level source citations** remain to be verified and added. This is a bibliography completeness gap, **not** a claim that the literature evidence or study results are absent.
+- Specific missing citations for claims about external herbivory meta-analyses must also be located and source-verified. A ten-reference core is NOT a complete American Naturalist Literature Cited list.
+
+The programme's primary NPH Viewpoint package is not modified by this parallel source-citation audit.
+
+Status: PARALLEL_AMNAT_CORE_TEN_REFERENCES_VERIFIED_CONCEPTUAL_BIBLIOGRAPHY_INCOMPLETE.
+
