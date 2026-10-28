@@ -150,7 +150,7 @@ def test_source_tampering_fails_closed_without_cherry_picking():
     corrupt[1]["context"]=corrupt[0]["context"]
     with pytest.raises(ValueError,match="duplicated"):
         new_lobelia_siphilitica(corrupt,"relative_seeds_per_plant")
-    with pytest.raises(ValueError,match="36-cell"):
+    with pytest.raises(ValueError,match="6x3x2 table incomplete"):
         new_lobelia_siphilitica(b[:-1],"relative_seeds_per_plant")
     with pytest.raises(ValueError,match="unregistered"):
         new_lobelia_siphilitica(b,"not_registered")
