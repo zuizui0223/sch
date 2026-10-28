@@ -64,7 +64,7 @@ DATA_DOIS={
     "Lobelia_cardinalis":"10.1111/j.1469-8137.2011.04013.x",
     "Lobelia_siphilitica":"10.1002/ece3.10706",
     "Primula":"10.1038/s41598-017-13340-0",
-    "Trifolium":"SOURCE_DOI_NOT_YET_MATERIALIZED_IN_EXACT_NUMERIC_TABLE",
+    "Trifolium":"10.1111/jeb.13392",
     "Trillium":"10.1002/ajb2.16101",
 }
 ACON_TRAITS=frozenset((
@@ -402,7 +402,8 @@ def build()->dict:
         "independent_study_units":MAIN_STUDY_N,
         "n_matched_trait_context_edges":len(edges),
         "n_matched_edges_with_original_SEs":len(se_edges),
-        "n_distinct_original_DOIs_with_verified_primary_metadata":7,
+        "n_distinct_original_DOIs_with_verified_primary_metadata":8,
+        "Trifolium_primary_DOI_correspondence_confirmed_by_source_document_and_publisher":True,
         "Trifolium_original_primary_DOI_not_present_in_frozen_numeric_csv":True,
         "n_point_sign_crossings":point_flips,
         "n_both_arm_signs_nominally_supported":both_supported,
