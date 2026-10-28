@@ -7,6 +7,8 @@ on:
     paths:
       - "scripts/ingest_sch_ipomopsis_public_raw.py"
       - "scripts/audit_sch_ipomopsis_source_grain.py"
+      - "scripts/analyze_sch_ipomopsis_primary_coupling.py"
+      - "tests/test_sch_ipomopsis_primary_coupling.py"
       - "tests/test_sch_ipomopsis_original_raw_ingress.py"
       - ".github/workflows/sch_ipomopsis_original_raw.yml"
   workflow_dispatch:
@@ -31,6 +33,11 @@ jobs:
           python scripts/audit_sch_ipomopsis_source_grain.py
           --source artifacts/ipomopsis_original_ingress/Selection_by_pollinators_and_predators.csv
           --output artifacts/ipomopsis_original_ingress/cohort_and_stages_qc.json
+      - name: Estimate original cohort-stratified stage coupling and trait moderation
+        run: >-
+          python -m scripts.analyze_sch_ipomopsis_primary_coupling
+          --source artifacts/ipomopsis_original_ingress/Selection_by_pollinators_and_predators.csv
+          --output artifacts/ipomopsis_original_ingress/original_stage_coupling_permutation_result.json
       - name: Publish verified dataset + original column dictionary
         if: success()
         uses: actions/upload-artifact@v4
