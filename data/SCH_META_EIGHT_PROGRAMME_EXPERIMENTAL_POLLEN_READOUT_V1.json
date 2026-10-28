@@ -9,6 +9,7 @@
     "seed_absolute_gradient_attenuation": -0.029500000000000002
   },
   "Trifolium_original_primary_DOI_not_present_in_frozen_numeric_csv": true,
+  "Trifolium_primary_DOI_correspondence_confirmed_by_source_document_and_publisher": true,
   "analysis": "sch_eight_programme_experimental_pollen_selection_context_meta_pilot_v1",
   "common_flower_number_conditional_fixed_effect": {
     "analysis": "conditional_fixed_effect_floral_number_selection_response_pilot",
@@ -678,7 +679,7 @@
       "programme": "Trifolium",
       "source_SE_hand": null,
       "source_SE_open": null,
-      "source_doi": "SOURCE_DOI_NOT_YET_MATERIALIZED_IN_EXACT_NUMERIC_TABLE",
+      "source_doi": "10.1111/jeb.13392",
       "source_link_metric": "STANDARDIZED_LINEAR_SOURCE_BETA_NO_SE",
       "source_signs_both_nominally_supported": null,
       "trait": "HCNpositive_flowering_time",
@@ -876,7 +877,7 @@
     }
   ],
   "n_both_arm_signs_nominally_supported": 1,
-  "n_distinct_original_DOIs_with_verified_primary_metadata": 7,
+  "n_distinct_original_DOIs_with_verified_primary_metadata": 8,
   "n_matched_edges_with_original_SEs": 40,
   "n_matched_trait_context_edges": 41,
   "n_point_sign_crossings": 16,
@@ -982,7 +983,7 @@
       "not_population_prevalence": true,
       "opposite_cell_signs_individually_nominally_supported": 0,
       "point_sign_crossings": 1,
-      "source_doi": "SOURCE_DOI_NOT_YET_MATERIALIZED_IN_EXACT_NUMERIC_TABLE",
+      "source_doi": "10.1111/jeb.13392",
       "study_mean_absolute_gradient_attenuation": -0.16,
       "study_mean_attenuation_sign": "NEGATIVE",
       "study_mean_delta_signed_source_beta": -0.22
@@ -1022,8 +1023,8 @@
     "point_tendency_positive_fraction": 0.8571428571428571
   },
   "provenance": {
-    "github_run_id": 40619754248,
-    "github_job_id": 122590648023,
+    "github_run_id": 40620004537,
+    "github_job_id": 122591468125,
     "github_artifact_id": 12787125160,
     "original_Dryad_2018_full_meta_dataset_recovered": false,
     "published_2018_meta_full_unduplicated_workbook_access_error": "API_401_BROWSER_403",
@@ -1032,6 +1033,7 @@
       "10.1002/ece3.10706"
     ],
     "statistic_scope": "secondary_source_table_numeric_comparison_of_eight_publication_programmes",
-    "no_new_field_measurements": true
+    "no_new_field_measurements": true,
+    "original_Trifolium_Doi_external_verified": true
   }
 }
