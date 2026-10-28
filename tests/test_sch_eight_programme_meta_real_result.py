@@ -28,7 +28,7 @@ def test_eight_original_studies_and_verbatim_source_receipt_denominators():
     assert r["provenance"]["github_job_id"]==122590648023
     assert r["provenance"]["github_artifact_id"]==12787125160
     assert r["provenance"]["original_Dryad_2018_full_meta_dataset_recovered"] is False
-    assert r["n_distinct_original_DOIs_with_verified_primary_metadata"] in (7,8)
+    assert r["n_distinct_original_DOIs_with_verified_primary_metadata"]==8
     assert r["study_strength_directions"]["n_positive_strength_change"]==6
 
 
@@ -72,10 +72,8 @@ def test_two_new_original_study_tables_are_complete_and_not_two_experiments_each
 def test_ecological_doi_provenance_is_not_fabricated():
     r=_result()
     assert {s["source_doi"] for s in r["matched_source_edges"] if
-            s["programme"]=="Trifolium"} in (
-        {"SOURCE_DOI_NOT_YET_MATERIALIZED_IN_EXACT_NUMERIC_TABLE"},
-        {"10.1111/jeb.13392"},
-    )
+            s["programme"]=="Trifolium"}=={"10.1111/jeb.13392"}
+    assert r["provenance"]["original_Trifolium_Doi_external_verified"] is True
     ceiling=r["generalization_blockers"]
     assert "Trifolium_HCN_positive_only_genotype_and_no_source_beta_SE" in ceiling
     assert "Trillium_conditional_Poisson_coefficients_not_poolable_with_linear_slopes" in ceiling
