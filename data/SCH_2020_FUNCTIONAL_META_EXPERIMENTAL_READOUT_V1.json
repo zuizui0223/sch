@@ -1,0 +1,376 @@
+{
+  "all_source_both_arm_nominal_opp_signs": 0,
+  "all_source_familywise_contrast_certificates": 3,
+  "all_source_observed_gradient_coefficient_precisions_as_in_archive": true,
+  "all_source_point_sign_flips": 41,
+  "analysis": "sch_original_2020_functional_trait_master_biotic_abiotic_direction_v1",
+  "eligible_agent_category_counts": {
+    "ABIOTIC": {
+      "n_cellwise_two_nonzero_opposite_directions": 0,
+      "n_familywise_covariance_worstcase_change_certificates": 0,
+      "n_independent_original_papers": 8,
+      "n_matched_trait_context_pairs": 58,
+      "n_original_species": 8,
+      "n_original_study_in_situ_context_pairs": 0,
+      "n_point_sign_flips": 20,
+      "pair_weighted_flip_fraction_descriptive": 0.3448275862068966,
+      "paper_equal_weight_flip_fraction_descriptive": 0.3142361111111111
+    },
+    "BIOTIC": {
+      "n_cellwise_two_nonzero_opposite_directions": 0,
+      "n_familywise_covariance_worstcase_change_certificates": 3,
+      "n_independent_original_papers": 17,
+      "n_matched_trait_context_pairs": 75,
+      "n_original_species": 26,
+      "n_original_study_in_situ_context_pairs": 37,
+      "n_point_sign_flips": 21,
+      "pair_weighted_flip_fraction_descriptive": 0.28,
+      "paper_equal_weight_flip_fraction_descriptive": 0.21323529411764705
+    },
+    "UNRESOLVED_OR_MIXED": {
+      "n_cellwise_two_nonzero_opposite_directions": 0,
+      "n_familywise_covariance_worstcase_change_certificates": 0,
+      "n_independent_original_papers": 1,
+      "n_matched_trait_context_pairs": 4,
+      "n_original_species": 1,
+      "n_original_study_in_situ_context_pairs": 0,
+      "n_point_sign_flips": 0,
+      "pair_weighted_flip_fraction_descriptive": 0,
+      "paper_equal_weight_flip_fraction_descriptive": 0
+    }
+  },
+  "eligible_matched_pair_total": 137,
+  "eligible_paper_units": 26,
+  "eligible_species_units": 34,
+  "experimental_context_counts": {
+    "INDOOR_CONTROLLED": {
+      "n_pairs": 55,
+      "n_papers": 8,
+      "n_point_sign_flips": 19
+    },
+    "IN_SITU_NATURAL_POPULATION": {
+      "n_pairs": 37,
+      "n_papers": 9,
+      "n_point_sign_flips": 12
+    },
+    "OUTDOOR_SEMICONTROLLED": {
+      "n_pairs": 45,
+      "n_papers": 10,
+      "n_point_sign_flips": 10
+    }
+  },
+  "inferential_limits": [
+    "original_published_meta_source_not_independent_new_field_experiment",
+    "source_2019_or_2020_assembled_nonrandom_literature_not_global_prevalence",
+    "same_paper_axes_populations_and_trials_correlated_not_independent_n_pairs",
+    "study_category_membership_not_random_or_exchangeable_by_design",
+    "biotic_abiotic_study_contrast_exploratory_and_confounded_by_trait_design",
+    "point_estimate_sign_flip_not_inferential_sign_reversal",
+    "two_significant_opposite_cell_slopes_not_proof_of_causal_direct_function",
+    "unknown_source_pair_slope_covariance_use_sum_SE_upper",
+    "normal_approximation_and_source_SEs_are_assumptions",
+    "source_decimal_printing_rounding_not_independently_audited",
+    "source_genetic_or_phylogenetic_nonindependence_unresolved",
+    "source_pub_bias_and_site_selection_not_adjusted",
+    "no_pure_function_component_optima_or_SCH_loss_L"
+  ],
+  "input_grain": "original_pub_study_x_year_x_species_x_population_x_trait_x_sex_x_fitness",
+  "n_papers_with_familywise_source_contrast_certificates": 2,
+  "n_source_certificates_robust_to_stored_decimal_rounding": 2,
+  "paper_cluster_design_sensitivity": {
+    "original_fecundity_component_F_only": {
+      "independence_protected_paper_label_comparison": {
+        "assumes_paper_category_label_exchangeability_not_random_assignment": true,
+        "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
+        "excluded_mixed_or_multiple_agent_category_papers": 0,
+        "independent_abiotic_papers": 6,
+        "independent_biotic_papers": 14,
+        "n_included_pure_category_independent_papers": 20,
+        "n_permutations_run": 9999,
+        "observed_difference": -0.13128306878306875,
+        "paper_bootstrap_percentile_interval_descriptive": [
+          -0.3929067460317461,
+          0.1385995370370372
+        ],
+        "status": "PAPER_LEVEL_EXPLORATORY_ASSOCIATION_ONLY",
+        "two_sided_p_given_paper_label_exchangeability": 0.3842
+      },
+      "n_abiotic_pairs": 38,
+      "n_biotic_pairs": 56,
+      "n_original_papers": 20,
+      "n_point_sign_flips": 29,
+      "n_source_pairs": 94
+    },
+    "source_context_A_only": {
+      "independence_protected_paper_label_comparison": {
+        "independent_abiotic_papers": 6,
+        "independent_biotic_papers": 1,
+        "n_permutations_run": 0,
+        "status": "NOT_MODELABLE_UNDER_INDEPENDENT_PAPER_LABEL_PERMUTATION"
+      },
+      "n_abiotic_pairs": 47,
+      "n_biotic_pairs": 4,
+      "n_original_papers": 7,
+      "n_point_sign_flips": 19,
+      "n_source_pairs": 51
+    },
+    "source_context_A_or_B_only": {
+      "independence_protected_paper_label_comparison": {
+        "assumes_paper_category_label_exchangeability_not_random_assignment": true,
+        "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
+        "excluded_mixed_or_multiple_agent_category_papers": 0,
+        "independent_abiotic_papers": 8,
+        "independent_biotic_papers": 9,
+        "n_included_pure_category_independent_papers": 17,
+        "n_permutations_run": 9999,
+        "observed_difference": -0.1568287037037037,
+        "paper_bootstrap_percentile_interval_descriptive": [
+          -0.3784722222222222,
+          0.06077835648148154
+        ],
+        "status": "PAPER_LEVEL_EXPLORATORY_ASSOCIATION_ONLY",
+        "two_sided_p_given_paper_label_exchangeability": 0.2044
+      },
+      "n_abiotic_pairs": 58,
+      "n_biotic_pairs": 38,
+      "n_original_papers": 17,
+      "n_point_sign_flips": 29,
+      "n_source_pairs": 96
+    }
+  },
+  "paper_level_independence_protected_comparison": {
+    "assumes_paper_category_label_exchangeability_not_random_assignment": true,
+    "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
+    "excluded_mixed_or_multiple_agent_category_papers": 1,
+    "independent_abiotic_papers": 8,
+    "independent_biotic_papers": 17,
+    "n_included_pure_category_independent_papers": 25,
+    "n_permutations_run": 9999,
+    "observed_difference": -0.10100081699346405,
+    "paper_bootstrap_percentile_interval_descriptive": [
+      -0.32192606209150326,
+      0.11683517156862748
+    ],
+    "status": "PAPER_LEVEL_EXPLORATORY_ASSOCIATION_ONLY",
+    "two_sided_p_given_paper_label_exchangeability": 0.3996
+  },
+  "source_95pct_normal_bonferroni_critical_z": 3.5642029470176886,
+  "source_data_doi": "10.5061/dryad.sn02v6x0q",
+  "source_duplicate_1014_rows_not_used": true,
+  "source_observational_815_rows_not_pooled": true,
+  "source_pair_screening": {
+    "n_all_original_rows": 572,
+    "n_candidate_two_row_two_treatment_keys": 172,
+    "n_eligible_fully_matched_gradient_and_se_pairs": 137,
+    "n_original_source_rows_used_in_paired_analysis": 274,
+    "rejected_pair_counts": {
+      "missing_original_linear_gradient_or_se": 35,
+      "not_exactly_two_study_rows": 56
+    }
+  },
+  "source_paper_doi": "10.1086/706199",
+  "source_reconstructed_familywise_contrast_certificate_details": [
+    {
+      "adjusted_137_family_normal_p_upper": 0.01050520018155899,
+      "agent_category": "BIOTIC",
+      "authors": "Beans and Roach",
+      "beta1": 0.09,
+      "beta2": 0.003,
+      "contrast_difference": -0.087,
+      "fitness_component": "F",
+      "fitness_measure": "Number of fruits",
+      "original_row_ids": [
+        "204",
+        "208"
+      ],
+      "original_treatment_names": [
+        "Competitor absent",
+        "Competitor present"
+      ],
+      "paper_id": "13",
+      "point_sign_flip": false,
+      "published_year": "2015",
+      "se1": 0.02,
+      "se2": 0.002,
+      "source_agent": "Presence of competitor",
+      "source_context": "INDOOR_CONTROLLED",
+      "source_journal": "American Journal of Botany",
+      "source_volume_pages": "102:217-224",
+      "species": "Impatiens capensis",
+      "stored_source_decimal_rounding_robust": false,
+      "trait": "Early growth rate",
+      "trait_class": "PLANT_SIZE",
+      "two_opposite_individually_supported_slopes": false,
+      "worst_covariance_se": 0.022
+    },
+    {
+      "adjusted_137_family_normal_p_upper": 3.075617468351435e-11,
+      "agent_category": "BIOTIC",
+      "authors": "Beans and Roach",
+      "beta1": 0.14,
+      "beta2": 0.36,
+      "contrast_difference": 0.21999999999999997,
+      "fitness_component": "F",
+      "fitness_measure": "Number of fruits",
+      "original_row_ids": [
+        "207",
+        "211"
+      ],
+      "original_treatment_names": [
+        "Competitor absent",
+        "Competitor present"
+      ],
+      "paper_id": "13",
+      "point_sign_flip": false,
+      "published_year": "2015",
+      "se1": 0.01,
+      "se2": 0.02,
+      "source_agent": "Presence of competitor",
+      "source_context": "INDOOR_CONTROLLED",
+      "source_journal": "American Journal of Botany",
+      "source_volume_pages": "102:217-224",
+      "species": "Impatiens capensis",
+      "stored_source_decimal_rounding_robust": true,
+      "trait": "Number of internodes",
+      "trait_class": "PLANT_SIZE",
+      "two_opposite_individually_supported_slopes": false,
+      "worst_covariance_se": 0.03
+    },
+    {
+      "adjusted_137_family_normal_p_upper": 1.520475225929695e-18,
+      "agent_category": "BIOTIC",
+      "authors": "Stinchcombe et al.",
+      "beta1": 0.79,
+      "beta2": 0.044,
+      "contrast_difference": -0.746,
+      "fitness_component": "F",
+      "fitness_measure": "Number of seeds",
+      "original_row_ids": [
+        "495",
+        "496"
+      ],
+      "original_treatment_names": [
+        "Herbivores absent",
+        "Herbivores present"
+      ],
+      "paper_id": "37",
+      "point_sign_flip": false,
+      "published_year": "2002",
+      "se1": 0.03,
+      "se2": 0.05,
+      "source_agent": "Herb",
+      "source_context": "OUTDOOR_SEMICONTROLLED",
+      "source_journal": "The American Naturalist",
+      "source_volume_pages": "160:511-523",
+      "species": "Ipomoea hederacea",
+      "stored_source_decimal_rounding_robust": true,
+      "trait": "Total leaf area",
+      "trait_class": "PLANT_SIZE",
+      "two_opposite_individually_supported_slopes": false,
+      "worst_covariance_se": 0.08
+    }
+  ],
+  "source_unduplicated_experimental_rows": 572,
+  "status": "ORIGINAL_MASTER_META_REANALYSIS_NOT_CAUSAL_OR_NATURAL_PREVALENCE",
+  "stored_decimal_rounding_is_not_original_printing_precision_proof": true,
+  "trait_class_by_agent_category": {
+    "ABIOTIC": {
+      "LEAF_CHEMISTRY": {
+        "n_pairs": 4,
+        "n_papers": 1,
+        "n_point_sign_flips": 1,
+        "n_source_nominal_both_signs": 0
+      },
+      "LEAF_MORPHOLOGY": {
+        "n_pairs": 4,
+        "n_papers": 2,
+        "n_point_sign_flips": 2,
+        "n_source_nominal_both_signs": 0
+      },
+      "PHENOLOGY": {
+        "n_pairs": 18,
+        "n_papers": 6,
+        "n_point_sign_flips": 5,
+        "n_source_nominal_both_signs": 0
+      },
+      "PHYSIOLOGY": {
+        "n_pairs": 15,
+        "n_papers": 3,
+        "n_point_sign_flips": 8,
+        "n_source_nominal_both_signs": 0
+      },
+      "PLANT_SIZE": {
+        "n_pairs": 17,
+        "n_papers": 7,
+        "n_point_sign_flips": 4,
+        "n_source_nominal_both_signs": 0
+      }
+    },
+    "BIOTIC": {
+      "LEAF_CHEMISTRY": {
+        "n_pairs": 8,
+        "n_papers": 3,
+        "n_point_sign_flips": 1,
+        "n_source_nominal_both_signs": 0
+      },
+      "LEAF_MORPHOLOGY": {
+        "n_pairs": 6,
+        "n_papers": 3,
+        "n_point_sign_flips": 3,
+        "n_source_nominal_both_signs": 0
+      },
+      "PHENOLOGY": {
+        "n_pairs": 34,
+        "n_papers": 9,
+        "n_point_sign_flips": 11,
+        "n_source_nominal_both_signs": 0
+      },
+      "PHYSIOLOGY": {
+        "n_pairs": 7,
+        "n_papers": 2,
+        "n_point_sign_flips": 3,
+        "n_source_nominal_both_signs": 0
+      },
+      "PLANT_SIZE": {
+        "n_pairs": 20,
+        "n_papers": 7,
+        "n_point_sign_flips": 3,
+        "n_source_nominal_both_signs": 0
+      }
+    },
+    "UNRESOLVED_OR_MIXED": {
+      "LEAF_MORPHOLOGY": {
+        "n_pairs": 1,
+        "n_papers": 1,
+        "n_point_sign_flips": 0,
+        "n_source_nominal_both_signs": 0
+      },
+      "PHENOLOGY": {
+        "n_pairs": 1,
+        "n_papers": 1,
+        "n_point_sign_flips": 0,
+        "n_source_nominal_both_signs": 0
+      },
+      "PLANT_SIZE": {
+        "n_pairs": 2,
+        "n_papers": 1,
+        "n_point_sign_flips": 0,
+        "n_source_nominal_both_signs": 0
+      }
+    }
+  },
+  "source_original_reference": {
+    "title": "Caruso Maherali Martin plant functional trait phenotypic selection meta-data",
+    "data_doi": "10.5061/dryad.sn02v6x0q",
+    "source_paper_doi": "10.1086/706199",
+    "archive_record": 5000217,
+    "experimental_master_filename": "Plant_functional_traits_experimental_database_master_Dryad.xlsx",
+    "experimental_master_md5": "7f680c344c0a418a3d8742649de24d52",
+    "intentionally_duplicate_analysis_1014_not_used": true,
+    "observational_815_not_pooled": true,
+    "github_original_verified_source_run": 43581102211,
+    "github_workflow_job": 132405799918,
+    "permanent_matched_ledger": "data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv",
+    "source_script": "scripts/analyze_sch_plant_functional_selection_macro.py"
+  }
+}

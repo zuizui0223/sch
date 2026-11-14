@@ -1,0 +1,4 @@
+original_paper_id,compiled_authors,publication_year,primary_article_doi,original_journal,primary_source_location,trait,author_fitted_treatment_trait_p,author_fitted_F,author_fitted_df,independent_primary_source_assessment,fit_provenance_note
+13,Beans and Roach,2015,10.3732/ajb.1400355,American Journal of Botany,Table_2_greenhouse_competition,Early growth rate,0.04,4.38,"1,122",SOURCE_DIRECT_TEST_NOMINAL_ONLY,AUTHOR_DIRECT_TREATMENT_X_TRAIT_FITTED_TEST
+13,Beans and Roach,2015,10.3732/ajb.1400355,American Journal of Botany,Table_2_greenhouse_competition,Number of internodes,<0.0001,82.74,"1,122",AUTHOR_DIRECT_TEST_SURVIVES_137_BONFERRONI,AUTHOR_DIRECT_TREATMENT_X_TRAIT_FITTED_TEST
+37,Stinchcombe et al.,2002,10.1086/342069,The American Naturalist,phenotypic_selection_environmental_bias_study,Total leaf area,NOT_VERIFIED,,,UNRESOLVED_DIRECT_TEST_AND_PHENOTYPIC_BIAS_RISK,SOURCE_STUDY_METHODOLOGICAL_BIAS_TEST_NOT_ASSUME_DIRECT_CONTEXT_EFFECT
