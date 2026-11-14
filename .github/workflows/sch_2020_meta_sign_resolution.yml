@@ -1,0 +1,48 @@
+name: SCH 2020 functional selection sign-resolution meta audit
+
+on:
+  push:
+    branches:
+      - empirical/meta-sign-resolution-audit-20261114
+    paths:
+      - scripts/audit_sch_2020_meta_sign_resolution.py
+      - tests/test_sch_2020_meta_sign_resolution.py
+      - docs/SCH_2020_META_SIGN_RESOLUTION_V1.md
+      - .github/workflows/sch_2020_meta_sign_resolution.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-derived-record-inference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install source regression requirements
+        run: python -m pip install --quiet pytest
+      - name: Test source classification and 26-paper accounting
+        run: python -m pytest -q tests/test_sch_2020_meta_sign_resolution.py
+      - name: Reanalyse all 137 published treatment matches without inventing replication
+        run: |
+          python -m scripts.audit_sch_2020_meta_sign_resolution --output artifacts/sch_meta_signs/source_sign_resolution.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path("artifacts/sch_meta_signs/source_sign_resolution.json").read_text())
+          print("BEGIN_SCH_2020_META_SIGN_RESOLUTION")
+          print(json.dumps(j,indent=2,sort_keys=True))
+          print("END_SCH_2020_META_SIGN_RESOLUTION")
+          PY
+      - name: Preserve machine-readable original source-derived scientific receipt
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-2020-original-meta-sign-resolution
+          path: artifacts/sch_meta_signs/
+          if-no-files-found: error
+          retention-days: 15
