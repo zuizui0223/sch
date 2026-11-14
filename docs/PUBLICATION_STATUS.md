@@ -460,3 +460,16 @@ The SCH primary **New Phytologist Viewpoint** remains a conceptual source-adjudi
 **Publication boundary:** This is a genuine new *meta-dataset calculation*, not a new organism-level field data set, not a representative sample of global plant ecosystems, and **not a population prevalence estimate**. It is not a complete original-interaction test meta-analysis, nor a causal trait × agent optimum or SCH L estimate. Additional primary interaction sources and study-aware heterogeneity/selection-bias audit are still essential before an original ecology article can generalize.
 
 Status: GLOBAL_FUNCTIONAL_META_V1_REAL_ORIGINAL_SOURCE_REANALYSIS_DONE; PAPER_UNIT_META_P=0.3996; AUTHOR_PRIMARY_FULL_META_NOT_COMPLETE; NPH_VIEWPOINT_UNCHANGED.
+
+
+## Original meta-data sign precision follow-up (2026-11-14)
+
+To strengthen SCH's **independent quantitative macro/meta-analysis lane rather than repackage the literature Viewpoint**, a source-certified precision follow-up has been calculated on the **137 original matched gradients, 26 independent papers and 34 named species** of the original Caruso et al. 2020 experimental plant-functional-trait meta database, DOI `10.5061/dryad.sn02v6x0q`.
+
+Source data contain **41 signed point changes** from **15/26 papers**. Of these, **28/41** show no individually nominally supported direction in either treatment arm, **13/41** have one supported direction, and **0/41** have two supported opposite directions. This is a source-diagnostic count, not a natural ecological prevalence or proof of same-sign underlying selection.
+
+A clearly labelled **counterfactual information multiplier** is derived as `(1.96 / min(|β₁|/SE₁, |β₂|/SE₂))²` under constant original beta values and SE shrinking with `1/sqrt(n)`. Across the 41 observed crossing pairs, the hypothetical multiplier is median **15.37** (q25 **8.64**, q75 **158.76**); only **6/41** would attain both-arm nominal sign support at 4× the hypothetical information, while **12/41** would require more than 100×. This is **NOT** a real prospective power calculation or a planned sampling prescription: original beta values, experimental variance and within-source covariance may change.
+
+Executable code: `scripts/audit_sch_2020_meta_sign_resolution.py`; source fidelity tests: `tests/test_sch_2020_meta_sign_resolution.py`; source-derived exact numerical receipt: `data/SCH_2020_META_SIGN_RESOLUTION_V1.json`; interpretation: `docs/SCH_2020_META_SIGN_RESOLUTION_V1.md`; GitHub Actions run **43583596437** produced the receipt. Main NPH Viewpoint/16-source-cluster H2 holdout and causal loss L remain unchanged.
+
+**Status:** QUANTITATIVE_REANALYSIS_COMPLETE; ZERO_TWO_ARM_SUPPORTED_REVERSALS; BIOLOGICAL_DIRECTIONAL_SHIFT_UNCERTAIN; SYSTEMATIC_WORLD_PREVALENCE_NOT_IDENTIFIED.

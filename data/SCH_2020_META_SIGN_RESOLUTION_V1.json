@@ -1,0 +1,1082 @@
+{
+  "analysis": "sch_2020_original_source_meta_point_sign_resolution_v1",
+  "environmental_agent_source_diagnostics": {
+    "ABIOTIC": {
+      "n_neither_arm_supported": 12,
+      "n_one_arm_supported": 8,
+      "n_original_papers": 8,
+      "n_point_crossings": 20,
+      "n_source_pairs": 58
+    },
+    "BIOTIC": {
+      "n_neither_arm_supported": 16,
+      "n_one_arm_supported": 5,
+      "n_original_papers": 17,
+      "n_point_crossings": 21,
+      "n_source_pairs": 75
+    },
+    "UNRESOLVED_OR_MIXED": {
+      "n_neither_arm_supported": 0,
+      "n_one_arm_supported": 0,
+      "n_original_papers": 1,
+      "n_point_crossings": 0,
+      "n_source_pairs": 4
+    }
+  },
+  "hypothetical_sample_information_multiplier_IF_source_betas_remain_fixed": {
+    "ASSUMES_SOURCE_POINT_BETAS_FIXED_AND_GAUSSIAN_SE_SQRT_N": true,
+    "NOT_AN_EMPIRICAL_POWER_CALCULATION": true,
+    "max": 4705.959999999999,
+    "median": 15.366399999999999,
+    "min": 1.3269423207140656,
+    "n_below_or_equal_threshold": {
+      "2": 3,
+      "4": 6,
+      "8": 8,
+      "16": 21,
+      "25": 23,
+      "100": 29
+    },
+    "n_exceed_100_fold_sample_information": 12,
+    "q25": 8.643599999999998,
+    "q75": 158.76
+  },
+  "interpretive_boundaries": [
+    "source_original_137_pairs_nonnumeric_diversity_has_no_world_pop_sampling_frame",
+    "published_point_sign_crossing_not_a_detected_two_direction_reversal",
+    "one_or_zero_significant_source_cells_do_not_prove_same_true_sign",
+    "n_multiplies_only_math_SE_with_source_beta_unchanged_no_power_or_sample_size_plan",
+    "original_26_studies_rather_than_137_gradients_are_independent_units",
+    "study_and_year_fitness_and_trait_context_dependence_not_resolved",
+    "original_Pvalues_may_disagree_with_normal_Wald_source_SEs",
+    "none_identifies_causal_shared_trait_L_or_pure_function_optima"
+  ],
+  "n_complete_paired_source_gradients": 137,
+  "n_crossings_with_neither_slope_nominally_supported": 28,
+  "n_crossings_with_one_nominally_supported_slope": 13,
+  "n_crossings_with_two_nominally_supported_opposite_slopes": 0,
+  "n_original_independent_papers": 26,
+  "n_original_independent_papers_with_one_or_more_point_flips": 15,
+  "n_source_point_crossings": 41,
+  "original_experimental_master_MD5": "7f680c344c0a418a3d8742649de24d52",
+  "original_source_DOI": "10.5061/dryad.sn02v6x0q",
+  "point_crossing_source_record_diagnostics": [
+    {
+      "abs_z_1": 1.4782608695652175,
+      "abs_z_2": 0.04838709677419355,
+      "agent_category": "BIOTIC",
+      "authors": "Caruso and Yakobowski",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 1640.7900444444444,
+      "min_source_arm_abs_z": 0.04838709677419355,
+      "paper_id": "1",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "4",
+        "8"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Lobelia siphilitica",
+      "trait": "Specific leaf area",
+      "trait_class": "LEAF_MORPHOLOGY"
+    },
+    {
+      "abs_z_1": 0.6666666666666666,
+      "abs_z_2": 0.625,
+      "agent_category": "ABIOTIC",
+      "authors": "Ivey and Carr",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 9.834496000000001,
+      "min_source_arm_abs_z": 0.625,
+      "paper_id": "10",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "86",
+        "90"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Mimulus guttatus",
+      "trait": "% Nitrogen content (proxy photosynthetic rate)",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.14285714285714285,
+      "abs_z_2": 3.3076923076923075,
+      "agent_category": "ABIOTIC",
+      "authors": "Ivey and Carr",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 188.2384,
+      "min_source_arm_abs_z": 0.14285714285714285,
+      "paper_id": "10",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "87",
+        "91"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Mimulus guttatus",
+      "trait": "13C isotope ratio (WUE)",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 1.375,
+      "abs_z_2": 0.6153846153846154,
+      "agent_category": "ABIOTIC",
+      "authors": "Ivey and Carr",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 10.144224999999997,
+      "min_source_arm_abs_z": 0.6153846153846154,
+      "paper_id": "10",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "95",
+        "99"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Mimulus guttatus",
+      "trait": "13C isotope ratio (WUE)",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 2.1999999999999997,
+      "abs_z_2": 0.3333333333333333,
+      "agent_category": "ABIOTIC",
+      "authors": "Ivey and Carr",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 34.5744,
+      "min_source_arm_abs_z": 0.3333333333333333,
+      "paper_id": "10",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "101",
+        "103"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Mimulus nasutus",
+      "trait": "Day of first flower",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 5,
+      "abs_z_2": 0.8181818181818181,
+      "agent_category": "BIOTIC",
+      "authors": "Beans and Roach",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 5.738686419753087,
+      "min_source_arm_abs_z": 0.8181818181818181,
+      "paper_id": "13",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "212",
+        "216"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Impatiens capensis",
+      "trait": "Early growth rate",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 0.9090909090909092,
+      "abs_z_2": 0.2777777777777778,
+      "agent_category": "ABIOTIC",
+      "authors": "Jormalainen and Honkanen",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 49.78713599999999,
+      "min_source_arm_abs_z": 0.2777777777777778,
+      "paper_id": "18",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "259",
+        "263"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Fucus vesiculosus",
+      "trait": "Phlorotannins",
+      "trait_class": "LEAF_CHEMISTRY"
+    },
+    {
+      "abs_z_1": 0.5454545454545454,
+      "abs_z_2": 0.16666666666666669,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 138.29759999999996,
+      "min_source_arm_abs_z": 0.16666666666666669,
+      "paper_id": "19",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "265",
+        "277"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Flowering duration",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 3.0999999999999996,
+      "abs_z_2": 0.5,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 15.366399999999999,
+      "min_source_arm_abs_z": 0.5,
+      "paper_id": "19",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "266",
+        "278"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Stem height",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 0.09090909090909091,
+      "abs_z_2": 1.7333333333333334,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 464.83359999999993,
+      "min_source_arm_abs_z": 0.09090909090909091,
+      "paper_id": "19",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "267",
+        "279"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Leaf surface area",
+      "trait_class": "LEAF_MORPHOLOGY"
+    },
+    {
+      "abs_z_1": 2.7,
+      "abs_z_2": 0.6666666666666667,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 8.643599999999998,
+      "min_source_arm_abs_z": 0.6666666666666667,
+      "paper_id": "19",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "269",
+        "281"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Flowering duration",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.6923076923076923,
+      "abs_z_2": 0.3,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 42.684444444444445,
+      "min_source_arm_abs_z": 0.3,
+      "paper_id": "19",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "273",
+        "285"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Flowering duration",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 1.5833333333333335,
+      "abs_z_2": 0.11111111111111112,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 311.1695999999999,
+      "min_source_arm_abs_z": 0.11111111111111112,
+      "paper_id": "19",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "274",
+        "286"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Stem height",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 0.6666666666666667,
+      "abs_z_2": 0.75,
+      "agent_category": "ABIOTIC",
+      "authors": "Petit and Thompson",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 8.643599999999998,
+      "min_source_arm_abs_z": 0.6666666666666667,
+      "paper_id": "19",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "275",
+        "287"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Arrhenatherum elatius",
+      "trait": "Leaf surface area",
+      "trait_class": "LEAF_MORPHOLOGY"
+    },
+    {
+      "abs_z_1": 2.1789473684210523,
+      "abs_z_2": 1.7014925373134329,
+      "agent_category": "ABIOTIC",
+      "authors": "Fuselier and McLetchie",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 1.3269423207140656,
+      "min_source_arm_abs_z": 1.7014925373134329,
+      "paper_id": "21",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "295",
+        "301"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Marchantia inflexa",
+      "trait": "Age at first split",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.5222929936305732,
+      "abs_z_2": 0.6972477064220184,
+      "agent_category": "ABIOTIC",
+      "authors": "Fuselier and McLetchie",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 14.082629149315881,
+      "min_source_arm_abs_z": 0.5222929936305732,
+      "paper_id": "21",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "293",
+        "299"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Marchantia inflexa",
+      "trait": "Area at day 49",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 3.8095238095238093,
+      "abs_z_2": 0.6768707482993198,
+      "agent_category": "ABIOTIC",
+      "authors": "Fuselier and McLetchie",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 8.384953349662885,
+      "min_source_arm_abs_z": 0.6768707482993198,
+      "paper_id": "21",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "296",
+        "302"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Marchantia inflexa",
+      "trait": "Area at day 49",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 0.870967741935484,
+      "abs_z_2": 2.0999999999999996,
+      "agent_category": "BIOTIC",
+      "authors": "Fukano et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 5.064166803840877,
+      "min_source_arm_abs_z": 0.870967741935484,
+      "paper_id": "24",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "321",
+        "323"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Ambrosia artemisiifolia",
+      "trait": "Stem diameter",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 1.1666666666666667,
+      "abs_z_2": 0.21818181818181817,
+      "agent_category": "BIOTIC",
+      "authors": "Sletvold and Agren",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 80.7002777777778,
+      "min_source_arm_abs_z": 0.21818181818181817,
+      "paper_id": "25",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "326",
+        "327"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Dactylorhiza lapponica",
+      "trait": "Start of flowering",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 3.13,
+      "abs_z_2": 0.55,
+      "agent_category": "ABIOTIC",
+      "authors": "Maherali et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 12.699504132231404,
+      "min_source_arm_abs_z": 0.55,
+      "paper_id": "3",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "11",
+        "15"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Avena barbata",
+      "trait": "Ontogenetic change in tiller photosynthesis",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 3.5479452054794525,
+      "abs_z_2": 0.08064516129032258,
+      "agent_category": "ABIOTIC",
+      "authors": "Maherali et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 590.6844159999999,
+      "min_source_arm_abs_z": 0.08064516129032258,
+      "paper_id": "3",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "12",
+        "16"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Avena barbata",
+      "trait": "Ontogenetic change in culm photosynthesis",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 1.0952380952380953,
+      "abs_z_2": 0.47368421052631576,
+      "agent_category": "ABIOTIC",
+      "authors": "Maherali et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 17.121204938271607,
+      "min_source_arm_abs_z": 0.47368421052631576,
+      "paper_id": "3",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "13",
+        "17"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Avena barbata",
+      "trait": "Ontogenetic change in tiller stomatal conductance",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.13402061855670103,
+      "abs_z_2": 0.31034482758620685,
+      "agent_category": "BIOTIC",
+      "authors": "Trunschke et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 213.879375147929,
+      "min_source_arm_abs_z": 0.13402061855670103,
+      "paper_id": "33",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "411",
+        "412"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Anacamptis morio",
+      "trait": "Flowering start",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 1.1746031746031744,
+      "abs_z_2": 1.706896551724138,
+      "agent_category": "BIOTIC",
+      "authors": "Trunschke et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 2.7843883126369624,
+      "min_source_arm_abs_z": 1.1746031746031744,
+      "paper_id": "33",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "429",
+        "430"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Neottia ovata",
+      "trait": "Flowering start",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.6589595375722545,
+      "abs_z_2": 2.9558823529411766,
+      "agent_category": "BIOTIC",
+      "authors": "Trunschke et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 8.846971868267156,
+      "min_source_arm_abs_z": 0.6589595375722545,
+      "paper_id": "33",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "417",
+        "418"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Neotinea ustulata",
+      "trait": "Flowering start",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 2.0251046025104604,
+      "abs_z_2": 0.05714285714285714,
+      "agent_category": "BIOTIC",
+      "authors": "Trunschke et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 1176.4899999999998,
+      "min_source_arm_abs_z": 0.05714285714285714,
+      "paper_id": "33",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "419",
+        "420"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Orchis mascula",
+      "trait": "Flowering start",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.1272727272727273,
+      "abs_z_2": 0.16304347826086957,
+      "agent_category": "BIOTIC",
+      "authors": "Franks et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 237.15999999999997,
+      "min_source_arm_abs_z": 0.1272727272727273,
+      "paper_id": "40",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "519",
+        "522"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Melaleuca quinquenervia",
+      "trait": "Viridiflorol",
+      "trait_class": "LEAF_CHEMISTRY"
+    },
+    {
+      "abs_z_1": 1.388888888888889,
+      "abs_z_2": 1.4838709677419355,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 1.9914854399999995,
+      "min_source_arm_abs_z": 1.388888888888889,
+      "paper_id": "41",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "530",
+        "542"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "Transpiration",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.358974358974359,
+      "abs_z_2": 0.44897959183673464,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 29.8116,
+      "min_source_arm_abs_z": 0.358974358974359,
+      "paper_id": "41",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "531",
+        "543"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "SLA",
+      "trait_class": "LEAF_MORPHOLOGY"
+    },
+    {
+      "abs_z_1": 0.6338028169014085,
+      "abs_z_2": 1.2,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 9.563212641975309,
+      "min_source_arm_abs_z": 0.6338028169014085,
+      "paper_id": "41",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "532",
+        "544"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "Petiole length",
+      "trait_class": "LEAF_MORPHOLOGY"
+    },
+    {
+      "abs_z_1": 1.5384615384615385,
+      "abs_z_2": 1.4090909090909092,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 1.9347912591050986,
+      "min_source_arm_abs_z": 1.4090909090909092,
+      "paper_id": "41",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "533",
+        "545"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "Internode length",
+      "trait_class": "PLANT_SIZE"
+    },
+    {
+      "abs_z_1": 3,
+      "abs_z_2": 1,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 3.8415999999999997,
+      "min_source_arm_abs_z": 1,
+      "paper_id": "41",
+      "precision_class": "ONE_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "535",
+        "547"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "Amax",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.8125,
+      "abs_z_2": 0.5416666666666666,
+      "agent_category": "BIOTIC",
+      "authors": "Salgado-Luarte and Gianoli",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 13.093263905325447,
+      "min_source_arm_abs_z": 0.5416666666666666,
+      "paper_id": "41",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "536",
+        "548"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Aristotelia chilensis",
+      "trait": "Transpiration",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.8875,
+      "abs_z_2": 0.15555555555555556,
+      "agent_category": "BIOTIC",
+      "authors": "Sletvold et al.",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 158.76,
+      "min_source_arm_abs_z": 0.15555555555555556,
+      "paper_id": "5",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "37",
+        "38"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Dactylorhiza lapponica",
+      "trait": "Flowering start",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.02857142857142857,
+      "abs_z_2": 0.3378378378378379,
+      "agent_category": "ABIOTIC",
+      "authors": "Sherrard and Maherali",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 4705.959999999999,
+      "min_source_arm_abs_z": 0.02857142857142857,
+      "paper_id": "7",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "42",
+        "51"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Avena barbata",
+      "trait": "Carboxylation efficiency (Vcmax)",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.9827586206896551,
+      "abs_z_2": 1.3287671232876714,
+      "agent_category": "ABIOTIC",
+      "authors": "Sherrard and Maherali",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 3.9775753770390896,
+      "min_source_arm_abs_z": 0.9827586206896551,
+      "paper_id": "7",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "45",
+        "54"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Avena barbata",
+      "trait": "Stomatal conductance (gs)",
+      "trait_class": "PHYSIOLOGY"
+    },
+    {
+      "abs_z_1": 0.08888888888888889,
+      "abs_z_2": 0.7913043478260869,
+      "agent_category": "BIOTIC",
+      "authors": "Weber and Kolb",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 486.2024999999999,
+      "min_source_arm_abs_z": 0.08888888888888889,
+      "paper_id": "8",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "59",
+        "60"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Phyteuma spicata",
+      "trait": "Flowering state",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.375,
+      "abs_z_2": 0.24242424242424243,
+      "agent_category": "BIOTIC",
+      "authors": "Weber and Kolb",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 65.36722499999999,
+      "min_source_arm_abs_z": 0.24242424242424243,
+      "paper_id": "8",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "65",
+        "66"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Phyteuma spicata",
+      "trait": "Flowering state",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.6153846153846154,
+      "abs_z_2": 0.7088607594936709,
+      "agent_category": "BIOTIC",
+      "authors": "Weber and Kolb",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 10.144224999999997,
+      "min_source_arm_abs_z": 0.6153846153846154,
+      "paper_id": "8",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "67",
+        "68"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Phyteuma spicata",
+      "trait": "Flowering state",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 1.6808510638297873,
+      "abs_z_2": 0.45614035087719296,
+      "agent_category": "BIOTIC",
+      "authors": "Weber and Kolb",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 18.463547928994085,
+      "min_source_arm_abs_z": 0.45614035087719296,
+      "paper_id": "8",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "69",
+        "70"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Phyteuma spicata",
+      "trait": "Flowering state",
+      "trait_class": "PHENOLOGY"
+    },
+    {
+      "abs_z_1": 0.5609756097560975,
+      "abs_z_2": 0.923913043478261,
+      "agent_category": "BIOTIC",
+      "authors": "Weber and Kolb",
+      "hypothetical_sample_information_multiplier_to_two_source_signs": 12.207428355387524,
+      "min_source_arm_abs_z": 0.5609756097560975,
+      "paper_id": "8",
+      "precision_class": "NEITHER_ARM_SOURCE_SUPPORTED",
+      "source_original_row_ids": [
+        "79",
+        "80"
+      ],
+      "source_point_sign_crossing": true,
+      "species": "Phyteuma spicata",
+      "trait": "Flowering state",
+      "trait_class": "PHENOLOGY"
+    }
+  ],
+  "source_95pct_two_sided_abs_z_threshold": 1.96,
+  "source_paper_diagnostics": [
+    {
+      "authors": "Caruso and Yakobowski",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 4,
+      "n_point_crossings": 1,
+      "paper_id": "1"
+    },
+    {
+      "authors": "Parachnowitsch and Caruso",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 1,
+      "n_point_crossings": 0,
+      "paper_id": "2"
+    },
+    {
+      "authors": "Maherali et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 2,
+      "n_original_trait_context_pairs": 4,
+      "n_point_crossings": 3,
+      "paper_id": "3"
+    },
+    {
+      "authors": "Sletvold et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 1,
+      "n_point_crossings": 1,
+      "paper_id": "5"
+    },
+    {
+      "authors": "Parachnowitsch and Kessler",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 1,
+      "n_point_crossings": 0,
+      "paper_id": "6"
+    },
+    {
+      "authors": "Sherrard and Maherali",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 2,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 9,
+      "n_point_crossings": 2,
+      "paper_id": "7"
+    },
+    {
+      "authors": "Weber and Kolb",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 5,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 12,
+      "n_point_crossings": 5,
+      "paper_id": "8"
+    },
+    {
+      "authors": "Bartowska and Johnston",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 1,
+      "n_point_crossings": 0,
+      "paper_id": "9"
+    },
+    {
+      "authors": "Ivey and Carr",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 2,
+      "n_one_arm_supported_crossings": 2,
+      "n_original_trait_context_pairs": 12,
+      "n_point_crossings": 4,
+      "paper_id": "10"
+    },
+    {
+      "authors": "Beans and Roach",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 1,
+      "n_original_trait_context_pairs": 8,
+      "n_point_crossings": 1,
+      "paper_id": "13"
+    },
+    {
+      "authors": "Juenger et al",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 2,
+      "n_point_crossings": 0,
+      "paper_id": "15"
+    },
+    {
+      "authors": "Valverde et al",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 3,
+      "n_point_crossings": 0,
+      "paper_id": "16"
+    },
+    {
+      "authors": "Jormalainen and Honkanen",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 8,
+      "n_point_crossings": 1,
+      "paper_id": "18"
+    },
+    {
+      "authors": "Petit and Thompson",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 5,
+      "n_one_arm_supported_crossings": 2,
+      "n_original_trait_context_pairs": 12,
+      "n_point_crossings": 7,
+      "paper_id": "19"
+    },
+    {
+      "authors": "Fuselier and McLetchie",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 2,
+      "n_original_trait_context_pairs": 6,
+      "n_point_crossings": 3,
+      "paper_id": "21"
+    },
+    {
+      "authors": "Steinger et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 4,
+      "n_point_crossings": 0,
+      "paper_id": "22"
+    },
+    {
+      "authors": "Fukano et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 1,
+      "n_original_trait_context_pairs": 2,
+      "n_point_crossings": 1,
+      "paper_id": "24"
+    },
+    {
+      "authors": "Sletvold and Agren",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 3,
+      "n_point_crossings": 1,
+      "paper_id": "25"
+    },
+    {
+      "authors": "Chapurlat et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 2,
+      "n_point_crossings": 0,
+      "paper_id": "28"
+    },
+    {
+      "authors": "Wadgymar et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 3,
+      "n_point_crossings": 0,
+      "paper_id": "29"
+    },
+    {
+      "authors": "Trunschke et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 2,
+      "n_one_arm_supported_crossings": 2,
+      "n_original_trait_context_pairs": 12,
+      "n_point_crossings": 4,
+      "paper_id": "33"
+    },
+    {
+      "authors": "Wender et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 4,
+      "n_point_crossings": 0,
+      "paper_id": "36"
+    },
+    {
+      "authors": "Stinchcombe et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 4,
+      "n_point_crossings": 0,
+      "paper_id": "37"
+    },
+    {
+      "authors": "Mooney and McGraw",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 0,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 1,
+      "n_point_crossings": 0,
+      "paper_id": "38"
+    },
+    {
+      "authors": "Franks et al.",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 1,
+      "n_one_arm_supported_crossings": 0,
+      "n_original_trait_context_pairs": 6,
+      "n_point_crossings": 1,
+      "paper_id": "40"
+    },
+    {
+      "authors": "Salgado-Luarte and Gianoli",
+      "n_both_arm_supported_crossings": 0,
+      "n_neither_arm_supported_crossings": 5,
+      "n_one_arm_supported_crossings": 1,
+      "n_original_trait_context_pairs": 12,
+      "n_point_crossings": 6,
+      "paper_id": "41"
+    }
+  ],
+  "status": "ORIGINAL_SOURCE_META_NO_INFERENTIALLY_SUPPORTED_SIGN_REVERSALS",
+  "trait_class_source_diagnostics": {
+    "LEAF_CHEMISTRY": {
+      "n_both_arm_source_supported_crossings": 0,
+      "n_original_papers": 4,
+      "n_point_crossings": 2,
+      "n_source_pairs": 12
+    },
+    "LEAF_MORPHOLOGY": {
+      "n_both_arm_source_supported_crossings": 0,
+      "n_original_papers": 6,
+      "n_point_crossings": 5,
+      "n_source_pairs": 11
+    },
+    "PHENOLOGY": {
+      "n_both_arm_source_supported_crossings": 0,
+      "n_original_papers": 16,
+      "n_point_crossings": 16,
+      "n_source_pairs": 53
+    },
+    "PHYSIOLOGY": {
+      "n_both_arm_source_supported_crossings": 0,
+      "n_original_papers": 5,
+      "n_point_crossings": 11,
+      "n_source_pairs": 22
+    },
+    "PLANT_SIZE": {
+      "n_both_arm_source_supported_crossings": 0,
+      "n_original_papers": 15,
+      "n_point_crossings": 7,
+      "n_source_pairs": 39
+    }
+  },
+  "provenance": {
+    "github_original_derived_source_run": 43583596437,
+    "github_successful_job_id": 132413300825,
+    "original_source_master_md5": "7f680c344c0a418a3d8742649de24d52",
+    "source_meta_DOI": "10.5061/dryad.sn02v6x0q",
+    "parent_original_source_pair_csv": "data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv",
+    "original_derived_treatment_pair_count": 137,
+    "absolute_precision_multipliers_are_hypothetical_not_observed_study_sample_sizes": true
+  }
+}
