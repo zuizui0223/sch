@@ -472,6 +472,14 @@ def main()->None:
     print(json.dumps({k:v for k,v in result.items() if k not in {
         "source_matched_pairs","per_paper_source_summary"}},indent=2,sort_keys=True))
     print("END_SCH_2020_FUNCTIONAL_META_RESULT")
+    # One original matched source pair per short log line. This allows a
+    # permanent derived-data ledger to be verified against the exact
+    # GitHub-run original source without pretending an expiring ZIP is a
+    # durable research database.
+    print("BEGIN_SCH_2020_FUNCTIONAL_META_PAIR_LEDGER")
+    for pair in result["source_matched_pairs"]:
+        print(json.dumps(pair,sort_keys=True,ensure_ascii=False))
+    print("END_SCH_2020_FUNCTIONAL_META_PAIR_LEDGER")
 
 
 if __name__=="__main__":
