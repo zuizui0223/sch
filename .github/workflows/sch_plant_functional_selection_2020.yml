@@ -8,6 +8,8 @@ on:
       - scripts/ingest_sch_plant_functional_selection_2020_raw.py
       - scripts/audit_sch_plant_functional_meta_grain.py
       - scripts/analyze_sch_plant_functional_selection_macro.py
+      - scripts/audit_sch_2020_meta_direct_source_interactions.py
+      - data/SCH_2020_FUNCTIONAL_META_PRIMARY_SOURCE_INTERACTION_QA_V1.csv
       - tests/test_sch_plant_functional_selection_macro.py
       - .github/workflows/sch_plant_functional_selection_2020.yml
   workflow_dispatch:
@@ -45,6 +47,10 @@ jobs:
           --outdir artifacts/plant_functional_selection_original
           --output artifacts/plant_functional_selection_original/matched_selection_macro_result.json
           --permutations 9999
+      - name: Compare compiled source-contrast screens to original author-fitted tests
+        run: >-
+          python -m scripts.audit_sch_2020_meta_direct_source_interactions
+          --output artifacts/plant_functional_selection_original/primary_interaction_source_adjudication.json
       - name: Save checksum-verified public research sources and schema
         if: success()
         uses: actions/upload-artifact@v4
