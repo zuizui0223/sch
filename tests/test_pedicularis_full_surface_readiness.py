@@ -30,6 +30,7 @@ def _z() -> dict:
         "P0",
     )
     receipt["z_levels"] = ["Z0", "Z1", "Z2", "Z3", "Z4"]
+    receipt["sham_rank"] = 2
     receipt["z_manipulation_settings"] = [
         {
             "assigned_z_level": f"Z{i}",
@@ -112,6 +113,7 @@ def test_three_valid_same_context_receipts_unlock_full_surface() -> None:
     assert result["validated_execution"]["z_levels"] == [
         "Z0", "Z1", "Z2", "Z3", "Z4"
     ]
+    assert result["validated_execution"]["p0_sham_z_level"] == "Z2"
     assert result["validated_execution"]["z_manipulation_settings"][2][
         "manipulation_setting_id"
     ] == "SETTING_Z2"
