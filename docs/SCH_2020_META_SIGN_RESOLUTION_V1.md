@@ -21,7 +21,7 @@ Individual two-sided source-SE normal-Wald diagnostics at **|beta|/SE > 1.96** s
 
 The distinction matters biologically. A fit β₁>0 and β₂<0 can occur when one or both source slopes have broad uncertainty overlapping zero; the source alone then does **not establish two different directional selective regimes**. These are original source marginal-SE checks; they are **not direct author fitted treatment×trait interaction P tests**, do not account for within-study coefficient covariance, and have not been certified for simultaneous familywise multiple comparisons. The complementary direct-interaction QA remains documented separately in \`docs/SCH_GLOBAL_FUNCTIONAL_TRAIT_META_EMPIRICAL_V1.md\`.
 
-No source-supported two-arm reversal is detected in this selected compilation. That is **not a claim of absence of real reversals or an ecological frequency estimate**.
+No source-supported two-arm reversal is detected in this selected compilation. That is **not a claim of absence of real reversals or an ecological frequency estimate**. It is not a prevalence estimate for natural plant systems: **one source paper can contribute multiple correlated trait comparisons**, which do not create independent experimental replications.
 
 ## Result 2 — What precision would be needed if source betas did not change?
 
