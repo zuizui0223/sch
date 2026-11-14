@@ -350,6 +350,23 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
             "n_point_sign_flips":sum(r["point_sign_flip"] for r in x),
         }
     comparison=study_label_exploration(papers,permutations=permutations)
+    certificates=[{
+        "paper_id":r["paper_id"],"authors":r["authors"],
+        "species":r["species"],"trait":r["trait"],
+        "source_agent":r["source_agent"],
+        "agent_category":r["agent_category"],
+        "source_context":r["source_context"],
+        "original_row_ids":r["original_row_ids"],
+        "original_treatment_names":r["original_treatment_names"],
+        "beta1":r["beta1"],"beta2":r["beta2"],
+        "se1":r["se1"],"se2":r["se2"],
+        "contrast_difference":r["delta_beta_code2_minus_code1"],
+        "worst_covariance_se":r["conservative_se_upper"],
+        "adjusted_137_family_normal_p_upper":r["bonferroni_adjusted_p_upper"],
+        "point_sign_flip":r["point_sign_flip"],
+        "two_opposite_individually_supported_slopes":
+            r["source_both_arm_opposite_signs_nominal95"],
+    } for r in pairs if r["full_family_source_covariance_worst_case_normal_05"]]
     return {
         "analysis":"sch_original_2020_functional_trait_master_biotic_abiotic_direction_v1",
         "source_data_doi":DATA_DOI,
@@ -368,6 +385,10 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
         "source_95pct_normal_bonferroni_critical_z":z,
         "all_source_familywise_contrast_certificates":sum(
             r["full_family_source_covariance_worst_case_normal_05"] for r in pairs),
+        "source_reconstructed_familywise_contrast_certificate_details":certificates,
+        "n_papers_with_familywise_source_contrast_certificates":len({
+            x["paper_id"] for x in certificates}),
+        "all_source_observed_gradient_coefficient_precisions_as_in_archive":True,
         "eligible_agent_category_counts":bycat,
         "trait_class_by_agent_category":trait_bycat,
         "experimental_context_counts":bycontext,
