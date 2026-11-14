@@ -379,6 +379,37 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
             "n_point_sign_flips":sum(r["point_sign_flip"] for r in x),
         }
     comparison=study_label_exploration(papers,permutations=permutations)
+    # IMPORTANT: the raw biotic versus abiotic comparison has no original
+    # in-situ abiotic pairs; the whole-study test is heavily design-confounded.
+    # Restrict to the overlapping controlled-environment contexts, and
+    # separately to fecundity outcomes. These are secondary sensitivity
+    # checks, not a substitute for study-level randomized agent classes.
+    secondary_restrictions={
+        "source_context_A_or_B_only":[r for r in pairs if
+            r["source_context"]!="IN_SITU_NATURAL_POPULATION"
+            and r["agent_category"] in {"BIOTIC","ABIOTIC"}],
+        "original_fecundity_component_F_only":[r for r in pairs if
+            r["fitness_component"]=="F"
+            and r["agent_category"] in {"BIOTIC","ABIOTIC"}],
+        "source_context_A_only":[r for r in pairs if
+            r["source_context"]=="INDOOR_CONTROLLED"
+            and r["agent_category"] in {"BIOTIC","ABIOTIC"}],
+    }
+    sensitivity={}
+    for i,(name,subset) in enumerate(secondary_restrictions.items()):
+        sensitivity[name]={
+            "n_source_pairs":len(subset),
+            "n_original_papers":len({r["paper_id"] for r in subset}),
+            "n_biotic_pairs":sum(r["agent_category"]=="BIOTIC" for r in subset),
+            "n_abiotic_pairs":sum(r["agent_category"]=="ABIOTIC" for r in subset),
+            "n_point_sign_flips":sum(r["point_sign_flip"] for r in subset),
+            "independence_protected_paper_label_comparison":
+                study_label_exploration(
+                    per_paper_summary(subset),
+                    permutations=permutations,
+                    seed=RANDOM_SEED+i+1,
+                ),
+        }
     certificates=[{
         "paper_id":r["paper_id"],"authors":r["authors"],
         "published_year":r["published_year"],
@@ -430,6 +461,7 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
         "trait_class_by_agent_category":trait_bycat,
         "experimental_context_counts":bycontext,
         "paper_level_independence_protected_comparison":comparison,
+        "paper_cluster_design_sensitivity":sensitivity,
         "per_paper_source_summary":papers,
         "source_matched_pairs":pairs,
         "inferential_limits":[
