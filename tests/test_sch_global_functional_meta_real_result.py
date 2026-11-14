@@ -30,8 +30,8 @@ def _source():
 def test_public_unduplicated_original_denominators_and_source_identity():
     d,rows=_source()
     assert d["source_original_reference"]["experimental_master_md5"]=="7f680c344c0a418a3d8742649de24d52"
-    assert d["source_original_reference"]["github_original_verified_source_run"]==43580775215
-    assert d["source_original_reference"]["github_workflow_job"]==132404850530
+    assert d["source_original_reference"]["github_original_verified_source_run"]==43581102211
+    assert d["source_original_reference"]["github_workflow_job"]==132405799918
     assert d["source_data_doi"]=="10.5061/dryad.sn02v6x0q"
     assert d["source_unduplicated_experimental_rows"]==572
     assert d["source_duplicate_1014_rows_not_used"]
