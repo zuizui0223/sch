@@ -113,3 +113,29 @@ def test_numerical_quantile_edges():
     assert quantile([1,2,3,4],.25)==1.75
     with pytest.raises(ValueError):
         quantile([],.5)
+
+
+def test_committed_actual_source_derived_41_flip_receipt_is_reproducible():
+    from pathlib import Path
+    receipt=json.loads(Path("data/SCH_2020_META_SIGN_RESOLUTION_V1.json").read_text(
+        encoding="utf-8"))
+    fresh=_original()
+    for key in (
+        "n_complete_paired_source_gradients",
+        "n_original_independent_papers",
+        "n_original_independent_papers_with_one_or_more_point_flips",
+        "n_source_point_crossings",
+        "n_crossings_with_two_nominally_supported_opposite_slopes",
+        "n_crossings_with_one_nominally_supported_slope",
+        "n_crossings_with_neither_slope_nominally_supported",
+        "trait_class_source_diagnostics",
+        "environmental_agent_source_diagnostics",
+        "hypothetical_sample_information_multiplier_IF_source_betas_remain_fixed",
+        "point_crossing_source_record_diagnostics",
+        "source_paper_diagnostics",
+    ):
+        assert receipt[key]==fresh[key]
+    assert receipt["provenance"]["github_original_derived_source_run"]==43583596437
+    assert receipt["provenance"]["github_successful_job_id"]==132413300825
+    assert receipt["provenance"]["original_derived_treatment_pair_count"]==137
+    assert receipt["provenance"]["absolute_precision_multipliers_are_hypothetical_not_observed_study_sample_sizes"]
