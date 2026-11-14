@@ -381,7 +381,10 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
     comparison=study_label_exploration(papers,permutations=permutations)
     certificates=[{
         "paper_id":r["paper_id"],"authors":r["authors"],
+        "published_year":r["published_year"],
         "species":r["species"],"trait":r["trait"],
+        "trait_class":r["trait_class"],"fitness_measure":r["fitness_measure"],
+        "fitness_component":r["fitness_component"],
         "source_agent":r["source_agent"],
         "agent_category":r["agent_category"],
         "source_context":r["source_context"],
