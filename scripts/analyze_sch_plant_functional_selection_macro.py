@@ -187,6 +187,8 @@ def source_pairs(master:list[dict])->tuple[list[dict],dict]:
             "paper_id":strkey(r1["Paper ID"]),
             "authors":strkey(r1["authors"]),
             "published_year":strkey(r1["pub.year"]),
+            "source_journal":strkey(r1["journal"]),
+            "source_volume_pages":strkey(r1["vol.page"]),
             "species":strkey(r1["species"]),
             "trait":strkey(r1["trait.name"]),
             "trait_class":TRAIT_CODES[trait_code],
@@ -413,6 +415,8 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
     certificates=[{
         "paper_id":r["paper_id"],"authors":r["authors"],
         "published_year":r["published_year"],
+        "source_journal":r["source_journal"],
+        "source_volume_pages":r["source_volume_pages"],
         "species":r["species"],"trait":r["trait"],
         "trait_class":r["trait_class"],"fitness_measure":r["fitness_measure"],
         "fitness_component":r["fitness_component"],
