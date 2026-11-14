@@ -58,6 +58,8 @@ Applying a **conditional** source-marginal-beta-SE normal-Wald difference recons
 | Beans & Roach 2015, *I. capensis* | invasive competitor absent → present | Total internode number; fruit number | +0.140 ±.010 → +0.360 ±.020 | 3.08×10⁻¹¹ | Passes |
 | Stinchcombe *et al.* 2002, *Ipomoea hederacea* | source-coded herbivores absent → present | Total leaf area; seed number | +0.790 ±.030 → +0.044 ±.050 | 1.52×10⁻¹⁸ | Passes |
 
+For the compiled *Ipomoea* pair, the arithmetic coefficient contrast is **Δβ = 0.044 − 0.790 = −0.746**. Its primary fitted interaction significance has not been independently recovered.
+
 **These three reconstructed P values are NOT all directly validated original-study interaction P values.** The stored-decimal check perturbs the original archived Excel coefficients by half their last visible decimal unit; it is not proof of complete original paper printing precision or correct reported interaction SE.
 
 ### High-priority primary-source adjudication
