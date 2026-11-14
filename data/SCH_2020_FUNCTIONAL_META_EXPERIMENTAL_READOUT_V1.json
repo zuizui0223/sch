@@ -77,6 +77,67 @@
   "input_grain": "original_pub_study_x_year_x_species_x_population_x_trait_x_sex_x_fitness",
   "n_papers_with_familywise_source_contrast_certificates": 2,
   "n_source_certificates_robust_to_stored_decimal_rounding": 2,
+  "paper_cluster_design_sensitivity": {
+    "original_fecundity_component_F_only": {
+      "independence_protected_paper_label_comparison": {
+        "assumes_paper_category_label_exchangeability_not_random_assignment": true,
+        "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
+        "excluded_mixed_or_multiple_agent_category_papers": 0,
+        "independent_abiotic_papers": 6,
+        "independent_biotic_papers": 14,
+        "n_included_pure_category_independent_papers": 20,
+        "n_permutations_run": 9999,
+        "observed_difference": -0.13128306878306875,
+        "paper_bootstrap_percentile_interval_descriptive": [
+          -0.3929067460317461,
+          0.1385995370370372
+        ],
+        "status": "PAPER_LEVEL_EXPLORATORY_ASSOCIATION_ONLY",
+        "two_sided_p_given_paper_label_exchangeability": 0.3842
+      },
+      "n_abiotic_pairs": 38,
+      "n_biotic_pairs": 56,
+      "n_original_papers": 20,
+      "n_point_sign_flips": 29,
+      "n_source_pairs": 94
+    },
+    "source_context_A_only": {
+      "independence_protected_paper_label_comparison": {
+        "independent_abiotic_papers": 6,
+        "independent_biotic_papers": 1,
+        "n_permutations_run": 0,
+        "status": "NOT_MODELABLE_UNDER_INDEPENDENT_PAPER_LABEL_PERMUTATION"
+      },
+      "n_abiotic_pairs": 47,
+      "n_biotic_pairs": 4,
+      "n_original_papers": 7,
+      "n_point_sign_flips": 19,
+      "n_source_pairs": 51
+    },
+    "source_context_A_or_B_only": {
+      "independence_protected_paper_label_comparison": {
+        "assumes_paper_category_label_exchangeability_not_random_assignment": true,
+        "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
+        "excluded_mixed_or_multiple_agent_category_papers": 0,
+        "independent_abiotic_papers": 8,
+        "independent_biotic_papers": 9,
+        "n_included_pure_category_independent_papers": 17,
+        "n_permutations_run": 9999,
+        "observed_difference": -0.1568287037037037,
+        "paper_bootstrap_percentile_interval_descriptive": [
+          -0.3784722222222222,
+          0.06077835648148154
+        ],
+        "status": "PAPER_LEVEL_EXPLORATORY_ASSOCIATION_ONLY",
+        "two_sided_p_given_paper_label_exchangeability": 0.2044
+      },
+      "n_abiotic_pairs": 58,
+      "n_biotic_pairs": 38,
+      "n_original_papers": 17,
+      "n_point_sign_flips": 29,
+      "n_source_pairs": 96
+    }
+  },
   "paper_level_independence_protected_comparison": {
     "assumes_paper_category_label_exchangeability_not_random_assignment": true,
     "contrast": "paper_equal_weight_biotic_minus_abiotic_point_sign_flip_fraction",
@@ -301,8 +362,8 @@
     "experimental_master_md5": "7f680c344c0a418a3d8742649de24d52",
     "intentionally_duplicate_analysis_1014_not_used": true,
     "observational_815_not_pooled": true,
-    "github_original_verified_source_run": 43580522486,
-    "github_workflow_job": 132404069811,
+    "github_original_verified_source_run": 43580775215,
+    "github_workflow_job": 132404850530,
     "permanent_matched_ledger": "data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv",
     "source_script": "scripts/analyze_sch_plant_functional_selection_macro.py"
   }
