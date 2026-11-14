@@ -65,7 +65,7 @@ def test_original_external_paper_evidence_tampering_fails_closed(key,value):
 
 def test_narrative_preserves_sign_flip_and_fitted_interaction_separation():
     s=(ROOT/"docs/SCH_GLOBAL_FUNCTIONAL_TRAIT_META_EMPIRICAL_V1.md").read_text(
-        encoding="utf-8")
+        encoding="utf-8").replace("**","")
     for q in ("p=0.3996","P=0.2044","P=0.3842","41/137","0.04",
               "F=82.74","Stinchcombe","environmental covariance",
               "only ONE","not a causal"):
