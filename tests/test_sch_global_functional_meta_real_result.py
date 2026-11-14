@@ -62,8 +62,8 @@ def test_original_biotic_abiotic_and_ambiguous_agent_counts_are_not_mixed():
         x=[r for r in rows if r["agent_category"]==category]
         assert len(x)==n
         assert len({r["paper_id"] for r in x})==papers
-        assert sum(r["point_sign_flip"]=="True" for r in x)==flips
-        assert sum(r["full_family_source_covariance_worst_case_normal_05"]=="True"
+        assert sum(r["point_sign_flip"].lower()=="true" for r in x)==flips
+        assert sum(r["full_family_source_covariance_worst_case_normal_05"].lower()=="true"
                    for r in x)==certified
         assert groups[category]["n_matched_trait_context_pairs"]==n
     assert d["all_source_point_sign_flips"]==41
@@ -139,8 +139,8 @@ def test_all_three_original_source_contrast_certificates_have_provenance():
         assert abs(delta)>z*r["worst_covariance_se"]
         pair=next(x for x in rows if x["paper_id"]==r["paper_id"]
                   and x["trait"]==r["trait"])
-        assert pair["full_family_source_covariance_worst_case_normal_05"]=="True"
-        assert (pair["certificate_robust_to_stored_source_decimal_rounding"]=="True")==robust
+        assert pair["full_family_source_covariance_worst_case_normal_05"].lower()=="true"
+        assert (pair["certificate_robust_to_stored_source_decimal_rounding"].lower()=="true")==robust
         assert r["adjusted_137_family_normal_p_upper"]<.05
         assert pair["source_row_id_1"]==r["original_row_ids"][0]
         assert pair["source_row_id_2"]==r["original_row_ids"][1]
@@ -149,7 +149,7 @@ def test_all_three_original_source_contrast_certificates_have_provenance():
 def test_exact_137_family_cannot_be_used_as_ecological_reversal_prevalence():
     d,rows=_source()
     assert all(r["beta1"]!="" and r["se1"]!="" for r in rows)
-    assert all(r["source_both_arm_opposite_signs_nominal95"]=="False" for r in rows)
+    assert all(r["source_both_arm_opposite_signs_nominal95"].lower()=="false" for r in rows)
     assert all(r["treatment_code1"]!=r["treatment_code2"] for r in rows)
     assert "point_estimate_sign_flip_not_inferential_sign_reversal" in d["inferential_limits"]
     assert "source_decimal_printing_rounding_not_independently_audited" in d["inferential_limits"]
