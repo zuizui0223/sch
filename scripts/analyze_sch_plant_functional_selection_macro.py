@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import collections
 import csv
+from decimal import Decimal, InvalidOperation
 import json
 import math
 import random
@@ -102,6 +103,23 @@ def original_agent_group(label:str)->str:
     raise ValueError("unregistered original agent.label: "+label)
 
 
+def stored_decimal_half_unit(value)->float:
+    """Half last visible source-archive decimal unit, a SENSITIVITY only.
+
+    This is not original study sampling error. Numeric Excel cells do not
+    preserve intentional unprinted trailing zeroes; therefore a passing
+    result is only robust to the stored decimal representation, NOT
+    necessarily all source-published rounding conventions.
+    """
+    try:
+        v=Decimal(str(value).strip())
+        if not v.is_finite():
+            raise ValueError("nonfinite original stored numeric precision")
+        return float(Decimal("0.5")*(Decimal(10)**v.as_tuple().exponent))
+    except (InvalidOperation,TypeError) as exc:
+        raise ValueError("invalid original stored numeric precision") from exc
+
+
 def source_pairs(master:list[dict])->tuple[list[dict],dict]:
     if len(master)!=EXPERIMENTAL_N:
         raise ValueError("must use exactly the unduplicated original master records")
@@ -160,6 +178,10 @@ def source_pairs(master:list[dict])->tuple[list[dict],dict]:
             raise ValueError("original paper mismatch")
         d=b2-b1
         worst_se=s1+s2
+        beta_round_half=sum(stored_decimal_half_unit(
+            r["grad.linear.value"]) for r in (r1,r2))
+        se_round_half=sum(stored_decimal_half_unit(
+            r["grad.linear.se"]) for r in (r1,r2))
         p_upper=math.erfc(abs(d)/(math.sqrt(2)*worst_se))
         pair_rows.append({
             "paper_id":strkey(r1["Paper ID"]),
@@ -183,6 +205,10 @@ def source_pairs(master:list[dict])->tuple[list[dict],dict]:
             "absolute_delta":abs(d),
             "conservative_se_upper":worst_se,
             "two_sided_normal_p_upper":p_upper,
+            "source_stored_decimal_rounding_min_absolute_delta":
+                max(0,abs(d)-beta_round_half),
+            "source_stored_decimal_rounding_max_worst_case_se":
+                worst_se+se_round_half,
             "point_sign_flip":b1*b2<0,
             "source_both_arm_opposite_signs_nominal95":(
                 b1*b2<0 and abs(b1)>1.96*s1 and abs(b2)>1.96*s2),
@@ -307,6 +333,9 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
             z*r["conservative_se_upper"]
         )
         r["bonferroni_adjusted_p_upper"]=min(1,N*r["two_sided_normal_p_upper"])
+        r["certificate_robust_to_stored_source_decimal_rounding"]=(
+            r["source_stored_decimal_rounding_min_absolute_delta"]>
+            z*r["source_stored_decimal_rounding_max_worst_case_se"])
     papers=per_paper_summary(pairs)
     cats=sorted({r["agent_category"] for r in pairs})
     bycat={}
@@ -364,6 +393,8 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
         "worst_covariance_se":r["conservative_se_upper"],
         "adjusted_137_family_normal_p_upper":r["bonferroni_adjusted_p_upper"],
         "point_sign_flip":r["point_sign_flip"],
+        "stored_source_decimal_rounding_robust":
+            r["certificate_robust_to_stored_source_decimal_rounding"],
         "two_opposite_individually_supported_slopes":
             r["source_both_arm_opposite_signs_nominal95"],
     } for r in pairs if r["full_family_source_covariance_worst_case_normal_05"]]
@@ -388,6 +419,9 @@ def execute(master:list[dict],*,permutations:int=N_PERM)->dict:
         "source_reconstructed_familywise_contrast_certificate_details":certificates,
         "n_papers_with_familywise_source_contrast_certificates":len({
             x["paper_id"] for x in certificates}),
+        "n_source_certificates_robust_to_stored_decimal_rounding":sum(
+            x["stored_source_decimal_rounding_robust"] for x in certificates),
+        "stored_decimal_rounding_is_not_original_printing_precision_proof":True,
         "all_source_observed_gradient_coefficient_precisions_as_in_archive":True,
         "eligible_agent_category_counts":bycat,
         "trait_class_by_agent_category":trait_bycat,
