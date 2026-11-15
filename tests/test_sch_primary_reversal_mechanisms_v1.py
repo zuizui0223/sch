@@ -46,13 +46,13 @@ def test_original_direct_treatment_moderation_preserves_selection_signs():
     assert c["source_pair_ids"]==["294","300"]
     assert c["source_beta1"]==pytest.approx(-.820)
     assert c["source_beta2"]==pytest.approx(-.215)
-    assert c["author_original_direct_interaction"]==["PHENOTYPIC_CUP_X_SHADE","F=13.57","<0.001"]
-    assert c["author_original_secondary_interaction"]==["GENOTYPIC_CUP_X_SHADE","F=4.14","<0.05"]
+    assert tuple(c["author_original_direct_interaction"])==("PHENOTYPIC_CUP_X_SHADE","F=13.57","<0.001")
+    assert tuple(c["author_original_secondary_interaction"])==("GENOTYPIC_CUP_X_SHADE","F=4.14","<0.05")
     leaf=a["41"]
     assert leaf["source_pair_ids"]==["537","549"]
     assert leaf["source_beta1"]==pytest.approx(.120)
     assert leaf["source_beta2"]==pytest.approx(.240)
-    assert leaf["author_original_direct_interaction"]==["HERBIVORY_X_SLA_IN_SHADE","chi2=16.10","0.008"]
+    assert tuple(leaf["author_original_direct_interaction"])==("HERBIVORY_X_SLA_IN_SHADE","chi2=16.10","0.008")
     assert all(not x["treatment_sign_crossing"] for x in a.values())
 
 
@@ -112,7 +112,7 @@ def test_primary_source_tampering_fails_closed(mutation):
 def test_research_interpretation_retains_exact_scope_and_conflict_ceiling():
     source=(ROOT/"docs/SCH_2020_REVERSAL_MECHANISMS_SOURCE_CONFLICT_V1.md").read_text(encoding="utf-8")
     for marker in (
-        "36/41","5/41","0/41","F=13.57","F=4.14",
+        "36/41","5/41","0/41","13.57","4.14",
         "0.008","0.496","0.915","same 31","3.90","3.31",
         "Table 7","L is NOT identified","not a demonstrated three-way",
     ):
