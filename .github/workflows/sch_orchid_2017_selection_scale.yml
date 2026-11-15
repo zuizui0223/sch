@@ -1,0 +1,42 @@
+name: SCH orchid pollinator-selection scale and grain audit
+on:
+  push:
+    paths:
+      - 'data/SCH_TRUNSCHKE2017_ORIGINAL_AUTHOR_ANCOVA_TABLE2_V1.csv'
+      - 'data/SCH_TRUNSCHKE2017_ORIGINAL_AUTHOR_PL_SELECTION_TABLE4_V1.csv'
+      - 'scripts/audit_sch_orchid_2017_selection_scale.py'
+      - 'tests/test_sch_orchid_2017_selection_scale.py'
+      - 'docs/SCH_ORCHID_2017_PL_BETWEEN_WITHIN_SCALE_V1.md'
+      - '.github/workflows/sch_orchid_2017_selection_scale.yml'
+  pull_request:
+    paths:
+      - 'data/SCH_TRUNSCHKE2017_ORIGINAL_AUTHOR_ANCOVA_TABLE2_V1.csv'
+      - 'data/SCH_TRUNSCHKE2017_ORIGINAL_AUTHOR_PL_SELECTION_TABLE4_V1.csv'
+      - 'scripts/audit_sch_orchid_2017_selection_scale.py'
+      - 'tests/test_sch_orchid_2017_selection_scale.py'
+      - 'docs/SCH_ORCHID_2017_PL_BETWEEN_WITHIN_SCALE_V1.md'
+      - '.github/workflows/sch_orchid_2017_selection_scale.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-verified:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pytest
+        run: python -m pip install --quiet pytest
+      - name: Recompute author-fit PL selection and species-grain receipt
+        run: python scripts/audit_sch_orchid_2017_selection_scale.py --output artifacts/sch_orchid_2017_source_scale_v1.json
+      - name: Verify all source numeric and dependence guards
+        run: python -m pytest -q tests/test_sch_orchid_2017_selection_scale.py
+      - name: Upload source-limited results
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-orchid-2017-source-scale-v1
+          path: artifacts/sch_orchid_2017_source_scale_v1.json
+          if-no-files-found: error
