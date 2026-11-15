@@ -1,0 +1,47 @@
+name: SCH original-source reversal mechanism and same-trait component audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_primary_reversal_mechanisms_v1.py'
+      - 'tests/test_sch_primary_reversal_mechanisms_v1.py'
+      - 'data/SCH_2020_FIVE_STRONGEST_POINT_FLIPS_SOURCE_V1.csv'
+      - 'data/SCH_2020_SOURCE_DIRECT_MODERATION_2002_2012_V1.csv'
+      - 'data/SCH_2002_MARCHANTIA_SAME_TRAIT_TWO_FITNESS_COMPONENTS_V1.csv'
+      - 'data/SCH_2002_MARCHANTIA_TOTAL_VS_DIRECT_AREA_V1.csv'
+      - 'docs/SCH_2020_REVERSAL_MECHANISMS_SOURCE_CONFLICT_V1.md'
+      - '.github/workflows/sch_primary_reversal_mechanisms_v1.yml'
+  push:
+    paths:
+      - 'scripts/audit_sch_primary_reversal_mechanisms_v1.py'
+      - 'tests/test_sch_primary_reversal_mechanisms_v1.py'
+      - 'data/SCH_2020_FIVE_STRONGEST_POINT_FLIPS_SOURCE_V1.csv'
+      - 'data/SCH_2020_SOURCE_DIRECT_MODERATION_2002_2012_V1.csv'
+      - 'data/SCH_2002_MARCHANTIA_SAME_TRAIT_TWO_FITNESS_COMPONENTS_V1.csv'
+      - 'data/SCH_2002_MARCHANTIA_TOTAL_VS_DIRECT_AREA_V1.csv'
+      - 'docs/SCH_2020_REVERSAL_MECHANISMS_SOURCE_CONFLICT_V1.md'
+      - '.github/workflows/sch_primary_reversal_mechanisms_v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  primary-author-adjudication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install only original source regression test runner
+        run: python -m pip install --quiet pytest
+      - name: Recalculate 137-pair source strengths and classify primary author evidence
+        run: python scripts/audit_sch_primary_reversal_mechanisms_v1.py --output artifacts/sch_2020_reversal_mechanisms_v1.json
+      - name: Verify original IDs F P and two fitness components fail-closed
+        run: python -m pytest -q tests/test_sch_primary_reversal_mechanisms_v1.py
+      - name: Retain source-author-verified ecological evidence receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-original-reversal-mechanisms-v1
+          path: artifacts/sch_2020_reversal_mechanisms_v1.json
+          retention-days: 30
+          if-no-files-found: error

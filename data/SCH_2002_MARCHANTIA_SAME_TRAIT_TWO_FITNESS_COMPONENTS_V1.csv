@@ -1,0 +1,3 @@
+paper_id,primary_doi,source_organism,sex,shade_percent,n_sex_expressing_individuals,same_trait_coordinate,trait_orientation,fitness_component,fitness_proxy,original_standardized_beta,author_reported_p,source_location,phenotypic_or_genotypic,direct_function_optimum_measured
+21,10.3732/ajb.89.4.592,Marchantia inflexa,FEMALE,55,31,SEXUAL_REPRODUCTION_ONSET,Later means higher number of days,SEXUAL,Number of sexual structures,-0.915,<0.02,Table6,PHENOTYPIC_SELECTION,NO
+21,10.3732/ajb.89.4.592,Marchantia inflexa,FEMALE,55,31,SEXUAL_REPRODUCTION_ONSET,Later means higher number of days,ASEXUAL,Number of asexual cups,0.496,<0.05,Results_Sexual_fitness_section,PHENOTYPIC_SELECTION,NO
