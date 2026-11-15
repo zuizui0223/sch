@@ -15,7 +15,6 @@ import csv
 import json
 import math
 from pathlib import Path
-from scipy.stats import t, fisher_exact
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/"data/SCH_TRUNSCHKE2017_REPORTED_PL_TRAIT_CORRELATIONS_V1.csv"
@@ -31,11 +30,69 @@ TRAITS={
 # one deceptive and six rewarding <0.4 PL. No species in [0.4,0.8].
 PL_REWARD_TABLE=((5,1),(0,6)) # rows deceptive,rewarding; cols high PL, low PL
 
+def _beta_continued_fraction(a:float,b:float,x:float)->float:
+    """Stable continued fraction for regularized incomplete beta."""
+    eps=3e-14
+    fpmin=1e-300
+    qab=a+b
+    qap=a+1.0
+    qam=a-1.0
+    c=1.0
+    d=1.0-qab*x/qap
+    if abs(d)<fpmin:d=fpmin
+    d=1.0/d
+    h=d
+    for m in range(1,2001):
+        m2=2*m
+        aa=m*(b-m)*x/((qam+m2)*(a+m2))
+        d=1+aa*d
+        if abs(d)<fpmin:d=fpmin
+        c=1+aa/c
+        if abs(c)<fpmin:c=fpmin
+        d=1/d
+        h*=d*c
+        aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2))
+        d=1+aa*d
+        if abs(d)<fpmin:d=fpmin
+        c=1+aa/c
+        if abs(c)<fpmin:c=fpmin
+        d=1/d
+        delta=d*c
+        h*=delta
+        if abs(delta-1.0)<eps:
+            return h
+    raise ArithmeticError("incomplete beta continued fraction did not converge")
+
+def _regularized_beta(a:float,b:float,x:float)->float:
+    if x<=0:return 0.0
+    if x>=1:return 1.0
+    factor=math.exp(math.lgamma(a+b)-math.lgamma(a)-math.lgamma(b)
+                    +a*math.log(x)+b*math.log1p(-x))
+    if x<(a+1)/(a+b+2):
+        return factor*_beta_continued_fraction(a,b,x)/a
+    return 1.0-factor*_beta_continued_fraction(b,a,1-x)/b
+
 def pearson_two_sided_p(r:float,n:int)->float:
+    """Exact ordinary two-sided Pearson-null P via beta distribution, stdlib."""
     if n<3 or not -1 < r < 1:
         raise ValueError("Pearson r / independent population n out of bounds")
-    stat=abs(r)*math.sqrt((n-2)/(1-r*r))
-    return float(2*t.sf(stat,n-2))
+    return _regularized_beta((n-2)/2,0.5,1-r*r)
+
+def exact_fisher_posthoc(table:tuple[tuple[int,int],tuple[int,int]])->tuple[float,float]:
+    """Conditional Fisher probabilities; two-sided as sum of as-extreme tables."""
+    (a,b),(c,d)=table
+    row1=a+b
+    row2=c+d
+    high=a+c
+    total=row1+row2
+    denominator=math.comb(total,high)
+    def prob(x):
+        return math.comb(row1,x)*math.comb(row2,high-x)/denominator
+    allowed=range(max(0,high-row2),min(row1,high)+1)
+    observed=prob(a)
+    p_two=sum(prob(x) for x in allowed if prob(x)<=observed+1e-12)
+    p_one=sum(prob(x) for x in allowed if x>=a)
+    return float(p_two),float(p_one)
 
 def parse_source(path:Path)->list[dict[str,str]]:
     with path.open(encoding="utf-8",newline="") as f:
@@ -97,8 +154,7 @@ def run(records:list[dict[str,str]])->dict:
     figure2_open_n12_p=pearson_two_sided_p(math.sqrt(.63),12)
     if not .0017<figure2_open_n12_p<.0023:
         raise ValueError("published Figure2 source consistency guard failed")
-    fisher_two=float(fisher_exact(PL_REWARD_TABLE,alternative="two-sided").pvalue)
-    fisher_one=float(fisher_exact(PL_REWARD_TABLE,alternative="greater").pvalue)
+    fisher_two,fisher_one=exact_fisher_posthoc(PL_REWARD_TABLE)
     if abs(fisher_two-1/66)>1e-12:
         raise ValueError("source-defined reward association arithmetic drift")
     return {
