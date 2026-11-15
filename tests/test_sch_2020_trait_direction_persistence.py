@@ -61,6 +61,27 @@ def test_equal_paper_weights_and_class_constrained_null():
         .011904761904761904,abs=1e-14)
 
 
+def test_eight_original_species_are_not_ten_independent_taxa():
+    r=result()
+    s=r["species_equal_weight"]
+    assert s["n_distinct_original_species"]==8
+    assert s["source_paper_count_across_species"]==10
+    assert s["species_equal_weight_observed_fraction"]==pytest.approx(
+        .8425480769230769,abs=1e-12)
+    assert s["species_equal_weight_expected_fraction"]==pytest.approx(
+        .6038900335775337,abs=1e-12)
+    assert s["species_equal_exact_upper_tail_p"]==pytest.approx(
+        .00014467592592592592,abs=1e-14)
+    species_rows={x["source_species"]:x for x in s["original_species_source_rows"]}
+    assert species_rows["Avena barbata"]["distinct_source_papers"]==2
+    assert species_rows["Arabidopsis thaliana"]["distinct_source_papers"]==2
+    loo=r["leave_one_original_species_out"]
+    assert len(loo)==8
+    assert loo["Avena barbata"]["n_pairs"]==30
+    assert loo["Arabidopsis thaliana"]["n_pairs"]==36
+    assert max(x["exact_upper_tail_p_conditional_label_exchangeability"] for x in loo.values())<.00171
+
+
 def test_one_original_paper_left_out_means_all_its_contexts():
     r=result()
     loo=r["leave_one_entire_paper_out"]
@@ -104,7 +125,7 @@ def test_fail_closed_against_source_grain_and_numeric_drift(mutation):
 def test_document_keeps_43_of_137_selection_boundary():
     t=(ROOT/"docs/SCH_2020_TRAIT_SIGN_PERSISTENCE_META_V1.md").read_text(
         encoding="utf-8")
-    for x in ("137", "43", "10 independent papers", "0.00024113",
+    for x in ("137", "43", "10 separate original papers", "8 distinct original species", "0.00024113",
               "0.01190476", "0.00014468", "13 pairs",
               "trait-label re-pairing reference", "does not", "L"):
         assert x.lower() in t.lower()
