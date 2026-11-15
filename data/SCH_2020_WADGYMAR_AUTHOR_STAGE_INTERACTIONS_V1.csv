@@ -1,0 +1,7 @@
+paper_id,doi,trait,source_row_id_1,source_row_id_2,fitness_stage,source_link,interaction_chi2,interaction_significance,interaction_df,beta_ambient,se_ambient,beta_heated,se_heated,source_location
+29,10.1111/gcb.12988,Flowering onset,351,354,SURVIVAL,HURDLE_LOGIT,NOT_REPORTED,NS,1,-0.80,0.65,-1.10,0.84,Table3_Table4
+29,10.1111/gcb.12988,Flowering onset,351,354,SEED_COUNT,HURDLE_NEG_BIN_LOG,6.99,P_LT_0.01,1,-0.45,0.23,-0.19,0.21,Table3_Table4
+29,10.1111/gcb.12988,Fruiting onset,352,355,SURVIVAL,HURDLE_LOGIT,NOT_TESTED,NOT_TESTED,1,NA,NA,NA,NA,Table3_Table4
+29,10.1111/gcb.12988,Fruiting onset,352,355,SEED_COUNT,HURDLE_NEG_BIN_LOG,NOT_REPORTED,NS,1,-0.69,0.14,-0.51,0.17,Table3_Table4
+29,10.1111/gcb.12988,Biomass,353,356,SURVIVAL,HURDLE_LOGIT,6.77,P_LT_0.01,1,0.25,0.33,1.72,0.64,Table3_Table4
+29,10.1111/gcb.12988,Biomass,353,356,SEED_COUNT,HURDLE_NEG_BIN_LOG,NOT_REPORTED,NS,1,1.00,0.14,0.90,0.10,Table3_Table4
