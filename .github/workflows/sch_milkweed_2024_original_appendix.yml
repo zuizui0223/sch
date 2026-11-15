@@ -1,0 +1,37 @@
+name: SCH genuine JPE 2024 milkweed Appendix II source ingress
+on:
+  push:
+    paths:
+      - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
+      - 'tests/test_sch_milkweed_2024_original_appendix.py'
+      - '.github/workflows/sch_milkweed_2024_original_appendix.yml'
+  pull_request:
+    paths:
+      - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
+      - 'tests/test_sch_milkweed_2024_original_appendix.py'
+      - '.github/workflows/sch_milkweed_2024_original_appendix.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source XLS and CSV reader and tests
+        run: python -m pip install --quiet openpyxl xlrd pytest
+      - name: Check legitimate file identity / no fake-data promotion
+        run: python -m pytest -q tests/test_sch_milkweed_2024_original_appendix.py
+      - name: Download official OJS galley and audit original source schema
+        run: python -m scripts.ingest_sch_milkweed_2024_original_appendix --outdir artifacts/sch_jpe2024_plant_raw
+      - name: Preserve source receipt and source bytes only if recovered
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-jpe2024-milkweed-original-appendix-ii
+          path: artifacts/sch_jpe2024_plant_raw/
+          retention-days: 15
+          if-no-files-found: error
