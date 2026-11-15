@@ -20,14 +20,15 @@ The frozen **137 actual experimental matched pairs** contain 26 original study p
 
 A block is eligible only if it contains **at least two different traits** with **exactly one pair per trait**. Blocks with repeated same-trait rows (potentially multiple cohorts/site-years) are excluded, not shuffled across their possibly incompatible populations. Singleton blocks cannot inform trait re-pairing. No 2017 Trunschke 12-species study is converted into a 12-article replicated trait block, because each species supplies only one original matched flowering-start trait.
 
-**Selected: 11 treatment/fitness blocks, 43 original matched pairs, from 10 independent papers** (including two different controlled/field blocks in the single Beans & Roach paper). The remaining **94/137 pairs** have no qualifying multiple unique-trait block under these strict rules. They are **not null results or discarded from the primary meta dataset**.
+**Selected: 11 treatment/fitness blocks, 43 original matched pairs, from 10 separate original papers but only 8 distinct original species** (including two different controlled/field blocks in the single Beans & Roach paper). Two papers each share *Avena barbata*, and two share *Arabidopsis thaliana*; therefore, ten original publications must NOT be promoted to ten independent taxa. The remaining **94/137 pairs** have no qualifying multiple unique-trait block under these strict rules. They are **not null results or discarded from the primary meta dataset**.
 
 ## Genuine additional quantitative result
 
 | Same-sign across experimental treatment arms | Observed | Conditional within-source re-pairing expectation |
 |---|---:|---:|
 | Original eligible matched trait pairs | **35/43 = 81.40%** | **24.22/43 = 56.33%** |
-| Equal-weight across original papers | **81.53%** | **59.99%** |
+| Equal-weight across original papers (10 papers) | **81.53%** | **59.99%** |
+| Equal-weight across original biological species (8 species) | **84.25%** | **60.39%** |
 
 The exact fixed-marginal distribution of matched positive/negative signs is calculated by a within-block hypergeometric law: if the original treatment 1 has `n1` positive slopes, treatment 2 has `n2` positive slopes, and the block has `n` distinct traits, reassigning treatment-2 trait positions yields the count of same signs as `n - n1 - n2 + 2K`, with `K ~ Hypergeometric(n,n1,n2)`. The exact distribution is convolved across the 11 blocks; the paper-equal distribution is separately convolved with **one weight per original paper**, not 43 independent paper weights.
 
@@ -35,6 +36,7 @@ The exact fixed-marginal distribution of matched positive/negative signs is calc
 
 - Matched 43-pair total, 35 observed versus 24.22 conditional expectation: **P = 0.00024113** (upper tail; in this discrete distribution the absolute-deviation two-sided tail is the same).
 - Paper-equal matched same-sign fraction: **P = 0.00014468**, with 10 original papers.
+- When original paper duplications of *Avena barbata* and *Arabidopsis thaliana* are counted as **one biological species each**, the 8-species-equal estimate is **84.25%** observed versus **60.39%** expected; exact conditional **P = 0.00014468**. Entire original-species leave-one-out sensitivity (dropping all its publications) retains P≤**0.00171**.
 - Within the SAME 43 pairs, if treatment-2 signs may be shuffled **only among traits of the same original functional trait class**, the expectation rises to **28.74/43**, but observed **35/43** remains higher: **P = 0.01190476**.
 - Leave **one entire paper out** (both contexts of paper 13 excluded together, never singly): the unweighted exact conditional tail remains at or below **P = 0.00171** for every excluded original paper.
 
