@@ -1,0 +1,9 @@
+source_doi,source_location,cohort,sex,shade_percent,metric,metric_type,published_value,original_sample_n,source_publication_role
+10.3732/ajb.89.4.592,Methods_Clonal_fitness,all_females_55_shade,FEMALE,55,asexual_cup_count_observation_day,day,120,102,Count_of_asexual_cups_at_day_120
+10.3732/ajb.89.4.592,Methods_Sexual_fitness,sex_expressing_females_55_shade,FEMALE,55,sexual_structure_count_observation_day,day,150,40,Count_of_sex_structures_at_day_150
+10.3732/ajb.89.4.592,Table1,sex_expressing_females_55_shade,FEMALE,55,mean_first_sex_expression_day,day_mean,132.9,40,Reported_mean_over_40_not_31
+10.3732/ajb.89.4.592,Table6,sexual_selection_model_females_55_shade,FEMALE,55,sexual_selection_regression_n,individual_count,31,31,Complete_case_subcohort
+10.3732/ajb.89.4.592,Table6,sexual_selection_model_females_55_shade,FEMALE,55,sexual_onset_multivariate_beta_sexual_structures,standardized_beta,-0.915,31,Direct_phenotypic_beta
+10.3732/ajb.89.4.592,Results_Sexual_fitness,asexual_selection_model_females_55_shade,FEMALE,55,sexual_onset_multivariate_beta_asexual_cups,standardized_beta,0.496,31,Direct_phenotypic_beta
+10.3732/ajb.89.4.592,Table6,sexual_selection_model_females_55_shade,FEMALE,55,sexual_onset_total_selection_s,selection_differential,0.243,31,Published_table6_s_as_displayed
+10.3732/ajb.89.4.592,Table7,sexual_selection_model_females_55_shade,FEMALE,55,sexual_onset_versus_sex_structures_Pearson_r,pearson_r,-0.56,31,Published_table7_r_as_displayed

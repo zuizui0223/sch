@@ -1,0 +1,47 @@
+name: SCH original 572-row multiple-fitness and Marchantia timing audit
+on:
+  push:
+    paths:
+      - 'scripts/audit_sch_2020_original_multi_fitness_components.py'
+      - 'tests/test_sch_2020_original_multi_fitness_components.py'
+      - 'scripts/audit_sch_marchantia_2002_temporal_component.py'
+      - 'tests/test_sch_marchantia_2002_temporal_component.py'
+      - 'data/SCH_MARCHANTIA2002_SEXUAL_ASEXUAL_TEMPORAL_SOURCE_V1.csv'
+      - 'docs/SCH_2020_GENUINE_MULTIFITNESS_MATCHED_SOURCE_MARCHANTIA_TIME_V1.md'
+      - '.github/workflows/sch_2020_original_multi_fitness_components.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_2020_original_multi_fitness_components.py'
+      - 'tests/test_sch_2020_original_multi_fitness_components.py'
+      - 'scripts/audit_sch_marchantia_2002_temporal_component.py'
+      - 'tests/test_sch_marchantia_2002_temporal_component.py'
+      - 'data/SCH_MARCHANTIA2002_SEXUAL_ASEXUAL_TEMPORAL_SOURCE_V1.csv'
+      - 'docs/SCH_2020_GENUINE_MULTIFITNESS_MATCHED_SOURCE_MARCHANTIA_TIME_V1.md'
+      - '.github/workflows/sch_2020_original_multi_fitness_components.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-identity-first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original source xlsx reader and tests
+        run: python -m pip install --quiet openpyxl pytest
+      - name: Check source-grain matching and source temporal controls
+        run: python -m pytest -q tests/test_sch_2020_original_multi_fitness_components.py tests/test_sch_marchantia_2002_temporal_component.py
+      - name: Fetch source master and recover all 572 original records
+        run: python -m scripts.audit_sch_2020_original_multi_fitness_components --outdir artifacts/sch_2020_fitness_components --output artifacts/sch_2020_fitness_components/real_fitness_grain_receipt.json
+      - name: Check original Marchantia 120/150 day temporal outcome ordering
+        run: python -m scripts.audit_sch_marchantia_2002_temporal_component --output artifacts/sch_2020_fitness_components/original_marchantia_timing_audit.json
+      - name: Retain original files and numeric source receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-original-572-multifitness-audit
+          path: artifacts/sch_2020_fitness_components/
+          retention-days: 15
+          if-no-files-found: error
