@@ -1,0 +1,41 @@
+name: SCH 2020 trait-direction persistence source meta audit
+on:
+  push:
+    paths:
+      - 'scripts/analyze_sch_2020_trait_direction_persistence.py'
+      - 'tests/test_sch_2020_trait_direction_persistence.py'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_2020_TRAIT_SIGN_PERSISTENCE_META_V1.md'
+      - '.github/workflows/sch_2020_trait_direction_persistence.yml'
+  pull_request:
+    paths:
+      - 'scripts/analyze_sch_2020_trait_direction_persistence.py'
+      - 'tests/test_sch_2020_trait_direction_persistence.py'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_2020_TRAIT_SIGN_PERSISTENCE_META_V1.md'
+      - '.github/workflows/sch_2020_trait_direction_persistence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test framework only
+        run: python -m pip install --quiet pytest
+      - name: Recompute 10-paper exact conditional source trait-matching analysis
+        run: python scripts/analyze_sch_2020_trait_direction_persistence.py --output artifacts/sch_2020_trait_sign_persistence_v1.json
+      - name: Regression-test all original source identities and inference bounds
+        run: python -m pytest -q tests/test_sch_2020_trait_direction_persistence.py
+      - name: Preserve source-derived exact probability receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-2020-trait-sign-persistence-v1
+          path: artifacts/sch_2020_trait_sign_persistence_v1.json
+          retention-days: 30
+          if-no-files-found: error
