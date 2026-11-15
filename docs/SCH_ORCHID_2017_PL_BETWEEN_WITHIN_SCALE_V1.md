@@ -42,3 +42,7 @@ Reproduce the pinned source-provenance and aggregation audit:
 
     python scripts/audit_sch_orchid_2017_selection_scale.py --output artifacts/sch_orchid_2017_source_scale_v1.json
     python -m pytest -q tests/test_sch_orchid_2017_selection_scale.py
+
+## 日本語での主張境界
+
+**種間**（2017年、12種×各1集団）では花粉制限と送粉者媒介選択強度の正の関連が原著で報告された。一方、**種内**（2014年、2種・計14集団×年）では同じ種類の関連が検出されなかった。生物学的スケール、時空間、モデル・標準化が違うので、両者は**共通**の推定量を扱う独立レプリケートではない。現状で種間・種内の差そのものを検定できたとは主張しない。
