@@ -50,7 +50,7 @@ TRAIT_CODES={
     "Hood length":"hood_l",
     "Hood width":"hood_w",
     "Petal width":"petal",
-    "Nectar concentration":"nectar.conc",
+    "Nectar concentration":"nec.resid",
     "Floral wet latex":"flw.latex.wet",
     "Leaf wet latex":"leaf.latex.wet",
     "Plant height":"height",
@@ -212,6 +212,24 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
     contrast=Y[:,0]-Y[:,1]
     beta,se,cov,df=fit_ols_hc3(X,contrast)
     corr=np.corrcoef(Y.T)
+    # Same plants, both response types aligned; this tests conditional
+    # *association*, not true per-pollinium fruit initiation conversion.
+    conditionalX=np.column_stack([X,Y[:,1]])
+    conditional_b,conditional_se,conditional_cov,conditional_df=fit_ols_hc3(
+        conditionalX,Y[:,0])
+    # HC3 joint Wald diagnostic for all 10 trait×female-stage differences.
+    # The covariance is estimated directly from the paired response
+    # difference wF-wI, preserving within-record cross-stage covariance.
+    stage_cov=cov[1:,1:]
+    if np.linalg.matrix_rank(stage_cov)!=len(TRAIT_CODES):
+        raise ValueError("Paired stage HC3 contrast covariance singular")
+    joint_stat=float(beta[1:]@np.linalg.solve(stage_cov,beta[1:]))
+    if not math.isfinite(joint_stat) or joint_stat<0:
+        raise ValueError("Invalid original paired ten-trait Wald statistic")
+    # df=10, even-degree chi-square upper-tail exact mathematical survival
+    # function (still an asymptotic HC3 Wald calibration).
+    half=joint_stat/2.0
+    joint_p=math.exp(-half)*sum(half**j/math.factorial(j) for j in range(5))
     # Exact same-individual paired bootstrap; do not independently resample
     # the two outcomes (that would destroy their estimated covariance).
     rng=np.random.default_rng(SEED)
@@ -300,10 +318,34 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
       "fitness_endpoint_means":ym,
       "pearson_fruits_vs_insertions":float(corr[0,1]),
       "pearson_pollinia_removed_vs_inserted":float(corr[1,2]),
+      "published_raw_all_119_flower_sampled_correlation_not_same_n103":True,
+      "pollinia_sampled_denominator":"10 flowers per stem",
+      "fruit_initiation_denominator":"all inflorescences on plant",
+      "direct_fruit_per_measured_inserted_pollinium_conversion_rate":False,
+      "independent_source_2005_three_experimental_regimes_retested":False,
+      "source_2024_plant_matched_partial_association_fruits_given_insertions_and_ten_traits":{
+        "inserted_pollinia_relative_fitness_coefficient":float(conditional_b[-1]),
+        "HC3_SE":float(conditional_se[-1]),
+        "conditional_HC3_normal_p":math.erfc(
+          abs(float(conditional_b[-1]/conditional_se[-1]))/math.sqrt(2))
+          if conditional_se[-1]>0 else None,
+        "n_source_rows":n,
+        "correlation_is_not_plant_fruit_conversion_probability":True,
+      },
+      "paired_ten_trait_stage_difference_joint_HC3_Wald":{
+        "statistic":joint_stat,
+        "degrees_of_freedom_asymptotic_chi2":10,
+        "conditional_asymptotic_P":joint_p,
+        "original_study_direct_stage_interaction_test":False,
+      },
       "published_authors_insertion_fruit_raw_r":-.12,
       "published_authors_removal_insertion_raw_r":.44,
       "raw_2024_models":model,
       "trait_level_fruit_vs_pollinium_comparison":selected,
+      "n_traits_passing_posthoc_ten_test_Bonferroni_HC3_normal":sum(
+        x["simple_normal_approx_HC3_p"] is not None and
+        x["simple_normal_approx_HC3_p"]<.005 for x in selected),
+      "ten_trait_Bonferroni_p_threshold":.005,
       "no_new_2005_published_treatment_effect_estimated":True,
       "original_raw_individuals_observational_not_randomized_traits":True,
       "is_between_stage_different_from_zero_estimated_on_same_plant":True,
@@ -319,6 +361,9 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
         "joint_onset_trait_fitness_process_not_intervened",
         "matching_original_2024_study_processing_and_imputation_must_be_audited",
         "fruit_init_is_not_mature_fruits_and_may_include_future_abortion",
+        "ten_flower_pollinium_sampling_and_whole_plant_fruit_counts_have_different_denominators",
+        "published_2024_pollinia_fruit_correlation_n119_differs_from_source_103_complete_case_cohort",
+        "HC3_joint_Wald_is_asymptotic_not_randomized_trait_stages",
         "pollinia_received_need_not_be_compatible_or_effectively_germinated",
         "residual_variance_and_count_data_may_violate_OLS_distribution",
         "bootstrap_plant_unit_may_ignore_unmeasured_clonal_or_spatial_correlation",
