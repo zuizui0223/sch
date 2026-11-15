@@ -65,6 +65,12 @@ def values_any(record,token):
             result.append(x); ids[v]=True
     return result
 
+def file_id(file_info):
+    if file_info.get("id"):return str(file_info["id"])
+    if file_info.get("fileId"):return str(file_info["fileId"])
+    matched=re.search(r"/api/v2/files/([0-9]+)",json.dumps(file_info))
+    return matched.group(1) if matched else None
+
 def file_names(file_info):
     return str(file_info.get("path") or file_info.get("filename") or
                file_info.get("name") or "")
@@ -142,11 +148,11 @@ def run(outdir):
         except (HTTPError,URLError,ValueError,TimeoutError) as exc:
             report["attempted_public_metadata"].append({"url":url,"status":record_error(exc)})
     report["available_file_metadata"]=[
-        {"id":r.get("id"),"name":file_names(r),"size":r.get("size"),"digest":r.get("digest")}
+        {"id":file_id(r),"name":file_names(r),"size":r.get("size"),"digest":r.get("digest")}
         for r in known_files]
     wanted=[r for r in known_files if file_names(r).lower().endswith((".xls",".xlsx",".docx"))]
     for record in wanted:
-        fid=record.get("id")
+        fid=file_id(record)
         name=file_names(record)
         if not fid or not name or "/" in name or "\\" in name:
             continue
