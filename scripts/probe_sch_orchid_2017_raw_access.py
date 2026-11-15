@@ -127,8 +127,7 @@ def run(outdir):
     # Dryad's public HAL stash:versions entries can omit scalar id.
     # Parse *published self hrefs*, not the parent dataset id.
     for node in found.values():
-        for item in re.findall(r"(?:https?://[^/]+)?/api/v2/versions/([0-9]+)(?:/|[\\"?]|$)",
-                               json.dumps(node)):
+        for item in re.findall(r"/api/v2/versions/([0-9]+)",json.dumps(node)):
             version_ids.add(item)
     report["version_ids_discovered"]=sorted(version_ids)
     known_files=[]
