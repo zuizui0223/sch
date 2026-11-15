@@ -28,7 +28,7 @@ from scripts.audit_sch_plant_functional_meta_grain import (
     SOURCE_MASTER,REQUIRED_SCHEMA,source_rows,strkey,number,
 )
 from scripts.ingest_sch_plant_functional_selection_2020_raw import (
-    fetch,FILENAMES,
+    fetch,FILENAMES,docx_notes,
 )
 
 DOI="10.5061/dryad.sn02v6x0q"
@@ -193,6 +193,63 @@ def run(rows):
     strict=audit_groups(rows,STUDY_FIELDS+("within.study.id",))
     if strict["n_naive_distinct_measure_row_pairs"]>raw["n_naive_distinct_measure_row_pairs"]:
         raise ValueError("strict source strata produced more candidate row pairs")
+    if (raw["n_source_strata"]!=514 or
+        raw["n_source_strata_with_two_or_more_fitness_codes"]!=44 or
+        raw["n_naive_distinct_measure_row_pairs"]!=75 or
+        raw["n_original_papers_with_multiple_outcomes_matched"]!=3 or
+        raw["n_original_species_with_multiple_outcomes_matched"]!=5 or
+        raw["n_source_outcome_pair_point_opposite_beta"]!=16 or
+        raw["n_source_outcome_pair_both_arm_nominal_nonzero_opposite_beta"]!=1 or
+        strict["n_naive_distinct_measure_row_pairs"]!=0):
+        raise ValueError("real archived original endpoint match structure changed")
+    source_supported=[x for x in raw["source_fitness_outcome_pairs"]
+                      if x["two_marginal_normal_95_opposite_betas"]]
+    if len(source_supported)!=1:
+        raise ValueError("strong opposite-stage candidate source count changed")
+    signature=source_supported[0]
+    if (signature["source_group"]["Paper ID"]!="4" or
+        signature["source_group"]["treatment.defined"]!="Resource supplementation" or
+        signature["source_rows"][0]["source_species"]!="Asclepias syriaca" or
+        signature["source_rows"][0]["trait_name"]!="Length of flowering period" or
+        [x["row_id"] for x in signature["source_rows"]]!=["29","35"] or
+        [x["source_fitness_measure"] for x in signature["source_rows"]]
+          !=["Pollinia inserted","Fruits initiated"]):
+        raise ValueError("same-trait female fitness-stage original identity drift")
+    a,b=signature["source_rows"]
+    if not (abs(a["gradient_beta"]+.533)<1e-10 and
+            abs(a["gradient_se"]-.173)<1e-10 and
+            abs(b["gradient_beta"]-.362)<1e-10 and
+            abs(b["gradient_se"]-.113)<1e-10):
+        raise ValueError("source original female stage gradients or SE changed")
+    z_bound=abs(b["gradient_beta"]-a["gradient_beta"])/(a["gradient_se"]+b["gradient_se"])
+    marginal_p_upper=math.erfc(z_bound/math.sqrt(2))
+    source_result={
+        "primary_article_doi":"10.1007/s00442-005-0183-4",
+        "source_paper_id":4,
+        "species":"Asclepias syriaca",
+        "trait":"Length of flowering period",
+        "environment_treatment":"Resource supplementation",
+        "source_archived_row_ids":[29,35],
+        "source_female_stage_one":"Pollinia inserted",
+        "source_female_stage_two":"Fruits initiated",
+        "stage_one_beta":a["gradient_beta"],
+        "stage_one_se":a["gradient_se"],
+        "stage_two_beta":b["gradient_beta"],
+        "stage_two_se":b["gradient_se"],
+        "delta_beta_late_female_minus_early_female":round(b["gradient_beta"]-a["gradient_beta"],6),
+        "conditioned_max_contrast_SE_sum":round(a["gradient_se"]+b["gradient_se"],6),
+        "conditional_normal_z_lower_bound_if_comparable_SEs":round(z_bound,8),
+        "conditional_single_edge_normal_two_sided_p_upper":round(marginal_p_upper,8),
+        "both_marginal_betas_separately_nonzero_opposite_sign_at_1_96":True,
+        "source_actual_same_plant_rows_verified":False,
+        "source_fitted_direct_fitness_stage_contrast_p_recovered":False,
+        "original_contrast_covariance_available":False,
+        "fitness_measures_same_currency":False,
+        "female_stages_not_male_versus_female":True,
+        "selection_on_heritable_trait_identified":False,
+        "source_conflict_optima_identified":False,
+        "status":"ONE_ORIGINAL_SAME_TRAIT_TWO_FEMALE_STAGES_OPPOSITE_ASSOCIATIONS_ONLY",
+    }
     return {
       "analysis":"sch_2020_real_original_experimental_multi_fitness_source_audit_v1",
       "original_published_article":"10.1086/706199",
@@ -201,13 +258,14 @@ def run(rows):
       "n_primary_original_papers":FROZEN_PAPERS,
       "n_original_reported_species":FROZEN_SPECIES,
       "same_paper_species_population_trait_sex_treatment_agent_context":raw,
+      "source_strongest_same_trait_stage_opposition":source_result,
       "also_match_original_within_study_id":strict,
-      "preliminary_conclusion":"ORIGINAL_FITNESS_ENDPOINT_GRAIN_ONLY",
+      "preliminary_conclusion":"ONE_SOURCE_FEMALE_STAGE_OPPOSITION_PRESENT_NO_CAUSAL_IDENTIFICATION",
       "fitness_components_share_same_individuals":"NOT_IDENTIFIED",
       "direct_component_gradient_contrast_covariance":"NOT_RECOVERED",
       "opposite_sign_candidate_is_not_fitness_compromise_proof":True,
       "no_new_SCH_L_or_pure_function_optima":True,
-      "status":"SOURCE_UNDUPLICATED_MULTI_FITNESS_GROUP_SCREENED_NO_CAUSAL_PROMOTION",
+      "status":"SOURCE_UNDUPLICATED_MULTI_FITNESS_GROUP_SCREENED_ONE_OPPOSITE_SIGN_CANDIDATE_NO_CAUSAL_PROMOTION",
     }
 
 
@@ -238,6 +296,19 @@ def main():
                  "original_source_sha256":hashlib.sha256(raw).hexdigest()}
     records,headers=source_rows(original)
     result=run(records)
+    original_readme,readme_url=fetch("Dryad_ReadMe.docx")
+    readme_path=args.outdir/"Dryad_ReadMe.docx"
+    readme_path.write_bytes(original_readme)
+    definitions=docx_notes(readme_path)["original_dictionary_text_first_30000_chars"]
+    result["original_dictionary_term_excerpts"]=[
+        line for line in definitions.splitlines()
+        if any(q in line.lower() for q in ("within.study.id","fitness.component","fitness.measure"))
+    ][:35]
+    result["original_readme_provenance"]={
+        "source_download_url":readme_url,
+        "source_readme_md5":hashlib.md5(original_readme).hexdigest(),
+        "source_readme_sha256":hashlib.sha256(original_readme).hexdigest(),
+    }
     result["original_workbook_provenance"]=receipt
     output=(args.output or args.outdir/"original_multi_fitness_source_audit.json")
     output.parent.mkdir(parents=True,exist_ok=True)
