@@ -216,11 +216,56 @@ def equal_paper_weight_permutation(blocks):
     }
 
 
+
+def equal_species_weight_permutation(blocks):
+    """Eight original biological species are less than ten source papers.
+
+    Multiple papers on Avena and Arabidopsis are pooled into ONE original
+    species-level weight each without pretending to be new independent taxa.
+    """
+    by_species=defaultdict(list)
+    for block in blocks:
+        by_species[block[0]["species"]].append(block)
+    n_s={name:sum(len(b) for b in groups) for name,groups in by_species.items()}
+    common=lcm(*n_s.values())
+    distribution={0:Fraction(1)}
+    obs_scaled=0
+    exp_scaled=Fraction()
+    species_rows=[]
+    for name,subgroups in sorted(by_species.items()):
+        per=local_permutation(subgroups)
+        multiplier=common//n_s[name]
+        distribution=convolve(distribution,{
+            multiplier*k:p for k,p in per["pmf"].items()})
+        obs_scaled+=per["obs"]*multiplier
+        exp_scaled+=per["expected"]*multiplier
+        species_rows.append({
+            "source_species":name,
+            "distinct_source_papers":len({block[0]["paper_id"] for block in subgroups}),
+            "source_matched_pairs":n_s[name],
+            "observed_fraction":per["obs"]/n_s[name],
+            "expected_fraction":float(per["expected"])/n_s[name],
+        })
+    one,two=probability_tail(distribution,obs_scaled,exp_scaled)
+    n=len(by_species)
+    return {
+        "n_distinct_original_species":n,
+        "source_paper_count_across_species":len({b[0]["paper_id"] for b in blocks}),
+        "species_equal_weight_observed_fraction":float(Fraction(obs_scaled,common*n)),
+        "species_equal_weight_expected_fraction":float(Fraction(exp_scaled,common*n)),
+        "species_equal_weight_excess":float(Fraction(obs_scaled-exp_scaled,common*n)),
+        "species_equal_exact_upper_tail_p":one,
+        "species_equal_exact_two_sided_p":two,
+        "original_species_source_rows":species_rows,
+    }
+
+
 def run(rows):
     source_audit(rows)
     blocks,grain=select_matched_trait_blocks(rows)
     full=summarize_plain(blocks)
     paper=equal_paper_weight_permutation(blocks)
+    species=equal_species_weight_permutation(blocks)
     # SAME 43 pairs, but only permute treatment arm β2 signs *within trait class*.
     # Singleton class rows remain deterministic rather than being discarded.
     by_class=[]
@@ -235,6 +280,10 @@ def run(rows):
     for paper_id in sorted({b[0]["paper_id"] for b in blocks},key=int):
         reduced=[b for b in blocks if b[0]["paper_id"]!=paper_id]
         dropped[paper_id]=summarize_plain(reduced)
+    dropped_species={}
+    for name in sorted({b[0]["species"] for b in blocks}):
+        reduced=[b for b in blocks if b[0]["species"]!=name]
+        dropped_species[name]=summarize_plain(reduced)
     # Two arms individually supported, same-sign, are not direct
     # author-fitted treatment interactions.
     eligible=[x for b in blocks for x in b]
@@ -256,6 +305,12 @@ def run(rows):
         raise ValueError("trait-class-constrained conditional null changed")
     if max(x["exact_upper_tail_p_conditional_label_exchangeability"] for x in dropped.values())>.00171:
         raise ValueError("leave-one-paper-out conditional robustness changed")
+    if species["n_distinct_original_species"]!=8 or abs(
+          species["species_equal_exact_upper_tail_p"]-.00014467592592592592)>1e-12:
+        raise ValueError("source original species duplication sensitivity changed")
+    if max(x["exact_upper_tail_p_conditional_label_exchangeability"]
+           for x in dropped_species.values())>.00171:
+        raise ValueError("leave-one-original-species-out sensitivity changed")
     return {
         "analysis":"sch_original_2020_trait_identity_sign_persistence_v1",
         "source_meta_article_doi":"10.1086/706199",
@@ -267,8 +322,10 @@ def run(rows):
         "source_homogeneous_distinct_trait_selection":grain,
         "primary_pair_sign_matching":full,
         "paper_equal_weight":paper,
+        "species_equal_weight":species,
         "same_cohort_trait_class_constrained_repairing":class_null,
         "leave_one_entire_paper_out":dropped,
+        "leave_one_original_species_out":dropped_species,
         "eligible_two_arm_approx_nominal_supported_same_sign_count":len(two_supported),
         "eligible_two_arm_approx_nominal_supported_opposite_sign_count":0,
         "null_interpretation":"conditional_trait_label_repairing_within_original_source_cohort",
@@ -286,6 +343,7 @@ def run(rows):
             "beta_signs_are_source_point_estimates_not_two_sided_reversal_certificates",
             "two_supported_arm_slopes_do_not_verify_interaction_significance",
             "paper_equal_weights_do_not_correct_source_publication_bias",
+            "ten_source_papers_include_only_eight_distinct_original_species",
             "no_direct_same_coordinate_function_conflict_or_SCH_L",
         ],
         "status":"EXPLORATORY_SOURCE_COMPUTED_TRAIT_SIGN_IDENTITY_PERSISTS_BEYOND_CONDITIONAL_REPAIRING_NULL"
