@@ -118,7 +118,13 @@ def unpack_original(raw):
         raise ValueError("Unparsed original CSV row has more columns than header")
     ids=[str(row["plant_id"]).strip() for row in records]
     if len(set(ids))!=N_EXPECT or any(not x for x in ids):
-        raise ValueError("Original 103 plant identifiers not unique and nonblank")
+        from collections import Counter
+        co=Counter(ids)
+        duplicated={k:v for k,v in co.items() if v>1}
+        raise ValueError("Original 103 plant identifiers not unique and nonblank: "+
+                         f"n_unique={len(co)} n_blank={sum(x=='' for x in ids)} "+
+                         f"duplicated={str(duplicated)[:1200]} "+
+                         f"first20IDs={ids[:20]}")
     return records,list(reader.fieldnames)
 
 
