@@ -103,6 +103,13 @@ def run(outdir):
             report["metadata_structure"][url]={
                 "top_level_keys":list(item.keys())[:35] if isinstance(item,dict) else ["LIST_RESPONSE"],
                 "embedded_keys":list(item.get("_embedded",{}).keys())[:35] if isinstance(item,dict) and isinstance(item.get("_embedded"),dict) else [],
+                "embedded_values":{
+                  k:{"type":type(v).__name__,
+                     "len":len(v) if isinstance(v,(list,dict)) else None,
+                     "first_keys":list(v[0].keys())[:20] if isinstance(v,list) and v and isinstance(v[0],dict)
+                         else list(v.keys())[:20] if isinstance(v,dict) else []}
+                  for k,v in item.get("_embedded",{}).items()
+                } if isinstance(item,dict) and isinstance(item.get("_embedded"),dict) else {},
                 "version_id_fields":{k:str(v)[:150] for k,v in item.items()
                     if isinstance(v,(str,int,float)) and any(t in k.lower() for t in ("id","version"))}
                   if isinstance(item,dict) else {},
