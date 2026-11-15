@@ -128,7 +128,7 @@ def number_or_none(val):
 
 
 def select_complete(records):
-    values=[];ids=[];missing={x:0 for x in TRAIT_CODES.values()|OUTCOMES.values()}
+    values=[];ids=[];missing={x:0 for x in list(TRAIT_CODES.values())+list(OUTCOMES.values())}
     fields=list(TRAIT_CODES.values())+list(OUTCOMES.values())
     for row in records:
         out={x:number_or_none(row.get(x)) for x in fields}
