@@ -1,0 +1,37 @@
+name: SCH original 2020 572-row paired fitness component ingress
+on:
+  push:
+    paths:
+      - 'scripts/audit_sch_2020_original_multi_fitness_components.py'
+      - 'tests/test_sch_2020_original_multi_fitness_components.py'
+      - '.github/workflows/sch_2020_original_multi_fitness_components.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_2020_original_multi_fitness_components.py'
+      - 'tests/test_sch_2020_original_multi_fitness_components.py'
+      - '.github/workflows/sch_2020_original_multi_fitness_components.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-identity-first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original source xlsx reader and tests
+        run: python -m pip install --quiet openpyxl pytest
+      - name: Check source-grain matching and no-causal-promotion controls
+        run: python -m pytest -q tests/test_sch_2020_original_multi_fitness_components.py
+      - name: Fetch authentic source master and screen all 572 original records
+        run: python scripts/audit_sch_2020_original_multi_fitness_components.py --outdir artifacts/sch_2020_fitness_components --output artifacts/sch_2020_fitness_components/real_fitness_grain_receipt.json
+      - name: Retain inspected original workbook and computed audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-original-572-multifitness-audit
+          path: artifacts/sch_2020_fitness_components/
+          retention-days: 15
+          if-no-files-found: error
