@@ -117,14 +117,15 @@ def unpack_original(raw):
     if any(None in row for row in records):
         raise ValueError("Unparsed original CSV row has more columns than header")
     ids=[str(row["plant_id"]).strip() for row in records]
-    if len(set(ids))!=N_EXPECT or any(not x for x in ids):
-        from collections import Counter
-        co=Counter(ids)
-        duplicated={k:v for k,v in co.items() if v>1}
-        raise ValueError("Original 103 plant identifiers not unique and nonblank: "+
-                         f"n_unique={len(co)} n_blank={sum(x=='' for x in ids)} "+
-                         f"duplicated={str(duplicated)[:1200]} "+
-                         f"first20IDs={ids[:20]}")
+    from collections import Counter
+    co=Counter(ids)
+    duplicated={k:v for k,v in co.items() if v>1}
+    if (any(not x for x in ids) or
+        len(co)!=102 or duplicated!={"68":2}):
+        raise ValueError("Original 2024 plant identifiers drift: "+
+                         f"n_unique={len(co)} duplicated={str(duplicated)[:200]}")
+    # Two source rows bear the same ID=68. Do not invent which is a
+    # different individual or silently remove a source record.
     return records,list(reader.fieldnames)
 
 
@@ -214,9 +215,20 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
     # Exact same-individual paired bootstrap; do not independently resample
     # the two outcomes (that would destroy their estimated covariance).
     rng=np.random.default_rng(SEED)
+    # Resample the *plant label* (102 unique IDs, including the one
+    # duplicated label 68 as a single unit of uncertain identity), not
+    # the 103 rows independently. This protects a plausible repeated plant.
+    groups={}
+    for ix,pid in enumerate(plant_ids):
+        groups.setdefault(pid,[]).append(ix)
+    group_keys=list(groups)
+    n_groups=len(group_keys)
+    if n_groups!=102:
+        raise ValueError("Complete-case original ID cluster count drift")
     boot_coef=[]
     for t in range(boot):
-        ix=rng.integers(0,n,n)
+        sampled=rng.integers(0,n_groups,n_groups)
+        ix=np.asarray([j for i in sampled for j in groups[group_keys[i]]],int)
         B=X[ix,:]
         y=contrast[ix]
         try:
@@ -230,6 +242,24 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
         raise ValueError("Too few valid original paired individual bootstrap draws")
     b=np.asarray(boot_coef)
     lo,hi=np.percentile(b,[2.5,97.5],axis=0)
+    # Two 102-row analyses exclude each of the ambiguous ID=68 rows
+    # alternately, without guessing whether either record is erroneous.
+    duplicate_ix=[ix for ix,pid in enumerate(plant_ids) if pid=="68"]
+    if len(duplicate_ix)!=2:
+        raise ValueError("ID 68 duplicate did not survive source filtering")
+    leave_duplicate=[]
+    for drop in duplicate_ix:
+        mask=np.ones(n,bool)
+        mask[drop]=False
+        coef102,_,_,_=fit_ols_hc3(X[mask],contrast[mask])
+        leave_duplicate.append({
+            "dropped_original_data_row_index_zero_based":int(drop),
+            "source_n_after_one_row_drop":int(mask.sum()),
+            "beta_difference_vector_fixed_103row_trait_standardization":coef102.tolist()})
+    source_duplicates=[r for r in records if str(r["plant_id"]).strip()=="68"]
+    differing_fields=[
+        k for k in original_fields
+        if source_duplicates[0].get(k)!=source_duplicates[1].get(k)]
     selected=[]
     for i,(label,code) in enumerate(TRAIT_CODES.items(),start=1):
         selected.append({
@@ -253,10 +283,17 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
       "verified_original_xlsx_sha256":SOURCE_SHA256,
       "verified_original_xlsx_bytes":SOURCE_BYTES,
       "n_original_journal_data_plant_rows":len(records),
-      "n_original_distinct_plant_IDs":len({r["plant_id"] for r in records}),
-      "n_complete_case_original_plants":n,
+      "n_original_distinct_source_plant_ID_labels":len({r["plant_id"] for r in records}),
+      "n_original_duplicate_id_labels":1,
+      "original_duplicate_label":"68",
+      "duplicate_id68_rows_different_fields":differing_fields,
+      "original_duplicate_id68_rows_exactly_identical":len(differing_fields)==0,
+      "n_complete_case_source_rows":n,
+      "n_complete_case_distinct_source_plant_labels":n_groups,
+      "one_ambiguous_label_two_102row_source_sensitivities":leave_duplicate,
       "n_traits_multivariate":len(TRAIT_CODES),
       "n_paired_bootstrap_draws":len(boot_coef),
+      "bootstrap_resampling_unit":"original_plant_ID_label_102_groups_not_103_rows",
       "random_seed":SEED,
       "source_original_embedded_csv_column_count":len(original_fields),
       "original_trait_fitness_missingness":missing,
@@ -275,7 +312,9 @@ def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
       "source_method_mismatch_to_paper_original_models_possible":True,
       "source_fit_proxy_does_not_establish_causal_compromise_L":True,
       "claim_limits":[
-        "paper2024_one_observational_population_n103_not_independent_species",
+        "paper2024_one_observational_population_103_rows_102_distinct_IDs_not_independent_species",
+        "source_id68_is_duplicated_true_individual_identity_unresolved",
+        "both_duplicate_row_deletions_are_sensitivity_not_source_correction",
         "relative_fruit_and_insertion_endpoints_are_distinct_fitness_currencies",
         "joint_onset_trait_fitness_process_not_intervened",
         "matching_original_2024_study_processing_and_imputation_must_be_audited",
