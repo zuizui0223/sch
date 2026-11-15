@@ -1,0 +1,41 @@
+name: SCH pollen intensity three-scale original-source audit
+on:
+  pull_request:
+    paths:
+      - 'data/SCH_POLLINATION_INTENSITY_2016_EXPERIMENT_SOURCE_V1.csv'
+      - 'data/SCH_POLLINATION_INTENSITY_2017_OPPORTUNITY_TABLE1_V1.csv'
+      - 'scripts/audit_sch_pollen_intensity_three_scales.py'
+      - 'docs/SCH_POLLEN_INTENSITY_THREE_SCALES_V1.md'
+      - 'tests/test_sch_pollen_intensity_three_scales.py'
+      - '.github/workflows/sch_pollen_intensity_three_scales.yml'
+  push:
+    paths:
+      - 'data/SCH_POLLINATION_INTENSITY_2016_EXPERIMENT_SOURCE_V1.csv'
+      - 'data/SCH_POLLINATION_INTENSITY_2017_OPPORTUNITY_TABLE1_V1.csv'
+      - 'scripts/audit_sch_pollen_intensity_three_scales.py'
+      - 'docs/SCH_POLLEN_INTENSITY_THREE_SCALES_V1.md'
+      - 'tests/test_sch_pollen_intensity_three_scales.py'
+      - '.github/workflows/sch_pollen_intensity_three_scales.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source test dependencies
+        run: python -m pip install --quiet pytest
+      - name: Recompute bounded original intensity and species-scale study receipt
+        run: python scripts/audit_sch_pollen_intensity_three_scales.py --output artifacts/sch_pollen_intensity_three_scales_v1.json
+      - name: Verify scientific and source identity invariants
+        run: python -m pytest -q tests/test_sch_pollen_intensity_three_scales.py
+      - name: Retain source-audit JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-pollen-intensity-three-scales-v1
+          path: artifacts/sch_pollen_intensity_three_scales_v1.json
+          if-no-files-found: error
