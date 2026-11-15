@@ -39,6 +39,16 @@ A *single original source pair* survives marginal opposite-sign screening. It co
 
 Both β/SE ratios separately exceed |1.96| and have **opposite signs**, even though the same trait and treatment are identified in the original meta master. This is a stronger source signature of **intra-female-stage selection discordance** than a single nonzero-vs-nonsignificant coefficient. It is **NOT male versus female antagonism**: pollinia insertion and fruit initiation are both female fitness proxies; pollinia removal is the male proxy in this system.
 
+The original 572-row source includes the same flowering-duration trait under **all three experimental regimes**, not only the resource-supplemented one:
+
+| Original treatment | Male pollinia removed β ± SE | Female pollinia inserted β ± SE | Female fruits initiated β ± SE |
+|---|---:|---:|---:|
+| Control | −0.088 ± 0.099 | **−0.062 ± 0.135** | **+0.308 ± 0.097** |
+| Decreased pollinator access | +0.072 ± 0.175 | **−0.082 ± 0.233** | **+0.287 ± 0.122** |
+| Resource supplementation | −0.075 ± 0.070 | **−0.533 ± 0.173** | **+0.362 ± 0.113** |
+
+**New precise pattern:** in all **3/3 treatment regimes** the point female-stage signs for flowering duration are opposite. However, **only 1/3**, under resource supplementation, has *both* original stage slopes individually separated from zero at nominal 95% normal-approximation thresholds. This is **one study with three nonindependent regimes**, not three independent confirmations. The male pollinia-removed coefficients are a **distinct third outcome** and do not provide evidence of significant male–female opposing selection here. Do not confuse an unadjusted sign tally with original author-fitted stage×treatment tests.
+
 The source beta contrast is Δβ (fruits initiated minus inserted pollinia) = **+0.895**. A *conditional* Cauchy–Schwarz upper bound on its comparison SE is SE₁+SE₂=**0.286**, yielding conditional normal z≥**3.1294** and single-comparison P≤**0.001752**. This is **not** a source author-fitted interaction P, requires comparable marginal estimands, and does not use the unknown two-stage covariance. The exploratory family of **75 source outcome pairs** yields a conservative adjusted upper bound of about **0.1314**, so this result cannot be advertised as a universal familywise discovery. A direct same-plant stage-contrast model, source authors' actual treatment-stage interaction, and replication in independent species remain unverified.
 
 *Biological implication (hypothesis, not a measured mechanism):* resource supply may alter the translation from pollen deposition/receipt to fruit initiation, changing how flowering duration maps to effective female fitness. An additional post-pollination conversion term is a natural explanation, but its gradient has **not been measured**; do not subtract those published standardized betas and label the result a causal conversion probability.
