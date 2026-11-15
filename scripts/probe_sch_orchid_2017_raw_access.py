@@ -94,11 +94,19 @@ def run(outdir):
     urls=[f"{BASE}/api/v2/datasets/{DOI_ID}",
           f"{BASE}/api/v2/datasets/{DOI_ID}/versions"]
     found={}
+    report["metadata_structure"]={}
     for url in urls:
         try:
             item=json_get(url)
             report["attempted_public_metadata"].append({"url":url,"status":"HTTP_200_JSON"})
             found[url]=item
+            report["metadata_structure"][url]={
+                "top_level_keys":list(item.keys())[:35] if isinstance(item,dict) else ["LIST_RESPONSE"],
+                "embedded_keys":list(item.get("_embedded",{}).keys())[:35] if isinstance(item,dict) and isinstance(item.get("_embedded"),dict) else [],
+                "version_id_fields":{k:str(v)[:150] for k,v in item.items()
+                    if isinstance(v,(str,int,float)) and any(t in k.lower() for t in ("id","version"))}
+                  if isinstance(item,dict) else {},
+            }
         except (HTTPError,URLError,ValueError,TimeoutError) as exc:
             report["attempted_public_metadata"].append({"url":url,"status":record_error(exc)})
     version_ids=set()
