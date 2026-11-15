@@ -1,0 +1,40 @@
+name: SCH primary-source context audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_primary_fitted_context.py'
+      - 'tests/test_sch_primary_fitted_context.py'
+      - 'data/SCH_2020_BEANS_ROACH_AUTHOR_INTERACTIONS_V2.csv'
+      - 'data/SCH_2020_STINCHCOMBE_TABLE2_ESTIMAND_V1.csv'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_2020_PRIMARY_AUTHOR_CONTEXT_AUDIT_V2.md'
+      - '.github/workflows/sch_primary_source_context.yml'
+  push:
+    paths:
+      - 'scripts/audit_sch_primary_fitted_context.py'
+      - 'tests/test_sch_primary_fitted_context.py'
+      - 'data/SCH_2020_BEANS_ROACH_AUTHOR_INTERACTIONS_V2.csv'
+      - 'data/SCH_2020_STINCHCOMBE_TABLE2_ESTIMAND_V1.csv'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_2020_PRIMARY_AUTHOR_CONTEXT_AUDIT_V2.md'
+      - '.github/workflows/sch_primary_source_context.yml'
+  workflow_dispatch:
+
+jobs:
+  primary-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Recompute source-backed original-author context audit
+        run: python scripts/audit_sch_primary_fitted_context.py --output artifacts/sch_original_primary_context_v2.json
+      - name: Verify original source IDs, direct tests, and fail-closed invariants
+        run: python -m pytest -q tests/test_sch_primary_fitted_context.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-primary-original-author-context-v2
+          path: artifacts/sch_original_primary_context_v2.json
