@@ -1,0 +1,72 @@
+name: SCH original 2024 milkweed individual paired-stage regression
+on:
+  pull_request:
+    paths:
+      - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
+      - 'scripts/analyze_sch_milkweed_2024_paired_stage.py'
+      - 'tests/test_sch_milkweed_2024_paired_stage.py'
+      - 'data/SCH_2024_ASCLEPIAS_REAL_103_ROW_PAIRED_STAGE_RESULTS_V1.csv'
+      - 'docs/SCH_MILKWEED_2005_2017_2024_POSTPOLLINATION_STAGE_GATE_V1.md'
+      - '.github/workflows/sch_milkweed_2024_paired_stage.yml'
+  push:
+    paths:
+      - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
+      - 'scripts/analyze_sch_milkweed_2024_paired_stage.py'
+      - 'tests/test_sch_milkweed_2024_paired_stage.py'
+      - 'data/SCH_2024_ASCLEPIAS_REAL_103_ROW_PAIRED_STAGE_RESULTS_V1.csv'
+      - 'docs/SCH_MILKWEED_2005_2017_2024_POSTPOLLINATION_STAGE_GATE_V1.md'
+      - '.github/workflows/sch_milkweed_2024_paired_stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-matched-female-stages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original XLSX reader and paired linear-algebra dependencies
+        run: python -m pip install --quiet openpyxl numpy pytest
+      - name: Source identity tests
+        run: python -m pytest -q tests/test_sch_milkweed_2024_original_appendix.py tests/test_sch_milkweed_2024_paired_stage.py
+      - name: Retrieve official original 2024 published 103-plant Appendix II and checksum
+        run: python -m scripts.ingest_sch_milkweed_2024_original_appendix --outdir artifacts/sch_jpe2024_plant_raw
+      - name: Fit paired 103-plant source female fitness stage contrasts, HC3 and bootstrap
+        run: >-
+          python -m scripts.analyze_sch_milkweed_2024_paired_stage
+          --source artifacts/sch_jpe2024_plant_raw/original_2024_jpe_appendix_ii.xlsx
+          --outdir artifacts/sch_jpe2024_plant_raw
+          --boot 1999
+      - name: Verify original plant grain and that source stage uncertainty exists
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("artifacts/sch_jpe2024_plant_raw/original_2024_103plant_paired_fitness_stage_v1.json").read_text())
+          assert d["verified_original_xlsx_sha256"]=="d5beb695f1c5f81f03eb74a18937582e99fc2cd1c23bda3598e33ef904bfadfb"
+          assert d["n_original_journal_data_plant_rows"]==103
+          assert d["n_complete_case_source_rows"]>=60
+          assert d["n_original_distinct_source_plant_ID_labels"]==102
+          assert d["original_duplicate_label"]=="68"
+          assert len(d["one_ambiguous_label_two_102row_source_sensitivities"])==2
+          assert len(d["trait_level_fruit_vs_pollinium_comparison"])==10
+          assert d["n_paired_bootstrap_draws"]>=1500
+          assert d["duplicate_id68_rows_different_fields"]==["fruit.init"]
+          assert d["n_traits_passing_posthoc_ten_test_Bonferroni_HC3_normal"]==0
+          assert abs(d["paired_ten_trait_stage_difference_joint_HC3_Wald"]["conditional_asymptotic_P"]-.20960383)<.00001
+          assert abs(d["source_2024_plant_matched_partial_association_fruits_given_insertions_and_ten_traits"]["conditional_HC3_normal_p"]-.5694130)<.00001
+          b={x["trait"]:x for x in d["trait_level_fruit_vs_pollinium_comparison"]}
+          assert abs(b["Inflorescence number"]["paired_fruit_minus_insertion_beta"]-.48358370)<.00001
+          assert abs(b["Inflorescence number"]["paired_difference_HC3_SE"]-.18522557)<.00001
+          assert d["source_fit_proxy_does_not_establish_causal_compromise_L"] is True
+          print("VALIDATED_GENUINE_ORIGINAL_2024_PAIRED_STAGE_RESULT")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-2024-original-103-plant-paired-stage
+          path: artifacts/sch_jpe2024_plant_raw/
+          retention-days: 15
+          if-no-files-found: error
