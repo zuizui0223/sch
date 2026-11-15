@@ -1,0 +1,33 @@
+name: SCH orchid original Dryad 2017 source-access probe
+on:
+  push:
+    branches:
+      - analysis/orchid2017-primary-raw-access-probe-20261115
+    paths:
+      - 'scripts/probe_sch_orchid_2017_raw_access.py'
+      - 'tests/test_sch_orchid_2017_source_access.py'
+      - '.github/workflows/sch_orchid_2017_raw_access.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-source-attempt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source workbook reader and tests
+        run: python -m pip install --quiet xlrd pytest
+      - name: Test archive identity and source validation rules
+        run: python -m pytest -q tests/test_sch_orchid_2017_source_access.py
+      - name: Query Dryad DOI API and attempt authentic public original files
+        run: python scripts/probe_sch_orchid_2017_raw_access.py --outdir artifacts/orchid2017_original
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-orchid-2017-source-access-probe
+          path: artifacts/orchid2017_original/
+          retention-days: 15
+          if-no-files-found: error
