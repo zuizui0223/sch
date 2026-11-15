@@ -1,0 +1,2 @@
+paper_id,source_row_id_1,source_row_id_2,primary_doi,source_sex,environment_1,environment_2,fitness_component,trait,direct_gradient_beta1,direct_gradient_beta2,author_direct_area_x_shade_F,author_direct_area_x_shade_p,total_selection_s1,total_selection_s2,author_total_area_x_shade_F,author_total_area_x_shade_p,original_table
+21,296,302,10.3732/ajb.89.4.592,MALE,73pct_shade,55pct_shade,ASEXUAL_CUPS,Area at day 49,0.640,-0.199,3.31,NO_P_MARK,0.631,-0.135,3.90,<0.05,Table3_and_Table4
