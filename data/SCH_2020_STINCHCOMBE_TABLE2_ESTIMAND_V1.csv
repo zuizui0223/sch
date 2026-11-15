@@ -1,0 +1,3 @@
+paper_id,doi,trait,regime,source_row_id,beta_phenotypic_standardized,se_phenotypic_standardized,beta_genotypic_standardized,se_genotypic_standardized,beta_phenotypic_unstandardized,beta_genotypic_unstandardized,author_within_regime_bias_p,author_test_estimand,source
+37,10.1086/342069,Total leaf area,INSECTS_ABSENT,495,0.790,0.030,0.018,0.060,0.000007,0.000009,0.052,PHENOTYPIC_VS_GENOTYPIC_BIAS_WITHIN_REGIME,Table2
+37,10.1086/342069,Total leaf area,INSECTS_PRESENT,496,0.044,0.050,0.020,0.050,0.0000004,0.0000012,0.76,PHENOTYPIC_VS_GENOTYPIC_BIAS_WITHIN_REGIME,Table2
