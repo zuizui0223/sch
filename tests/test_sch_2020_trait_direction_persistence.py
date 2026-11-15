@@ -106,5 +106,5 @@ def test_document_keeps_43_of_137_selection_boundary():
         encoding="utf-8")
     for x in ("137", "43", "10 independent papers", "0.00024113",
               "0.01190476", "0.00014468", "13 pairs",
-              "not actual randomized", "does not", "L"):
+              "trait-label re-pairing reference", "does not", "L"):
         assert x.lower() in t.lower()
