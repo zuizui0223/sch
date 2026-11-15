@@ -28,8 +28,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install Pearson test and source audit dependencies
-        run: python -m pip install --quiet scipy pytest
+      - name: Install source audit test runner; numeric computation uses Python stdlib
+        run: python -m pip install --quiet pytest
       - name: Recompute rounded source r/P at n12 and n24, source reward association
         run: python scripts/audit_sch_trunschke2017_pearson_grain.py --output artifacts/sch_trunschke2017_pearson_grain.json
       - name: Test independent-unit and limitation contracts
