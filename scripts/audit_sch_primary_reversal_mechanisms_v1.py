@@ -79,8 +79,9 @@ def run(pairs,candidates,moderation,components,indirect):
             raise ValueError("duplicate original published source row IDs")
         frozen[k]=p
         vals=[float(p[field]) for field in ("beta1","se1","beta2","se2")]
-        if not all(math.isfinite(x) for x in vals) or vals[1]<=0 or vals[3]<=0:
-            raise ValueError("original published beta/SE invalid")
+        if (not all(math.isfinite(x) for x in vals) or vals[1]<=0 or vals[3]<=0
+                or vals[0]==0 or vals[2]==0):
+            raise ValueError("original published beta/SE zero, missing, or invalid")
         if (vals[0]*vals[2]<0)!=(p["point_sign_flip"].lower()=="true"):
             raise ValueError("sign-flip recorded classification drift")
         if vals[0]*vals[2]<0:flips.append(p)
