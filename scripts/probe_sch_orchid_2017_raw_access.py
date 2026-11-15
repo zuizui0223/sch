@@ -24,6 +24,12 @@ BASE="https://datadryad.org"
 UA="SCH-orchid-2017-real-raw-source-probe/1.0"
 MAX_METADATA=1_000_000
 MAX_DOWNLOAD=3_000_000
+EXPECTED_ARCHIVE={
+  "README_for_Trunschke et al._NewPhytologist_2017_strength of selection_DRYAD_raw data.docx":
+      (103526,"e773115ab4eaab2b75c83f6ffb260239"),
+  "Trunschke et al._NewPhytologist_2017_strength of selection_DRYAD_raw data.xls":
+      (772608,"2a0429adade12ddce60ba9e46500f4a9"),
+}
 
 def get(url,max_size,accept="*/*"):
     req=Request(url,headers={"User-Agent":UA,"Accept":accept})
@@ -151,6 +157,13 @@ def run(outdir):
         {"id":file_id(r),"name":file_names(r),"size":r.get("size"),"digest":r.get("digest")}
         for r in known_files]
     wanted=[r for r in known_files if file_names(r).lower().endswith((".xls",".xlsx",".docx"))]
+    if len(wanted)!=2 or {file_names(r) for r in wanted}!=set(EXPECTED_ARCHIVE):
+        raise ValueError("Source archived two-file identity changed")
+    for record in wanted:
+        expected_size,expected_digest=EXPECTED_ARCHIVE[file_names(record)]
+        if int(record.get("size") or 0)!=expected_size or (
+             str(record.get("digest","")).lower()!=expected_digest):
+            raise ValueError("Original Dryad source file size or digest drift")
     for record in wanted:
         fid=file_id(record)
         name=file_names(record)
