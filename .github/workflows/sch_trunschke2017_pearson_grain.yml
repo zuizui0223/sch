@@ -1,0 +1,42 @@
+name: SCH Trunschke 2017 Pearson source-grain audit
+on:
+  push:
+    branches:
+      - analysis/trunschke2017-pearson-grain-reanalysis-20261115
+    paths:
+      - 'scripts/audit_sch_trunschke2017_pearson_grain.py'
+      - 'tests/test_sch_trunschke2017_pearson_grain.py'
+      - 'data/SCH_TRUNSCHKE2017_REPORTED_PL_TRAIT_CORRELATIONS_V1.csv'
+      - 'docs/SCH_TRUNSCHKE2017_PEARSON_SOURCE_GRAIN_AUDIT_20261115.md'
+      - '.github/workflows/sch_trunschke2017_pearson_grain.yml'
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_trunschke2017_pearson_grain.py'
+      - 'tests/test_sch_trunschke2017_pearson_grain.py'
+      - 'data/SCH_TRUNSCHKE2017_REPORTED_PL_TRAIT_CORRELATIONS_V1.csv'
+      - 'docs/SCH_TRUNSCHKE2017_PEARSON_SOURCE_GRAIN_AUDIT_20261115.md'
+      - '.github/workflows/sch_trunschke2017_pearson_grain.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-correlation-arithmetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source audit test runner; numeric computation uses Python stdlib
+        run: python -m pip install --quiet pytest
+      - name: Recompute rounded source r/P at n12 and n24, source reward association
+        run: python scripts/audit_sch_trunschke2017_pearson_grain.py --output artifacts/sch_trunschke2017_pearson_grain.json
+      - name: Test independent-unit and limitation contracts
+        run: python -m pytest -q tests/test_sch_trunschke2017_pearson_grain.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-trunschke2017-pearson-original-source-v1
+          path: artifacts/sch_trunschke2017_pearson_grain.json
+          retention-days: 30
+          if-no-files-found: error
