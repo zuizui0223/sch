@@ -1,0 +1,9 @@
+paper_id,doi,study,source_context,trait,source_row_id_1,source_row_id_2,beta_absent,se_absent,beta_present,se_present,original_F,original_p,original_df,original_source
+13,10.3732/ajb.1400355,GREENHOUSE,INDOOR_CONTROLLED,Early growth rate,204,208,0.09,0.02,0.003,0.002,4.38,0.04,"1,122",Table2
+13,10.3732/ajb.1400355,GREENHOUSE,INDOOR_CONTROLLED,Hypocotyl length,205,209,-0.04,0.02,-0.01,0.03,0.76,0.39,"1,122",Table2
+13,10.3732/ajb.1400355,GREENHOUSE,INDOOR_CONTROLLED,Internode 1 length,206,210,0.15,0.02,0.04,0.02,8.35,0.005,"1,122",Table2
+13,10.3732/ajb.1400355,GREENHOUSE,INDOOR_CONTROLLED,Number of internodes,207,211,0.14,0.01,0.36,0.02,82.74,<0.0001,"1,122",Table2
+13,10.3732/ajb.1400355,FIELD,IN_SITU_NATURAL_POPULATION,Early growth rate,212,216,0.15,0.03,-0.09,0.11,3.93,0.049,"1,222",Table2
+13,10.3732/ajb.1400355,FIELD,IN_SITU_NATURAL_POPULATION,Hypocotyl length,213,217,-0.07,0.07,-0.10,0.12,0.09,0.76,"1,222",Table2
+13,10.3732/ajb.1400355,FIELD,IN_SITU_NATURAL_POPULATION,Internode 1 length,214,218,0.07,0.03,0.22,0.10,0.17,0.68,"1,222",Table2
+13,10.3732/ajb.1400355,FIELD,IN_SITU_NATURAL_POPULATION,Number of internodes,215,219,0.79,0.03,1.04,0.05,0.88,0.35,"1,222",Table2
