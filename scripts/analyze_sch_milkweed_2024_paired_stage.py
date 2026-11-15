@@ -25,7 +25,12 @@ import json
 import math
 from pathlib import Path
 
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError:
+    # The global SCH code contract CI intentionally installs only pytest.
+    # Numerical original-plant reanalysis installs numpy in its own source CI.
+    np=None
 
 from scripts.ingest_sch_milkweed_2024_original_appendix import (
     CANDIDATES, get, classify
@@ -183,6 +188,8 @@ def fit_ols_hc3(X,y):
 
 
 def run_from_raw(raw,source_url,outdir,boot=B_BOOT):
+    if np is None:
+        raise RuntimeError("original individual-level analysis requires numpy")
     records,original_fields=unpack_original(raw)
     matrix,plant_ids,missing,fields=select_complete(records)
     X,Y,mu,sd,ym=normalize_design(matrix)
