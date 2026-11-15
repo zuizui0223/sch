@@ -1,0 +1,38 @@
+name: SCH Trunschke 2017 publisher supplement S5 S6 access
+on:
+  push:
+    branches:
+      - analysis/trunschke2017-s5-s6-source-access-20261115
+    paths:
+      - 'scripts/probe_sch_trunschke2017_suppinfo.py'
+      - 'tests/test_sch_trunschke2017_suppinfo.py'
+      - '.github/workflows/sch_trunschke2017_suppinfo.yml'
+  pull_request:
+    paths:
+      - 'scripts/probe_sch_trunschke2017_suppinfo.py'
+      - 'tests/test_sch_trunschke2017_suppinfo.py'
+      - '.github/workflows/sch_trunschke2017_suppinfo.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-supplement-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source PDF inspector and tests
+        run: python -m pip install --quiet pymupdf pytest
+      - name: Test strict source identity and no synthetic data
+        run: python -m pytest -q tests/test_sch_trunschke2017_suppinfo.py
+      - name: Try exact publisher supplement and record status
+        run: python scripts/probe_sch_trunschke2017_suppinfo.py --out artifacts/trunschke2017_suppinfo_access.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-trunschke2017-official-supplement-access
+          path: artifacts/trunschke2017_suppinfo_access.json
+          retention-days: 30
+          if-no-files-found: error
