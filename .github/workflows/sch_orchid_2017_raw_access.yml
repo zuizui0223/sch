@@ -7,6 +7,11 @@ on:
       - 'scripts/probe_sch_orchid_2017_raw_access.py'
       - 'tests/test_sch_orchid_2017_source_access.py'
       - '.github/workflows/sch_orchid_2017_raw_access.yml'
+  pull_request:
+    paths:
+      - 'scripts/probe_sch_orchid_2017_raw_access.py'
+      - 'tests/test_sch_orchid_2017_source_access.py'
+      - '.github/workflows/sch_orchid_2017_raw_access.yml'
   workflow_dispatch:
 permissions:
   contents: read
