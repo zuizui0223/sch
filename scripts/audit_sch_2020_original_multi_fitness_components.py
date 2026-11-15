@@ -250,6 +250,61 @@ def run(rows):
         "source_conflict_optima_identified":False,
         "status":"ONE_ORIGINAL_SAME_TRAIT_TWO_FEMALE_STAGES_OPPOSITE_ASSOCIATIONS_ONLY",
     }
+    # Full original source-published 3 x 3 regime × reproductive-stage matrix.
+    # These are repeated outcomes from ONE paper, not nine independent papers.
+    original_regimes={
+      "Control":{
+        "Pollinia removed":("19",-.088,.099),
+        "Pollinia inserted":("25",-.062,.135),
+        "Fruits initiated":("31",+.308,.097),
+      },
+      "Decreased pollinator access":{
+        "Pollinia removed":("21",+.072,.175),
+        "Pollinia inserted":("27",-.082,.233),
+        "Fruits initiated":("33",+.287,.122),
+      },
+      "Resource supplementation":{
+        "Pollinia removed":("23",-.075,.070),
+        "Pollinia inserted":("29",-.533,.173),
+        "Fruits initiated":("35",+.362,.113),
+      },
+    }
+    source_matrix=[]
+    for treatment,expected in original_regimes.items():
+        source_group=next((g for g in raw["source_groups_with_multiple_distinct_fitness_codes"]
+             if g["source_group"]["Paper ID"]=="4" and
+                g["source_group"]["treatment.defined"]==treatment and
+                g["source_rows"][0]["trait_name"]=="Length of flowering period"),None)
+        if source_group is None or len(source_group["source_rows"])!=3:
+            raise ValueError("three-treatment Asclepias female-stage source group missing")
+        original={x["source_fitness_measure"]:x for x in source_group["source_rows"]}
+        if set(original)!=set(expected):
+            raise ValueError("original Asclepias male/female stage inventory differs")
+        for measure,(row_id,beta,se) in expected.items():
+            recorded=original[measure]
+            if (recorded["row_id"]!=row_id or
+                abs(recorded["gradient_beta"]-beta)>1e-10 or
+                abs(recorded["gradient_se"]-se)>1e-10):
+                raise ValueError("original resource-dependent source 2005 stage beta drift")
+        early=original["Pollinia inserted"]
+        late=original["Fruits initiated"]
+        both_supported=(early["gradient_beta"]*late["gradient_beta"]<0
+          and abs(early["gradient_beta"]/early["gradient_se"])>1.96
+          and abs(late["gradient_beta"]/late["gradient_se"])>1.96)
+        source_matrix.append({
+          "source_original_paper_id":4,"primary_article_doi":"10.1007/s00442-005-0183-4",
+          "trait":"Length of flowering period","treatment":treatment,
+          "reported_source_stage_rows":original,
+          "female_stage_opposite_point_signs":early["gradient_beta"]*late["gradient_beta"]<0,
+          "both_female_stage_slopes_individually_nominally_supported_opposite":both_supported,
+          "later_fruits_minus_earlier_insertions":round(late["gradient_beta"]-early["gradient_beta"],6),
+          "original_stage_gradient_covariance":"NOT_RECOVERED",
+          "original_fitted_treatment_x_female_stage_test":"NOT_RECOVERED",
+        })
+    if (sum(x["female_stage_opposite_point_signs"] for x in source_matrix)!=3 or
+        sum(x["both_female_stage_slopes_individually_nominally_supported_opposite"]
+            for x in source_matrix)!=1):
+        raise ValueError("female-stage three-regime source selection pattern changed")
     return {
       "analysis":"sch_2020_real_original_experimental_multi_fitness_source_audit_v1",
       "original_published_article":"10.1086/706199",
@@ -259,6 +314,9 @@ def run(rows):
       "n_original_reported_species":FROZEN_SPECIES,
       "same_paper_species_population_trait_sex_treatment_agent_context":raw,
       "source_strongest_same_trait_stage_opposition":source_result,
+      "one_original_Asclepias_paper_three_context_female_stage_comparison":source_matrix,
+      "n_Asclepias_flowering_duration_regimes_point_stage_opposition":3,
+      "n_Asclepias_regimes_both_stage_gradient_signs_individually_supported":1,
       "also_match_original_within_study_id":strict,
       "preliminary_conclusion":"ONE_SOURCE_FEMALE_STAGE_OPPOSITION_PRESENT_NO_CAUSAL_IDENTIFICATION",
       "fitness_components_share_same_individuals":"NOT_IDENTIFIED",
