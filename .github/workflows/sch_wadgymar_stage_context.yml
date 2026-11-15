@@ -1,0 +1,39 @@
+name: SCH original warming fitness-stage audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_sch_wadgymar_stage_context.py'
+      - 'tests/test_sch_wadgymar_stage_context.py'
+      - 'data/SCH_2020_WADGYMAR_AUTHOR_STAGE_INTERACTIONS_V1.csv'
+      - 'data/SCH_2020_WADGYMAR_LANDE_ARNOLD_SOURCE_ALIGNMENT_V1.csv'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_WADGYMAR_STAGE_SPECIFIC_SELECTION_CONTEXT_V1.md'
+      - '.github/workflows/sch_wadgymar_stage_context.yml'
+  push:
+    paths:
+      - 'scripts/audit_sch_wadgymar_stage_context.py'
+      - 'tests/test_sch_wadgymar_stage_context.py'
+      - 'data/SCH_2020_WADGYMAR_AUTHOR_STAGE_INTERACTIONS_V1.csv'
+      - 'data/SCH_2020_WADGYMAR_LANDE_ARNOLD_SOURCE_ALIGNMENT_V1.csv'
+      - 'data/SCH_2020_FUNCTIONAL_META_MATCHED_ORIGINAL_PAIRS_V1.csv'
+      - 'docs/SCH_WADGYMAR_STAGE_SPECIFIC_SELECTION_CONTEXT_V1.md'
+      - '.github/workflows/sch_wadgymar_stage_context.yml'
+  workflow_dispatch:
+jobs:
+  source-stage-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install tests
+        run: python -m pip install pytest
+      - name: Check source author hurdle and total-grain family separation
+        run: python scripts/audit_sch_wadgymar_stage_context.py --output artifacts/sch_wadgymar_stage_context_v1.json
+      - name: Run original-source and tamper tests
+        run: python -m pytest -q tests/test_sch_wadgymar_stage_context.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sch-wadgymar-source-stage-context-v1
+          path: artifacts/sch_wadgymar_stage_context_v1.json
