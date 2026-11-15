@@ -124,6 +124,12 @@ def run(outdir):
         if isinstance(v,dict) and "id" in v:version_ids.add(str(v["id"]))
         for k in ("versionId","version_id"):
             if item.get(k): version_ids.add(str(item[k]))
+    # Dryad's public HAL stash:versions entries can omit scalar id.
+    # Parse *published self hrefs*, not the parent dataset id.
+    for node in found.values():
+        for item in re.findall(r"(?:https?://[^/]+)?/api/v2/versions/([0-9]+)(?:/|[\\"?]|$)",
+                               json.dumps(node)):
+            version_ids.add(item)
     report["version_ids_discovered"]=sorted(version_ids)
     known_files=[]
     for version_id in sorted(version_ids):
