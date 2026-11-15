@@ -44,7 +44,10 @@ jobs:
           d=json.loads(Path("artifacts/sch_jpe2024_plant_raw/original_2024_103plant_paired_fitness_stage_v1.json").read_text())
           assert d["verified_original_xlsx_sha256"]=="d5beb695f1c5f81f03eb74a18937582e99fc2cd1c23bda3598e33ef904bfadfb"
           assert d["n_original_journal_data_plant_rows"]==103
-          assert d["n_complete_case_original_plants"]>=60
+          assert d["n_complete_case_source_rows"]>=60
+          assert d["n_original_distinct_source_plant_ID_labels"]==102
+          assert d["original_duplicate_label"]=="68"
+          assert len(d["one_ambiguous_label_two_102row_source_sensitivities"])==2
           assert len(d["trait_level_fruit_vs_pollinium_comparison"])==10
           assert d["n_paired_bootstrap_draws"]>=1500
           assert d["source_fit_proxy_does_not_establish_causal_compromise_L"] is True
