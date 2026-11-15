@@ -5,12 +5,16 @@ on:
       - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
       - 'scripts/analyze_sch_milkweed_2024_paired_stage.py'
       - 'tests/test_sch_milkweed_2024_paired_stage.py'
+      - 'data/SCH_2024_ASCLEPIAS_REAL_103_ROW_PAIRED_STAGE_RESULTS_V1.csv'
+      - 'docs/SCH_MILKWEED_2005_2017_2024_POSTPOLLINATION_STAGE_GATE_V1.md'
       - '.github/workflows/sch_milkweed_2024_paired_stage.yml'
   push:
     paths:
       - 'scripts/ingest_sch_milkweed_2024_original_appendix.py'
       - 'scripts/analyze_sch_milkweed_2024_paired_stage.py'
       - 'tests/test_sch_milkweed_2024_paired_stage.py'
+      - 'data/SCH_2024_ASCLEPIAS_REAL_103_ROW_PAIRED_STAGE_RESULTS_V1.csv'
+      - 'docs/SCH_MILKWEED_2005_2017_2024_POSTPOLLINATION_STAGE_GATE_V1.md'
       - '.github/workflows/sch_milkweed_2024_paired_stage.yml'
   workflow_dispatch:
 permissions:
@@ -50,6 +54,13 @@ jobs:
           assert len(d["one_ambiguous_label_two_102row_source_sensitivities"])==2
           assert len(d["trait_level_fruit_vs_pollinium_comparison"])==10
           assert d["n_paired_bootstrap_draws"]>=1500
+          assert d["duplicate_id68_rows_different_fields"]==["fruit.init"]
+          assert d["n_traits_passing_posthoc_ten_test_Bonferroni_HC3_normal"]==0
+          assert abs(d["paired_ten_trait_stage_difference_joint_HC3_Wald"]["conditional_asymptotic_P"]-.20960383)<.00001
+          assert abs(d["source_2024_plant_matched_partial_association_fruits_given_insertions_and_ten_traits"]["conditional_HC3_normal_p"]-.5694130)<.00001
+          b={x["trait"]:x for x in d["trait_level_fruit_vs_pollinium_comparison"]}
+          assert abs(b["Inflorescence number"]["paired_fruit_minus_insertion_beta"]-.48358370)<.00001
+          assert abs(b["Inflorescence number"]["paired_difference_HC3_SE"]-.18522557)<.00001
           assert d["source_fit_proxy_does_not_establish_causal_compromise_L"] is True
           print("VALIDATED_GENUINE_ORIGINAL_2024_PAIRED_STAGE_RESULT")
           PY
