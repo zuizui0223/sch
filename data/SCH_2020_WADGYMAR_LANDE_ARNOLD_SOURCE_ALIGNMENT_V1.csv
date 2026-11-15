@@ -1,0 +1,4 @@
+paper_id,trait,source_row_id_1,source_row_id_2,original_compilation_family,beta_ambient,se_ambient,beta_heated,se_heated,original_table
+29,Flowering onset,351,354,LINEAR_RELATIVE_TOTAL_SEED,-0.89,0.19,-0.13,0.21,Table4_MultipleRegression
+29,Fruiting onset,352,355,LINEAR_RELATIVE_TOTAL_SEED,-0.45,0.15,-0.58,0.18,Table4_MultipleRegression
+29,Biomass,353,356,LINEAR_RELATIVE_TOTAL_SEED,1.21,0.18,0.81,0.10,Table4_MultipleRegression
