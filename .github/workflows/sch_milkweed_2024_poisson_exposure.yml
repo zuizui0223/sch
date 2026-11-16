@@ -6,12 +6,14 @@ on:
       - 'tests/test_sch_milkweed_2024_poisson_exposure.py'
       - '.github/workflows/sch_milkweed_2024_poisson_exposure.yml'
       - 'docs/SCH_MILKWEED_2024_POISSON_EXPOSURE_SENSITIVITY_V1.md'
+      - 'data/SCH_MILKWEED_2024_GENUINE_POISSON_STAGE_EXPOSURE_RESULTS_V1.csv'
   pull_request:
     paths:
       - 'scripts/analyze_sch_milkweed_2024_poisson_exposure.py'
       - 'tests/test_sch_milkweed_2024_poisson_exposure.py'
       - '.github/workflows/sch_milkweed_2024_poisson_exposure.yml'
       - 'docs/SCH_MILKWEED_2024_POISSON_EXPOSURE_SENSITIVITY_V1.md'
+      - 'data/SCH_MILKWEED_2024_GENUINE_POISSON_STAGE_EXPOSURE_RESULTS_V1.csv'
   workflow_dispatch:
 permissions:
   contents: read
@@ -50,6 +52,14 @@ jobs:
             assert r[key]["n_independent_original_plant_label_groups"]==102
           assert len(r["source_duplicate_ID68_exclusion_sensitivity"])==2
           assert r["no_pollen_to_fruit_conversion_probability_estimated"]
+          a=r["original_2024_103row_exposure_offset_poisson_rate_comparison"]
+          b=r["original_2024_103row_unadjusted_poisson_count_comparison"]
+          assert abs(a["trait_effects"][0]["fruit_minus_insertion_log_slope"]-.0831532796446)<1e-6
+          assert abs(a["trait_effects"][0]["cluster_robust_normal_p"]-.633353176405)<1e-6
+          assert abs(b["trait_effects"][0]["fruit_minus_insertion_log_slope"]-.458618732198)<1e-6
+          assert abs(b["trait_effects"][0]["cluster_robust_normal_p"]-.009190765288)<1e-6
+          assert abs(a["joint_ten_trait_stage_approx_P"]-.371791173446)<1e-6
+          assert a["n_ten_trait_Bonferroni_P_below_0_005"]==0
           assert r["no_pure_function_optima_or_SCH_L"]
           print("PASSED_ORIGINAL_2024_MILKWEED_SOURCE_POISSON_EXPOSURE")
           PY
