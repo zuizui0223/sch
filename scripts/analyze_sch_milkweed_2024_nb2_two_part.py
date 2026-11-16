@@ -193,7 +193,7 @@ def _binary_fruit_part(X,F,T,labels):
     return models
 
 def _conditional_positive_count_part(X,F,T,labels,alpha):
-    """Working regression of E[F | F>0,traits,exposure], not hurdle likelihood."""
+    """Two working conditional means on F>0; NOT a true NB hurdle likelihood."""
     import numpy as np
     import statsmodels.api as sm
     from scipy.stats import norm
@@ -201,26 +201,54 @@ def _conditional_positive_count_part(X,F,T,labels,alpha):
     p=int(keep.sum())
     if p<50:raise ValueError("too few source fruit-positive stems")
     z=X[keep];y=F[keep]
-    fit=sm.GLM(y,z,offset=np.log(T[keep]),
-               family=sm.families.NegativeBinomial(alpha=alpha)).fit(
-                   maxiter=300,cov_type="cluster",
-                   cov_kwds={"groups":np.asarray(labels,dtype=str)[keep]})
-    if not fit.converged:raise ValueError("positive source NB working mean did not converge")
-    b=float(fit.params[1]);se=float(fit.bse[1])
-    if not(math.isfinite(b) and math.isfinite(se) and se>0):
-        raise ValueError("conditional positive fruit count effect invalid")
+    group=np.asarray(labels,dtype=str)[keep]
+    stage={}
+    for name,off in (
+         ("fruit_positive_whole_plant_count",np.zeros(p)),
+         ("fruit_positive_per_peak_flower_count",np.log(T[keep]))):
+        fit=sm.GLM(y,z,offset=off,
+                   family=sm.families.NegativeBinomial(alpha=alpha)).fit(
+                       maxiter=300,cov_type="cluster",
+                       cov_kwds={"groups":group})
+        if not fit.converged:
+            raise ValueError("positive source NB working mean did not converge")
+        b=float(fit.params[1]);se=float(fit.bse[1])
+        if not(math.isfinite(b) and math.isfinite(se) and se>0):
+            raise ValueError("conditional positive fruit count effect invalid")
+        stage[name]={
+            "inflorescence_number_beta":b,
+            "source_ID_cluster_SE":se,
+            "nominal_two_sided_normal_P":float(2*norm.sf(abs(b/se))),
+            "nominal_95_interval":[b-1.96*se,b+1.96*se],
+            "model_exposure":("log_peak_open_plus_buds_offset" if np.any(off) else "whole_plant_count"),
+            "n_observations":p,
+            "n_source_plant_labels":len(set(group)),
+        }
+    grid=[]
+    for alternative in ALPHA_GRID:
+        fit=sm.GLM(y,z,offset=np.log(T[keep]),
+                family=sm.families.NegativeBinomial(alpha=alternative)).fit(
+                    maxiter=300,cov_type="cluster",
+                    cov_kwds={"groups":group})
+        if not fit.converged:raise ValueError("source subset alpha grid did not converge")
+        b=float(fit.params[1]);se=float(fit.bse[1])
+        grid.append({
+            "alpha_fixed":alternative,
+            "per_peak_flower_focal_beta":b,
+            "cluster_robust_normal_P":float(2*norm.sf(abs(b/se))),
+        })
     return {
       "n_fruit_positive_stems":p,
-      "n_positive_source_plant_labels":len(set(np.asarray(labels,dtype=str)[keep])),
-      "log_peak_flower_offset":True,
+      "n_positive_source_plant_labels":len(set(group)),
       "working_NB2_alpha_full_source_fixed":alpha,
-      "focal_inflorescence_count_beta":b,
-      "focal_source_plant_label_cluster_se":se,
-      "nominal_normal_p":float(2*norm.sf(abs(b/se))),
-      "95_interval":[b-1.96*se,b+1.96*se],
+      "two_outcome_definitions":stage,
+      "per_peak_flower_fixed_alpha_grid":grid,
       "not_a_correctly_normalized_zero_truncated_NB_likelihood":True,
-      "interpretation":"observed_positive_conditional_count_working_mean_only",
+      "selection_on_F_greater_than_zero_can_induce_collider_bias":True,
+      "plot_or_estimate_as_proof_of_allocation_tradeoff":False,
+      "interpretation":"positive_stem_conditional_mean_with_and_without_flower_opportunity_proxy",
     }
+
 
 def _focal_bootstrap(X,F,I,T,labels,af,ai,n_boot=BOOT):
     import numpy as np
@@ -330,6 +358,7 @@ def run(records,boot=BOOT):
             reference["trait_effects"][0]["fruit_minus_insertion_log_slope"],
       "poisson_source_previous_focal_exposure_P":
             reference["trait_effects"][0]["cluster_robust_normal_p"],
+      "zero_and_positive_descriptive_parts_are_not_full_hurdle_NB_likelihood":True,
       "source_plant_outcomes_observational_not_randomized":True,
       "sampled_insertion_ten_flowers_whole_plant_fruit_risk_sets_mismatched":True,
       "all_fitted_count_models_are_sensitivity_not_effective_pollinium_to_fruit_transition":True,
@@ -340,6 +369,7 @@ def run(records,boot=BOOT):
         "cluster_sandwich_not_sufficient_against_link_or_mean_misspecification",
         "logistic_part_is_any_fruit_on_stem_not_per_flower_fruit_probability",
         "positive_only_NB_regression_is_working_conditional_mean_not_truncated_NB_hurdle_likelihood",
+        "only_F_positive_subset_can_create_selection_or_colliding_conditioning_bias",
         "peak_total_flowers_open_plus_buds_is_snapshot_not_tracked_seasonal_flower_risk_set",
         "conditioning_on_log_total_flowers_may_block_legitimate_trait_display_mechanism",
         "common_trait_gradient_does_not_identify_biological_allocation_or_pure_function_optima",
