@@ -139,7 +139,11 @@ def _fit_truncated(X,y,log_offset,labels,alpha):
     focal=float(beta[1])
     grad_norm=float(np.linalg.norm(X.T@score,ord=np.inf))
     if grad_norm>1e-4:
-        raise ValueError("truncated NB2 analytic score not settled")
+        raise ValueError(
+            f"truncated NB2 analytic score not settled: norm={grad_norm:.7g} "+
+            f"fit_success={fit.success}; message={fit.message}; "+
+            f"params={beta.tolist()}; optimizer_grad_inf={float(np.linalg.norm(fit.jac,ord=np.inf)):.5g}"
+        )
     return {
        "alpha_fixed":alpha,
        "n_plant_rows":n,
