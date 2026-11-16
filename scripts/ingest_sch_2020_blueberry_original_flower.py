@@ -57,13 +57,19 @@ def get(url):
 
 
 def parse_original(data):
+    if data[:150].lstrip().lower().startswith(
+        (b"<!doctype",b"<html",b"<?xml")):
+        raise ValueError("HTML/XML payload rejected before CSV parser")
     try:
         s=data.decode("utf-8-sig")
         encoding="utf-8-sig"
     except UnicodeDecodeError:
         s=data.decode("latin-1")
         encoding="latin-1"
-    dialect=csv.Sniffer().sniff(s[:min(8192,len(s))],delimiters=",;\t")
+    try:
+        dialect=csv.Sniffer().sniff(s[:min(8192,len(s))],delimiters=",;\t")
+    except csv.Error as exc:
+        raise ValueError("Not a recognized original source CSV") from exc
     rdr=csv.DictReader(io.StringIO(s),dialect=dialect)
     names=rdr.fieldnames
     if not names or len(set(names))!=len(names) or len(names)<7:
