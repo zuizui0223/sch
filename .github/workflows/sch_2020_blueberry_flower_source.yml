@@ -1,0 +1,56 @@
+name: SCH source-genuine same-flower pollination and fruit set ingress
+on:
+  push:
+    paths:
+      - 'scripts/ingest_sch_2020_blueberry_original_flower.py'
+      - 'tests/test_sch_2020_blueberry_original_flower.py'
+      - 'docs/SCH_MATCHED_FLOWER_SOURCE_GATE_V1.md'
+      - '.github/workflows/sch_2020_blueberry_flower_source.yml'
+  pull_request:
+    paths:
+      - 'scripts/ingest_sch_2020_blueberry_original_flower.py'
+      - 'tests/test_sch_2020_blueberry_original_flower.py'
+      - 'docs/SCH_MATCHED_FLOWER_SOURCE_GATE_V1.md'
+      - '.github/workflows/sch_2020_blueberry_flower_source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-tagged-flower-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install minimum source test framework
+        run: python -m pip install --quiet pytest
+      - name: Test frozen archive identities and biological flower-grain invariants
+        run: python -m pytest -q tests/test_sch_2020_blueberry_original_flower.py
+      - name: Download original flower-level source from Zenodo and verify publisher-listed MD5
+        run: python -m scripts.ingest_sch_2020_blueberry_original_flower --outdir artifacts/sch_original_blueberry_flower
+      - name: Confirm source audit and original data preserved without invented inference
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path("artifacts/sch_original_blueberry_flower/source_record_and_flower_schema.json")
+          d=json.loads(p.read_text(encoding="utf-8"))
+          assert d["n_original_source_files"]==3
+          assert d["n_original_independent_published_programmes"]==1
+          assert d["raw_plant_or_flower_regression_fitted"] is False
+          assert d["same_flower_pollinium_to_fruit_conversion_measured"] is False
+          for x in d["source_files"]:
+            assert Path("artifacts/sch_original_blueberry_flower",x["original_filename"]).is_file()
+            assert x["source_schema"]["n_original_rows"]>=20
+            assert x["source_schema"]["n_nonmissing_original_fruit_outcomes"]>=1
+          print("ORIGINAL_BLUEBERRY_2020_THREE_PUBLISHED_CSV_MD5_AND_FLOWER_GRAIN_OK")
+          PY
+      - name: Preserve raw original source CSV and source metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-original-2020-blueberry-flower-source
+          path: artifacts/sch_original_blueberry_flower/
+          retention-days: 20
+          if-no-files-found: error
