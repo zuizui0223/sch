@@ -7,6 +7,9 @@ on:
       - '.github/workflows/sch_blueberry_2020_matched_flower_gate.yml'
       - 'docs/SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md'
       - 'data/SCH_BLUEBERRY_2020_GENUINE_FLOWER_GATE_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_VISIT_CLUSTER_SLOPES_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_VISIT_BINS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_CROSS_SELF_FLOWER_GATE_V1.csv'
   push:
     paths:
       - 'scripts/analyze_sch_blueberry_2020_matched_flower_gate.py'
@@ -14,6 +17,9 @@ on:
       - '.github/workflows/sch_blueberry_2020_matched_flower_gate.yml'
       - 'docs/SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md'
       - 'data/SCH_BLUEBERRY_2020_GENUINE_FLOWER_GATE_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_VISIT_CLUSTER_SLOPES_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_VISIT_BINS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_GENUINE_CROSS_SELF_FLOWER_GATE_V1.csv'
   workflow_dispatch:
 permissions:
   contents: read
@@ -58,8 +64,20 @@ jobs:
           c=r["original_same_flower_hand_cross_versus_self_fruit_set"]
           assert c["original_cross_self_flower_rows"]==676
           assert c["n_valid_cluster_bootstrap"]>=1900
+          p=c["three_cultivar_type_reproduction"]["Powder Blue"]
+          assert p["raw_cross_vs_self"]["Cross pollination"]["n_original_flowers"]==181
+          assert p["raw_cross_vs_self"]["Self pollination"]["n_original_flowers"]==167
+          assert abs(p["risk_difference_cross_minus_self"]-.34790088331624)<.0000001
+          assert abs(p["source_year_block_harmonic_weighted_risk_difference"]-.34801646890081)<.0000001
+          assert p["n_source_year_block_strata_with_both_treatments"]==4
+          assert p["original_source_site_overlapping_flower_fraction"]==1
+          assert p["source_plant_label_bootstrap95"][0]>.18
           v=r["original_visit_count_to_same_flower_fruit_set"]
-          assert v["site_and_plant_cluster_aware_binomial_models"]["visits_0to5"]["n_original_flower_rows"]==1849
+          m=v["site_and_plant_cluster_aware_binomial_models"]
+          assert m["visits_0to5"]["n_original_flower_rows"]==1849
+          assert m["visits_1to5"]["n_original_flower_rows"]==1080
+          assert abs(m["visits_0to5"]["all_three_slopes_equal_nominal_P"]-.00028788947775)<.00000001
+          assert abs(m["visits_1to5"]["all_three_slopes_equal_nominal_P"]-.49688699270094)<.00000001
           assert r["no_individual_flower_pollen_deposition_or_fertilization_measured"] is True
           assert r["no_SCH_pure_function_optima_or_empirical_loss_L"] is True
           print("PASSED_REAL_ORIGINAL_TAGGED_FLOWER_COMPATIBILITY_GATE_ANALYSIS")
