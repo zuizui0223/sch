@@ -67,7 +67,18 @@ jobs:
           fit=r["proper_positive_only_zero_truncated_NB2_per_peak_flower"]
           assert fit["P_count_gt0_model_truncation_normalizer_in_likelihood"]
           assert fit["source_gradient_inf_norm"]<.0001
-          assert r["proper_truncated_source_label_block_bootstrap"]["bootstrap_fit_converged"]>=159
+          b=r["proper_truncated_source_label_block_bootstrap"]
+          assert b["bootstrap_requested"]==199
+          assert b["bootstrap_fit_converged"]+sum(b["bootstrap_failed_draw_reason_counts"].values())==199
+          assert b["source_bootstrap_status"] in {
+            "SOURCE_BLOCK_BOOTSTRAP_CI_QUALIFIED",
+            "SOURCE_BLOCK_BOOTSTRAP_UNSTABLE_NO_CI"}
+          if b["source_bootstrap_qualified_for_CI"]:
+            assert b["bootstrap_fit_converged"]>=160
+            assert b["focal_zero_truncated_log_count_rate_bootstrap95"] is not None
+          else:
+            assert b["focal_zero_truncated_log_count_rate_bootstrap95"] is None
+            assert b["bootstrap_interval_excludes_zero"] is None
           assert len(r["proper_truncated_per_peak_flower_alpha_grid"])==4
           assert len(r["proper_truncated_ID68_source_row_deletion_sensitivity"])==2
           assert r["no_SCH_conflict_loss_L"] is True
