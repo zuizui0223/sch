@@ -65,9 +65,9 @@ jobs:
           assert c["original_cross_self_flower_rows"]==676
           assert c["n_valid_cluster_bootstrap"]>=1900
           p=c["three_cultivar_type_reproduction"]["Powder Blue"]
-          assert p["raw_cross_vs_self"]["Cross pollination"]["n_original_flowers"]==181
-          assert p["raw_cross_vs_self"]["Self pollination"]["n_original_flowers"]==167
-          assert abs(p["risk_difference_cross_minus_self"]-.34790088331624)<.0000001
+          assert p["source_observed_treatment"]["Cross pollination"]["n_original_flowers"]==181
+          assert p["source_observed_treatment"]["Self pollination"]["n_original_flowers"]==167
+          assert abs(p["original_flower_risk_difference_cross_minus_self"]-.34790088331624)<.0000001
           assert abs(p["source_year_block_harmonic_weighted_risk_difference"]-.34801646890081)<.0000001
           assert p["n_source_year_block_strata_with_both_treatments"]==4
           assert p["original_source_site_overlapping_flower_fraction"]==1
