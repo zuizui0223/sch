@@ -1,0 +1,82 @@
+name: SCH original 2024 milkweed proper zero-truncated NB2
+on:
+  push:
+    paths:
+      - 'scripts/analyze_sch_milkweed_2024_zero_truncated_nb.py'
+      - 'tests/test_sch_milkweed_2024_zero_truncated_nb.py'
+      - 'docs/SCH_MILKWEED_2024_PROPER_ZERO_TRUNCATED_NB_V1.md'
+      - 'data/SCH_MILKWEED_2024_ZERO_TRUNCATED_NB_SENSITIVITY_V1.csv'
+      - '.github/workflows/sch_milkweed_2024_zero_truncated_nb.yml'
+  pull_request:
+    paths:
+      - 'scripts/analyze_sch_milkweed_2024_zero_truncated_nb.py'
+      - 'tests/test_sch_milkweed_2024_zero_truncated_nb.py'
+      - 'docs/SCH_MILKWEED_2024_PROPER_ZERO_TRUNCATED_NB_V1.md'
+      - 'data/SCH_MILKWEED_2024_ZERO_TRUNCATED_NB_SENSITIVITY_V1.csv'
+      - '.github/workflows/sch_milkweed_2024_zero_truncated_nb.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-correct-truncated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original source and truncated likelihood dependencies
+        run: python -m pip install --quiet openpyxl numpy scipy statsmodels pytest
+      - name: Test source grain and independent truncated likelihood derivative
+        run: python -m pytest -q tests/test_sch_milkweed_2024_zero_truncated_nb.py
+      - name: Recover authenticated original published 2024 XLSX from signed previous source run
+        uses: actions/download-artifact@v4
+        with:
+          name: sch-milkweed-2024-original-poisson-exposure-v1
+          run-id: 43893168280
+          github-token: ${{ github.token }}
+          path: artifacts/sch_milkweed_truncated_source/
+      - name: Independently verify original publisher XLSX SHA256 and bytes
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=Path("artifacts/sch_milkweed_truncated_source/original_2024_jpe_appendix_ii.xlsx")
+          if not p.is_file():raise ValueError("No original 2024 XLSX recovered")
+          b=p.read_bytes()
+          if len(b)!=38955 or hashlib.sha256(b).hexdigest()!="d5beb695f1c5f81f03eb74a18937582e99fc2cd1c23bda3598e33ef904bfadfb":
+            raise ValueError("Publisher original XLSX SHA256/bytes mismatch")
+          print("ORIGINAL_PUBLISHER_SHA256_IDENTICAL")
+          PY
+      - name: Refit actual zero-truncated NB2 likelihood and source matched bootstrap
+        run: >-
+          python -m scripts.analyze_sch_milkweed_2024_zero_truncated_nb
+          --source artifacts/sch_milkweed_truncated_source/original_2024_jpe_appendix_ii.xlsx
+          --output artifacts/sch_milkweed_truncated_source/original_zero_truncated_result.json
+          --boot 199
+      - name: Block source identity or exaggerated causal conclusion
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("artifacts/sch_milkweed_truncated_source/original_zero_truncated_result.json").read_text())
+          assert (r["source_total_rows"],r["source_unique_plant_ID_labels"])==(103,102)
+          assert (r["source_positive_fruit_rows"],r["source_positive_fruit_ID_labels"])==(63,62)
+          fit=r["proper_positive_only_zero_truncated_NB2_per_peak_flower"]
+          assert fit["P_count_gt0_model_truncation_normalizer_in_likelihood"]
+          assert fit["source_gradient_inf_norm"]<.0001
+          assert r["proper_truncated_source_label_block_bootstrap"]["bootstrap_fit_converged"]>=159
+          assert len(r["proper_truncated_per_peak_flower_alpha_grid"])==4
+          assert len(r["proper_truncated_ID68_source_row_deletion_sensitivity"])==2
+          assert r["no_SCH_conflict_loss_L"] is True
+          print("AUTHENTIC_2024_63_POSITIVE_ROW_TRUNCATED_LIKELIHOOD_VALIDATED")
+          PY
+      - name: Preserve source and genuine zero-truncated fit result
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-2024-original-milkweed-proper-zero-truncated-nb2
+          path: artifacts/sch_milkweed_truncated_source/
+          retention-days: 15
+          if-no-files-found: error
