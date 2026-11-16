@@ -1,0 +1,4 @@
+type,source_study_DOI,n_source_plant_labels,n_cross,n_fruit_cross,n_self,n_fruit_self,cross_fruit_rate,self_fruit_rate,cross_minus_self_risk_difference,plant_cluster_bootstrap95_lower,plant_cluster_bootstrap95_upper,site_year_harmonic_weighted_difference,n_sites_with_both_treatments,source_site_overlap_fraction
+"Blue Rose","10.1111/1365-2664.13751","24","20","19","100","92","0.95","0.92","0.029999999999999916","-0.10476190476190472","0.12380952380952381","0.029999999999999916","1","1"
+"Powder Blue","10.1111/1365-2664.13751","69","181","128","167","60","0.7071823204419889","0.3592814371257485","0.3479008833162404","0.1836909124050065","0.5082657588101588","0.3480164689008124","4","1"
+"Snowchaser","10.1111/1365-2664.13751","65","119","112","89","79","0.9411764705882353","0.8876404494382022","0.053536021150033086","-0.04510315156541567","0.16143454867858525","0.040582532395662646","2","1"
