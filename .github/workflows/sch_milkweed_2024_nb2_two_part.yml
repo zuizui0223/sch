@@ -70,6 +70,21 @@ jobs:
           assert len(r["original_source_NB2_joint_plant_cluster_stage_contrast"]["trait_effects"])==10
           assert len(r["original_source_predeclared_alpha_grid_sensitivity"])==4
           assert r["source_focal_paired_plant_ID_bootstrap"]["n_completed"]>=400
+          m=r["original_source_NB2_joint_plant_cluster_stage_contrast"]
+          f=m["trait_effects"][0]
+          assert abs(f["fruit_minus_insertion_log_rate_beta"]-.089064600259)<1e-6
+          assert abs(f["nominal_two_sided_normal_p"]-.612810090462)<1e-6
+          assert abs(m["two_stage_gradient_joint_asymptotic_p"]-.423902581707)<1e-6
+          assert m["n_ten_trait_exploratory_Bonferroni_p_below_0_005"]==0
+          c=r["original_source_fruit_positive_logit_two_part_diagnostic"]
+          assert abs(c["any_fruit_unadjusted_display"]["log_odds_inflorescence_count_beta"]-1.38204466355)<1e-6
+          assert abs(c["any_fruit_conditioned_on_log_peak_flowers"]["nominal_p"]-.852787088351)<1e-6
+          z=r["original_source_fruit_positive_only_NB_working_mean"]
+          assert z["n_fruit_positive_stems"]==63
+          assert z["n_positive_source_plant_labels"]==62
+          assert abs(z["two_outcome_definitions"]["fruit_positive_whole_plant_count"]["nominal_two_sided_normal_P"]-.672281309279)<1e-6
+          assert abs(z["two_outcome_definitions"]["fruit_positive_per_peak_flower_count"]["nominal_two_sided_normal_P"]-.000268955277)<1e-6
+          assert r["zero_and_positive_descriptive_parts_are_not_full_hurdle_NB_likelihood"] is True
           assert r["source_plant_outcomes_observational_not_randomized"] is True
           assert r["no_causal_reproductive_component_difference_or_sch_L"] is True
           print("PASSED_AUTHENTIC_ORIGINAL_2024_NB2_ZERO_AND_POSITIVE_TEST")
