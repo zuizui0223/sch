@@ -6,12 +6,14 @@ on:
       - 'tests/test_sch_milkweed_2024_flower_opportunity.py'
       - '.github/workflows/sch_milkweed_2024_flower_opportunity.yml'
       - 'docs/SCH_MILKWEED_2024_FLOWER_OPPORTUNITY_DENOMINATOR_V1.md'
+      - 'data/SCH_MILKWEED_2024_GENUINE_FLOWER_OPPORTUNITY_SENSITIVITY_V1.csv'
   pull_request:
     paths:
       - 'scripts/analyze_sch_milkweed_2024_flower_opportunity.py'
       - 'tests/test_sch_milkweed_2024_flower_opportunity.py'
       - '.github/workflows/sch_milkweed_2024_flower_opportunity.yml'
       - 'docs/SCH_MILKWEED_2024_FLOWER_OPPORTUNITY_DENOMINATOR_V1.md'
+      - 'data/SCH_MILKWEED_2024_GENUINE_FLOWER_OPPORTUNITY_SENSITIVITY_V1.csv'
   workflow_dispatch:
 permissions:
   contents: read
@@ -50,6 +52,19 @@ jobs:
           assert abs(r["published_selection_original_raw_inflorescence_delta"]-.4835837049)<1e-6
           assert r["no_causal_stage_conversion_rate"] is True
           assert r["no_pure_function_optima_or_SCH_L"] is True
+          o=r["original_source_flower_opportunity_diagnostics"]
+          assert o["total_flowers_minus_open_plus_buds_abs_max"]==0
+          assert o["n_fruits_zero"]==40
+          assert o["total_flower_count_median"]==118
+          focal=next(x for x in r["unadjusted_count_based_paired_stage_contrast_per_trait"]
+                    if x["trait"]=="Inflorescence number")
+          assert abs(focal["opportunity_normalized_paired_delta"]-.1050166430)<.000001
+          assert abs(focal["opportunity_normalized_paired_p_nominal"]-.5501809392)<.000001
+          assert focal["opportunity_normalized_plant_label_bootstrap95"][0]<0
+          assert focal["opportunity_normalized_plant_label_bootstrap95"][1]>0
+          assert r["n_traits_familywise_passed_per_peak_flower_proxy_comparison"]==0
+          assert abs(r["correlation_fruit_count_vs_total_peak_flower_count"]-.4208241493)<.000001
+          assert abs(r["correlation_insertion_count_vs_total_peak_flower_count"]-.0374237018)<.000001
           print("PASSED_ORIGINAL_2024_SOURCE_FLOWER_OPPORTUNITY")
           PY
       - name: Retain authenticated source and numeric sensitivity result
