@@ -22,6 +22,6 @@ def test_source_denominators_and_provenance_are_explicit():
     assert "total-(opened+buds)" in s
     assert "rate=opps[:,5]/total" in s
     assert "raw_delta=Y[:,0]-Y[:,1]" in s
-    assert "group.setdefault(pid,[])" in s
+    assert "group[pid].append(i)" in s
     assert "no_causal_stage_conversion_rate" in s
     assert '"no_pure_function_optima_or_SCH_L":True' in s
