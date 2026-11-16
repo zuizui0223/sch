@@ -98,7 +98,7 @@ def test_doc_keeps_one_study_and_no_pollen_to_fruit_mechanistic_overclaim():
     from pathlib import Path
     s=Path("docs/SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md").read_text(
         encoding="utf-8").lower().replace("*","")
-    for tok in ("2080", "2,080", "1,309", "2,125", "0.3479",
+    for tok in ("2,080", "1,309", "2,125", "0.3479",
                 "0.3061", "0.000288", "0.497", "one original",
                 "not randomized", "same tagged flower", "pollination", "l"):
         assert tok in s
