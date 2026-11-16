@@ -25,6 +25,35 @@ Here \(F_i\) denotes *initiated fruits over the whole plant*, \(I_i\) denotes po
 
 A parallel no-offset Poisson count model checks how much estimated rate-stage patterns depend on the exposure adjustment. The duplicated source ID68 rows are each excluded in a separate source sensitivity. Source outcome overdispersion and zero counts are reported; Poisson with sandwich uncertainty does **not** automatically validate the log-mean model when responses are zero-heavy.
 
+## New original-data quantitative results — CI source verified
+
+The exact official 2024 source XLSX was ingested, decoded and fitted with **103 original source rows / 102 observed plant labels** in [GitHub Actions #43892182850](https://github.com/zuizui0223/sch/actions/runs/43892182850). Both stages use the same ten original standardized plant traits and are estimated in a **joint stacked Poisson model** with robust standard errors clustered by original plant label (including both records bearing ID 68). A *no-offset* model acts as a direct count-denominator negative control.
+
+| Inflorescence number: fruits − pollinium insertions in log-rate slopes | No exposure offset | Offsets log(peak flowers) for fruits and log(10) for sampled insertions |
+|---|---:|---:|
+| Original source estimated log slope difference | **+0.45862** | **+0.08315** |
+| 102-label-cluster robust SE | 0.17606 | 0.17432 |
+| Asymptotic two-sided normal P | **0.00919** | **0.63335** |
+| Source cluster-robust 95% CI | [+0.11354,+0.80370] | **[−0.25852,+0.42482]** |
+| Ten-trait joint Wald χ²(10) | 15.976 | 10.819 |
+| Ten-trait joint P | 0.1003 | **0.3718** |
+| Ten individual traits passing exploratory Bonferroni P<0.005 | **0/10** | **0/10** |
+
+Leaving out the first original ID 68 record gives exposure-offset inflorescence slope difference **+0.10191, P=0.56079**; leaving out the second gives **+0.09930, P=0.57192**. This guards against silently treating the two differently observed fruit counts with the same identifier as two independent genetic plants.
+
+The fitted Poisson-mean model has residual Pearson dispersion diagnostics of **2.27 for fruit count** and **2.58 for pollinia insertion count** after exposure offsets, illustrating extra-Poisson variability. Plant-label clustered sandwich SEs are used rather than uncorrected Poisson model SEs; these do not guarantee that the conditional log-mean function is fully correct. A zero-inflated or negative binomial sensitivity would be useful for future independent confirmation but cannot, by itself, make the unmatched sampled-flower risk sets identical.
+
+### Scientific consequence
+
+Two statistical families now agree directionally on a **measurement-denominator sensitivity**:
+
+- Paired relative-fitness OLS: source original stage contrast **+0.48358, P=0.0090**, after exposure-normalized proxy **+0.10502, P=0.5502**.
+- Original count-link Poisson: source original contrast **+0.45862, P=0.0092**, after flower-opportunity offsets **+0.08315, P=0.6334**.
+
+Because the *outcome* and hence the biological estimand changes when we normalize by flower exposure, this is **not a causal decomposition nor evidence that 82% of natural selection is caused by counting bias**. It establishes that the nominal positive focal gradient difference is not robust across defensible observed opportunity definitions. In particular, source peaks of open flowers and buds are only snapshots, while inserted pollinia refer to ten selected flowers; no observed marked-flower-level transition \(P(\mathrm{fruit}\mid\mathrm{compatible\ pollen\ inserted})\) can be identified from these aggregate columns.
+
+The original ten-trait source model result values are in \`data/SCH_MILKWEED_2024_GENUINE_POISSON_STAGE_EXPOSURE_RESULTS_V1.csv\`; full statistics, source quality checks and the original source appendix are retained in artifact **#14236463601** (ZIP SHA-256 \`d1c31bdfa73f20c06256e3e7b670383105abb14f9c4df0d43c9e02584f6d565c\`).
+
 ## Status and ceilings
 
 The actual source-count calculation is reproducibly specified in \`scripts/analyze_sch_milkweed_2024_poisson_exposure.py\`; numerical conclusions must be taken from a **successful GitHub Actions original-data run** and recorded here only after the CI receipt is inspected.
