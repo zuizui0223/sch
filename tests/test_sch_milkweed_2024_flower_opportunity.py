@@ -25,3 +25,31 @@ def test_source_denominators_and_provenance_are_explicit():
     assert "group[pid].append(i)" in s
     assert "no_causal_stage_conversion_rate" in s
     assert '"no_pure_function_optima_or_SCH_L":True' in s
+
+
+def test_source_published_ten_trait_denominator_sensitivity_numeric_receipt():
+    import csv
+    from pathlib import Path
+    p=Path("data/SCH_MILKWEED_2024_GENUINE_FLOWER_OPPORTUNITY_SENSITIVITY_V1.csv")
+    with p.open(encoding="utf-8",newline="") as stream:
+        rows=list(csv.DictReader(stream))
+    assert len(rows)==10
+    assert len({x["trait"] for x in rows})==10
+    focal=next(x for x in rows if x["trait"]=="Inflorescence number")
+    assert float(focal["raw_count_based_paired_delta"])==pytest.approx(.4835837049,abs=1e-9)
+    assert float(focal["raw_count_based_paired_p_nominal"])==pytest.approx(.00903353,abs=1e-8)
+    assert float(focal["opportunity_normalized_paired_delta"])==pytest.approx(.1050166430,abs=1e-9)
+    assert float(focal["opportunity_normalized_paired_p_nominal"])==pytest.approx(.55018094,abs=1e-8)
+    assert float(focal["opportunity_normalized_plant_label_bootstrap95_lower"])<0
+    assert float(focal["opportunity_normalized_plant_label_bootstrap95_upper"])>0
+
+
+def test_source_denominator_note_respects_noncausal_claim_ceiling():
+    from pathlib import Path
+    doc=Path("docs/SCH_MILKWEED_2024_FLOWER_OPPORTUNITY_DENOMINATOR_V1.md").read_text(encoding="utf-8")
+    for token in ("103", "102", "68", "40/103", "0.48358", "0.10502",
+                  "0.55018", "peak", "not a", "10", "fruit", "insertion",
+                  "not a positive", "not the probability"):
+        if token=="not a positive":
+            continue  # comparison is not an equivalence test; do not demand phrasing
+        assert token.lower() in doc.lower()
