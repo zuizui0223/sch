@@ -212,32 +212,51 @@ def _focal_bootstrap(X,y,log_offset,labels,alpha,nboot=N_BOOT):
     init=np.asarray(point["all_original_trait_parameters"],float)
     bounds=[(-15,8)]+[(-7,7)]*(X.shape[1]-1)
     estimates=[]
+    errors={"rank_deficient":0,"nonfinite_optimization":0,
+            "analytical_gradient_unsettled":0,"invalid_likelihood":0}
+    max_grad=0.
     for _ in range(nboot):
         sample=rng.integers(0,len(names),len(names))
         ix=np.asarray([i for j in sample for i in grouped[names[j]]],int)
         x,yb,off=X[ix],y[ix],log_offset[ix]
         if np.linalg.matrix_rank(x)!=x.shape[1]:
+            errors["rank_deficient"]+=1
             continue
         fit=minimize(_objective,init,args=(x,yb,off,alpha),
                      jac=True,method="L-BFGS-B",bounds=bounds,
                      options={"maxiter":750,"ftol":1e-10,"gtol":1e-7})
         if not np.all(np.isfinite(fit.x)):
+            errors["nonfinite_optimization"]+=1
             continue
         try:
             _,scalar,_,_=_pieces(fit.x,x,yb,off,alpha)
-            if np.linalg.norm(x.T@scalar,ord=np.inf)<3e-4:
+            g=float(np.linalg.norm(x.T@scalar,ord=np.inf))
+            max_grad=max(max_grad,g)
+            if g<3e-4:
                 estimates.append(float(fit.x[1]))
+            else:
+                errors["analytical_gradient_unsettled"]+=1
         except ValueError:
-            pass
-    if len(estimates)<.8*nboot:
-        raise ValueError("source ID-block truncated NB bootstrap did not qualify")
-    lo,hi=np.percentile(estimates,[2.5,97.5])
+            errors["invalid_likelihood"]+=1
+    qualified=len(estimates)>=math.ceil(.8*nboot)
+    interval=None
+    excludes=None
+    if qualified:
+        lo,hi=np.percentile(estimates,[2.5,97.5])
+        interval=[float(lo),float(hi)]
+        excludes=bool(lo>0 or hi<0)
     return {
         "original_plant_ID_labels_resampled":len(names),
         "bootstrap_requested":nboot,
         "bootstrap_fit_converged":len(estimates),
-        "focal_zero_truncated_log_count_rate_bootstrap95":[float(lo),float(hi)],
-        "bootstrap_interval_excludes_zero":bool(lo>0 or hi<0),
+        "bootstrap_failed_draw_reason_counts":errors,
+        "bootstrap_max_analytic_score_norm":max_grad,
+        "source_bootstrap_qualified_for_CI":qualified,
+        "source_bootstrap_status":(
+             "SOURCE_BLOCK_BOOTSTRAP_CI_QUALIFIED"
+             if qualified else "SOURCE_BLOCK_BOOTSTRAP_UNSTABLE_NO_CI"),
+        "focal_zero_truncated_log_count_rate_bootstrap95":interval,
+        "bootstrap_interval_excludes_zero":excludes,
         "selection_on_fruit_positive_noncausal":True,
     }
 
@@ -295,6 +314,8 @@ def run(records,nboot=N_BOOT):
           "proper_truncated_focal_beta":fit["focal_inflorescence_beta"],
           "proper_truncated_cluster_normal_p":fit["focal_label_cluster_normal_p"],
         })
+    # Refit-bootstrap instability is a diagnostic, not grounds to
+    # conceal the fitted model or invent an interval.
     bootstrap=_focal_bootstrap(Xp,yp,offset,labels,alpha,nboot=nboot)
     return {
       "analysis":"sch_2024_milkweed_proper_zero_truncated_nb2_v1",
