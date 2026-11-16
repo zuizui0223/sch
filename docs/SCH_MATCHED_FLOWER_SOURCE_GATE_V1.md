@@ -42,3 +42,21 @@ A credible cross-system observation is whether:
 The minimal target outcome is a plant-cluster-aware, per-tagged-flower \`fruit_set ~ visit_count × host_type + design constraints\` test with qualified visitor/tag/plot fields, registered source licensing and original study denominators. If dataset identity or field grain fails, report the blocker rather than inventing flowers or treating multiple records per plant as independent.
 
 **SCH pure-function optima and empirical compromise loss L are NOT measured by either source.**
+
+## Genuine Zenodo source accession outcome (2026-11-17)
+
+All three archived original tagged-flower CSVs passed their publisher-listed MD5 values. Source-ingress GitHub Actions run #43906931357.
+
+| Source original experimental file | Original flower rows | Fruit set = 1 | Fruit set = 0 | Original unique within-file flower composites |
+|---|---:|---:|---:|---:|
+| Multiple visits (0–15) | **2,080** | **992** | **1,088** | **2,080** |
+| One visit or bagged control | **1,309** | **338** | **971** | **1,309** |
+| Hand-cross / hand-self / open / bagged | **2,125** | **1,209** | **916** | **2,125** |
+
+- Multiple original SHA256: d54646e67a7bdd986f27195954b77abf07631cb0d0863ba7edadcf99e32a1f2e, 187849 bytes.
+- Single original SHA256: 8e063d82256ef72edad3d429d754b3882888205f78c559bb61aea643c09594c3, 89632 bytes.
+- Pollination original SHA256: 07c9cf0da8edd7d89d7a83571b730412b8f586dbadb9311957b0192c8b2ade53, 175687 bytes.
+
+Multiple-visit original cultivar-type counts: Blue Rose 772, Powder Blue 778 and Snowchaser 530 flowers. Visit-number counts: 0:769, 1:331, 2:272, 3:205, 4:142, 5:130, then thin coverage for 6–15 (44 rows at 15 visits). Pollination experiment: cross 320, self 356, open 680, no pollination 769 original tagged flower rows. These sample counts are real original-source descriptive results, **not 5,514 independent biological studies**. Flower tags were unique within each source file when crossed with plant, species, year and block; across-file tags are not source-proven to denote the same flower.
+
+Next code is a new plant-label-block-aware raw-flower outcome regression; this accession step intentionally made no fitted ecological claims.
