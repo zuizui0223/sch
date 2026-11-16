@@ -81,6 +81,15 @@ jobs:
             assert b["bootstrap_interval_excludes_zero"] is None
           assert len(r["proper_truncated_per_peak_flower_alpha_grid"])==4
           assert len(r["proper_truncated_ID68_source_row_deletion_sensitivity"])==2
+          a=r["proper_positive_only_zero_truncated_NB2_per_peak_flower"]
+          b=r["proper_positive_only_zero_truncated_NB2_whole_stem_count"]
+          assert abs(a["focal_inflorescence_beta"]+.301041753879)<1e-6
+          assert abs(a["focal_label_cluster_normal_p"]-.0113898783594)<1e-6
+          assert abs(b["focal_inflorescence_beta"]-.0622378535033)<1e-6
+          assert abs(b["focal_label_cluster_normal_p"]-.601524398721)<1e-6
+          assert a["focal_label_cluster_95CI"][1]<0
+          assert b["focal_label_cluster_95CI"][0]<0<b["focal_label_cluster_95CI"][1]
+          assert r["source_moment_NB2_alpha_fixed"]>.4
           assert r["no_SCH_conflict_loss_L"] is True
           print("AUTHENTIC_2024_63_POSITIVE_ROW_TRUNCATED_LIKELIHOOD_VALIDATED")
           PY
