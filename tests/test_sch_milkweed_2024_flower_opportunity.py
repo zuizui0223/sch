@@ -49,7 +49,5 @@ def test_source_denominator_note_respects_noncausal_claim_ceiling():
     doc=Path("docs/SCH_MILKWEED_2024_FLOWER_OPPORTUNITY_DENOMINATOR_V1.md").read_text(encoding="utf-8")
     for token in ("103", "102", "68", "40/103", "0.48358", "0.10502",
                   "0.55018", "peak", "not a", "10", "fruit", "insertion",
-                  "not a positive", "not the probability"):
-        if token=="not a positive":
-            continue  # comparison is not an equivalence test; do not demand phrasing
+                  "per-pollinium", "not a directly measured"):
         assert token.lower() in doc.lower()
