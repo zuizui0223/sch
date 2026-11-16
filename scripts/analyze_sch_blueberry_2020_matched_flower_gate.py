@@ -122,6 +122,39 @@ def pollination_source_risk_differences(rows,boot=B_BOOT):
                            "per_tagged_flower_fruit_rate":sum(vals)/len(vals)}
         diff=(observed["Cross pollination"]["per_tagged_flower_fruit_rate"]-
               observed["Self pollination"]["per_tagged_flower_fruit_rate"])
+        # Report source year x block overlap of hand-cross and hand-self.
+        # The raw cross/self rate difference is not automatically a site-
+        # standardized randomized compatibility effect.
+        by_site=defaultdict(lambda:np.zeros(4,dtype=int))
+        for r in sample:
+            site=str(r["Year"]).strip()+"|"+str(r["Block"]).strip()
+            j=0 if r["TREATMENT"].strip()=="Cross pollination" else 2
+            by_site[site][j]+=1
+            by_site[site][j+1]+=fruit(r)
+        site_rows=[]
+        weighted=0.
+        wtotal=0.
+        for name,counts in sorted(by_site.items()):
+            nC,fC,nS,fS=map(int,counts)
+            both=nC>0 and nS>0
+            site_rd=fC/nC-fS/nS if both else None
+            weight=nC*nS/(nC+nS) if both else 0.
+            if both:
+                weighted+=weight*site_rd
+                wtotal+=weight
+            site_rows.append({
+              "original_year_block":name,
+              "n_hand_cross":nC,"n_fruit_cross":fC,
+              "n_hand_self":nS,"n_fruit_self":fS,
+              "within_original_site_risk_difference":site_rd,
+              "both_pollen_sources_observed_within_site":both,
+              "harmonic_n_weight_for_site_standardization":weight,
+            })
+        if wtotal<=0:
+            raise ValueError("No overlapping source year-block pollen treatments")
+        site_weighted_diff=weighted/wtotal
+        eligible_row_fraction=sum(x["n_hand_cross"]+x["n_hand_self"] for x in site_rows
+            if x["both_pollen_sources_observed_within_site"])/len(sample)
         # Each block is a source-labelled PLANT and may contain repeated
         # tagged flowers and (in some plants) multiple floral treatments.
         group=defaultdict(lambda:np.zeros(4,dtype=int))
@@ -138,6 +171,10 @@ def pollination_source_risk_differences(rows,boot=B_BOOT):
           "n_original_distinct_source_plant_labels":len(keys),
           "raw_cross_vs_self":observed,
           "risk_difference_cross_minus_self":diff,
+          "source_year_block_coverage":site_rows,
+          "source_original_sites_with_both_cross_and_self":sum(x["both_pollen_sources_observed_within_site"] for x in site_rows),
+          "source_overlapping_site_fraction_of_cross_self_flower_rows":eligible_row_fraction,
+          "source_harmonic_weighted_original_site_cross_self_risk_difference":site_weighted_diff,
           "group_counts":matrix,
         }
     rng=np.random.default_rng(SEED)
@@ -168,6 +205,10 @@ def pollination_source_risk_differences(rows,boot=B_BOOT):
            "n_original_independent_source_plant_labels":x["n_original_distinct_source_plant_labels"],
            "source_observed_treatment":x["raw_cross_vs_self"],
            "original_flower_risk_difference_cross_minus_self":x["risk_difference_cross_minus_self"],
+           "source_original_year_block_treatment_overlap":x["source_year_block_coverage"],
+           "n_source_year_block_strata_with_both_treatments":x["source_original_sites_with_both_cross_and_self"],
+           "original_source_site_overlapping_flower_fraction":x["source_overlapping_site_fraction_of_cross_self_flower_rows"],
+           "source_year_block_harmonic_weighted_risk_difference":x["source_harmonic_weighted_original_site_cross_self_risk_difference"],
            "source_plant_label_bootstrap95":[float(boot_ci[0]),float(boot_ci[1])],
            "source_plant_label_bootstrap_interval_excludes_zero":
              bool(boot_ci[0]>0 or boot_ci[1]<0),
