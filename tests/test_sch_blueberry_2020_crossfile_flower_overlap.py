@@ -19,15 +19,17 @@ def test_source_programme_three_files_are_not_three_independent_studies():
 def test_exact_same_original_flower_identity_and_fruit_agreement():
     a=demo(101,1);b=dict(a)
     c=demo(102,0)
-    joined=pair_overlap(strict_original_rows([a,c],"first"),
-                        strict_original_rows([b],"second"))
+    first,receipt=strict_original_rows([a,c],"first")
+    second,_=strict_original_rows([b],"second")
+    joined=pair_overlap(first,second)
     assert joined["source_flower_identity_matches"]==1
     assert joined["n_identity_matched_FS_disagreements"]==0
     assert joined["all_matched_fruit_outcomes_agree"]
     assert joined["source_matched_data_not_independent"]
     b["FS"]="0"
-    mismatch=pair_overlap(strict_original_rows([a],"first"),
-                          strict_original_rows([b],"second"))
+    first,_=strict_original_rows([a],"first")
+    second,_=strict_original_rows([b],"second")
+    mismatch=pair_overlap(first,second)
     assert mismatch["n_identity_matched_FS_disagreements"]==1
     with pytest.raises(ValueError):
         strict_original_rows([a,a],"duplicates")
@@ -39,3 +41,12 @@ def test_missing_composite_or_blank_tag_refused():
     y=demo(10,1);del y["RP"]
     with pytest.raises(ValueError):
         flower_identity(y)
+
+
+def test_missing_original_tag_is_not_invented_as_a_reusable_flower_id():
+    original=demo("NA",1)
+    found,receipt=strict_original_rows([original],"missing")
+    assert found=={}
+    assert receipt["n_flower_rows_with_incomplete_tag_or_core_ID"]==1
+    assert receipt["crossfile_nonmatch_cannot_certify_flower_independence"] is True
+    assert receipt["source_missing_tags_by_type_and_protocol"]
