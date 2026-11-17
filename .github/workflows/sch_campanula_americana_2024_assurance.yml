@@ -6,6 +6,9 @@ on:
       - 'tests/test_sch_campanula_americana_2024_assurance.py'
       - 'docs/SCH_CAMPANULA_2024_EXPERIMENTAL_ASSURANCE_V1.md'
       - 'data/SCH_CAMPANULA_2024_REAL_POPULATION_ASSURANCE_V1.csv'
+      - 'docs/SCH_CAMPANULA_2024_COLONIZATION_SOURCE_V1.md'
+      - 'data/SCH_CAMPANULA_2024_REAL_SOURCE_BOOTSTRAP_CONTRASTS_V1.csv'
+      - 'data/SCH_CAMPANULA_2024_REAL_SOURCE_2X2_CELLS_V1.csv'
       - '.github/workflows/sch_campanula_americana_2024_assurance.yml'
   pull_request:
     paths:
@@ -13,6 +16,9 @@ on:
       - 'tests/test_sch_campanula_americana_2024_assurance.py'
       - 'docs/SCH_CAMPANULA_2024_EXPERIMENTAL_ASSURANCE_V1.md'
       - 'data/SCH_CAMPANULA_2024_REAL_POPULATION_ASSURANCE_V1.csv'
+      - 'docs/SCH_CAMPANULA_2024_COLONIZATION_SOURCE_V1.md'
+      - 'data/SCH_CAMPANULA_2024_REAL_SOURCE_BOOTSTRAP_CONTRASTS_V1.csv'
+      - 'data/SCH_CAMPANULA_2024_REAL_SOURCE_2X2_CELLS_V1.csv'
       - '.github/workflows/sch_campanula_americana_2024_assurance.yml'
   workflow_dispatch:
 permissions:
@@ -71,6 +77,29 @@ jobs:
           assert r["n_original_experimental_site_IDs"]==10
           assert r["source_matched_population_grain"]["n_original_population_clusters_with_both_supp_and_control"]>=20
           assert r["population_stratified_bootstrap"]["bootstrap_completed"]==3999
+          source=r["source_matched_population_grain"]
+          assert source["n_original_experimental_population_clusters"]==53
+          assert source["n_original_population_clusters_with_both_supp_and_control"]==52
+          assert source["n_original_individuals_with_both_flower_treatments"]==109
+          assert source["n_source_population_cells_by_autonomy_size"]=={
+            "high_single":15,"high_small":10,"low_single":15,"low_small":12}
+          assert r["source_population_delta_sign_count"]=={
+            "n_matched_population_clusters":52,
+            "n_negative":3,"n_positive_supplemented_minus_control":48,"n_zero":1}
+          primary=r["source_population_equal_difference_in_differences"]
+          assert abs(primary["difference_in_differences_low_vs_high_density_response"]-2.8688095238095173)<1e-9
+          assert r["site_block_bootstrap"]["source_site_bootstrap_inference_qualified"]
+          contrast=r["secondary_cell_level_relative_PL_ratio_of_matched_population_equal_means"]["source_ratio_of_means_contrasts"]
+          assert abs(contrast["relative_PL_low_minus_high_in_single"]-.24840755307211926)<1e-9
+          assert abs(contrast["relative_PL_autonomy_x_founder_size_difference_in_differences"]-.18081223121954315)<1e-9
+          sb=r["secondary_relative_PL_site_bootstrap"]
+          assert sb["original_source_bootstrap_qualified"]
+          ci=sb["relative_pollen_limitation_bootstrap95_if_qualified"]["relative_PL_low_minus_high_in_single"]
+          assert ci[0]>.08 and ci[1]<.46
+          interaction=sb["relative_pollen_limitation_bootstrap95_if_qualified"]["relative_PL_autonomy_x_founder_size_difference_in_differences"]
+          assert interaction[0]<0<interaction[1]
+          assert r["secondary_relative_PL_is_exploratory_after_absolute_delta_analysis"] is True
+          assert r["source_selfing_category_not_randomly_assigned_genetic_source_background"] is True
           assert r["source_selfing_category_not_randomly_assigned_genetic_source_background"] is True
           assert r["no_SCH_same_coordinate_dual_function_optima_or_loss_L"] is True
           print("RECALCULATED_GENUINE_2024_CAMPANULA_POPULATION_PAIR")
