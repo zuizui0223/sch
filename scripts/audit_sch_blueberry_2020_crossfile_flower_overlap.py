@@ -27,7 +27,7 @@ from scripts.analyze_sch_blueberry_2020_matched_flower_gate import (
 SOURCE_EXPECTED={
   "multiple":2080,"single":1309,"pollination":2125
 }
-COMPOSITE_FIELDS=("Species","Year","Block","Row","Plant.number","RP","Tag")
+COMPOSITE_FIELDS=("Species","Year","Block","RP","Tag")
 OBSERVED_ID_FIELD="Tag"
 SOURCE_REGIMES={
  "multiple_zero":("multiple",lambda r:_visit_count(r)==0),
@@ -41,8 +41,11 @@ def flower_identity(row):
     if any(k not in row for k in COMPOSITE_FIELDS):
         raise ValueError("Original source flower identity columns missing")
     values=tuple(str(row[x]).strip() for x in COMPOSITE_FIELDS)
-    if any(not x or x.lower() in ("na","nan","null") for x in values):
-        raise ValueError("Original original flower source identity is incomplete")
+    incomplete=[name for name,value in zip(COMPOSITE_FIELDS,values)
+                if not value or value.lower() in ("na","nan","null")]
+    if incomplete:
+        raise ValueError("Original flower source core identity incomplete: "+
+             f"missing_fields={incomplete} values={values}")
     return values
 
 def strict_original_rows(rows,source):
@@ -67,7 +70,7 @@ def pair_overlap(a,b):
                                 "source_a":x["FS"],"source_b":y["FS"]})
         # Compare only source columns shared by the two tables. Fruit
         # pick and fresh weight describe the same tagged flower if matched.
-        for name in ("Pick.date","Fresh.wgt","Date"):
+        for name in ("Row","Plant.number","Pick.date","Fresh.wgt","Date"):
             if name not in x or name not in y:
                 continue
             vx=str(x[name]).strip()
