@@ -1,0 +1,13 @@
+cultivar,pollination_treatment,n_original_tagged_flowers,n_original_fruit_formed,observed_fruit_set_rate,n_original_source_plant_labels
+"Blue Rose","No pollination","178","46","0.25842696629213485","30"
+"Blue Rose","Self pollination","100","92","0.92","20"
+"Blue Rose","Cross pollination","20","19","0.95","4"
+"Blue Rose","Open pollination","125","120","0.96","25"
+"Powder Blue","No pollination","276","42","0.15217391304347827","50"
+"Powder Blue","Self pollination","167","60","0.3592814371257485","38"
+"Powder Blue","Cross pollination","181","128","0.7071823204419889","32"
+"Powder Blue","Open pollination","269","213","0.79182156133829","51"
+"Snowchaser","No pollination","315","48","0.1523809523809524","51"
+"Snowchaser","Self pollination","89","79","0.8876404494382022","32"
+"Snowchaser","Cross pollination","119","112","0.9411764705882353","36"
+"Snowchaser","Open pollination","286","250","0.8741258741258742","50"
