@@ -358,6 +358,7 @@ def main():
     print("BEGIN_SCH_SOURCE_FIRST_ADDITIONAL_VISIT_GATE")
     print(json.dumps({
       "site_adjusted_piecewise":result["source_visit_0to5_piecewise"],
+      "source_9site_zero_one_overlap_sensitivity":result["source_visit_site_only_zero_and_one_overlap_sensitivity"],
       "source_pollination_four_protocols":result["source_original_four_pollination_protocols"],
       "status":result["status"]},
       sort_keys=True,indent=2,ensure_ascii=False))
