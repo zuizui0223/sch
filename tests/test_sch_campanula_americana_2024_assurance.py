@@ -137,7 +137,7 @@ def test_paper_guard_does_not_promote_genetic_autonomy_to_randomized_causal_chan
     for term in ("237","53","52","109","48/52","10-site",
                  "34.47","10.53","76.20%","51.36%","24.84",
                  "2.87","−23.89","+30.51","−14.28","+55.75",
-                 "four genetic","not randomized","not",
+                 "four genetic","not genetically or experimentally randomized","not",
                  "no new field","loss"):
         if term=="no new field":
             continue
