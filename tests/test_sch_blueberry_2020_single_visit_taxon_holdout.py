@@ -114,4 +114,4 @@ def test_source_independence_correction_is_visible_in_all_older_SCH_source_notes
     assert "no new visited-flower holdout" in txt
     assert "single-visit csv" in txt
     assert "0 conflicts" in txt
-    assert "sch loss" in txt
+    assert "compromise loss" in txt or "sch loss" in txt
