@@ -1,0 +1,7 @@
+"source_regime_pair","n_linkable_source_A","n_linkable_source_B","exact_same_tagged_flower_matches","n_matched_binary_fruit_disagreements","n_matched_pick_date_weight_disagreements","source_A_only_linkable_rows","source_B_only_linkable_rows","identical_flower_by_cultivar_JSON"
+"multiple_one__pollination_no","331","768","0","0","0","331","768","{}"
+"multiple_one__single_one_visited","331","331","331","0","0","0","0","{""Blue Rose"":156,""Powder Blue"":115,""Snowchaser"":60}"
+"multiple_zero__pollination_no","768","768","768","0","0","0","0","{""Blue Rose"":177,""Powder Blue"":276,""Snowchaser"":315}"
+"multiple_zero__single_one_visited","768","331","0","0","0","768","331","{}"
+"multiple_zero__single_unvisited","768","977","768","0","0","0","209","{""Blue Rose"":177,""Powder Blue"":276,""Snowchaser"":315}"
+"single_unvisited__pollination_no","977","768","768","0","0","209","0","{""Blue Rose"":177,""Powder Blue"":276,""Snowchaser"":315}"
