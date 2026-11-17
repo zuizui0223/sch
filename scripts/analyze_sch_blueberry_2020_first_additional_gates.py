@@ -60,7 +60,7 @@ def _two_part_design(rows,strict_original_cluster_count=True):
     y=np.empty(n,dtype=int)
     groups=[]
     visit_table=Counter()
-    site_support=defaultdict(lambda:{"zero":0,"one":0,"two_to_five":0})
+    site_support=defaultdict(lambda:{"zero":0,"one":0,"two_to_five":0,"fruit_zero":0,"fruit_one":0,"fruit_two_to_five":0})
     source_risk=defaultdict(lambda:{"n_zero":0,"set_zero":0,"n_one":0,"set_one":0})
     for i,row in enumerate(rows):
         typ=row["Species"].strip()
@@ -77,13 +77,17 @@ def _two_part_design(rows,strict_original_cluster_count=True):
         visit_table[(typ,v)]+=1
         if v==0:
             site_support[site]["zero"]+=1
+            site_support[site]["fruit_zero"]+=int(y[i])
             source_risk[typ]["n_zero"]+=1
             source_risk[typ]["set_zero"]+=int(y[i])
         elif v==1:
             site_support[site]["one"]+=1
+            site_support[site]["fruit_one"]+=int(y[i])
             source_risk[typ]["n_one"]+=1
             source_risk[typ]["set_one"]+=int(y[i])
-        else:site_support[site]["two_to_five"]+=1
+        else:
+            site_support[site]["two_to_five"]+=1
+            site_support[site]["fruit_two_to_five"]+=int(y[i])
     if np.linalg.matrix_rank(X)!=X.shape[1]:
         raise ValueError("Source site/first-visit/extra-visit design rank deficient")
     if strict_original_cluster_count and len(set(groups))!=N_PLANT_SOURCE_LABELS_0TO5:
@@ -172,8 +176,24 @@ def _source_fit(rows,strict_original_cluster_count=True):
     for typ in SOURCE_TYPES:
         site_rows={k:v for k,v in sitesupport.items()
                    if k.split("|")[0]==typ}
+        site_rates=[]
+        for site,obs in sorted(site_rows.items()):
+            n0=obs["zero"]
+            n1=obs["one"]
+            site_rates.append({
+                "source_site_year_block":site,
+                "n_bagged_zero":n0,
+                "n_exactly_one":n1,
+                "fruit_bagged_zero":obs["fruit_zero"],
+                "fruit_exactly_one":obs["fruit_one"],
+                "observed_one_minus_zero_risk_difference":(
+                   obs["fruit_one"]/n1-obs["fruit_zero"]/n0
+                   if n0>0 and n1>0 else None),
+                "source_0_and_1_within_site_overlap":n0>0 and n1>0,
+            })
         overlaps[typ]={
             "n_original_site_year_blocks":len(site_rows),
+            "original_site_exact_zero_one_fruit_risks":site_rates,
             "n_blocks_with_both_0_and_1_visits":sum(
                 v["zero"]>0 and v["one"]>0 for v in site_rows.values()),
             "n_blocks_with_zero_and_1to5_visits":sum(
