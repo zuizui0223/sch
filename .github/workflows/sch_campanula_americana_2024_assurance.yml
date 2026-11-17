@@ -78,7 +78,7 @@ jobs:
           assert r["source_matched_population_grain"]["n_original_population_clusters_with_both_supp_and_control"]>=20
           assert r["population_stratified_bootstrap"]["bootstrap_completed"]==3999
           source=r["source_matched_population_grain"]
-          assert source["n_original_experimental_population_clusters"]==53
+          assert source["n_source_experimental_population_clusters"]==53
           assert source["n_original_population_clusters_with_both_supp_and_control"]==52
           assert source["n_original_individuals_with_both_flower_treatments"]==109
           assert source["n_source_population_cells_by_autonomy_size"]=={
