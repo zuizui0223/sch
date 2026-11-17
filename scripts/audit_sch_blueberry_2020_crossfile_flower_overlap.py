@@ -166,6 +166,26 @@ def run(folder):
     by_source=Counter()
     for key,sources in many.items():
         if len(sources)>1:by_source[key[0]]+=1
+    # Source-verified observation reuse. This closes the dangerous false
+    # "independent second experiment" interpretation of the positive single-
+    # visit analysis: all 331 singly visited flowers are already in the
+    # multiple-visits source as exactly-one-visit flower records.
+    one=analyses["multiple_one__single_one_visited"]
+    controls=analyses["multiple_zero__pollination_no"]
+    control_single=analyses["multiple_zero__single_unvisited"]
+    if not (one["source_flower_identity_matches"]==331 and
+            one["source_a_flower_keys_not_in_b"]==0 and
+            one["source_b_flower_keys_not_in_a"]==0 and
+            controls["source_flower_identity_matches"]==768 and
+            control_single["source_flower_identity_matches"]==768 and
+            len(common3)==768 and len(global_ids)==3644 and
+            sum(x["n_flower_rows_with_incomplete_tag_or_core_ID"]
+                for x in origins.values())==3 and
+            file_pairs["multiple__single"]["source_flower_identity_matches"]==1099 and
+            all(v["n_identity_matched_FS_disagreements"]==0 and
+                v["n_identity_matched_date_or_weight_disagreements"]==0
+                for v in list(file_pairs.values())+list(analyses.values()))):
+        raise ValueError("Original source crossfile reuse signature no longer matches")
     receipt={
       "analysis":"sch_2020_original_blueberry_three_csv_same_flower_identity_overlap_audit",
       "paper_DOI":DOI,
@@ -191,7 +211,13 @@ def run(folder):
       "no_new_independent_experiment_claim_without_nonoverlap":True,
       "stage_specific_causal_optimum_or_SCH_loss_L":False,
       "source_ID_linkage_is_partial_if_original_Tag_is_NA":True,
-      "status":"CROSS_FILE_PARTIAL_ORIGINAL_TAG_ID_LINKAGE_NO_INDEPENDENCE_ASSUMPTION",
+      "n_individually_same_visited_flower_ids_shared_between_single_and_multiple":331,
+      "n_same_control_flower_ids_shared_by_all_three_files":768,
+      "n_original_single_only_unvisited_tagged_flowers":209,
+      "original_single_visited_treated_flower_rows_are_subset_of_multiple_visit_one":True,
+      "original_no_pollen_control_rows_reused_across_three_csvs":True,
+      "single_visitor_analysis_is_original_cohort_taxon_subsetting_NOT_independent_validation":True,
+      "status":"EXACT_331_SINGLE_VISIT_FLOWERS_REUSED_PLUS_768_TRIPLE_CONTROLS_IN_ONE_STUDY",
     }
     return receipt
 
