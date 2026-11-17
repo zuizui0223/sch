@@ -48,3 +48,70 @@ def test_year_block_model_uses_same_flower_fruit_and_site_matched_visitors():
                  "fruit(row)","if v[treated]>0 and v[baseline]>0",
                  "original_flower_rows_treatment", "original_flower_rows_baseline"):
         assert part in s
+
+
+def test_new_source_2020_honeybee_common_visitor_result_is_not_independent_replication():
+    import csv
+    from pathlib import Path
+    path=Path("data/SCH_BLUEBERRY_2020_SINGLE_VISIT_TAXON_RESULTS_V1.csv")
+    with path.open(newline="",encoding="utf-8") as handle:
+        rows=list(csv.DictReader(handle))
+    assert len(rows)==9
+    assert set(r["contrast"] for r in rows)=={"HB_vs_UP","Other_vs_UP","Other_vs_HB"}
+    assert set(r["cultivar"] for r in rows)==set(ORIGINAL_VISITOR_NAMES)
+    honey={r["cultivar"]:r for r in rows if r["contrast"]=="HB_vs_UP"}
+    p=honey["Powder Blue"]
+    assert int(p["n_original_treated_flowers"])==66
+    assert int(p["n_original_baseline_flowers"])==276
+    assert int(p["n_source_plant_clusters_type"])==69
+    assert float(p["raw_fruit_risk_difference_treated_minus_baseline"])==pytest.approx(
+        -.03096179183136,abs=1e-10)
+    assert float(p["source_site_year_adjusted_logit_beta"])==pytest.approx(
+        .81455793178062,abs=1e-10)
+    assert float(p["nominal_two_sided_P"])==pytest.approx(.0873423755268,abs=1e-10)
+    assert float(p["three_cultivar_effect_heterogeneity_P"])==pytest.approx(
+        .00564835260074454,abs=1e-12)
+    assert float(p["powder_minus_mean_highbush_logit_delta"])==pytest.approx(
+        -1.682185484683,abs=1e-10)
+    assert float(p["powder_minus_highbush_P"])==pytest.approx(
+        .00578924742588,abs=1e-10)
+    assert int(p["n_site_matched_flower_rows_all_types"])==1148
+    assert int(p["n_original_plant_cluster_labels_all_types"])==184
+    assert int(p["n_source_matched_site_year_intercepts"])==9
+    assert honey["Blue Rose"]["source_visitor_treated"]=="Apis mellifera"
+    assert honey["Powder Blue"]["source_visitor_treated"]=="Apis mellifera"
+    assert honey["Snowchaser"]["source_visitor_treated"]=="Apis mellifera"
+
+
+def test_real_source_all_visitor_raw_denominators_sum_to_1309():
+    import csv
+    from pathlib import Path
+    with Path("data/SCH_BLUEBERRY_2020_SINGLE_VISIT_ORIGINAL_SOURCE_CELLS_V1.csv").open(
+            encoding="utf-8",newline="") as handle:
+        rows=list(csv.DictReader(handle))
+    assert len(rows)==9
+    assert sum(int(r["tagged_flower_rows"]) for r in rows)==1309
+    assert sum(int(r["set_fruit"]) for r in rows)==338
+    assert sum(int(r["tagged_flower_rows"]) for r in rows if r["source_visitor_code"]=="HB")==179
+    assert sum(int(r["tagged_flower_rows"]) for r in rows if r["source_visitor_code"]=="Other")==152
+    assert sum(int(r["tagged_flower_rows"]) for r in rows if r["source_visitor_code"]=="UP")==978
+
+
+def test_source_independence_correction_is_visible_in_all_older_SCH_source_notes():
+    from pathlib import Path
+    names=(
+        "SCH_MATCHED_FLOWER_SOURCE_GATE_V1.md",
+        "SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md",
+        "SCH_BLUEBERRY_2020_FIRST_VS_ADDITIONAL_GATES_V1.md",
+        "SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md",
+    )
+    for name in names:
+        t=Path("docs",name).read_text(encoding="utf-8")
+        assert "331" in t and "768" in t and "3,644" in t
+        assert "independent" in t.lower() and "not" in t.lower()
+    txt=Path("docs/SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md").read_text(
+        encoding="utf-8").lower()
+    assert "no new visited-flower holdout" in txt
+    assert "single-visit csv" in txt
+    assert "0 conflicts" in txt
+    assert "sch loss" in txt
