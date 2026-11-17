@@ -298,6 +298,89 @@ def _visitation_summary(seed_rows,poll_rows):
     return result
 
 
+
+def _relative_pl_cell(rows):
+    """Cell-level relative pollen limitation: 1-mean(C)/mean(S).
+
+    Means are first calculated at the experimental population grain, then
+    equally averaged across original populations within each source cell.
+    This is a ratio of *population-equal means*, NOT a mean of unstable
+    per-individual or per-population C/S ratios, which may have S=0.
+    """
+    ctrl=_cell_effect(rows,"control_mean_seeds")
+    suppl=_cell_effect(rows,"supplemented_mean_seeds")
+    levels={}
+    for a in AUTONOMY_LEVELS:
+        for size in SIZE_LEVELS:
+            key=a+"_"+size
+            c=ctrl[key]["population_equal_mean"]
+            sp=suppl[key]["population_equal_mean"]
+            if c is None or sp is None or sp<=0:
+                return None
+            levels[key]={
+               "source_population_equal_control_seeds":c,
+               "source_population_equal_supplemented_seeds":sp,
+               "n_original_matched_experimental_populations":
+                  ctrl[key]["n_experimental_population_clusters"],
+               "relative_pollen_limitation_1_minus_control_over_supp":1-c/sp,
+            }
+    val={k:levels[k]["relative_pollen_limitation_1_minus_control_over_supp"]
+         for k in levels}
+    effects={
+       "relative_PL_low_minus_high_in_single":val["low_single"]-val["high_single"],
+       "relative_PL_low_minus_high_in_small":val["low_small"]-val["high_small"],
+       "relative_PL_low_single_minus_small":val["low_single"]-val["low_small"],
+       "relative_PL_high_single_minus_small":val["high_single"]-val["high_small"],
+       "relative_PL_autonomy_x_founder_size_difference_in_differences":
+          (val["low_single"]-val["low_small"])-
+          (val["high_single"]-val["high_small"]),
+    }
+    return {"cell_relative_PL":levels,"source_ratio_of_means_contrasts":effects}
+
+
+def _ratio_bootstrap(rows,nboot,seed,unit):
+    rng=random.Random(seed)
+    groups=defaultdict(list)
+    for row in rows:
+        groups[(row["autonomy"],row["founded_size"])].append(row)
+    sites=sorted({x["source_site"] for x in rows})
+    bysite=defaultdict(list)
+    for row in rows:
+        bysite[row["source_site"]].append(row)
+    result=defaultdict(list)
+    valid=0
+    for _ in range(nboot):
+        if unit=="experimental_population_within_cell":
+            sample=[]
+            for values in groups.values():
+                sample.extend(rng.choices(values,k=len(values)))
+        elif unit=="original_site":
+            sample=[row for site in rng.choices(sites,k=len(sites))
+                    for row in bysite[site]]
+        else:raise ValueError("Unknown biological bootstrap resampling unit")
+        est=_relative_pl_cell(sample)
+        if est is None:continue
+        valid+=1
+        for k,v in est["source_ratio_of_means_contrasts"].items():
+            result[k].append(v)
+    def percentile(vals,p):
+        x=sorted(vals)
+        at=(len(x)-1)*p;i=int(math.floor(at))
+        j=int(math.ceil(at))
+        return x[i]*(1-(at-i))+x[j]*(at-i) if i!=j else x[i]
+    qualified=valid>=.80*nboot
+    return {
+        "unit_of_resampling":unit,
+        "n_original_bootstrap_draws_requested":nboot,
+        "n_source_bootstrap_draws_with_all_four_valid_PL_cells":valid,
+        "n_source_bootstrap_draws_invalid":nboot-valid,
+        "relative_pollen_limitation_bootstrap95_if_qualified":{
+           key:[percentile(vals,.025),percentile(vals,.975)]
+           for key,vals in result.items()} if qualified else None,
+        "original_source_bootstrap_qualified":qualified,
+        "posthoc_alternative_relative_effect_size_not_confirmatory_familywise_test":True,
+    }
+
 def run(folder,boot=N_BOOT):
     if not 100<=boot<=20000:
         raise ValueError("Original population bootstrap outside bounded range")
@@ -389,6 +472,26 @@ def run(folder,boot=N_BOOT):
              _effect(_cell_effect(leave,"control_mean_seeds")),
         })
     visits=_visitation_summary(populations,poll)
+    relativePL=_relative_pl_cell(matched)
+    if relativePL is None:
+        raise ValueError("Original 2024 source relative PL cell ratio denominator missing")
+    relative_pop_boot=_ratio_bootstrap(matched,boot,SEED+3,"experimental_population_within_cell")
+    relative_site_boot=_ratio_bootstrap(matched,boot,SEED+3,"original_site")
+    relative_site_loo=[]
+    for site in sorted({x["source_site"] for x in matched}):
+        rel=_relative_pl_cell([x for x in matched if x["source_site"]!=site])
+        relative_site_loo.append({
+            "excluded_original_site":site,
+            "relative_PL_contrasts":(
+                rel["source_ratio_of_means_contrasts"] if rel else None)})
+    relative_genetic_loo=[]
+    for gen in sorted(genetic):
+        rel=_relative_pl_cell([
+            x for x in matched if x["original_genetic_source_population"]!=gen])
+        relative_genetic_loo.append({
+            "excluded_original_genetic_source_population":gen,
+            "relative_PL_contrasts":(
+                rel["source_ratio_of_means_contrasts"] if rel else None)})
     original_seeds=Counter(int(float(r["seednumber"])) for r in seed)
     experiment_levels=Counter((r["autonomy"].strip(),r["size"].strip(),r["treatment"].strip())
                               for r in seed)
@@ -438,6 +541,12 @@ def run(folder,boot=N_BOOT):
       "natural_pollination_control_leave_entire_genetic_source_population_out":natural_gen_loo,
       "population_stratified_bootstrap":bootpop,
       "site_block_bootstrap":bootsite,
+      "secondary_cell_level_relative_PL_ratio_of_matched_population_equal_means":relativePL,
+      "secondary_relative_PL_population_bootstrap":relative_pop_boot,
+      "secondary_relative_PL_site_bootstrap":relative_site_boot,
+      "secondary_relative_PL_leave_original_site_out":relative_site_loo,
+      "secondary_relative_PL_leave_original_genetic_source_population_out":relative_genetic_loo,
+      "secondary_relative_PL_is_exploratory_after_absolute_delta_analysis":True,
       "leave_entire_original_site_out":site_loo,
       "leave_entire_original_genetic_source_population_out":group_loo,
       "source_separate_experimental_population_pollinator_observations":visits,
@@ -454,6 +563,9 @@ def run(folder,boot=N_BOOT):
        "site_initiation_time_can_confounds_availability_and_pollinator_activity",
        "population_supplemented_minus_control_seed_number_is_not_individual_seed_fitness_total",
        "visitation_data_source_population_level_different_from_seed_treatment_flower_risk_set",
+       "relative_PL_ratio_is_a_ratio_of_cell_means_not_an_average_of_personal_PL_values",
+       "secondary_relative_PL_examined_after_primary_absolute_supplementation_result",
+       "autonomy_source_genotype_background_and_source_seed_ovule_capacity_confounding_remains",
        "no_common_manipulated_morphological_trait_or_two_pure_function_optima",
       ],
       "status":"REAL_ORIGINAL_INDEPENDENT_CAMPANULA_EXPERIMENTAL_COLONIZATION_SOURCE_REANALYSIS_NOT_SCH_L",
