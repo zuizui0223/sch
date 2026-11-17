@@ -50,3 +50,28 @@ def test_missing_original_tag_is_not_invented_as_a_reusable_flower_id():
     assert receipt["n_flower_rows_with_incomplete_tag_or_core_ID"]==1
     assert receipt["crossfile_nonmatch_cannot_certify_flower_independence"] is True
     assert receipt["source_missing_tags_by_type_and_protocol"]
+
+
+def test_three_original_csvs_are_overlapping_source_flower_records_not_replications():
+    import csv
+    from pathlib import Path
+    with Path("data/SCH_BLUEBERRY_2020_CROSSFILE_FLOWER_REUSE_V1.csv").open(
+        encoding="utf-8",newline="") as stream:
+        rows=list(csv.DictReader(stream))
+    assert len(rows)==6
+    d={x["source_regime_pair"]:x for x in rows}
+    one=d["multiple_one__single_one_visited"]
+    assert int(one["n_linkable_source_A"])==331
+    assert int(one["n_linkable_source_B"])==331
+    assert int(one["exact_same_tagged_flower_matches"])==331
+    zero=d["multiple_zero__pollination_no"]
+    assert int(zero["n_linkable_source_A"])==768
+    assert int(zero["n_linkable_source_B"])==768
+    assert int(zero["exact_same_tagged_flower_matches"])==768
+    assert int(d["multiple_zero__single_unvisited"]["exact_same_tagged_flower_matches"])==768
+    assert int(d["single_unvisited__pollination_no"]["exact_same_tagged_flower_matches"])==768
+    for row in rows:
+        assert int(row["n_matched_binary_fruit_disagreements"])==0
+        assert int(row["n_matched_pick_date_weight_disagreements"])==0
+    assert int(d["multiple_one__pollination_no"]["exact_same_tagged_flower_matches"])==0
+    assert int(d["multiple_zero__single_one_visited"]["exact_same_tagged_flower_matches"])==0
