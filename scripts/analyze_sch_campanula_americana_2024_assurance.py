@@ -169,13 +169,13 @@ def _effect(cell):
     }
 
 
-def _stratified_bootstrap(rows,boot,seed):
+def _stratified_bootstrap(rows,boot,seed,field="population_seed_delta"):
     randomizer=random.Random(seed)
     groups=defaultdict(list)
     for row in rows:
-        if row["population_seed_delta"] is not None:
+        if row[field] is not None:
             groups[(row["autonomy"],row["founded_size"])].append(
-                row["population_seed_delta"])
+                row[field])
     if len(groups)!=4 or any(len(v)<3 for v in groups.values()):
         raise ValueError("Source balanced 2×2 original group contrast not identifiable")
     estimates=defaultdict(list)
@@ -194,6 +194,7 @@ def _stratified_bootstrap(rows,boot,seed):
         hi=int(math.ceil(i))
         return q[lo]*(hi-i)+q[hi]*(i-lo) if lo!=hi else q[lo]
     return {
+      "outcome_field":field,
       "resampling_unit":"original_experimental_population_within_autonomy_and_founder_size",
       "source_plant_or_flower_rows_never_resampled_independently":True,
       "bootstrap_requested":boot,
@@ -203,7 +204,7 @@ def _stratified_bootstrap(rows,boot,seed):
     }
 
 
-def _site_bootstrap(rows,boot,seed):
+def _site_bootstrap(rows,boot,seed,field="population_seed_delta"):
     randomizer=random.Random(seed)
     sites=sorted({x["source_site"] for x in rows})
     source_by_site=defaultdict(list)
@@ -214,7 +215,7 @@ def _site_bootstrap(rows,boot,seed):
     for _ in range(boot):
         which=randomizer.choices(sites,k=len(sites))
         replica=[x for site in which for x in source_by_site[site]]
-        eff=_effect(_cell_effect(replica,"population_seed_delta"))
+        eff=_effect(_cell_effect(replica,field))
         if eff is None:
             fails+=1
             continue
@@ -228,6 +229,7 @@ def _site_bootstrap(rows,boot,seed):
             return x[i]*(1-(at-i))+x[j]*(at-i)
         return [interp(.025),interp(.975)]
     return {
+      "source_outcome_field":field,
       "source_sites_resampled":len(sites),
       "bootstrap_requested":boot,
       "bootstrap_valid_all_four_cells":n,
@@ -335,8 +337,27 @@ def run(folder,boot=N_BOOT):
     difference=_effect(seed_cell)
     if difference is None:
         raise ValueError("Missing source 2x2 original supplement cell")
+    control_difference=_effect(control)
+    supplemented_difference=_effect(supplement)
+    if control_difference is None or supplemented_difference is None:
+        raise ValueError("Original source control or supplemented 2x2 cell absent")
     bootpop=_stratified_bootstrap(matched,boot,SEED)
     bootsite=_site_bootstrap(matched,boot,SEED)
+    # A different, explicitly secondary estimand: density dependence of
+    # naturally pollinated seed output. Do not conflate it with a
+    # treatment-paired pollen supplementation response.
+    natural_pop_boot=_stratified_bootstrap(matched,boot,SEED+1,"control_mean_seeds")
+    natural_site_boot=_site_bootstrap(matched,boot,SEED+1,"control_mean_seeds")
+    supplemented_pop_boot=_stratified_bootstrap(matched,boot,SEED+2,"supplemented_mean_seeds")
+    supplemented_site_boot=_site_bootstrap(matched,boot,SEED+2,"supplemented_mean_seeds")
+    n_pos=sum(x["population_seed_delta"]>0 for x in matched)
+    n_zero=sum(x["population_seed_delta"]==0 for x in matched)
+    n_neg=sum(x["population_seed_delta"]<0 for x in matched)
+    matched_individuals=[p for row in matched for p in
+                         row["original_flower_treatment_plant_pairs"]]
+    matched_individual_deltas=[
+        p["seed_delta_within_individual"] for p in matched_individuals]
+
     site_loo=[]
     for site in sorted({x["source_site"] for x in matched}):
         z=_effect(_cell_effect([x for x in matched if x["source_site"]!=site],
@@ -350,6 +371,23 @@ def run(folder,boot=N_BOOT):
         group_loo.append({"excluded_source_genetic_population":gen,
                           "2x2_estimand_identifiable":z is not None,
                           "effect":z})
+    natural_site_loo=[]
+    for site in sorted({x["source_site"] for x in matched}):
+        leave=[x for x in matched if x["source_site"]!=site]
+        natural_site_loo.append({
+            "source_site_excluded":site,
+            "natural_control_density_autonomy_effect":
+              _effect(_cell_effect(leave,"control_mean_seeds")),
+        })
+    natural_gen_loo=[]
+    for genotype in sorted(genetic):
+        leave=[x for x in matched if
+               x["original_genetic_source_population"]!=genotype]
+        natural_gen_loo.append({
+           "source_genetic_population_excluded":genotype,
+           "natural_control_density_autonomy_effect":
+             _effect(_cell_effect(leave,"control_mean_seeds")),
+        })
     visits=_visitation_summary(populations,poll)
     original_seeds=Counter(int(float(r["seednumber"])) for r in seed)
     experiment_levels=Counter((r["autonomy"].strip(),r["size"].strip(),r["treatment"].strip())
@@ -375,6 +413,29 @@ def run(folder,boot=N_BOOT):
       "population_equal_control_seed_set_by_autonomy_and_founder_size":control,
       "population_equal_supplemented_seed_set_by_autonomy_and_founder_size":supplement,
       "source_population_equal_difference_in_differences":difference,
+      "source_population_delta_sign_count":{
+         "n_positive_supplemented_minus_control":n_pos,
+         "n_zero":n_zero,
+         "n_negative":n_neg,
+         "n_matched_population_clusters":len(matched),
+      },
+      "source_same_plant_paired_flower_seed_contrasts":{
+         "n_original_individual_plant_labels_with_both_C_S":len(matched_individual_deltas),
+         "mean_within_individual_supp_minus_control":
+            _mean(matched_individual_deltas),
+         "n_positive":sum(x>0 for x in matched_individual_deltas),
+         "n_zero":sum(x==0 for x in matched_individual_deltas),
+         "n_negative":sum(x<0 for x in matched_individual_deltas),
+         "same_plant_flower_contrast_not_independent_experimental_population":True,
+      },
+      "natural_pollination_control_2x2_effect":control_difference,
+      "pollen_supplemented_treatment_2x2_effect":supplemented_difference,
+      "natural_pollination_control_population_bootstrap":natural_pop_boot,
+      "natural_pollination_control_site_bootstrap":natural_site_boot,
+      "pollen_supplemented_treatment_population_bootstrap":supplemented_pop_boot,
+      "pollen_supplemented_treatment_site_bootstrap":supplemented_site_boot,
+      "natural_pollination_control_leave_entire_site_out":natural_site_loo,
+      "natural_pollination_control_leave_entire_genetic_source_population_out":natural_gen_loo,
       "population_stratified_bootstrap":bootpop,
       "site_block_bootstrap":bootsite,
       "leave_entire_original_site_out":site_loo,
