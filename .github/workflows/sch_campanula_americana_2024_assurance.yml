@@ -1,0 +1,84 @@
+name: SCH 2024 original Campanula population-matched colonization assurance
+on:
+  push:
+    paths:
+      - 'scripts/analyze_sch_campanula_americana_2024_assurance.py'
+      - 'tests/test_sch_campanula_americana_2024_assurance.py'
+      - 'docs/SCH_CAMPANULA_2024_EXPERIMENTAL_ASSURANCE_V1.md'
+      - 'data/SCH_CAMPANULA_2024_REAL_POPULATION_ASSURANCE_V1.csv'
+      - '.github/workflows/sch_campanula_americana_2024_assurance.yml'
+  pull_request:
+    paths:
+      - 'scripts/analyze_sch_campanula_americana_2024_assurance.py'
+      - 'tests/test_sch_campanula_americana_2024_assurance.py'
+      - 'docs/SCH_CAMPANULA_2024_EXPERIMENTAL_ASSURANCE_V1.md'
+      - 'data/SCH_CAMPANULA_2024_REAL_POPULATION_ASSURANCE_V1.csv'
+      - '.github/workflows/sch_campanula_americana_2024_assurance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-population-cluster:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source population unit tests only
+        run: python -m pip install --quiet pytest
+      - name: Verify registered experimental-population contrast and no pseudoreplication
+        run: python -m pytest -q tests/test_sch_campanula_americana_2024_source.py tests/test_sch_campanula_americana_2024_assurance.py
+      - name: Recover genuinely verified 2024 Campanula original archive source from this repository's prior signed run
+        uses: actions/download-artifact@v4
+        with:
+          name: sch-campanula-2024-original-zenodo-colonization
+          run-id: 44034953084
+          github-token: ${{ github.token }}
+          path: artifacts/sch_campanula_2024/
+      - name: Verify exact published original MD5 and no substituted source
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          original={
+            "PLdataindividual.csv":"b84fa5c83513dbe75c0bf7840d1c74aa",
+            "pollinator.csv":"81e0deaa78a6a97e1211484cb9d0d3b3",
+          }
+          for name,digest in original.items():
+            p=Path("artifacts/sch_campanula_2024")/name
+            if not p.is_file() or hashlib.md5(p.read_bytes()).hexdigest()!=digest:
+              raise ValueError("Original authentic Makowski 2024 source was not recovered")
+          print("CAMPANULA_2024_ORIGINAL_ZENODO_MD5S_VERIFIED")
+          PY
+      - name: Independently calculate population-paired source pollen supplementation benefit and density-autonomy interactions
+        run: >-
+          python -m scripts.analyze_sch_campanula_americana_2024_assurance
+          --source artifacts/sch_campanula_2024
+          --out artifacts/sch_campanula_2024/real_population_assurance.json
+          --bootstrap 3999
+      - name: Preserve source biological grain and calculation status
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("artifacts/sch_campanula_2024/real_population_assurance.json").read_text())
+          assert r["n_original_seed_flower_rows"]==237
+          assert r["n_original_visitor_population_records"]==56
+          assert r["original_genetic_source_population_count"]==4
+          assert r["n_original_experimental_site_IDs"]==10
+          assert r["source_matched_population_grain"]["n_original_population_clusters_with_both_supp_and_control"]>=20
+          assert r["population_stratified_bootstrap"]["bootstrap_completed"]==3999
+          assert r["source_selfing_category_not_randomly_assigned_genetic_source_background"] is True
+          assert r["no_SCH_same_coordinate_dual_function_optima_or_loss_L"] is True
+          print("RECALCULATED_GENUINE_2024_CAMPANULA_POPULATION_PAIR")
+          PY
+      - name: Preserve original CC BY source and source-derived reproducible numeric receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-original-campanula-2024-population-assurance
+          path: artifacts/sch_campanula_2024/
+          retention-days: 25
+          if-no-files-found: error
