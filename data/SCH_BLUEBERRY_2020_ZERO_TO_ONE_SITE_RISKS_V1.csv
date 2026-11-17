@@ -1,0 +1,11 @@
+cultivar,original_site_year_block,n_bagged_zero,fruit_bagged_zero,n_exactly_one,fruit_exactly_one,risk_difference_one_minus_zero,source_site_has_both_visits
+"Blue Rose","Blue Rose|2017|Jilly","18","16","60","60","0.11111111111111116","true"
+"Blue Rose","Blue Rose|2018|Jilly","160","30","96","78","0.625","true"
+"Powder Blue","Powder Blue|2017|B81","90","8","46","4","-0.00193236714975846","true"
+"Powder Blue","Powder Blue|2017|S3R","16","0","60","5","0.08333333333333333","true"
+"Powder Blue","Powder Blue|2018|B81","80","3","4","1","0.2125","true"
+"Powder Blue","Powder Blue|2018|S3R","90","31","5","2","0.05555555555555558","true"
+"Snowchaser","Snowchaser|2017|GR12","71","27","15","6","0.01971830985915496","true"
+"Snowchaser","Snowchaser|2017|S1S","180","13","20","13","0.5777777777777778","true"
+"Snowchaser","Snowchaser|2017|SFI","0","0","17","11","","false"
+"Snowchaser","Snowchaser|2018|S1S","64","8","8","4","0.375","true"
