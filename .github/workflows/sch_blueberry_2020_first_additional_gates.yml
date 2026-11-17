@@ -6,6 +6,8 @@ on:
       - 'tests/test_sch_blueberry_2020_first_additional_gates.py'
       - 'docs/SCH_BLUEBERRY_2020_FIRST_VS_ADDITIONAL_GATES_V1.md'
       - 'data/SCH_BLUEBERRY_2020_FIRST_ADDITIONAL_GATE_RESULTS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_ZERO_TO_ONE_SITE_RISKS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_FOUR_POLLINATION_PROTOCOL_RATES_V1.csv'
       - '.github/workflows/sch_blueberry_2020_first_additional_gates.yml'
   pull_request:
     paths:
@@ -13,6 +15,8 @@ on:
       - 'tests/test_sch_blueberry_2020_first_additional_gates.py'
       - 'docs/SCH_BLUEBERRY_2020_FIRST_VS_ADDITIONAL_GATES_V1.md'
       - 'data/SCH_BLUEBERRY_2020_FIRST_ADDITIONAL_GATE_RESULTS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_ZERO_TO_ONE_SITE_RISKS_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_FOUR_POLLINATION_PROTOCOL_RATES_V1.csv'
       - '.github/workflows/sch_blueberry_2020_first_additional_gates.yml'
   workflow_dispatch:
 permissions:
@@ -55,6 +59,14 @@ jobs:
           a=d["source_visit_0to5_piecewise"]
           assert a["n_original_flower_rows"]==1849
           assert a["n_original_plant_labels"]==238
+          assert abs(a["three_source_type_effect_heterogeneity"]["first"]["nominal_chi2_P"]-.00155070487605)<.00000001
+          assert abs(a["three_source_type_effect_heterogeneity"]["additional"]["nominal_chi2_P"]-.6773288775868)<.00000001
+          sites=d["source_visit_site_only_zero_and_one_overlap_sensitivity"]
+          assert sites["n_original_qualifying_year_blocks"]==9
+          assert sites["n_source_flower_rows"]==1803
+          assert sites["site_only_estimates"]["n_original_plant_labels"]==222
+          assert abs(sites["site_only_estimates"]["three_source_type_effect_heterogeneity"]["first"]["nominal_chi2_P"]-.00156778702351)<.00000001
+          assert abs(sites["site_only_estimates"]["three_source_type_effect_heterogeneity"]["additional"]["nominal_chi2_P"]-.756599483979)<.00000001
           assert len(a["source_type_first_and_additional_visit_effects"])==3
           assert len(a["source_rabbiteye_vs_highbush_effect_differences"])==2
           assert d["no_compatible_pollen_fertilization_or_mechanistic_gate_measured"] is True
