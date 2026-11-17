@@ -14,7 +14,7 @@ def test_source_programme_three_files_are_not_three_independent_studies():
     assert DOI=="10.1111/1365-2664.13751"
     assert SOURCE_RECORD_ID==3987488
     assert SOURCE_EXPECTED=={"multiple":2080,"single":1309,"pollination":2125}
-    assert COMPOSITE_FIELDS==("Species","Year","Block","Row","Plant.number","RP","Tag")
+    assert COMPOSITE_FIELDS==("Species","Year","Block","RP","Tag")
 
 def test_exact_same_original_flower_identity_and_fruit_agreement():
     a=demo(101,1);b=dict(a)
