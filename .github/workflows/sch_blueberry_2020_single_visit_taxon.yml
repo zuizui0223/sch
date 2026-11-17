@@ -4,6 +4,8 @@ on:
     paths:
       - 'scripts/analyze_sch_blueberry_2020_single_visit_taxon_holdout.py'
       - 'tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py'
+      - 'scripts/audit_sch_blueberry_2020_crossfile_flower_overlap.py'
+      - 'tests/test_sch_blueberry_2020_crossfile_flower_overlap.py'
       - 'docs/SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md'
       - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_TAXON_RESULTS_V1.csv'
       - '.github/workflows/sch_blueberry_2020_single_visit_taxon.yml'
@@ -11,6 +13,8 @@ on:
     paths:
       - 'scripts/analyze_sch_blueberry_2020_single_visit_taxon_holdout.py'
       - 'tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py'
+      - 'scripts/audit_sch_blueberry_2020_crossfile_flower_overlap.py'
+      - 'tests/test_sch_blueberry_2020_crossfile_flower_overlap.py'
       - 'docs/SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md'
       - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_TAXON_RESULTS_V1.csv'
       - '.github/workflows/sch_blueberry_2020_single_visit_taxon.yml'
@@ -30,7 +34,7 @@ jobs:
       - name: Install genuine source binomial and plant bootstrap dependencies
         run: python -m pip install --quiet numpy scipy statsmodels pytest
       - name: Verify original visitor identity and noncausal source data claims
-        run: python -m pytest -q tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py
+        run: python -m pytest -q tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py tests/test_sch_blueberry_2020_crossfile_flower_overlap.py
       - name: Restore previously MD5-verified 2020 original single-visit flowers from own signed source archive
         uses: actions/download-artifact@v4
         with:
@@ -38,6 +42,11 @@ jobs:
           run-id: 43907335688
           github-token: ${{ github.token }}
           path: artifacts/sch_blueberry_single_visit_source/
+      - name: Check exact crossfile tagged flower identity across all three genuine published CSVs
+        run: >-
+          python -m scripts.audit_sch_blueberry_2020_crossfile_flower_overlap
+          --source artifacts/sch_blueberry_single_visit_source
+          --out artifacts/sch_blueberry_single_visit_source/crossfile_identity_overlap.json
       - name: Analyze original 1,309 tagged flowers with distinct original bee taxa and plant clusters
         run: >-
           python -m scripts.analyze_sch_blueberry_2020_single_visit_taxon_holdout
@@ -57,6 +66,10 @@ jobs:
           assert len(r["year_block_plant_label_cluster_aware_source_contrasts"])==3
           assert r["n_original_source_experimental_programmes"]==1
           assert r["no_compatible_pollen_load_germination_or_fertilization_measured"]
+          q=json.loads(Path("artifacts/sch_blueberry_single_visit_source/crossfile_identity_overlap.json").read_text())
+          assert q["n_original_rows_summed_across_three_csvs"]==5514
+          assert q["original_2020_published_programmes"]==1
+          assert q["all_independence_and_replication_claims_require_crossfile_qa"] is True
           assert r["no_flower_trait_manipulation_or_SCH_conflict_loss_L"]
           print("VALIDATED_GENUINE_SINGLE_VISIT_SOURCE_OUTCOME_GATE")
           PY
