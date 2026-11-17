@@ -78,11 +78,11 @@ def _two_part_design(rows):
         if v==0:
             site_support[site]["zero"]+=1
             source_risk[typ]["n_zero"]+=1
-            source_risk[typ]["set_zero"]+=y[i]
+            source_risk[typ]["set_zero"]+=int(y[i])
         elif v==1:
             site_support[site]["one"]+=1
             source_risk[typ]["n_one"]+=1
-            source_risk[typ]["set_one"]+=y[i]
+            source_risk[typ]["set_one"]+=int(y[i])
         else:site_support[site]["two_to_five"]+=1
     if np.linalg.matrix_rank(X)!=X.shape[1]:
         raise ValueError("Source site/first-visit/extra-visit design rank deficient")
