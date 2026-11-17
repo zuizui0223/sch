@@ -1,0 +1,5 @@
+"autonomy","founder_size","n_matched_experimental_population_clusters","original_genetic_source_population_labels","mean_control_seeds_per_population","mean_supplemented_seeds_per_population","mean_supplementation_gain_per_population","relative_pollen_limitation_one_minus_meanC_over_meanS","n_source_visit_population_records_nonmissing","mean_visits_per_flower_source_population_observation"
+"high","single","15","AB;V","34.46666666666667","70.86666666666666","36.39999999999999","0.5136406396989651","12","1.3449997915833336"
+"high","small","10","AB;V","36.11","66.89428571428572","30.784285714285716","0.46019305514030673","10","0.30299398650000003"
+"low","single","15","AL79;VA73","10.533333333333333","44.266666666666666","33.733333333333334","0.7620481927710844","12","0.6279451785"
+"low","small","12","AL79;VA73","22.590079365079365","47.83888888888888","25.248809523809516","0.5277883769928828","10","0.5060291481"
