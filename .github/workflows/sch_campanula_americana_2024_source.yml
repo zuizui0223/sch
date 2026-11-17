@@ -1,0 +1,56 @@
+name: SCH original Campanula 2024 experimental colonization source MD5 ingress
+on:
+  push:
+    paths:
+      - 'scripts/ingest_sch_campanula_americana_2024.py'
+      - 'tests/test_sch_campanula_americana_2024_source.py'
+      - 'docs/SCH_CAMPANULA_2024_COLONIZATION_SOURCE_V1.md'
+      - '.github/workflows/sch_campanula_americana_2024_source.yml'
+  pull_request:
+    paths:
+      - 'scripts/ingest_sch_campanula_americana_2024.py'
+      - 'tests/test_sch_campanula_americana_2024_source.py'
+      - 'docs/SCH_CAMPANULA_2024_COLONIZATION_SOURCE_V1.md'
+      - '.github/workflows/sch_campanula_americana_2024_source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  archived-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source-identity-only test framework
+        run: python -m pip install --quiet pytest
+      - name: Test original file and experiment identity fail-closed
+        run: python -m pytest -q tests/test_sch_campanula_americana_2024_source.py
+      - name: Fetch TWO genuine Zenodo files and verify original manifest MD5
+        run: python -m scripts.ingest_sch_campanula_americana_2024 --out artifacts/sch_campanula_2024
+      - name: Verify actual source row/role accounting and no new causal claim
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/sch_campanula_2024/original_campanula_2024_ingress.json")
+          r=json.loads(p.read_text(encoding="utf-8"))
+          assert r["n_genuine_original_files"]==2
+          assert r["source_original_zenodo_DOI"]=="10.5281/zenodo.10814705"
+          assert r["source_license"]=="CC-BY-4.0"
+          for file in r["original_sources"]:
+            assert Path("artifacts/sch_campanula_2024",file["original_filename"]).is_file()
+            assert file["source_grain"]["n_original_source_rows"]>10
+            assert not file["source_grain"]["required_source_roles_missing"]
+          assert r["original_fitness_component_conflict_L_not_identified"] is True
+          print("VERIFIED_REAL_ORIGINAL_CAMPANULA_2024_SOURCE")
+          PY
+      - name: Retain original source records and reproducible schema
+        uses: actions/upload-artifact@v4
+        with:
+          name: sch-campanula-2024-original-zenodo-colonization
+          path: artifacts/sch_campanula_2024/
+          retention-days: 25
+          if-no-files-found: error
