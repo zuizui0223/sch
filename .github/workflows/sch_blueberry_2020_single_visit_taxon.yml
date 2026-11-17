@@ -6,6 +6,11 @@ on:
       - 'tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py'
       - 'scripts/audit_sch_blueberry_2020_crossfile_flower_overlap.py'
       - 'tests/test_sch_blueberry_2020_crossfile_flower_overlap.py'
+      - 'docs/SCH_BLUEBERRY_2020_FIRST_VS_ADDITIONAL_GATES_V1.md'
+      - 'docs/SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md'
+      - 'docs/SCH_MATCHED_FLOWER_SOURCE_GATE_V1.md'
+      - 'data/SCH_BLUEBERRY_2020_CROSSFILE_FLOWER_REUSE_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_ORIGINAL_SOURCE_CELLS_V1.csv'
       - 'docs/SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md'
       - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_TAXON_RESULTS_V1.csv'
       - '.github/workflows/sch_blueberry_2020_single_visit_taxon.yml'
@@ -15,6 +20,11 @@ on:
       - 'tests/test_sch_blueberry_2020_single_visit_taxon_holdout.py'
       - 'scripts/audit_sch_blueberry_2020_crossfile_flower_overlap.py'
       - 'tests/test_sch_blueberry_2020_crossfile_flower_overlap.py'
+      - 'docs/SCH_BLUEBERRY_2020_FIRST_VS_ADDITIONAL_GATES_V1.md'
+      - 'docs/SCH_BLUEBERRY_2020_MATCHED_FLOWER_GATE_REANALYSIS_V1.md'
+      - 'docs/SCH_MATCHED_FLOWER_SOURCE_GATE_V1.md'
+      - 'data/SCH_BLUEBERRY_2020_CROSSFILE_FLOWER_REUSE_V1.csv'
+      - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_ORIGINAL_SOURCE_CELLS_V1.csv'
       - 'docs/SCH_BLUEBERRY_2020_INDEPENDENT_SINGLE_VISIT_TAXON_GATE_V1.md'
       - 'data/SCH_BLUEBERRY_2020_SINGLE_VISIT_TAXON_RESULTS_V1.csv'
       - '.github/workflows/sch_blueberry_2020_single_visit_taxon.yml'
@@ -70,6 +80,27 @@ jobs:
           assert q["n_original_rows_summed_across_three_csvs"]==5514
           assert q["original_2020_published_programmes"]==1
           assert q["all_independence_and_replication_claims_require_crossfile_qa"] is True
+          assert q["n_original_rows_with_full_original_tag_and_core_ID_across_three_files"]==5511
+          assert q["n_original_rows_not_linkable_across_three_files"]==3
+          assert q["n_original_distinct_tagged_flower_composite_IDs_across_all_files"]==3644
+          assert q["n_individually_same_visited_flower_ids_shared_between_single_and_multiple"]==331
+          assert q["n_same_control_flower_ids_shared_by_all_three_files"]==768
+          assert q["n_original_single_only_unvisited_tagged_flowers"]==209
+          assert q["single_visit_is_an_independent_raw_flower_sample_from_multiple_visits"] is False
+          assert q["original_single_visited_treated_flower_rows_are_subset_of_multiple_visit_one"] is True
+          for comparison in q["file_pair_ID_comparisons"].values():
+            assert comparison["n_identity_matched_FS_disagreements"]==0
+            assert comparison["n_identity_matched_date_or_weight_disagreements"]==0
+          assert r["single_visit_taxon_subgroup_analysis_not_independent_external_validation"] is True
+          hb=r["year_block_plant_label_cluster_aware_source_contrasts"]["HB_vs_UP"]
+          assert hb["n_original_site_matched_tagged_flower_rows"]==1148
+          assert hb["n_original_source_plant_label_clusters"]==184
+          assert hb["n_source_site_year_block_intercepts"]==9
+          assert abs(hb["all_three_cultivar_effects_equal_nominal_P"]-.00564835260074454)<1e-8
+          assert abs(hb["powder_minus_mean_highbush_logit_delta"]+1.682185484683)<1e-7
+          assert hb["source_types"]["Blue Rose"]["original_flower_rows_treatment"]==74
+          assert hb["source_types"]["Powder Blue"]["original_flower_rows_treatment"]==66
+          assert hb["source_types"]["Snowchaser"]["original_flower_rows_treatment"]==30
           assert r["no_flower_trait_manipulation_or_SCH_conflict_loss_L"]
           print("VALIDATED_GENUINE_SINGLE_VISIT_SOURCE_OUTCOME_GATE")
           PY
