@@ -48,7 +48,7 @@ N_PLANT_SOURCE_LABELS_0TO5=238
 N_ORIGINAL_PROGRAMMES=1
 N_0_VISITS=769
 
-def _two_part_design(rows):
+def _two_part_design(rows,strict_original_cluster_count=True):
     """Site-specific intercept and paired, cultivar-specific visit processes."""
     if np is None:raise RuntimeError("numpy needed for source numeric analysis")
     sites=sorted({"|".join((r["Species"].strip(),r["Year"].strip(),
@@ -86,8 +86,10 @@ def _two_part_design(rows):
         else:site_support[site]["two_to_five"]+=1
     if np.linalg.matrix_rank(X)!=X.shape[1]:
         raise ValueError("Source site/first-visit/extra-visit design rank deficient")
-    if len(set(groups))!=N_PLANT_SOURCE_LABELS_0TO5:
+    if strict_original_cluster_count and len(set(groups))!=N_PLANT_SOURCE_LABELS_0TO5:
         raise ValueError("Original 0..5 plant-label uncertainty grain changed")
+    if not strict_original_cluster_count and len(set(groups))<150:
+        raise ValueError("Insufficient independent plant labels after site-overlap restriction")
     per_type={}
     for typ in SOURCE_TYPES:
         x=source_risk[typ]
@@ -102,10 +104,10 @@ def _two_part_design(rows):
         }
     return X,y,np.asarray(groups,dtype=str),sites,dict(site_support),per_type,dict(visit_table)
 
-def _source_fit(rows):
+def _source_fit(rows,strict_original_cluster_count=True):
     import statsmodels.api as sm
     from scipy.stats import norm,chi2
-    X,y,group,sites,sitesupport,counts,visits=_two_part_design(rows)
+    X,y,group,sites,sitesupport,counts,visits=_two_part_design(rows,strict_original_cluster_count)
     fit=sm.GLM(y,X,family=sm.families.Binomial()).fit(
        maxiter=300,cov_type="cluster",cov_kwds={"groups":group})
     if not fit.converged:raise ValueError("Original source two-part logit did not converge")
@@ -272,6 +274,21 @@ def run(folder):
     if len(poll)!=N_SOURCE_POLLINATION:
         raise ValueError("Original 2020 hand-pollination sample changed")
     model=_source_fit(short)
+    # An original Snowchaser 2017 SFI block has positive visits but no
+    # bagged zero-visit flowers. This sensitivity excludes the one
+    # block rather than extrapolating its first-visit effect across sites.
+    overlap_sites={
+      site for typ in SOURCE_TYPES for site,cell in
+      model["original_within_site_zero_first_visit_overlap"][typ][
+          "original_site_visit_bin_counts"].items()
+      if cell["zero"]>0 and cell["one"]>0
+    }
+    site_matched=[r for r in short
+       if "|".join((r["Species"].strip(),r["Year"].strip(),
+                    r["Block"].strip())) in overlap_sites]
+    if len(overlap_sites)!=9 or len(site_matched)!=1803:
+        raise ValueError("Original within-site 0-vs-1 comparison denominator changed")
+    matched=_source_fit(site_matched,strict_original_cluster_count=False)
     controls=_pollination_raw_controls(poll)
     return {
       "analysis":"sch_blueberry_source_first_visit_vs_incremental_gate_v1",
@@ -283,6 +300,12 @@ def run(folder):
       "n_original_tagged_flower_visit_rows":len(multiple),
       "n_original_tagged_flower_pollination_rows":len(poll),
       "source_visit_0to5_piecewise":model,
+      "source_visit_site_only_zero_and_one_overlap_sensitivity":{
+        "n_original_qualifying_year_blocks":len(overlap_sites),
+        "n_source_flower_rows":len(site_matched),
+        "site_only_estimates":matched,
+        "diagnostic":"excludes site without any bagged zero-visit flowers",
+      },
       "source_original_four_pollination_protocols":controls,
       "not_an_original_author_fitted_piecewise_test":True,
       "no_compatible_pollen_fertilization_or_mechanistic_gate_measured":True,
